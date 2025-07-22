@@ -16,6 +16,7 @@ class CustomText extends StatelessWidget {
   final TextDecoration textDecoration;
   final int? lines;
   final bool? giveLinesAsText;
+  final Color? decorationColor;
 
   const CustomText({
     super.key,
@@ -30,7 +31,7 @@ class CustomText extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.textDecoration = TextDecoration.none,
     this.lines,
-    this.giveLinesAsText,
+    this.giveLinesAsText, this.decorationColor,
   });
 
   @override
@@ -47,7 +48,7 @@ class CustomText extends StatelessWidget {
           color: color ?? Colors.black,
           fontFamily: fontFamily ?? Assets.onsetRegular,
           decoration: textDecoration,
-          decorationColor: AppColors.primaryColor,
+          decorationColor:decorationColor?? AppColors.primaryColor,
         ),
         overflow:
             giveLinesAsText == true

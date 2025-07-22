@@ -1,5 +1,7 @@
 import 'package:choice_app/appColors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 // import 'package:go_router/go_router.dart';
 
 import '../appAssets/app_assets.dart';
@@ -83,3 +85,26 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton(
+      {super.key, this.borderRadius, required this.svgString});
+
+  final double? borderRadius;
+  final String svgString;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton.outlined(
+      style: IconButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 10),
+            side: BorderSide(
+              color: AppColors.greyBordersColor,
+            )
+          )
+      ),
+      onPressed: () {}, icon: SvgPicture.asset(svgString),);
+  }
+}
+

@@ -113,7 +113,8 @@ class _LoginState extends State<Login> {
             CustomButton(
               buttonText: al.loginButton,
               onTap: () {
-                context.push(Routes.restaurantProfileRoute);
+                // context.push(Routes.restaurantProfileRoute);
+                context.push(Routes.customerHomeRoute);
               },
             ),
             SizedBox(height: getHeight() * .02),

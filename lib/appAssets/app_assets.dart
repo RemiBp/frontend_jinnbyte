@@ -22,4 +22,10 @@ class Assets {
   static const String instagramIcon = "assets/icons/instagram.svg";
   static const String xIcon = "assets/icons/x.svg";
   static const String facebookIcon = "assets/icons/facebook.svg";
+  static const String chatIcon = "assets/icons/chat.svg";
+  static const String notificationIcon = "assets/icons/notification.svg";
+  static const String mapIcon = "assets/icons/map.svg";
+  static const String searchIcon = "assets/icons/search.svg";
+  static const String eventIcon = "assets/icons/event.svg";
+  static const String restaurantIcon = "assets/icons/restaurant.svg";
 }
