@@ -28,4 +28,7 @@ class Assets {
   static const String searchIcon = "assets/icons/search.svg";
   static const String eventIcon = "assets/icons/event.svg";
   static const String restaurantIcon = "assets/icons/restaurant.svg";
+
+
+  static const editIcon = "assets/icons/edit_icon.png";
 }

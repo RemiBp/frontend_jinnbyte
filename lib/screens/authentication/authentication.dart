@@ -1,16 +1,21 @@
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import '../../appAssets/app_assets.dart';
 import '../../customWidgets/custom_text.dart';
 import '../../l18n.dart';
+import '../../routes/routes.dart';
+import '../../userRole/role_provider.dart';
 
 class Authentication extends StatelessWidget {
   const Authentication({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final roleProvider = context.read<RoleProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -38,6 +43,10 @@ class Authentication extends StatelessWidget {
               title: al.userAccountTitle,
               description: al.userAccountDescription,
               svgString: Assets.userIcon,
+              onTap: () {
+                roleProvider.setRole(UserRole.user);
+                context.push(Routes.signupRoute);
+              },
             ),
 
             AuthSelectionCard(
@@ -47,6 +56,10 @@ class Authentication extends StatelessWidget {
               title: al.restaurantProviderAccountTitle,
               description: al.restaurantProviderAccountDescription,
               svgString: Assets.knifeForkIcon,
+              onTap: () {
+                roleProvider.setRole(UserRole.restaurant);
+                context.push(Routes.signupRoute);
+              },
             ),
             AuthSelectionCard(
               bgColorCode: "#F4E9F6",
@@ -55,6 +68,10 @@ class Authentication extends StatelessWidget {
               title: al.leisureProviderAccountTitle,
               description: al.leisureProviderAccountDescription,
               svgString: Assets.leisureIcon,
+              onTap: () {
+                roleProvider.setRole(UserRole.leisure);
+                context.push(Routes.signupRoute);
+              },
             ),
             AuthSelectionCard(
               bgColorCode: "#EDF7EE",
@@ -63,6 +80,10 @@ class Authentication extends StatelessWidget {
               title: al.wellnessProviderAccountTitle,
               description: al.wellnessProviderAccountDescription,
               svgString: Assets.wellnessIcon,
+              onTap: () {
+                roleProvider.setRole(UserRole.wellness);
+                context.push(Routes.signupRoute);
+              },
             ),
           ],
         ),
