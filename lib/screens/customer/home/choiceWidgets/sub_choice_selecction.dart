@@ -10,7 +10,9 @@ import '../../../../res/res.dart';
 import '../../../../routes/routes.dart';
 
 class SubChoiceSelection extends StatefulWidget {
-  const SubChoiceSelection({super.key});
+  final String selectedChoice;
+
+  const SubChoiceSelection({super.key, required this.selectedChoice});
 
   @override
   _SubChoiceSelectionState createState() => _SubChoiceSelectionState();
@@ -54,7 +56,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
         child: Column(
           children: [
 
-            _buildSelectedTypeCard(),
+            _buildSelectedTypeCard(name: widget.selectedChoice),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
@@ -69,7 +71,6 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
               borderColor: AppColors.greyBordersColor,
               hint: "Search for a restaurant...",
               prefixIconSvg: Assets.searchIcon,
-
             ),
             const SizedBox(height: 12),
             Expanded(
@@ -144,7 +145,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
     );
   }
 
-  Widget _buildSelectedTypeCard() {
+  Widget _buildSelectedTypeCard({required String name}) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -162,7 +163,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "Restaurant",
+                  text:name?? "Restaurant",
                   fontFamily: Assets.onsetMedium,
                   fontSize: sizes?.fontSize14,
                 ),

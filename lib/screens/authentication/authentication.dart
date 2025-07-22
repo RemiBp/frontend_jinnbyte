@@ -45,7 +45,8 @@ class Authentication extends StatelessWidget {
               svgString: Assets.userIcon,
               onTap: () {
                 roleProvider.setRole(UserRole.user);
-                context.push(Routes.signupRoute);
+                // context.push(Routes.signupRoute);
+                context.push(Routes.customerHomeRoute);
               },
             ),
 

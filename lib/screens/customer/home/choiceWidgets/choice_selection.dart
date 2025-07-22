@@ -93,7 +93,8 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      context.push(Routes.subChoiceSelectionRoute);
+                      // context.push(Routes.subChoiceSelectionRoute);
+                      context.push('/sub_choice_selection?selectedChoice=$selectedChoice');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightBlue,
