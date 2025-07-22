@@ -22,4 +22,7 @@ class Assets {
   static const String instagramIcon = "assets/icons/instagram.svg";
   static const String xIcon = "assets/icons/x.svg";
   static const String facebookIcon = "assets/icons/facebook.svg";
+
+
+  static const editIcon = "assets/icons/edit_icon.png";
 }

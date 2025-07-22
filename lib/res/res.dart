@@ -43,7 +43,7 @@ class JobStatus {
   static const completed = "COMPLETED";
   static const open = "OPEN";
 }
-class UserRole {
-  static const private = "PRIVATE";
-  static const freelancer = "FREELANCER";
-}
+// class UserRole {
+//   static const private = "PRIVATE";
+//   static const freelancer = "FREELANCER";
+// }
