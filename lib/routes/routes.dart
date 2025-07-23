@@ -75,9 +75,16 @@ final GoRouter router = GoRouter(
       path: '/choice_selection',
       builder: (context, state) => const ChoiceSelection(),
     ),
+    // GoRoute(
+    //   path: '/sub_choice_selection',
+    //   builder: (context, state) => const SubChoiceSelection(),
+    // ),
     GoRoute(
       path: '/sub_choice_selection',
-      builder: (context, state) => const SubChoiceSelection(),
+      builder: (context, state) {
+        final selectedChoice = state.uri.queryParameters['selectedChoice'] ?? 'Default';
+        return SubChoiceSelection(selectedChoice: selectedChoice);
+      },
     ),
     GoRoute(
       path: '/create_choice',

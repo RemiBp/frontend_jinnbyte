@@ -4,6 +4,8 @@ import 'package:choice_app/screens/languageSelection/language_selection_provider
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../userRole/role_provider.dart';
+
 final multiProviders = [
   ChangeNotifierProvider<LanguageSelectionProvider>(
     create: (_) => LanguageSelectionProvider(),
@@ -20,5 +22,8 @@ final multiProviders = [
     create: (_) => PasswordProvider(),
     lazy: true,
   ),
-
+  ChangeNotifierProvider<RoleProvider>(
+    create: (_) => RoleProvider(),
+    lazy: true,
+  ),
 ];

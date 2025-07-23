@@ -1,10 +1,8 @@
 import 'package:choice_app/routes/routes.dart';
-import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../appAssets/app_assets.dart';
 import '../../customWidgets/custom_text.dart';
 import '../../l18n.dart';
@@ -19,6 +17,7 @@ class AuthSelectionCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.svgString,
+    required this.onTap,
   });
 
   final String bgColorCode;
@@ -27,13 +26,12 @@ class AuthSelectionCard extends StatelessWidget {
   final String title;
   final String description;
   final String svgString;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.push(Routes.signupRoute);
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

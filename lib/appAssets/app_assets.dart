@@ -28,4 +28,11 @@ class Assets {
   static const String searchIcon = "assets/icons/search.svg";
   static const String eventIcon = "assets/icons/event.svg";
   static const String restaurantIcon = "assets/icons/restaurant.svg";
+
+
+  static const editIcon = "assets/icons/edit_icon.png";
+  static const infoIcon = "assets/icons/info_icon.png";
+  static const calenderIcon = "assets/icons/calender_icon.png";
+
+  static const String galleryImage = "assets/images/gallery_image.png";
 }
