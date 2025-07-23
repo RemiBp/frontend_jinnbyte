@@ -1,10 +1,12 @@
+import 'package:choice_app/screens/restaurant/dashboard/repeat_customers_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import 'booking_chart_card.dart';
 import 'customers_chart_card.dart';
+import 'dish_drop_alert_cart.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -64,21 +66,30 @@ class _HomeViewState extends State<HomeView> {
               CustomText(
                 text: "Booking Trends",
                 fontSize: sizes?.fontSize18,
-                color: AppColors.primaryColor,
+                color: AppColors.blackColor,
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: getHeightRatio() * 6),
-              // const BookingChartCard(),
-              // SizedBox(height: getHeightRatio() * 16),
-              // CustomText(
-              //   text: "Returning Guests",
-              //   fontSize: sizes.fontSize18,
-              //   color: AppColors.homeHeaderColor,
-              //   fontWeight: FontWeight.w600,
-              // ),
-              // SizedBox(height: getHeightRatio() * 6),
-              // const RepeatCustomersCard(),
-              // SizedBox(height: getHeight() * 0.025),
+              const BookingChartCard(),
+              SizedBox(height: getHeightRatio() * 16),
+              CustomText(
+                text: "Returning Guests",
+                fontSize: sizes?.fontSize18,
+                color: AppColors.blackColor,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(height: getHeightRatio() * 6),
+              const RepeatCustomersCard(),
+              SizedBox(height: getHeight() * 0.025),
+              CustomText(
+                text: "Dish Drop Alerts",
+                fontSize: sizes?.fontSize18,
+                color: AppColors.blackColor,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(height: getHeightRatio() * 6),
+              const DishDropAlertsCard(),
+              SizedBox(height: getHeight() * 0.025),
             ],
           ),
         ),

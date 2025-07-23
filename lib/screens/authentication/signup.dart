@@ -105,12 +105,12 @@ class _SignupState extends State<Signup> {
                       children: [
                         TextSpan(
                           text: al.termsOfService,
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
                         ),
                         TextSpan(text: " ${al.andLabel} "),
                         TextSpan(
                           text: " ${al.privacyPolicy} ",
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
                         ),
                       ],
                     ),
@@ -165,7 +165,7 @@ class _SignupState extends State<Signup> {
                   children: [
                     TextSpan(
                       text: al.loginButton,
-                      style: TextStyle(color: AppColors.primaryColor),
+                      style: TextStyle(color: AppColors.restaurantPrimaryColor),
                       recognizer: TapGestureRecognizer()..onTap=(){
                         context.pushReplacement(Routes.loginRoute);
                       }

@@ -30,7 +30,7 @@ class TextFieldLabel extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: sizes?.fontSize14,
                 fontFamily:Assets.onsetRegular,
-                color: AppColors.primaryColor,
+                color: AppColors.restaurantPrimaryColor,
               ),
             ),
           ],

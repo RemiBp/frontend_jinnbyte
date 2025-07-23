@@ -117,7 +117,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                         TextSpan(
                           text: "Terms of Service",
                           style: TextStyle(
-                            color: AppColors.primaryColor,
+                            color: AppColors.restaurantPrimaryColor,
                             fontSize: sizes?.fontSize14,
                             fontWeight: FontWeight.w500,
                             fontFamily: Assets.onsetRegular,
@@ -128,7 +128,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                         TextSpan(
                           text: "Privacy Policy",
                           style: TextStyle(
-                            color: AppColors?.primaryColor,
+                            color: AppColors?.restaurantPrimaryColor,
                             fontSize: sizes?.fontSize14,
                             fontWeight: FontWeight.w500,
                             fontFamily: Assets.onsetRegular,
@@ -149,7 +149,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                   text:state.errorText!,
                   fontWeight: FontWeight.w400,
                   fontSize: sizes?.fontSize12,
-                  color: AppColors.primaryColor,
+                  color: AppColors.restaurantPrimaryColor,
                 ),
               ),
           ],
