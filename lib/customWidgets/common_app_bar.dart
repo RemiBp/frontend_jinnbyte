@@ -27,7 +27,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           if (showBackArrow)
             IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back, color: AppColors.blackColor,),
               onPressed: () => Navigator.pop(context),
             ),
           Expanded(
@@ -53,12 +53,13 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             Assets.editIcon, // update with your actual asset path
             height: getHeightRatio() * 15,
             width: getWidthRatio() * 15,
-            color: AppColors.whiteColor, // optional: tint if needed
+            color: AppColors.getPrimaryColorFromContext(context), // optional: tint if needed
           ),
           label: CustomText(
             text: 'Edit',
             fontWeight: FontWeight.w500,
             fontSize: sizes?.fontSize16,
+            color: AppColors.getPrimaryColorFromContext(context),
           ),
         ),
       ]

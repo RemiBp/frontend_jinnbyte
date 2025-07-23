@@ -5,8 +5,6 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
-import 'package:choice_app/screens/authentication/login.dart';
-import 'package:choice_app/screens/authentication/otpVerification/otp_verification.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
+import '../onboarding/add_cuisine/add_cuisine.dart';
 import 'auth_provider.dart';
 
 class Signup extends StatefulWidget {
@@ -123,7 +122,11 @@ class _SignupState extends State<Signup> {
             CustomButton(
               buttonText: al.signupTitle,
               onTap: () {
-                context.push(Routes.otpVerificationRoute);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddCuisine()),
+                );
+                // context.push(Routes.otpVerificationRoute);
               },
             ),
             SizedBox(height: getHeight() * .02),

@@ -52,7 +52,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               },
               items: widget.items,
               style: TextStyle(
-                fontFamily: Assets.onsetSemiBold,
+                fontFamily: Assets.onsetRegular,
                 fontWeight: FontWeight.w400,
                 fontSize: sizes?.fontSize16,
                 color: AppColors.whiteColor,
@@ -60,15 +60,15 @@ class _CustomDropdownState extends State<CustomDropdown> {
               hint: Text(
                 widget.hintText,
                 style: TextStyle(
-                  fontFamily: Assets.onsetSemiBold,
+                  fontFamily: Assets.onsetRegular,
                   fontWeight: FontWeight.w400,
                   fontSize: sizes?.fontSize16,
                   color: AppColors.inputHintColor,
                 ),
               ),
               decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.greyColor,
+                filled: false,
+                // fillColor: AppColors.greyColor,
                 contentPadding: EdgeInsets.only(
                   top: getHeightRatio() * 16,
                   bottom: getHeightRatio() * 16,
@@ -77,19 +77,19 @@ class _CustomDropdownState extends State<CustomDropdown> {
                 border: buildOutlineInputBorder(AppColors.greyBordersColor),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: AppColors.greyBordersColor)
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: AppColors.greyBordersColor)
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: AppColors.greyBordersColor)
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: AppColors.greyBordersColor)
                 ),
               ),
               iconStyleData: IconStyleData(
@@ -111,7 +111,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
               ),
               buttonStyleData: ButtonStyleData(
                 decoration: BoxDecoration(
-                  color: AppColors.greyColor,
+                  // color: AppColors.greyColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),

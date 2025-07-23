@@ -31,4 +31,8 @@ class Assets {
 
 
   static const editIcon = "assets/icons/edit_icon.png";
+  static const infoIcon = "assets/icons/info_icon.png";
+  static const calenderIcon = "assets/icons/calender_icon.png";
+
+  static const String galleryImage = "assets/images/gallery_image.png";
 }

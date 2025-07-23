@@ -5,7 +5,6 @@ import 'package:choice_app/screens/languageSelection/language_selection_provider
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'common/utils.dart';
 import 'l10n/app_localizations.dart';
 

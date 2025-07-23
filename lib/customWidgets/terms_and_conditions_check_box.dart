@@ -39,7 +39,7 @@ class _RememberMeCheckBoxState extends State<RememberMeCheckBox> {
                 vertical: VisualDensity.minimumDensity),
             value: widget.isChecked,
             onChanged: widget.onChanged,
-            activeColor: widget.activeColor?? AppColors.whiteColor,
+            activeColor: widget.activeColor?? AppColors.blackColor,
             checkColor: AppColors.whiteColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
@@ -52,7 +52,7 @@ class _RememberMeCheckBoxState extends State<RememberMeCheckBox> {
           text: widget.text?? "Remember me",
           fontSize: widget.fontSize?? sizes?.fontSize14,
           fontWeight: FontWeight.w500,
-          color: AppColors.whiteColor,
+          color: AppColors.blackColor,
         )
       ],
     );
