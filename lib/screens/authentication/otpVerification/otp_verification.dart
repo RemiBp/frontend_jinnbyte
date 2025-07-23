@@ -88,7 +88,7 @@ class OtpVerification extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: al.resendCode,
-                    style: TextStyle(color: AppColors.primaryColor),
+                    style: TextStyle(color: AppColors.restaurantPrimaryColor),
                   ),
                 ],
               ),

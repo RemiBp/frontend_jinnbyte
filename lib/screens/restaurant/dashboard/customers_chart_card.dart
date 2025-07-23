@@ -247,6 +247,14 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.blackColor.withAlpha(20),
+            offset: Offset(0, 0),
+            blurRadius: 24,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -283,8 +291,8 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                 borderData: FlBorderData(
                   show: true,
                   border: const Border(
-                    bottom: BorderSide(color: AppColors.whiteColor),
-                    left: BorderSide(color: AppColors.whiteColor),
+                    bottom: BorderSide(color: AppColors.greyBordersColor),
+                    left: BorderSide(color: AppColors.greyBordersColor),
                   ),
                 ),
                 titlesData: FlTitlesData(
@@ -335,7 +343,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         // colors: [AppColors.gradientColor1, AppColors.gradientColor2],
-                        colors: [AppColors.blueColor, AppColors.wellnessSlateColor],
+                        colors: [AppColors.blueColor, AppColors.wellnessPrimaryColor],
                       ),
                     ),
                     dotData: FlDotData(
@@ -359,7 +367,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                         return LineTooltipItem(
                           '${touchedSpot.y.toInt()} Customer',
                           const TextStyle(
-                            color: AppColors.whiteColor,
+                            color: AppColors.greyBordersColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                           ),

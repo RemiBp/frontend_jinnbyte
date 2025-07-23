@@ -323,7 +323,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                 text: "Closed",
                                 fontSize: sizes?.fontSize14,
                                 fontWeight: FontWeight.w500,
-                                color:AppColors.userSlateColor,
+                                color:AppColors.primarySlateColor,
                                 textAlign: TextAlign.start,
                               ),
                             ),
