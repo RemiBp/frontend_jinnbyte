@@ -1,4 +1,3 @@
-import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../appAssets/app_assets.dart';
@@ -11,10 +10,9 @@ import '../../../../res/res.dart';
 import '../widgets/setup_time_popup.dart';
 
 class EditOperationalHours extends StatefulWidget {
-  final bool? isHomeFlow;
   final List<dynamic>? operationalHoursList;
 
-  const EditOperationalHours({super.key, this.operationalHoursList, this.isHomeFlow});
+  const EditOperationalHours({super.key, this.operationalHoursList});
 
   @override
   State<EditOperationalHours> createState() => _EditOperationalHoursState();
@@ -97,7 +95,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: widget.isHomeFlow??false? null : const CommonAppBar(title: "Business hours"),
+      appBar: const CommonAppBar(title: "Business hours"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
         child: Column(
@@ -352,10 +350,6 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                 CustomButton(
                   buttonText: 'Continue',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GalleryView()),
-                    );
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

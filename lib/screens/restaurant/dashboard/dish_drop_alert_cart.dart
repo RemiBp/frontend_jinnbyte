@@ -25,10 +25,14 @@ class DishDropAlertsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
-            text: 'Dish Drop Alerts',
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CustomText(
+              text: 'Dish Drop Alerts',
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primarySlateColor,
+            ),
           ),
           SizedBox(height: getHeightRatio() * 16),
           SizedBox(
@@ -42,7 +46,10 @@ class DishDropAlertsCard extends StatelessWidget {
                 gridData: FlGridData(show: false),
                 borderData: FlBorderData(
                   show: true,
-                  border: Border.all(color: AppColors.greyBordersColor),
+                  border: const Border(
+                    left: BorderSide(color: AppColors.greyBordersColor),
+                    bottom: BorderSide(color: AppColors.greyBordersColor),
+                  ),
                 ),
                 titlesData: FlTitlesData(
                   leftTitles: AxisTitles(
@@ -81,6 +88,7 @@ class DishDropAlertsCard extends StatelessWidget {
                 ],
                 lineTouchData: LineTouchData(
                   touchTooltipData: LineTouchTooltipData(
+                    getTooltipColor: (touchedSpot) => AppColors.greyColor,
                     // tooltipBgColor: Colors.white,
                     // tooltipRoundedRadius: 8,
                     getTooltipItems: (touchedSpots) {

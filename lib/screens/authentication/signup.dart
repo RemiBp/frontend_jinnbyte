@@ -5,6 +5,7 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
+import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,8 @@ class _SignupState extends State<Signup> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddCuisine()),
+                  // MaterialPageRoute(builder: (context) => AddCuisine()),
+                  MaterialPageRoute(builder: (context) => SettingView()),
                 );
                 // context.push(Routes.otpVerificationRoute);
               },
