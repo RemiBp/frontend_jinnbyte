@@ -111,10 +111,7 @@ class _GalleryViewState extends State<GalleryView> {
                 CustomButton(
                   buttonText: 'Continue',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SlotManagementView(isEdit: true,)),
-                    );
+
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

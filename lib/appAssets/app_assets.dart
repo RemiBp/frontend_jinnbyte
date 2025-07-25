@@ -29,10 +29,26 @@ class Assets {
   static const String eventIcon = "assets/icons/event.svg";
   static const String restaurantIcon = "assets/icons/restaurant.svg";
 
+  static const String messagesIcon = "assets/icons/messages_icon.svg";
+  static const String editProfileIcon = "assets/icons/edit_profile_icon.svg";
+  static const String documentsIcon = "assets/icons/documents_icon.svg";
+  static const String passwordManagerIcon = "assets/icons/password_manager_icon.svg";
+  static const String businessHourIcon = "assets/icons/business_hour_icon.svg";
+  static const String slotsIcon = "assets/icons/slots_icon.svg";
+  static const String menuIcon = "assets/icons/menu_icon.svg";
+  static const String galleryIcon = "assets/icons/gallery_icon.svg";
+  static const String unavailabilityIcon = "assets/icons/unavailability_icon.svg";
+  static const String logoutIcon = "assets/icons/logout_icon.svg";
+  static const String languageIcon = "assets/icons/language_icon.svg";
+  static const String profileAvatar = "assets/images/profile_avatar.svg";
 
-  static const editIcon = "assets/icons/edit_icon.png";
-  static const infoIcon = "assets/icons/info_icon.png";
-  static const calenderIcon = "assets/icons/calender_icon.png";
+  static const String editIcon = "assets/icons/edit_icon.png";
+  static const String infoIcon = "assets/icons/info_icon.png";
+  static const String calenderIcon = "assets/icons/calender_icon.png";
+  static const String bookingIcon = "assets/icons/booking_icon.png";
+  static const String guestsIcon = "assets/icons/guests_icon.png";
+  static const String priceIcon = "assets/icons/price_icon.png";
 
   static const String galleryImage = "assets/images/gallery_image.png";
+  static const String originMapImage = "assets/images/origin_map_image.png";
 }
