@@ -8,6 +8,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showBackArrow;
   final bool? showEditButton;
+  final bool? hideBottomBorder;
   final Function? onEdit;
 
   const CommonAppBar({
@@ -15,6 +16,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.showBackArrow = true,
     this.showEditButton,
+    this.hideBottomBorder,
     this.onEdit,
   });
 
@@ -64,7 +66,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ]
           : [],
-      shape: const Border(
+      shape: hideBottomBorder??false? Border():const Border(
         bottom: BorderSide(
           color: AppColors.greyBordersColor,
           width: 1,

@@ -290,10 +290,6 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                     CustomButton(
                       buttonText: 'Continue',
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DaysOffView()),
-                        );
                       },
                       buttonWidth: getWidth() * .42,
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),

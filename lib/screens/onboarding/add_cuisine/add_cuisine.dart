@@ -1,6 +1,7 @@
 import 'package:choice_app/appColors/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../appAssets/app_assets.dart';
+import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_drop_down.dart';
 import '../../../customWidgets/custom_text.dart';
@@ -37,6 +38,9 @@ class _AddCuisineState extends State<AddCuisine> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
+      appBar: CommonAppBar(
+        title: "Cuisine",
+      ),
       body: Container(
           padding: EdgeInsets.symmetric(
             horizontal: sizes!.pagePadding,
@@ -46,14 +50,14 @@ class _AddCuisineState extends State<AddCuisine> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(
-                text: "Cuisine",
-                fontSize: sizes?.fontSize28,
-                fontFamily: Assets.onsetSemiBold,
-              ),
+              // CustomText(
+              //   text: "Cuisine",
+              //   fontSize: sizes?.fontSize28,
+              //   fontFamily: Assets.onsetSemiBold,
+              // ),
               SizedBox(height: getHeight() * 0.01),
               const TextFieldLabel(
-                label: "Slot Duration",
+                label: "Cuisine Type",
               ),
               CustomDropdown(
                 items: [
@@ -104,10 +108,6 @@ class _AddCuisineState extends State<AddCuisine> {
                   CustomButton(
                     buttonText: 'Continue',
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EditOperationalHours()),
-                      );
                     },
                     buttonWidth: getWidth() * .42,
                     backgroundColor: AppColors.getPrimaryColorFromContext(context),

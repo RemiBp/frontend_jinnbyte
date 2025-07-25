@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../customWidgets/filter_drop_down.dart';
 import '../../../res/res.dart';
 
 
@@ -168,7 +169,7 @@ class BookingChartCard extends StatefulWidget {
 }
 
 class _BookingChartCardState extends State<BookingChartCard> {
-  String selectedRange = 'Last Week';
+  String selectedRange = 'Category';
 
   List<double> barData = [];
   List<String> xLabels = [];
@@ -181,12 +182,12 @@ class _BookingChartCardState extends State<BookingChartCard> {
 
   void fetchChartData(String range) {
     // Simulated backend response based on range
-    if (range == 'Last Week') {
-      xLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      barData = [85, 65, 28, 70, 55, 100, 100];
+    if (range == 'Category') {
+      xLabels = ['Bowl', 'Ramen', 'Sat', 'Sun'];
+      barData = [85, 65, 28, 70,];
     } else if (range == 'Last Month') {
       xLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-      barData = [150, 200, 120, 170];
+      barData = [150, 200, 120, 100];
     }
     setState(() {});
   }
@@ -232,7 +233,34 @@ class _BookingChartCardState extends State<BookingChartCard> {
           //     ),
           //   ),
           // ),
-          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: 'Dish Ratings',
+                fontSize: sizes?.fontSize14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primarySlateColor,
+              ),
+              SizedBox(
+                width: getWidth() * 0.3,
+                height: getHeightRatio() * 36,
+                child: FilterDropDown(
+                  items: const ['Category', 'Category1'],
+                  hintText: 'Select Category',
+                  selectedValue: selectedRange,
+                  bfColor: AppColors.whiteColor,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRange = value!;
+                    });
+                  },
+                  validator: (value) =>
+                  value == null ? 'Please select Category' : null,
+                ),),
+            ],
+          ),
+          SizedBox(height: getHeightRatio() * 16),
           SizedBox(
             height: getHeight() * 0.3,
             child: BarChart(
@@ -299,6 +327,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
                 }).toList(),
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
+                    getTooltipColor: (touchedSpot) => AppColors.greyColor,
                     // tooltipBgColor: AppColors.appColor,
                   ),
                   touchCallback: (event, response) {},
