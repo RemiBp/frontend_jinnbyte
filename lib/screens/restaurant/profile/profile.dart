@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 IconButton.filled(
                   style: IconButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: AppColors.restaurantPrimaryColor,
                   ),
                   onPressed: () {
                     showModalBottomSheet(

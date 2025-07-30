@@ -62,7 +62,7 @@ class CustomerHome extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100)
         ),
-          backgroundColor: AppColors.customerPrimaryColor,
+          backgroundColor: AppColors.userPrimaryColor,
           onPressed: (){
           context.push(Routes.choiceSelectionRoute);
           }, label: Row(

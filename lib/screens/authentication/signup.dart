@@ -5,6 +5,7 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
+import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -105,12 +106,12 @@ class _SignupState extends State<Signup> {
                       children: [
                         TextSpan(
                           text: al.termsOfService,
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
                         ),
                         TextSpan(text: " ${al.andLabel} "),
                         TextSpan(
                           text: " ${al.privacyPolicy} ",
-                          style: TextStyle(color: AppColors.primaryColor),
+                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
                         ),
                       ],
                     ),
@@ -124,7 +125,8 @@ class _SignupState extends State<Signup> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddCuisine()),
+                  // MaterialPageRoute(builder: (context) => AddCuisine()),
+                  MaterialPageRoute(builder: (context) => SettingView()),
                 );
                 // context.push(Routes.otpVerificationRoute);
               },
@@ -165,7 +167,7 @@ class _SignupState extends State<Signup> {
                   children: [
                     TextSpan(
                       text: al.loginButton,
-                      style: TextStyle(color: AppColors.primaryColor),
+                      style: TextStyle(color: AppColors.restaurantPrimaryColor),
                       recognizer: TapGestureRecognizer()..onTap=(){
                         context.pushReplacement(Routes.loginRoute);
                       }

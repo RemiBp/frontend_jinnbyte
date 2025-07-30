@@ -1,9 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../customWidgets/filter_drop_down.dart';
 import '../../../res/res.dart';
 
 // class CustomersChartCard extends StatefulWidget {
@@ -199,11 +201,6 @@ import '../../../res/res.dart';
 //   }
 // }
 
-
-
-
-
-
 class CustomersChartCard extends StatefulWidget {
   const CustomersChartCard({super.key});
 
@@ -212,32 +209,42 @@ class CustomersChartCard extends StatefulWidget {
 }
 
 class _CustomersChartCardState extends State<CustomersChartCard> {
-  String selectedRange = 'Last Week';
+  final List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  String selectedRange = DateFormat('MMMM').format(DateTime.now());
+
+  final Map<String, List<FlSpot>> monthlyData = {
+    'January': [FlSpot(0, 50), FlSpot(1, 100), FlSpot(2, 80), FlSpot(3, 120)],
+    'February': [FlSpot(0, 30), FlSpot(1, 90), FlSpot(2, 60), FlSpot(3, 110)],
+    'March': [FlSpot(0, 40), FlSpot(1, 85), FlSpot(2, 95), FlSpot(3, 130)],
+    'April': [FlSpot(0, 100), FlSpot(1, 120), FlSpot(2, 160), FlSpot(3, 180)],
+    'May': [FlSpot(0, 110), FlSpot(1, 140), FlSpot(2, 120), FlSpot(3, 170)],
+    'June': [FlSpot(0, 80), FlSpot(1, 100), FlSpot(2, 90), FlSpot(3, 130)],
+    'July': [FlSpot(0, 60), FlSpot(1, 150), FlSpot(2, 130), FlSpot(3, 200)],
+    'August': [FlSpot(0, 90), FlSpot(1, 110), FlSpot(2, 115), FlSpot(3, 160)],
+    'September': [FlSpot(0, 70), FlSpot(1, 130), FlSpot(2, 125), FlSpot(3, 140)],
+    'October': [FlSpot(0, 100), FlSpot(1, 160), FlSpot(2, 140), FlSpot(3, 190)],
+    'November': [FlSpot(0, 85), FlSpot(1, 100), FlSpot(2, 120), FlSpot(3, 140)],
+    'December': [FlSpot(0, 60), FlSpot(1, 140), FlSpot(2, 150), FlSpot(3, 170)],
+  };
 
   @override
   Widget build(BuildContext context) {
-    final isMonthly = selectedRange == 'Last Month';
-
-    final xLabels = isMonthly
-        ? ['Week 1', 'Week 2', 'Week 3', 'Week 4']
-        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-    final spots = isMonthly
-        ? const[
-          FlSpot(0, 120),
-      FlSpot(1, 200),
-      FlSpot(2, 180),
-      FlSpot(3, 240),
-    ]
-        : const[
-      FlSpot(0, 10),
-      FlSpot(1, 60),
-      FlSpot(2, 40),
-      FlSpot(3, 50),
-      FlSpot(4, 45),
-      FlSpot(5, 80),
-      FlSpot(6, 95),
-    ];
+    final List<String> xLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    final List<FlSpot> spots = monthlyData[selectedRange] ?? [];
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -247,44 +254,60 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.blackColor.withAlpha(20),
+            offset: Offset(0, 0),
+            blurRadius: 24,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         children: [
-          // Align(
-          //   alignment: Alignment.centerRight,
-          //   child: SizedBox(
-          //     width: getWidth() * 0.3,
-          //     height: getHeightRatio() * 36,
-          //     child: FilterDropDown(
-          //       items: const ['Last Week', 'Last Month'],
-          //       hintText: 'Select Date Range',
-          //       selectedValue: selectedRange,
-          //       bfColor: AppColors.appColor,
-          //       onChanged: (value) {
-          //         setState(() {
-          //           selectedRange = value!;
-          //         });
-          //       },
-          //       validator: (value) =>
-          //       value == null ? 'Please select a date range' : null,
-          //     ),
-          //   ),
-          // ),
-          SizedBox(height: getHeight() * 0.01),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: 'Monthly Evolution',
+                fontSize: sizes?.fontSize14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primarySlateColor,
+              ),
+              SizedBox(
+                width: getWidth() * 0.3,
+                height: getHeightRatio() * 36,
+                child: FilterDropDown(
+                  items: months,
+                  hintText: 'Select Month',
+                  selectedValue: selectedRange,
+                  bfColor: AppColors.whiteColor,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRange = value!;
+                    });
+                  },
+                  validator: (value) =>
+                  value == null ? 'Please select a month' : null,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: getHeightRatio() * 16),
           SizedBox(
             height: getHeight() * 0.3,
             child: LineChart(
               LineChartData(
                 minX: 0,
-                maxX: (xLabels.length - 1).toDouble(),
+                maxX: 3,
                 minY: 0,
                 maxY: 250,
                 gridData: const FlGridData(show: false),
                 borderData: FlBorderData(
                   show: true,
                   border: const Border(
-                    bottom: BorderSide(color: AppColors.whiteColor),
-                    left: BorderSide(color: AppColors.whiteColor),
+                    bottom: BorderSide(color: AppColors.greyBordersColor),
+                    left: BorderSide(color: AppColors.greyBordersColor),
                   ),
                 ),
                 titlesData: FlTitlesData(
@@ -322,20 +345,21 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                       },
                     ),
                   ),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
                 ),
                 lineBarsData: [
                   LineChartBarData(
                     isCurved: true,
-                    color: AppColors.greyBordersColor,
+                    color: AppColors.restaurantPrimaryColor,
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: const LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        // colors: [AppColors.gradientColor1, AppColors.gradientColor2],
-                        colors: [AppColors.blueColor, AppColors.wellnessSlateColor],
+                        colors: [AppColors.orangeWithOpacity, AppColors.orangeTransparent],
                       ),
                     ),
                     dotData: FlDotData(
@@ -343,7 +367,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                       getDotPainter: (spot, percent, barData, index) {
                         return FlDotCirclePainter(
                           radius: getWidthRatio() * 5,
-                          color: AppColors.greyBordersColor,
+                          color: AppColors.restaurantPrimaryColor,
                         );
                       },
                     ),
@@ -353,13 +377,13 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                 ],
                 lineTouchData: LineTouchData(
                   touchTooltipData: LineTouchTooltipData(
-                    // tooltipBgColor: AppColors.appColor,
+                    getTooltipColor: (touchedSpot) => AppColors.greyColor,
                     getTooltipItems: (touchedSpots) {
                       return touchedSpots.map((touchedSpot) {
                         return LineTooltipItem(
                           '${touchedSpot.y.toInt()} Customer',
                           const TextStyle(
-                            color: AppColors.whiteColor,
+                            color: AppColors.blackColor,
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                           ),
@@ -377,6 +401,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
     );
   }
 }
+
 
 
 

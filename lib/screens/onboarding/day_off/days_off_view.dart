@@ -164,10 +164,6 @@ class _DaysOffViewState extends State<DaysOffView> {
                 CustomButton(
                   buttonText: 'Continue',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeView()),
-                    );
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

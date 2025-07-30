@@ -63,5 +63,18 @@
   "selectLanguage": "Select Language",
   "choosePreferredLanguage": "Choose your preferred language to continue",
   "continueText": "Continue",
-  "phoneNumber": "Phone Number"
+  "phoneNumber": "Phone Number",
+  "setting": "Setting",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "documents": "Documents",
+  "businessHours": "Business Hours",
+  "manageSlots": "Manage Slots",
+  "menu": "Menu",
+  "unavailability": "Unavailability",
+  "language": "Language",
+  "logout": "Logout",
+  "deleteAccount": "Delete Account",
+  "cuisine": "Cuisine",
+  "services": "Services"
 }

@@ -48,7 +48,7 @@ class CustomText extends StatelessWidget {
           color: color ?? Colors.black,
           fontFamily: fontFamily ?? Assets.onsetRegular,
           decoration: textDecoration,
-          decorationColor:decorationColor?? AppColors.primaryColor,
+          decorationColor:decorationColor?? AppColors.restaurantPrimaryColor,
         ),
         overflow:
             giveLinesAsText == true
