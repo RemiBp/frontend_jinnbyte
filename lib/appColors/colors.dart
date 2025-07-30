@@ -27,9 +27,9 @@ class AppColors{
 
     switch (role) {
       case UserRole.user:
-        return userSlateColor;
+        return Color(0xff009ED4);
       case UserRole.restaurant:
-        return primarySlateColor;
+        return primaryColor;
       case UserRole.wellness:
         return wellnessSlateColor;
       case UserRole.leisure:

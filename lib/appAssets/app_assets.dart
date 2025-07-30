@@ -28,6 +28,27 @@ class Assets {
   static const String searchIcon = "assets/icons/search.svg";
   static const String eventIcon = "assets/icons/event.svg";
   static const String restaurantIcon = "assets/icons/restaurant.svg";
+  static const String imageIcon = "assets/icons/image_icon.svg";
+  static const String calenderSvg = "assets/icons/calender.svg";
+  static const String clockSvg = "assets/icons/clock.svg";
+  static const String calenderCircleSvg = "assets/icons/calender_circle.svg";
+  static const String locationCircleSvg = "assets/icons/location_circle.svg";
+  static const String ticketCircleSvg = "assets/icons/ticket_circle.svg";
+  static const String peopleIcon = "assets/icons/people.svg";
+  static const String webCircleIcon = "assets/icons/web_circle.svg";
+  static const String facebookCircleIcon = "assets/icons/facebook_circle.svg";
+  static const String instaCircleIcon = "assets/icons/insta_circle.svg";
+  static const String xCircleIcon = "assets/icons/x_circle.svg";
+  static const String homeIcon = "assets/icons/home.svg";
+  static const String homeActiveIcon = "assets/icons/home_active.svg";
+  static const String dashboardIcon = "assets/icons/analytics.svg";
+  static const String dashboardActiveIcon = "assets/icons/analytics_active.svg";
+  static const String eventsIcon = "assets/icons/events.svg";
+  static const String eventActiveIcon = "assets/icons/events_active.svg";
+  static const String bookingIcon = "assets/icons/booking.svg";
+  static const String bookingActiveIcon = "assets/icons/bookings_active.svg";
+  static const String profileIcon = "assets/icons/profile.svg";
+  static const String profileActiveIcon = "assets/icons/profile_active.svg";
 
 
   static const editIcon = "assets/icons/edit_icon.png";
@@ -35,4 +56,5 @@ class Assets {
   static const calenderIcon = "assets/icons/calender_icon.png";
 
   static const String galleryImage = "assets/images/gallery_image.png";
+  static const String mapImage = "assets/images/map.png";
 }
