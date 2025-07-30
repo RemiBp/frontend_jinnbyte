@@ -1,4 +1,3 @@
-import 'package:choice_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -94,7 +93,28 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                   child: ElevatedButton(
                     onPressed: () {
                       // context.push(Routes.subChoiceSelectionRoute);
-                      context.push('/sub_choice_selection?selectedChoice=$selectedChoice');
+                      if(selectedChoice == "Events"){
+                        return;
+                      }
+                      context.push(
+                          '/sub_choice_selection?selectedChoice=$selectedChoice',
+                          extra: selectedChoice == "Restaurant" ? {
+                            "title": "Restaurant",
+                            "icon": Assets.restaurantIcon
+                            ,
+                            "description": "Which restaurant did you visit?"}
+                              : selectedChoice == "Leisure" ? {
+                            "title": "Leisure",
+                            "icon": Assets.leisureIcon
+                            ,
+                            "description": "Which leisure event did you attend?"
+                          } : {
+                            "title": "Wellness",
+                            "icon": Assets.wellnessIcon
+                            ,
+                            "description": "Which wellness did you visit?"
+                          }
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightBlue,

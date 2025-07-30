@@ -6,12 +6,17 @@ import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
+import 'package:choice_app/screens/restaurant/event/create_event.dart';
+import 'package:choice_app/screens/restaurant/event/event_details.dart';
+import 'package:choice_app/screens/restaurant/home/create_post.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/authentication/login.dart';
 import '../screens/authentication/passwordManagement/forgot_password.dart';
 import '../screens/authentication/passwordManagement/reset_password.dart';
-import '../screens/customer/home/choiceWidgets/sub_choice_selecction.dart';
+import '../screens/customer/home/choiceWidgets/sub_choice_selection.dart';
+import '../screens/restaurant/bottomTab/bottom_tab.dart';
+import '../screens/restaurant/event/events.dart';
 import '../screens/restaurant/profile/profile.dart';
 import '../screens/splash/splash.dart';
 
@@ -26,6 +31,11 @@ class Routes {
   static const String forgotPasswordRoute = '/forgot_password';
   static const String resetPasswordRoute = '/reset_password';
   static const String restaurantProfileRoute = '/restaurant_profile';
+  static const String restaurantEventsRoute = '/restaurant_events';
+  static const String restaurantCreateEventRoute = '/restaurant_create_events';
+  static const String restaurantEventDetailsRoute = '/restaurant_event_details';
+  static const String restaurantBottomTabRoute = '/restaurant_bottom_tab';
+  static const String restaurantCreatePostRoute = '/restaurant_create_post';
 
   //Customer
   static const String customerHomeRoute = '/customer_home';
@@ -64,6 +74,26 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/restaurant_profile',
       builder: (context, state) => const Profile(),
+    ),
+    GoRoute(
+      path: '/restaurant_events',
+      builder: (context, state) => const Events(),
+    ),
+    GoRoute(
+      path: '/restaurant_create_events',
+      builder: (context, state) => const CreateEvent(),
+    ),
+    GoRoute(
+      path: '/restaurant_event_details',
+      builder: (context, state) => const EventDetails(),
+    ),
+    GoRoute(
+      path: '/restaurant_bottom_tab',
+      builder: (context, state) => const RestaurantBottomTab(),
+    ),
+    GoRoute(
+      path: '/restaurant_create_post',
+      builder: (context, state) => const CreatePost(),
     ),
 
     //Customer

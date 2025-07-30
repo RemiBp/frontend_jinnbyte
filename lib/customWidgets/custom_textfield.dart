@@ -34,7 +34,7 @@ class CustomField extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.suffixIcon,
-    this.prefixIconSvg,
+    this.prefixIconSvg, this.suffixIconSvg,
   });
 
   final TextEditingController? textEditingController;
@@ -61,6 +61,7 @@ class CustomField extends StatelessWidget {
   final double? borderRadius;
   final IconData? suffixIcon;
   final String? prefixIconSvg;
+  final String? suffixIconSvg;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +133,7 @@ class CustomField extends StatelessWidget {
                 fontSize: hintFontSize ?? sizes!.fontSize15,
                 color: hintColor ?? AppColors.inputHintColor,
               ),
-
+              suffix: suffixIconSvg!=null?SvgPicture.asset(suffixIconSvg!):null,
               suffixIcon:
                   obscure
                       ? InkWell(

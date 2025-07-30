@@ -71,7 +71,7 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(color: borderColor ?? Colors.transparent),
-          color: backgroundColor ?? AppColors.restaurantPrimaryColor,
+          color: backgroundColor ?? AppColors.getPrimaryColorFromContext(context),
         ),
         child: Center(
           child: CustomText(

@@ -39,9 +39,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = restaurants
-        .where((r) => r['name']!.toLowerCase().contains(searchText.toLowerCase()))
-        .toList();
+    final data = GoRouterState.of(context).extra as Map<String, dynamic>?;
 
     return Scaffold(
       appBar: AppBar(
@@ -56,12 +54,12 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
         child: Column(
           children: [
 
-            _buildSelectedTypeCard(name: widget.selectedChoice),
+            _buildSelectedTypeCard(name: data?["title"], icon: data?["icon"]),
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
               child:CustomText(
-                text:  'Which restaurant did you visit?',
+                text: data?["description"],
                 fontFamily: Assets.onsetMedium,
                 fontSize: sizes?.fontSize14,
               ),
@@ -123,7 +121,11 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // context.push(Routes.createChoiceRoute);
+                      context.push(Routes.createChoiceRoute, extra: {
+                        "title": data?["title"],
+                        "icon": data?["icon"],
+                        "description": data?["description"],
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightBlue,
@@ -145,7 +147,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
     );
   }
 
-  Widget _buildSelectedTypeCard({required String name}) {
+  Widget _buildSelectedTypeCard({required String name, required String icon,}) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -156,7 +158,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          SvgPicture.asset(Assets.knifeForkIcon, color: Colors.orange),
+          SvgPicture.asset(icon,),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

@@ -182,6 +182,7 @@ class _ProfileState extends State<Profile> {
             CustomButton(
               buttonText: al.next,
               onTap: () {
+                context.push(Routes.restaurantBottomTabRoute);
               },
             ),
           ],

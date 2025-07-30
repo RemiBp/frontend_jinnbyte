@@ -1,9 +1,13 @@
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/screens/customer/home/choiceWidgets/share_experience.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../customWidgets/custom_textfield.dart';
 import '../../../res/res.dart';
 import '../../../utilities/extensions.dart';
 
@@ -18,12 +22,35 @@ class _CreateChoiceState extends State<CreateChoice> {
   String selectedDish = '';
   String visibility = 'Public';
 
-  Widget buildRatingRow(String title, double rating) {
+  Widget buildRatingRow(String title, double rating, {
+    String?review,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(text: title, fontSize: sizes?.fontSize16),
+        if(review != null)...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(text: title, fontSize: sizes?.fontSize16),
+              InkWell(onTap: () {},
+                child: CustomText(
+                  text: "Remove",
+                  fontSize: sizes?.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: Colors.red,
+                  decorationColor: Colors.red,
+                  textDecoration: TextDecoration.underline,
+                ),),
+            ],
+          ),
+          CustomText(text: review, fontSize: sizes?.fontSize12),
+        ] else
+          ...[
+            CustomText(text: title, fontSize: sizes?.fontSize16),
+          ],
+
         SizedBox(height: getHeight() * .01),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,6 +80,9 @@ class _CreateChoiceState extends State<CreateChoice> {
 
   @override
   Widget build(BuildContext context) {
+    final data = GoRouterState
+        .of(context)
+        .extra as Map<String, dynamic>?;
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Choice'),
@@ -70,7 +100,11 @@ class _CreateChoiceState extends State<CreateChoice> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: HexColor.fromHex("#FEF5E7"),
+                color: data?["title"] == "Leisure"
+                    ? HexColor.fromHex("#F4E9F6")
+                    : data?["title"] == "Wellness"
+                    ? HexColor.fromHex("#EDF7EE")
+                    : HexColor.fromHex("#FEF5E7"),
               ),
               padding: EdgeInsets.all(15),
               child: Row(
@@ -79,10 +113,12 @@ class _CreateChoiceState extends State<CreateChoice> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: HexColor.fromHex("#FDECCF"),
+                      color: data?["title"] == "Leisure" ? HexColor.fromHex(
+                          "#E9D5EC") : data?["title"] == "Wellness" ? HexColor
+                          .fromHex("#DCEEDC") : HexColor.fromHex("#FDECCF"),
                     ),
                     padding: EdgeInsets.all(8),
-                    child: SvgPicture.asset(Assets.knifeForkIcon),
+                    child: SvgPicture.asset(data?["icon"]),
                   ),
                   SizedBox(width: getWidth() * .03),
                   Column(
@@ -177,8 +213,14 @@ class _CreateChoiceState extends State<CreateChoice> {
                   ),
                   Column(
                     children: [
-                      dishRadio("Al Salmone", "\$20"),
-                      dishRadio("Maki (3)", "\$20"),
+                      dishRadio(
+                          menuName: "Brochettes (3)",
+                          dishDetails: "Sauce blanche, saumon fume 2jdfj 232 1231 ",
+                          "Al Salmone", "\$20"),
+                      dishRadio(menuName: "Maki (3)",
+                          dishDetails: "Sauce blanche, saumon fume",
+                          "Maki (3)",
+                          "\$20"),
                     ],
                   ),
                 ],
@@ -187,142 +229,211 @@ class _CreateChoiceState extends State<CreateChoice> {
             SizedBox(height: 16),
 
             // Dish Ratings
-            Card(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: Offset(0, 4),
+                    blurRadius: 2,
+                    spreadRadius: 4,
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.all(15),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(title: Text("Rate the Selected Dishes")),
-                  buildDishRating("Al Salmone", 2.0),
-                  buildDishRating("Maki Saumon", 4.0),
+                  CustomText(
+                    text: "Overall Restaurant Rating",
+                    fontFamily: Assets.onsetMedium,
+                    fontSize: sizes?.fontSize16,
+                  ),
+                  SizedBox(height: getHeight() * .01),
+                  buildRatingRow(
+                      "Al Salmone", 2.0, review: "Your rating for this dish:"),
+                  SizedBox(height: getHeight() * .01),
+                  buildRatingRow(
+                      "Maki Saumon", 4.0, review: "Your rating for this dish:"),
                 ],
               ),
             ),
+
             SizedBox(height: 16),
 
-            // Photo Upload
-            Card(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: Offset(0, 4),
+                    blurRadius: 2,
+                    spreadRadius: 4,
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.all(15),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(title: Text("Photos")),
+                  CustomText(
+                    text: "Photos",
+                    fontFamily: Assets.onsetMedium,
+                    fontSize: sizes?.fontSize16,
+                  ),
+                  CustomText(
+                    text: "File supported: PNG, JPG",
+                    fontSize: sizes?.fontSize12,
+                  ),
                   Container(
-                    height: 100,
+                    height: getHeight() * .2,
                     width: double.infinity,
                     margin: EdgeInsets.all(16),
-                    color: Colors.grey.shade200,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColors.greyBordersColor,
+                        )
+                    ),
                     child: Center(
-                      child: Text(
-                        "Choose a file\nUp to 5 images",
-                        textAlign: TextAlign.center,
-                      ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: "Choose a file",
+                              fontFamily: Assets.onsetMedium,
+                              fontSize: sizes?.fontSize14,
+                            ),
+                            CustomText(
+                              text: "Up to 5 images",
+                              fontSize: sizes?.fontSize14,
+                              color: HexColor.fromHex("#686A82"),
+                            ),
+
+                          ],
+                        )
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16),
 
-            // Tags
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: "Tags",
-                    hintText: "@e.g. #cozy, #outdoor_seating",
-                    border: OutlineInputBorder(),
+            SizedBox(height: getHeight() * .02),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    offset: Offset(0, 4),
+                    blurRadius: 2,
+                    spreadRadius: 4,
                   ),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-
-            // Share Experience
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextField(
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    labelText: "Share Your Experience",
-                    hintText: "Share your experience...",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-
-            // Visibility
-            Card(
-              child: Column(
-                children: [
-                  ListTile(title: Text("Public")),
-                  buildRadio("Public"),
-                  buildRadio("Friends Only"),
-                  buildRadio("Private"),
                 ],
               ),
+              padding: EdgeInsets.all(15),
+              child: CustomField(
+                borderColor: AppColors.greyBordersColor,
+                hint: "e.g: #cozy, #outdoor_seating",
+                label: "Tags",
+              ),
             ),
-            SizedBox(height: 16),
-
-            // Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    child: Text("Cancel"),
+            SizedBox(height: getHeight() * .02),
+            ShareExperienceWidget(),
+            SizedBox(height: getHeight() * .02),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: getHeight() * .02,
+                horizontal: getWidth() * .05,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      height: getHeight() * .055,
+                      backgroundColor: Colors.transparent,
+                      buttonText: "Cancel",
+                      textColor: Colors.black,
+                      borderColor: Colors.black,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Publish"),
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: CustomButton(
+                      height: getHeight() * .055,
+                      buttonText: "Publish",
+                      onTap: () {},
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget dishRadio(String title, String price) {
-    return RadioListTile(
-      title: Text("$title - $price"),
-      value: title,
-      groupValue: selectedDish,
-      onChanged: (value) {
-        setState(() {
-          selectedDish = value.toString();
-        });
-      },
+  Widget dishRadio(String title, String price, {
+    required String menuName,
+    required String dishDetails,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          text: menuName,
+          fontSize: sizes?.fontSize16,
+          fontFamily: Assets.onsetSemiBold,
+        ),
+        ListView.builder(
+            padding: EdgeInsets.zero,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return RadioListTile(
+                controlAffinity: ListTileControlAffinity.trailing,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: title,
+                      fontSize: sizes?.fontSize16,
+                    ),
+                    CustomText(
+                      text: price,
+                      fontSize: sizes?.fontSize16,
+                    ),
+
+                  ],
+                ),
+                value: title,
+                subtitle: SizedBox(
+                  width: getWidth() * .6,
+                  child: CustomText(
+                    text: dishDetails,
+                    fontSize: sizes?.fontSize12,
+                  ),
+                ),
+                groupValue: selectedDish,
+                onChanged: (value) {
+                  setState(() {
+                    selectedDish = value.toString();
+                  });
+                },
+              );
+            })
+      ],
     );
   }
 
-  Widget buildDishRating(String dish, double rating) {
-    return ListTile(
-      title: Text(dish),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: List.generate(
-              5,
-              (index) => Icon(
-                index < rating ? Icons.star : Icons.star_border,
-                color: Colors.amber,
-                size: 20,
-              ),
-            ),
-          ),
-          SizedBox(width: 8),
-          Text(rating.toStringAsFixed(1)),
-        ],
-      ),
-    );
-  }
 
   Widget buildRadio(String label) {
     return RadioListTile(
