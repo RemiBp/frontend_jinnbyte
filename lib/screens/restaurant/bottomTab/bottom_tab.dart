@@ -161,7 +161,7 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
                     style: TextStyle(
                       color:
                           isActive
-                              ? AppColors.primaryColor
+                              ? AppColors.getPrimaryColorFromContext(context)
                               : HexColor.fromHex("#818397"),
                       fontSize: sizes?.fontSize12,
                       fontFamily: Assets.onsetMedium,

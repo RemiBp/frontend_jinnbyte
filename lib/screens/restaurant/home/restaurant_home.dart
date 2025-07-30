@@ -62,7 +62,7 @@ class RestaurantHome extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100)
           ),
-          backgroundColor: AppColors.customerPrimaryColor,
+          backgroundColor: AppColors.getPrimaryColorFromContext(context),
           onPressed: (){
             context.push(Routes.restaurantCreatePostRoute);
           }, label: Row(

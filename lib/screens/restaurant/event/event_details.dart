@@ -163,7 +163,7 @@ class EventDetails extends StatelessWidget {
                     ),
                     moreStyle: TextStyle(
                       fontSize: sizes?.fontSize14,
-                      color: AppColors.primaryColor,
+                      color: AppColors.getPrimaryColorFromContext(context),
                       fontFamily: Assets.onsetMedium,
                     ),
                   ),
