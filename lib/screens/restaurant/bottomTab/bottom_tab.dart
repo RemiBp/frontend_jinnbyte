@@ -1,14 +1,16 @@
 import 'dart:async';
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
+import 'package:choice_app/screens/bookings/bookings_view.dart';
+import 'package:choice_app/screens/restaurant/dashboard/dashboard_card.dart';
+import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
 import 'package:choice_app/screens/restaurant/home/restaurant_home.dart';
+import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
@@ -22,7 +24,7 @@ class RestaurantBottomTab extends StatefulWidget {
 
 class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     with TickerProviderStateMixin {
-  var _bottomNavIndex = 0; //default index of a first screen
+  var _bottomNavIndex = 0;
 
   late AnimationController _fabAnimationController;
   late AnimationController _borderRadiusAnimationController;
@@ -50,29 +52,10 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
 
   final List<Widget> widgets = [
     RestaurantHome(),
-
-    Center(
-      child: CustomText(
-        text: "DashBoard",
-        fontSize: sizes?.fontSize20,
-        fontFamily: Assets.onsetMedium,
-      ),
-    ),
+    HomeView(),
     Events(),
-    Center(
-      child: CustomText(
-        text: "Bookings",
-        fontSize: sizes?.fontSize20,
-        fontFamily: Assets.onsetMedium,
-      ),
-    ),
-    Center(
-      child: CustomText(
-        text: "Profile",
-        fontSize: sizes?.fontSize20,
-        fontFamily: Assets.onsetMedium,
-      ),
-    ),
+    BookingsView(),
+    SettingView()
   ];
 
   @override
