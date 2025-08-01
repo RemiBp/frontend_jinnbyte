@@ -123,12 +123,12 @@ class _SignupState extends State<Signup> {
             CustomButton(
               buttonText: al.signupTitle,
               onTap: () {
-                Navigator.push(
-                  context,
-                  // MaterialPageRoute(builder: (context) => AddCuisine()),
-                  MaterialPageRoute(builder: (context) => SettingView()),
-                );
-                // context.push(Routes.otpVerificationRoute);
+                // Navigator.push(
+                //   context,
+                //   // MaterialPageRoute(builder: (context) => AddCuisine()),
+                //   MaterialPageRoute(builder: (context) => SettingView()),
+                // );
+                context.push(Routes.otpVerificationRoute);
               },
             ),
             SizedBox(height: getHeight() * .02),

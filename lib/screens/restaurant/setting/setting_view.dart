@@ -1,12 +1,10 @@
 import 'package:choice_app/l18n.dart';
-import 'package:choice_app/screens/bookings/bookings_view.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
 import 'package:choice_app/screens/onboarding/day_off/days_off_view.dart';
 import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
-import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +15,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
+import '../../onboarding/menu/menu_view.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -48,20 +47,20 @@ class _SettingViewState extends State<SettingView> {
                   title: al.editProfile,
                   leadingAssetPath: Assets.editProfileIcon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeView()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => HomeView()),
+                    // );
                   },
                 ),
                 ProfileOptionButton(
                   title: al.changePassword,
                   leadingAssetPath: Assets.passwordManagerIcon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BookingsView()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => BookingsView()),
+                    // );
                   },
                 ),
                 ProfileOptionButton(
@@ -118,7 +117,10 @@ class _SettingViewState extends State<SettingView> {
                   title: al.menu,
                   leadingAssetPath: Assets.menuIcon,
                   onTap: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MenuView()),
+                  );
                   },
                 ),
                 ProfileOptionButton(
