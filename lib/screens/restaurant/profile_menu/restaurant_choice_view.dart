@@ -4,7 +4,8 @@ import '../../../res/res.dart';
 import '../../customer/home/home_widgets.dart';
 
 class RestaurantChoiceView extends StatefulWidget {
-  const RestaurantChoiceView({super.key});
+  final bool? enableOnTap;
+  const RestaurantChoiceView({super.key, this.enableOnTap});
 
   @override
   State<RestaurantChoiceView> createState() => _RestaurantChoiceViewState();
@@ -22,12 +23,14 @@ class _RestaurantChoiceViewState extends State<RestaurantChoiceView> {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RestaurantMenuDetailView()),
-            );
+            if(widget.enableOnTap??false){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RestaurantMenuDetailView()),
+              );
+            }
           },
-            child: PostCard(),
+          child: PostCard(),
         );
       },
     );

@@ -1,18 +1,24 @@
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/follower_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/following_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../customWidgets/icon_svg.dart';
 import '../../../res/res.dart';
 
 class ProfileMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final Function onSetting;
+  final Function onSwitchAccount;
 
   const ProfileMenuAppBar({
     super.key,
     required this.onSetting,
+    required this.onSwitchAccount,
   });
 
   @override
@@ -21,20 +27,23 @@ class ProfileMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       automaticallyImplyLeading: false,
       titleSpacing: 0,
-      title: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: sizes!.pagePadding),
-            child: CustomText(
-              text: "The Wholesome Fork",
-              fontWeight: FontWeight.w600,
-              fontSize: sizes?.fontSize18,
-              color: AppColors.blackColor,
+      title: GestureDetector(
+        onTap: ()=> onSwitchAccount(),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: sizes!.pagePadding),
+              child: CustomText(
+                text: "The Wholesome Fork",
+                fontWeight: FontWeight.w600,
+                fontSize: sizes?.fontSize18,
+                color: AppColors.blackColor,
+              ),
             ),
-          ),
-          SizedBox(width: getWidth() * 0.02),
-          Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.blackColor,)
-        ],
+            SizedBox(width: getWidth() * 0.02),
+            Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.blackColor,)
+          ],
+        ),
       ),
       foregroundColor: AppColors.whiteColor,
       backgroundColor: AppColors.whiteColor,
@@ -214,9 +223,25 @@ class CustomerProfileHeader extends StatelessWidget {
                   children: [
                     _buildStatItem("98", "Choices"),
                     Image.asset(Assets.verticalLine, height: getHeight() * 0.03),
-                    _buildStatItem("34", "Followers"),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FollowerView()),
+                        );
+                      },
+                      child: _buildStatItem("34", "Followers"),
+                    ),
                     Image.asset(Assets.verticalLine, height: getHeight() * 0.03),
-                    _buildStatItem("02", "Followers"),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FollowingView()),
+                        );
+                      },
+                      child: _buildStatItem("02", "Followers"),
+                    ),
                   ],
                 ),
               ],
@@ -253,11 +278,13 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
 
   final Function onReport;
   final Function onBlock;
+  final Function onSwitchAccount;
 
   const ProfileMenuDetailAppBar({
     super.key,
     required this.onReport,
     required this.onBlock,
+    required this.onSwitchAccount,
   });
 
   @override
@@ -268,17 +295,25 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
       titleSpacing: 0,
       title: Row(
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: sizes!.pagePadding),
-            child: Icon(Icons.arrow_back_ios, color: AppColors.blackColor,),
+          GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: EdgeInsets.only(left: sizes!.pagePadding),
+              child: Icon(Icons.arrow_back_ios, color: AppColors.blackColor,),
+            ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: getWidth() * 0.02),
-            child: CustomText(
-              text: "The Wholesome Fork",
-              fontWeight: FontWeight.w600,
-              fontSize: sizes?.fontSize18,
-              color: AppColors.blackColor,
+          GestureDetector(
+            onTap: ()=> onSwitchAccount(),
+            child: Padding(
+              padding: EdgeInsets.only(left: getWidth() * 0.02),
+              child: CustomText(
+                text: "The Wholesome Fork",
+                fontWeight: FontWeight.w600,
+                fontSize: sizes?.fontSize18,
+                color: AppColors.blackColor,
+              ),
             ),
           ),
           SizedBox(width: getWidth() * 0.02),
@@ -299,13 +334,16 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
               onTap: ()=> onReport(),
               child: Row(
                 children: [
-                  Icon(Icons.report, size: 18, color: AppColors.redColor,),
-                  SizedBox(width: 8),
+                  SvgPicture.asset(
+                    Assets.reportUserIcon,
+                    width: getWidth() * .03,
+                  ),
+                  SizedBox(width: getWidth() * 0.015),
                   CustomText(
                     text: 'Report',
                     fontSize: sizes?.fontSize14,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.blackColor,
+                    color: AppColors.redColor,
                   ),
                 ],
               ),
@@ -315,8 +353,11 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
               onTap: ()=> onBlock(),
               child: Row(
                 children: [
-                  Icon(Icons.block, size: 18, color: AppColors.redColor),
-                  const SizedBox(width: 8),
+                  SvgPicture.asset(
+                    Assets.blockUser,
+                    width: getWidth() * .03,
+                  ),
+                  SizedBox(width: getWidth() * 0.015),
                   CustomText(
                     text: 'Block',
                     fontSize: sizes?.fontSize14,
@@ -347,6 +388,165 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class SwitchAccountBottomSheet extends StatelessWidget {
+  const SwitchAccountBottomSheet({super.key, required BuildContext context});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: sizes!.pagePadding,
+          vertical: getHeight() * 0.02,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Wrap height to content
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: getWidth() * 0.25,
+                  height: getHeight() * 0.006,
+                  decoration: BoxDecoration(
+                    color: AppColors.greyBordersColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              SizedBox(height: getHeight() * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: 'Switch Account',
+                    fontSize: sizes?.fontSize18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.blackColor,
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(Icons.close, color: AppColors.primarySlateColor),
+                  ),
+                ],
+              ),
+              SizedBox(height: getHeight() * 0.03),
+              Container(
+        padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.02),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.blackColor.withAlpha(20),
+              blurRadius: 24,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                    radius: getHeight() * .03,
+                    backgroundColor: AppColors.greyColor,
+                    // backgroundImage:
+                    // provider.profileImage != null
+                    //     ? FileImage(provider.profileImage!)
+                    //     : null,
+                    child:
+                    // provider.profileImage == null?
+                    SvgPicture.asset(
+                      Assets.userIcon,
+                      height: getHeight() * .02,
+                      color: Colors.grey.shade600,
+                    )
+                  // : null,
+                ),
+                SizedBox(width: getWidth() * 0.02),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: "The Wholesome Fork",
+                        fontSize: sizes?.fontSize14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      CustomText(
+                        text: "example@thewholesomefork.com",
+                        fontSize: sizes?.fontSize12,
+                        fontWeight: FontWeight.w400,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(width: getWidth() * 0.02),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: AppColors.userPrimaryColor,
+                      shape: BoxShape.circle
+                  ),
+                  child: Center(
+                    child: Icon(Icons.check, color: AppColors.whiteColor,),
+                  ),
+                )
+              ],
+            ),
+            Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
+            Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: AppColors.getPrimaryColorFromContext(context).withAlpha(40),
+                      shape: BoxShape.circle
+                  ),
+                  child: Center(
+                    child: Icon(Icons.add, color: AppColors.getPrimaryColorFromContext(context),),
+                  ),
+                ),
+                SizedBox(width: getWidth() * 0.02),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: "Create New Profile",
+                        fontSize: sizes?.fontSize14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      CustomText(
+                        text: "Switch between profile with one login",
+                        fontSize: sizes?.fontSize12,
+                        fontWeight: FontWeight.w400,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(width: getWidth() * 0.02),
+              ],
+            ),
+          ],
+        ),
+      ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 
@@ -437,9 +637,15 @@ class BlockUserBottomSheet extends StatelessWidget {
   }
 }
 
-class ReportBottomSheet extends StatelessWidget {
+class ReportBottomSheet extends StatefulWidget {
   const ReportBottomSheet({super.key, required BuildContext context});
 
+  @override
+  State<ReportBottomSheet> createState() => _ReportBottomSheetState();
+}
+
+class _ReportBottomSheetState extends State<ReportBottomSheet> {
+  String _selectedOption = 'Public';
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -501,6 +707,12 @@ class ReportBottomSheet extends StatelessWidget {
                 giveLinesAsText: true,
               ),
               SizedBox(height: getHeight() * 0.03),
+              buildRadio('Spam or Fake Account', 'Spam or Fake Account'),
+              buildRadio('Inappropriate Content', 'Inappropriate Content'),
+              buildRadio('Harassment or Bullying', 'Harassment or Bullying'),
+              buildRadio('Hate Speech', 'Hate Speech'),
+              buildRadio('Scam or Fraud', 'Scam or Fraud'),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -530,7 +742,488 @@ class ReportBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildRadio(String title, String value) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title:  CustomText(
+        text: title,
+        fontSize: sizes?.fontSize14,
+      ),
+      // subtitle:CustomText(
+      //   text: subtitle,
+      //   fontSize: sizes?.fontSize12,
+      // ),
+      trailing: Radio(
+        value: value,
+        groupValue: _selectedOption,
+        activeColor: AppColors.getPrimaryColorFromContext(context), // Blue ring
+        onChanged: (val) {
+          setState(() {
+            _selectedOption = val!;
+          });
+        },
+      ),
+    );
+  }
 }
+
+
+class ChatTile extends StatelessWidget {
+  final String name;
+  final String username;
+  final String imageUrl;
+  final String? btnText;
+
+  const ChatTile({
+    super.key,
+    required this.name,
+    this.btnText,
+    required this.username,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: getHeight() * 0.03,
+          backgroundImage: NetworkImage(imageUrl),
+        ),
+        SizedBox(width: getWidth() * 0.02),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: name,
+                fontWeight: FontWeight.w500,
+                fontSize: sizes?.fontSize14,
+                color: AppColors.blackColor,
+              ),
+              CustomText(
+                text: username,
+                fontWeight: FontWeight.w400,
+                fontSize: sizes?.fontSize12,
+                color: AppColors.primarySlateColor,
+              ),
+            ],
+          ),
+        ),
+        CustomText(
+          text: "23 min",
+          fontWeight: FontWeight.w400,
+          fontSize: sizes?.fontSize14,
+          color: AppColors.primarySlateColor,
+        )
+      ],
+    );
+  }
+}
+
+
+class UserTile extends StatelessWidget {
+  final String name;
+  final String username;
+  final String imageUrl;
+  final String? btnText;
+
+  const UserTile({
+    super.key,
+    required this.name,
+    this.btnText,
+    required this.username,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: getHeight() * 0.03,
+          backgroundImage: NetworkImage(imageUrl),
+        ),
+        SizedBox(width: getWidth() * 0.02),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: name,
+                fontWeight: FontWeight.w500,
+                fontSize: sizes?.fontSize14,
+                color: AppColors.blackColor,
+              ),
+              CustomText(
+                text: username,
+                fontWeight: FontWeight.w400,
+                fontSize: sizes?.fontSize12,
+                color: AppColors.primarySlateColor,
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.03, vertical: getHeight() * 0.01),
+          decoration: BoxDecoration(
+            color: AppColors.greyColor,
+            borderRadius: BorderRadius.circular(10)
+          ),
+          child: CustomText(
+            text: btnText??"Message",
+            fontWeight: FontWeight.w400,
+            fontSize: sizes?.fontSize12,
+            color: AppColors.blackColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FollowUnFollowTile extends StatefulWidget {
+  final String name;
+  final String username;
+  final String imageUrl;
+
+  const FollowUnFollowTile({
+    super.key,
+    required this.name,
+    required this.username,
+    required this.imageUrl,
+  });
+
+  @override
+  State<FollowUnFollowTile> createState() => _FollowUnFollowTileState();
+}
+
+class _FollowUnFollowTileState extends State<FollowUnFollowTile> {
+  bool isFollowing = false;
+
+  void toggleFollow() {
+    setState(() {
+      isFollowing = !isFollowing;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: getHeight() * 0.03,
+          backgroundImage: NetworkImage(widget.imageUrl),
+        ),
+        SizedBox(width: getWidth() * 0.02),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: widget.name,
+                fontWeight: FontWeight.w500,
+                fontSize: sizes?.fontSize14,
+                color: AppColors.blackColor,
+              ),
+              CustomText(
+                text: widget.username,
+                fontWeight: FontWeight.w400,
+                fontSize: sizes?.fontSize12,
+                color: AppColors.primarySlateColor,
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: toggleFollow,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: getWidth() * 0.03,
+              vertical: getHeight() * 0.01,
+            ),
+            decoration: BoxDecoration(
+              color: isFollowing ? AppColors.greyColor : AppColors.userPrimaryColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CustomText(
+              text: isFollowing ? "Unfollow" : "Follow",
+              fontWeight: FontWeight.w400,
+              fontSize: sizes?.fontSize12,
+              color: isFollowing ?  AppColors.blackColor: AppColors.whiteColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+class FavouriteRestaurantCard extends StatelessWidget {
+  final String imageUrl;
+  final String restaurantName;
+  final String address;
+  final bool isFavourite;
+  final VoidCallback? onFavouriteTap;
+  final VoidCallback? onRestaurantTap;
+
+  const FavouriteRestaurantCard({
+    super.key,
+    required this.imageUrl,
+    required this.restaurantName,
+    required this.address,
+    this.isFavourite = true,
+    this.onFavouriteTap,
+    this.onRestaurantTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onRestaurantTap,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.015),
+        padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.015),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.blackColor.withAlpha(20),
+              offset: const Offset(0, 0),
+              blurRadius: 24,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image + Favourite Button Stack
+            Stack(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          Assets.galleryImage,
+                          height: getHeight() * 0.2,
+                          fit: BoxFit.cover,
+                        ),
+                        // Uncomment this to use CachedNetworkImage
+                        // child: CachedNetworkImage(
+                        //   height: getHeight() * 0.2,
+                        //   imageUrl: imageUrl,
+                        //   fit: BoxFit.cover,
+                        //   placeholder: (context, url) => CustomShimmerEffect(
+                        //     child: Container(color: AppColors.greyNoButton),
+                        //   ),
+                        //   errorWidget: (context, url, error) =>
+                        //       Image.asset(Assets.restaurantPlaceHolder, fit: BoxFit.cover),
+                        // ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: getHeight() * 0.015,
+                  right: getWidth() * 0.04,
+                  child: GestureDetector(
+                    onTap: onFavouriteTap,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFavourite ? Icons.favorite : Icons.favorite_border,
+                        color: AppColors.redColor,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: getHeight() * 0.015,
+                  left: getWidth() * 0.04,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.01),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.getPrimaryColorFromContext(context).withAlpha(90),
+                      // shape: BoxShape.circle,
+                    ),
+                    child: CustomText(
+                      text: "Wellness",
+                      color: AppColors.getPrimaryColorFromContext(context),
+                      fontSize: sizes?.fontSize12,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: getHeight() * 0.01),
+            CustomText(
+              text: restaurantName,
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SvgIcon(
+                  Assets.restaurantLocationIcon,
+                  height: getHeight() * 0.02,
+                  color: AppColors.getPrimaryColorFromContext(context),
+                ),
+                SizedBox(width: getWidth() * 0.01),
+                Expanded(
+                  child: CustomText(
+                    text: address,
+                    fontSize: sizes?.fontSize12,
+                    fontWeight: FontWeight.w500,
+                    lines: 2,
+                    textOverflow: TextOverflow.ellipsis,
+                    color: AppColors.primarySlateColor,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // You can add a distance chip or icon here if needed
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class XPCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String xp;
+  final Color xpColor;
+  final int? progress; // Optional
+  final int? total;    // Optional
+
+  const XPCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.xp,
+    required this.xpColor,
+    this.progress,
+    this.total,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final hasProgress = progress != null && total != null;
+
+    return Container(
+      height: hasProgress? null: getHeight() * 0.1,
+      margin: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
+      padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.03, vertical: hasProgress? getHeight() * 0.015:0),
+      decoration: BoxDecoration(
+        color: AppColors.whiteColor,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.blackColor.withAlpha(20),
+            offset: Offset(0, 0),
+            blurRadius: 24,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              // Title & Subtitle
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: title,
+                      fontSize: sizes?.fontSize14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blackColor,
+                    ),
+                    SizedBox(height: getHeight() * 0.005),
+                    CustomText(
+                      text: subtitle,
+                      fontSize: sizes?.fontSize12,
+                      fontWeight: FontWeight.w200,
+                      color: AppColors.primarySlateColor,
+                      giveLinesAsText: true,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: getWidth() * 0.015),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: xpColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: CustomText(
+                  text: xp,
+                  fontSize: sizes?.fontSize12,
+                  fontWeight: FontWeight.w500,
+                  color: xpColor,
+                  giveLinesAsText: true,
+                ),
+              ),
+            ],
+          ),
+          // Progress section
+          if (hasProgress) ...[
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Progress",
+                  fontSize: sizes?.fontSize12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primarySlateColor,
+                  giveLinesAsText: true,
+                ),
+                CustomText(
+                  text: "$progress/$total",
+                  fontSize: sizes?.fontSize12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primarySlateColor,
+                  giveLinesAsText: true,
+                ),
+              ],
+            ),
+            LinearProgressIndicator(
+              value: progress! / total!,
+              backgroundColor: xpColor.withOpacity(0.2),
+              valueColor: AlwaysStoppedAnimation<Color>(xpColor),
+            ),
+          ]
+        ],
+      ),
+    );
+  }
+}
+
+
 
 
 

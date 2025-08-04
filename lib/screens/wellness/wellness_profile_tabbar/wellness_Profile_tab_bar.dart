@@ -1,27 +1,30 @@
-import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
-import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
-import 'package:choice_app/screens/restaurant/profile_menu/restaurant_posts_view.dart';
 import 'package:flutter/material.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import '../../restaurant/profile_menu/profile_menu_widgets.dart';
+import '../../restaurant/profile_menu/restaurant_about_view.dart';
+import '../../restaurant/profile_menu/restaurant_choice_view.dart';
+import '../../restaurant/profile_menu/restaurant_posts_view.dart';
+import '../../restaurant/setting/setting_view.dart';
 
-class RestaurantMenuDetailView extends StatefulWidget {
-  const RestaurantMenuDetailView({super.key});
+class WellnessProfileTabBar extends StatefulWidget {
+  const WellnessProfileTabBar({super.key});
 
   @override
-  State<RestaurantMenuDetailView> createState() => _RestaurantMenuDetailViewState();
+  State<WellnessProfileTabBar> createState() => _WellnessProfileTabBarState();
 }
 
-class _RestaurantMenuDetailViewState extends State<RestaurantMenuDetailView> with SingleTickerProviderStateMixin{
+class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with SingleTickerProviderStateMixin{
+
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging || _tabController.index != _selectedTabIndex) {
         setState(() {
@@ -49,11 +52,12 @@ class _RestaurantMenuDetailViewState extends State<RestaurantMenuDetailView> wit
         : Colors.grey;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: ProfileMenuDetailAppBar(
+      appBar: ProfileMenuAppBar(
         onSwitchAccount: (){
           showModalBottomSheet(
             context: context,
@@ -63,29 +67,18 @@ class _RestaurantMenuDetailViewState extends State<RestaurantMenuDetailView> wit
             },
           );
         },
-        onBlock: (){
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return BlockUserBottomSheet(context: context);
-            },
-          );
-        },
-        onReport: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return ReportBottomSheet(context: context);
-            },
+        onSetting: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SettingView()),
           );
         },
       ),
       body: Column(
         children: [
           SizedBox(height: getHeight() * 0.02),
-          CustomerProfileHeader(),
+          RestaurantProfileHeader(),
+          // CustomerProfileHeader(),
           SizedBox(height: getHeight() * 0.01),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -114,15 +107,21 @@ class _RestaurantMenuDetailViewState extends State<RestaurantMenuDetailView> wit
               padding: EdgeInsets.zero,
               tabs: [
                 ProfileTabItem(
-                  iconPath: Assets.calenderIcon,
+                  iconPath: Assets.choiceIcon,
                   label: 'Choices',
                   tabIndex: 0,
                   selectedTabIndex: _selectedTabIndex,
                 ),
                 ProfileTabItem(
-                  iconPath: Assets.priceIcon,
-                  label: 'Interest',
+                  iconPath: Assets.postIcon,
+                  label: 'Posts',
                   tabIndex: 1,
+                  selectedTabIndex: _selectedTabIndex,
+                ),
+                ProfileTabItem(
+                  iconPath: Assets.aboutIcon,
+                  label: 'About',
+                  tabIndex: 2,
                   selectedTabIndex: _selectedTabIndex,
                 ),
               ],
@@ -134,6 +133,7 @@ class _RestaurantMenuDetailViewState extends State<RestaurantMenuDetailView> wit
               children: const [
                 RestaurantChoiceView(),
                 RestaurantPostsView(),
+                RestaurantAboutView(),
               ],
             ),
           ),

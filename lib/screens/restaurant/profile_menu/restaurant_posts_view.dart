@@ -14,8 +14,8 @@ class _RestaurantPostsViewState extends State<RestaurantPostsView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.only(
-          top: getHeight()*.03
+      padding: EdgeInsets.symmetric(
+          horizontal: sizes!.pagePadding
       ),
       itemCount: 2,
       itemBuilder: (context, index) {

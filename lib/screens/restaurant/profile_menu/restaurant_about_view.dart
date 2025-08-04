@@ -6,6 +6,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import '../../onboarding/gallery/gallery_widgets.dart';
 
 class RestaurantAboutView extends StatefulWidget {
   const RestaurantAboutView({super.key});
@@ -39,9 +40,10 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             CustomText(
               text: "About Event",
               fontSize: sizes?.fontSize16,
-              fontFamily: Assets.onsetSemiBold,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackColor,
             ),
-            SizedBox(height: getHeight() * .02),
+            SizedBox(height: getHeight() * .01),
             ReadMoreText(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi viverra mauris sagittis dis. Sed quis enim nulla arcu turpis in.",
               trimMode: TrimMode.Line,
@@ -59,12 +61,88 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
                 fontFamily: Assets.onsetMedium,
               ),
             ),
-            SizedBox(height: getHeight() * .02),
+            Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
+            CustomText(
+              text: "Services",
+              fontSize: sizes?.fontSize16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackColor,
+            ),
+            SizedBox(height: getHeight() * .01),
+            CustomText(
+              text: "Aesthetic Care & Well-Being",
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
+            CustomText(
+              text: "Hair Care & Hair Services",
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
+            CustomText(
+              text: "Nail Care & Body Modifications",
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor,
+            ),
+            Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: "Gallery",
+                  fontSize: sizes?.fontSize16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.blackColor,
+                ),
+                CustomText(
+                  text: "See Full Gallery",
+                  fontSize: sizes?.fontSize14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.getPrimaryColorFromContext(context),
+                ),
+              ],
+            ),
+            SizedBox(height: getHeight() * .01),
+            SizedBox(
+              height: getHeight() * 0.12,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: getWidth() * 0.02),
+                    child: Container(
+                        height: getHeight() * 0.12,
+                        width: getWidth() * 0.26,
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: Image.asset(
+                          Assets.galleryImage,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: AppColors.getPrimaryColorFromContext(context),
+                          ),
+                        )
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
             CustomText(
               text: "Location",
               fontSize: sizes?.fontSize16,
-              fontFamily: Assets.onsetSemiBold,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackColor,
             ),
+            SizedBox(height: getHeight() * .01),
             CustomText(
               text: " Av. Gustave Eiffel, 75007 Paris, France",
               fontSize: sizes?.fontSize12,
@@ -74,9 +152,10 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             Divider(color: AppColors.greyColor),
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "Socia Links",
+              text: "Business Hour",
               fontSize: sizes?.fontSize16,
-              fontFamily: Assets.onsetSemiBold,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackColor,
             ),
             // SizedBox(height: getHeight() * .01),
             ListView.builder(
@@ -94,15 +173,55 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             CustomText(
               text: "Socia Links",
               fontSize: sizes?.fontSize16,
-              fontFamily: Assets.onsetSemiBold,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackColor,
             ),
             SizedBox(height: getHeight() * .01),
             Row(
               children: [
-                SvgPicture.asset(Assets.webCircleIcon),
-                SvgPicture.asset(Assets.instaCircleIcon),
-                SvgPicture.asset(Assets.xCircleIcon),
-                SvgPicture.asset(Assets.facebookCircleIcon),
+                CircleAvatar(
+                    radius: getHeight() * .03,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context).withAlpha(20),
+                    child: SvgPicture.asset(
+                      Assets.websiteIcon,
+                      height: getHeight() * .03,
+                      color: AppColors.getPrimaryColorFromContext(context),
+                    )
+                  // : null,
+                ),
+                SizedBox(width: getWidth() * 0.015),
+                CircleAvatar(
+                    radius: getHeight() * .03,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context).withAlpha(20),
+                    child: SvgPicture.asset(
+                      Assets.instagramIcon,
+                      height: getHeight() * .03,
+                      color: AppColors.getPrimaryColorFromContext(context),
+                    )
+                  // : null,
+                ),
+                SizedBox(width: getWidth() * 0.015),
+                CircleAvatar(
+                    radius: getHeight() * .03,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context).withAlpha(20),
+                    child: SvgPicture.asset(
+                      Assets.xIcon,
+                      height: getHeight() * .03,
+                      color: AppColors.getPrimaryColorFromContext(context),
+                    )
+                  // : null,
+                ),
+                SizedBox(width: getWidth() * 0.015),
+                CircleAvatar(
+                    radius: getHeight() * .03,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context).withAlpha(20),
+                    child: SvgPicture.asset(
+                      Assets.facebookIcon,
+                      height: getHeight() * .03,
+                      color: AppColors.getPrimaryColorFromContext(context),
+                    )
+                  // : null,
+                ),
               ],
             ),
           ],

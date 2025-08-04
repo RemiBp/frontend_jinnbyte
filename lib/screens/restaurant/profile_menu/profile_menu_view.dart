@@ -55,6 +55,15 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: ProfileMenuAppBar(
+        onSwitchAccount: (){
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return SwitchAccountBottomSheet(context: context);
+            },
+          );
+        },
         onSetting: () {
           Navigator.push(
             context,
@@ -119,7 +128,7 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
             child: TabBarView(
               controller: _tabController,
               children: const [
-                RestaurantChoiceView(),
+                RestaurantChoiceView(enableOnTap: true,),
                 RestaurantPostsView(),
                 // RestaurantAboutView(),
               ],
