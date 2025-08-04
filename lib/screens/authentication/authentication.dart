@@ -83,7 +83,7 @@ class Authentication extends StatelessWidget {
               svgString: Assets.wellnessIcon,
               onTap: () {
                 roleProvider.setRole(UserRole.wellness);
-                context.push(Routes.signupRoute);
+                context.push(Routes.restaurantBottomTabRoute);
               },
             ),
           ],

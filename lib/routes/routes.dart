@@ -19,6 +19,7 @@ import '../screens/restaurant/bottomTab/bottom_tab.dart';
 import '../screens/restaurant/event/events.dart';
 import '../screens/restaurant/profile/profile.dart';
 import '../screens/splash/splash.dart';
+import '../screens/wellness/home/welness_home.dart';
 
 class Routes {
   static const String initialRoute = '/';
@@ -42,6 +43,9 @@ class Routes {
   static const String choiceSelectionRoute = '/choice_selection';
   static const String subChoiceSelectionRoute = '/sub_choice_selection';
   static const String createChoiceRoute = '/create_choice';
+
+  //wellness
+  static const String wellnessHomeRoute = '/wellness_home';
 
 }
 
@@ -120,5 +124,12 @@ final GoRouter router = GoRouter(
       path: '/create_choice',
       builder: (context, state) => const CreateChoice(),
     ),
+
+    //wellness
+    GoRoute(
+      path: '/wellness_home',
+      builder: (context, state) => const WellnessHome(),
+    ),
+
   ],
 );
