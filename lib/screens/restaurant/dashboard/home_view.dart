@@ -1,10 +1,9 @@
 import 'package:choice_app/screens/restaurant/dashboard/rating_by_theme_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/repeat_customers_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/user_origin_map_card.dart';
+import 'package:choice_app/screens/restaurant/notifications/notifications_view.dart';
 import 'package:flutter/material.dart';
-
 import '../../../appColors/colors.dart';
-import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
 import 'booking_chart_card.dart';
 import 'customers_chart_card.dart';
@@ -50,8 +49,13 @@ class _HomeViewState extends State<HomeView> {
             children: [
               HomeAppBar(
                 // isSeen: !(notificationProvider.hasUnreadNotifications ?? true),
-                isSeen: true,
+                isSeen: false,
                 onNotificationTap: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NotificationsView()),
+                  );
                   // Navigator.push(context, Transitions(page: const NotificationsView())).then((onValue){
                   //   notificationProvider.getNotificationAPI(page: 1, limit: 50);
                   // });

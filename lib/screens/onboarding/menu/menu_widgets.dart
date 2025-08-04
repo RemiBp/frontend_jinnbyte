@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
 import '../../../appColors/colors.dart';
+import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
-import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class MenuGroupWidget extends StatelessWidget {
   final MenuGroup menuGroup;
+  final Function onAddDish;
 
-  const MenuGroupWidget({super.key, required this.menuGroup});
+  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,14 @@ class MenuGroupWidget extends StatelessWidget {
               const Spacer(),
               const Icon(Icons.add, color: AppColors.restaurantPrimaryColor),
               SizedBox(width: getWidth() * 0.01),
-              CustomText(
-                text: 'Add Dish',
-                fontSize: sizes?.fontSize14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.restaurantPrimaryColor,
+              GestureDetector(
+                onTap: ()=> onAddDish(),
+                child: CustomText(
+                  text: 'Add Dish',
+                  fontSize: sizes?.fontSize14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.restaurantPrimaryColor,
+                ),
               ),
             ],
           ),
@@ -129,64 +132,191 @@ class DishItemWidget extends StatelessWidget {
   }
 }
 
-
 class CategoryBottomSheet extends StatelessWidget {
-  const CategoryBottomSheet({super.key, required BuildContext context});
+  const CategoryBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: getHeight() * .13,
-      width: getWidth(),
-      margin: EdgeInsets.symmetric(
-        horizontal: getWidth() * .02,
-        vertical: getHeight() * .01,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: getWidth() * 0.25,
-            height: getHeight() * 0.006,
-            decoration: BoxDecoration(
-              color: AppColors.greyBordersColor,
-              borderRadius: BorderRadius.circular(20)
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.whiteColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: sizes!.pagePadding,
+            vertical: getHeight() * 0.02,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Wrap height to content
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: getWidth() * 0.25,
+                    height: getHeight() * 0.006,
+                    decoration: BoxDecoration(
+                      color: AppColors.greyBordersColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                SizedBox(height: getHeight() * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: 'Add Category Title',
+                      fontSize: sizes?.fontSize18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.blackColor,
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(Icons.close, color: AppColors.primarySlateColor),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getHeight() * 0.03),
+                CustomField(
+                  borderColor: AppColors.greyBordersColor,
+                  hint: "E.g: Eat Day, Main Menu, Specials...",
+                  label: "Category Title",
+                ),
+                SizedBox(height: getHeight() * 0.03),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButton(
+                      buttonText: 'Cancel',
+                      onTap: () => Navigator.pop(context),
+                      buttonWidth: getWidth() * .42,
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.blackColor,
+                      textColor: AppColors.blackColor,
+                      textFontWeight: FontWeight.w700,
+                    ),
+                    CustomButton(
+                      buttonText: 'Save',
+                      onTap: () {},
+                      buttonWidth: getWidth() * .42,
+                      backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                      borderColor: Colors.transparent,
+                      textColor: Colors.white,
+                      textFontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          SizedBox(height: getHeight() * 0.02),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                text: 'Add Category Title',
-                fontSize: sizes?.fontSize14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.blackColor,
-              ),
-              SizedBox(height: getWidth() * 0.015),
-              GestureDetector(
-                onTap: (){
-                  Navigator.pop(context);
-                },
-                  child: Icon(Icons.close, color: AppColors.primarySlateColor,),
-              )
-              
-            ],
-          ),
-          SizedBox(height: getHeight() * 0.03),
-          CustomField(
-            borderColor: AppColors.greyBordersColor,
-            hint: al.address,
-            label: al.address,
-          ),
-          SizedBox(height: getHeight() * .02),
-
-        ],
+        ),
       ),
     );
   }
 }
+
+class AddDishBottomSheet extends StatelessWidget {
+  const AddDishBottomSheet({super.key, required BuildContext context});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: sizes!.pagePadding,
+          vertical: getHeight() * 0.02,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Wrap height to content
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: getWidth() * 0.25,
+                  height: getHeight() * 0.006,
+                  decoration: BoxDecoration(
+                    color: AppColors.greyBordersColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              SizedBox(height: getHeight() * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: 'Add Dish',
+                    fontSize: sizes?.fontSize18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.blackColor,
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(Icons.close, color: AppColors.primarySlateColor),
+                  ),
+                ],
+              ),
+              SizedBox(height: getHeight() * 0.03),
+              CustomField(
+                borderColor: AppColors.greyBordersColor,
+                hint: "E.g: Brochette boeuf...",
+                label: "Dish Name",
+              ),
+              SizedBox(height: getHeight() * 0.02),
+              CustomField(
+                borderColor: AppColors.greyBordersColor,
+                hint: "E.g: \$0.00",
+                label: "Price",
+              ),
+              SizedBox(height: getHeight() * 0.02),
+              CustomField(
+                height: getHeight() * .1,
+                borderColor: AppColors.greyBordersColor,
+                hint: "Brief description of the dish...",
+                label: "Description (Optional)",
+              ),
+              SizedBox(height: getHeight() * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    buttonText: 'Cancel',
+                    onTap: () => Navigator.pop(context),
+                    buttonWidth: getWidth() * .42,
+                    backgroundColor: Colors.transparent,
+                    borderColor: AppColors.blackColor,
+                    textColor: AppColors.blackColor,
+                    textFontWeight: FontWeight.w700,
+                  ),
+                  CustomButton(
+                    buttonText: 'Save',
+                    onTap: () {},
+                    buttonWidth: getWidth() * .42,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                    borderColor: Colors.transparent,
+                    textColor: Colors.white,
+                    textFontWeight: FontWeight.w700,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 
 class MenuGroup {
