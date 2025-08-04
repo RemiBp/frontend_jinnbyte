@@ -1,16 +1,20 @@
 import 'dart:async';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/screens/bookings/bookings_view.dart';
-import 'package:choice_app/screens/restaurant/dashboard/dashboard_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
 import 'package:choice_app/screens/restaurant/home/restaurant_home.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
+import 'package:choice_app/screens/wellness/home/welness_home.dart';
+import 'package:choice_app/userRole/role_provider.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
@@ -33,6 +37,7 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
   late CurvedAnimation fabCurve;
   late CurvedAnimation borderRadiusCurve;
   late AnimationController _hideBottomBarAnimationController;
+  UserRole role = UserRole.restaurant;
 
   final labels = <String>["Home", "Dashboard", "Events", "Bookings", "Profile"];
   final iconList = <String>[
@@ -50,17 +55,22 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     Assets.profileActiveIcon,
   ];
 
-  final List<Widget> widgets = [
-    RestaurantHome(),
-    HomeView(),
-    Events(),
-    BookingsView(),
-    SettingView()
+  List<Widget> widgets = [
+
   ];
 
   @override
   void initState() {
     super.initState();
+    final roleProvider = Provider.of<RoleProvider>(context, listen: false);
+    role = roleProvider.role;
+    widgets = [
+      role == UserRole.wellness ? WellnessHome() : RestaurantHome(),
+      HomeView(),
+      Events(),
+      BookingsView(),
+      SettingView()
+    ];
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -133,6 +143,9 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
             children: [
               SvgPicture.asset(
                 isActive ? activeIconList[index] : iconList[index],
+                color: isActive
+                    ? AppColors.getPrimaryColorFromContext(context)
+                    : null,
               ),
               const SizedBox(height: 4),
               Padding(

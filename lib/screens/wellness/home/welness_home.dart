@@ -25,14 +25,23 @@ class WellnessHome extends StatelessWidget {
           children: [
             Row(
               children: [
-                CustomText(
-                  text: "Choice",
-                  fontSize: sizes?.fontSize28,
-                  fontFamily: Assets.onsetSemiBold,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Welcome",
+                      fontSize: sizes?.fontSize14,
+                      fontFamily: Assets.onsetMedium,
+                    ),
+                    CustomText(
+                      text: "Liberty Bite Bistro",
+                      fontSize: sizes?.fontSize16,
+                      fontFamily: Assets.onsetSemiBold,
+                      color: AppColors.wellnessPrimaryColor,
+                    ),
+                  ],
                 ),
                 Spacer(),
-                CustomIconButton(svgString: Assets.mapIcon),
-                SizedBox(width: getWidth() * .02),
                 CustomIconButton(svgString: Assets.chatIcon),
                 SizedBox(width: getWidth() * .02),
                 CustomIconButton(svgString: Assets.notificationIcon),
@@ -68,9 +77,8 @@ class WellnessHome extends StatelessWidget {
           }, label: Row(
         children: [
           Icon(Icons.add, color: Colors.white,),
-          CustomText(
-            text: "Create",
-            fontSize: sizes?.fontSize12,
+          CustomText(text: "Create Posts",
+              fontSize: sizes?.fontSize12,
             fontFamily: Assets.onsetMedium,
             color: Colors.white,
           ),

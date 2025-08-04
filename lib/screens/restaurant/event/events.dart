@@ -44,9 +44,9 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
         children: [
           TabBar(
             controller: _tabController,
-            indicatorColor: Colors.orange,
+            indicatorColor:AppColors.getPrimaryColorFromContext(context),
             indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.orange,
+            labelColor:AppColors.getPrimaryColorFromContext(context),
             unselectedLabelColor: Colors.grey,
             labelStyle: TextStyle(
               fontSize: sizes?.fontSize14,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 
@@ -63,7 +64,7 @@ class EventCard extends StatelessWidget {
 
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: Colors.orange, size: 18),
+                      Icon(Icons.location_on, color: AppColors.getPrimaryColorFromContext(context), size: 18, ),
                       SizedBox(width: 6),
                       CustomText(
                         text: "Lyon, France",
@@ -79,7 +80,7 @@ class EventCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.access_time_filled,
-                        color: Colors.orange,
+                        color: AppColors.getPrimaryColorFromContext(context),
                         size: 18,
                       ),
                       SizedBox(width: 6),
@@ -103,7 +104,7 @@ class EventCard extends StatelessWidget {
                             TextSpan(
                               text: '\$30.00',
                               style: TextStyle(
-                                color: Colors.orange,
+                                color: AppColors.getPrimaryColorFromContext(context),
                                 fontFamily: Assets.onsetSemiBold,
                                 fontSize: sizes?.fontSize16,
                               ),
