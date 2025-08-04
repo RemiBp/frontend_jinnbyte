@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-// import 'l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'l10n/app_localizations.dart';
 
 AppLocalizations get al => _al!; // helper function to avoid typing '!' all the time
 AppLocalizations? _al; // global variable

@@ -49,6 +49,9 @@ class Assets {
   static const String bookingActiveIcon = "assets/icons/bookings_active.svg";
   static const String profileIcon = "assets/icons/profile.svg";
   static const String profileActiveIcon = "assets/icons/profile_active.svg";
+  static const String noNotificationIcon = "assets/icons/no_notification_icon.png";
+  static const String reviewsIcon = "assets/icons/reviews_icon.svg";
+  static const String settingIcon = "assets/icons/setting_icon.png";
 
   static const String messagesIcon = "assets/icons/messages_icon.svg";
   static const String editProfileIcon = "assets/icons/edit_profile_icon.svg";
@@ -62,14 +65,34 @@ class Assets {
   static const String logoutIcon = "assets/icons/logout_icon.svg";
   static const String languageIcon = "assets/icons/language_icon.svg";
   static const String profileAvatar = "assets/images/profile_avatar.svg";
+  static const badgeIcon = "assets/icons/badge_icon.svg";
+  static const blockUserIcon = "assets/icons/block_user_icon.svg";
+  static const bookmarkIcon = "assets/icons/bookmark_icon.svg";
+
 
   static const String editIcon = "assets/icons/edit_icon.png";
   static const String infoIcon = "assets/icons/info_icon.png";
   static const String calenderIcon = "assets/icons/calender_icon.png";
   static const String guestsIcon = "assets/icons/guests_icon.png";
   static const String priceIcon = "assets/icons/price_icon.png";
+  static const String aboutIcon = "assets/icons/about_icon.png";
+  static const String choiceIcon = "assets/icons/choice_icon.png";
+  static const String interestIcon = "assets/icons/interest_icon.png";
+  static const String postIcon = "assets/icons/post_icon.png";
 
   static const String galleryImage = "assets/images/gallery_image.png";
   static const String originMapImage = "assets/images/origin_map_image.png";
   static const String mapImage = "assets/images/map.png";
+  static const String choiceImage = "assets/images/choice_image.png";
+  static const String verticalLine = "assets/images/vertical_line.png";
+
+  static const String badge1 = "assets/images/badge1.png";
+  static const String badge2 = "assets/images/badge2.png";
+  static const String badge3 = "assets/images/badge3.png";
+  static const String badge4 = "assets/images/badge4.png";
+
+
+  static const String restaurantLocationIcon = "assets/icons/restaurant_location_icon.svg";
+  static const String reportUserIcon = "assets/icons/report_user.svg";
+  static const String blockUser = "assets/icons/block_user.svg";
 }

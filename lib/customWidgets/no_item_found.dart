@@ -34,7 +34,7 @@ class NoItemFound extends StatelessWidget {
             ),
             child: Center(
               child: Image.asset(
-                image??Assets.bookingIcon,
+                image??Assets.noNotificationIcon,
                 width: getWidthRatio() * 30,
                 height:getHeightRatio() * 30,
                 color: AppColors.getPrimaryColorFromContext(context),
@@ -46,6 +46,7 @@ class NoItemFound extends StatelessWidget {
             text: title??"No upcoming booking",
             fontWeight: FontWeight.w600,
             fontSize: sizes?.fontSize18,
+            lines: 3,
           ),
           SizedBox(height: getHeight() * 0.005),
           CustomText(
@@ -54,6 +55,7 @@ class NoItemFound extends StatelessWidget {
             fontSize: sizes?.fontSize16,
             textAlign: TextAlign.center,
             color: AppColors.primarySlateColor,
+            lines: 10,
           ),
           SizedBox(height: getHeight() * 0.15),
         ],

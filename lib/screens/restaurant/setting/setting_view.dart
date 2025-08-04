@@ -5,6 +5,9 @@ import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
 import 'package:choice_app/screens/onboarding/day_off/days_off_view.dart';
 import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/blocked_users_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/bookmarked_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/chat_view.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +19,7 @@ import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
 import '../../onboarding/menu/menu_view.dart';
+import '../profile_menu/badges_view.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -157,6 +161,46 @@ class _SettingViewState extends State<SettingView> {
                   title: al.logout,
                   leadingAssetPath: Assets.logoutIcon,
                   onTap: () {
+                  },
+                ),
+                ProfileOptionButton(
+                  title: "Blocked List",
+                  leadingAssetPath: Assets.logoutIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BlockedUsersView()),
+                    );
+                  },
+                ),
+                ProfileOptionButton(
+                  title: "Bookmarked",
+                  leadingAssetPath: Assets.logoutIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BookmarkedView()),
+                    );
+                  },
+                ),
+                ProfileOptionButton(
+                  title: "Badges",
+                  leadingAssetPath: Assets.logoutIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BadgesView()),
+                    );
+                  },
+                ),
+                ProfileOptionButton(
+                  title: "Chat",
+                  leadingAssetPath: Assets.chatIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatView()),
+                    );
                   },
                 ),
                 CustomButton(

@@ -66,7 +66,7 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: height ?? getHeight() * .07,
+        height: height ?? getHeightRatio() * 44,
         width: buttonWidth ?? width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -88,10 +88,11 @@ class CustomButton extends StatelessWidget {
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton(
-      {super.key, this.borderRadius, required this.svgString});
+      {super.key, this.borderRadius, required this.svgString, this.onPress,});
 
   final double? borderRadius;
   final String svgString;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +105,9 @@ class CustomIconButton extends StatelessWidget {
             )
           )
       ),
-      onPressed: () {}, icon: SvgPicture.asset(svgString),);
+      onPressed: onPress, icon: SvgPicture.asset(svgString),
+    );
   }
 }
+
 
