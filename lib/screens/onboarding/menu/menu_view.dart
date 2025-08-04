@@ -29,6 +29,7 @@ class _MenuViewState extends State<MenuView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: "Menu"),
       body: Container(
@@ -50,7 +51,18 @@ class _MenuViewState extends State<MenuView> {
               child: ListView.builder(
                 itemCount: menuGroups.length,
                 itemBuilder: (context, index) {
-                  return MenuGroupWidget(menuGroup: menuGroups[index]);
+                  return MenuGroupWidget(
+                      menuGroup: menuGroups[index],
+                    onAddDish: (){
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return AddDishBottomSheet(context: context);
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -61,8 +73,9 @@ class _MenuViewState extends State<MenuView> {
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
+                    isScrollControlled: true,
                     builder: (context) {
-                      return CategoryBottomSheet(context: context,);
+                      return CategoryBottomSheet();
                     },
                   );
                 },

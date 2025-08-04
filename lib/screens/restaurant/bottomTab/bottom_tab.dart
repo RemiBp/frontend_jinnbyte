@@ -14,6 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
+import '../profile_menu/profile_menu_view.dart';
 
 class RestaurantBottomTab extends StatefulWidget {
   const RestaurantBottomTab({super.key});
@@ -55,7 +56,8 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     HomeView(),
     Events(),
     BookingsView(),
-    SettingView()
+    ProfileMenuView()
+    // SettingView()
   ];
 
   @override

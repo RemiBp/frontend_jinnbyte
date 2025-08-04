@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -32,11 +31,11 @@ class HomeAppBar extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: onNotificationTap,
+              onTap: ()=> onNotificationTap(),
               child: CustomIconButton(svgString: Assets.messagesIcon),
             ),
             GestureDetector(
-              onTap: onNotificationTap,
+              onTap: ()=> onNotificationTap(),
               child: isSeen??false?const CustomIconButton(svgString: Assets.notificationIcon)
                     : const CustomIconButton(svgString: Assets.notificationIcon),
             ),
