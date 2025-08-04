@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/screens/bookings/bookings_view.dart';
+import 'package:choice_app/screens/restaurant/dashboard/dashboard_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
 import 'package:choice_app/screens/restaurant/home/restaurant_home.dart';
@@ -18,6 +20,7 @@ import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
+import '../profile_menu/profile_menu_view.dart';
 
 class RestaurantBottomTab extends StatefulWidget {
   const RestaurantBottomTab({super.key});
