@@ -28,7 +28,7 @@
   "alreadyHaveAccount": "Already have an account? ",
   "loginButton": "Login",
   "otpVerification": "OTP Verification",
-  "verificationPrompt": "Enter the 6 -digit verification code sent to dummy@example.com",
+  "verificationPrompt": "Enter the 6 -digit verification code sent to {email}}",
   "didNotReceiveCode": "Didn’t receive code?",
   "resendCode": "Resend",
   "verifyButton": "Verify",

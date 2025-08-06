@@ -5,7 +5,7 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
-import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
+import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
-import '../onboarding/add_cuisine/add_cuisine.dart';
+import '../../res/toasts.dart';
 import 'auth_provider.dart';
 
 class Signup extends StatefulWidget {
@@ -25,6 +25,25 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController businessNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<AuthProvider>(context, listen: false);
+    provider.init(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    businessNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +79,14 @@ class _SignupState extends State<Signup> {
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: businessNameController,
               borderColor: AppColors.greyBordersColor,
               hint: al.businessName,
               label: al.businessName,
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: emailController,
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
@@ -74,6 +95,7 @@ class _SignupState extends State<Signup> {
             Consumer<AuthProvider>(
               builder: (context, state, child) {
                 return CustomField(
+                  textEditingController: passwordController,
                   borderColor: AppColors.greyBordersColor,
                   hint: al.passwordLabel,
                   label: al.passwordLabel,
@@ -106,12 +128,12 @@ class _SignupState extends State<Signup> {
                       children: [
                         TextSpan(
                           text: al.termsOfService,
-                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                          style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
                         ),
                         TextSpan(text: " ${al.andLabel} "),
                         TextSpan(
                           text: " ${al.privacyPolicy} ",
-                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                          style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
                         ),
                       ],
                     ),
@@ -122,14 +144,7 @@ class _SignupState extends State<Signup> {
             SizedBox(height: getHeight() * .02),
             CustomButton(
               buttonText: al.signupTitle,
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   // MaterialPageRoute(builder: (context) => AddCuisine()),
-                //   MaterialPageRoute(builder: (context) => SettingView()),
-                // );
-                context.push(Routes.otpVerificationRoute);
-              },
+              onTap: onSignupTap,
             ),
             SizedBox(height: getHeight() * .02),
             Row(
@@ -167,7 +182,7 @@ class _SignupState extends State<Signup> {
                   children: [
                     TextSpan(
                       text: al.loginButton,
-                      style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                      style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
                       recognizer: TapGestureRecognizer()..onTap=(){
                         context.pushReplacement(Routes.loginRoute);
                       }
@@ -180,5 +195,25 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  onSignupTap() {
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
+    var businessName = businessNameController.text.toString().trim();
+    if (businessName.isEmpty) {
+      Toasts.getErrorToast(text: "Business Name is Missing");
+    } else if (email.isEmpty) {
+      Toasts.getErrorToast(text: "Email is Missing");
+    } else if (email.validateEmail() == false) {
+      Toasts.getErrorToast(text: "Invalid Email");
+    } else if (password.isEmpty) {
+      Toasts.getErrorToast(text: "Password is missing");
+    } else {
+      context.read<AuthProvider>().registerUser(
+        businessName: businessName, email: email, role: context
+          .read<RoleProvider>()
+          .role.name, password: password,);
+    }
   }
 }

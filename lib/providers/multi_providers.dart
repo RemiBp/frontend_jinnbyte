@@ -1,4 +1,5 @@
 import 'package:choice_app/screens/authentication/auth_provider.dart';
+import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
@@ -24,6 +25,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<RoleProvider>(
     create: (_) => RoleProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<OtpProvider>(
+    create: (_) => OtpProvider(),
     lazy: true,
   ),
 ];

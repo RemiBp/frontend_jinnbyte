@@ -5,6 +5,7 @@ class Strings {
   // Preference strings
   static const String subscriptionStatus = "subscription_status";
   static const String name = "name";
+  static const String role = "role";
   static const String phoneNumber = "phone_number";
   static const String address = "address";
   static const String userId = "user_id";
@@ -30,6 +31,7 @@ class Strings {
   static const String isNotificationRead = "is_notification_read";
   static const String notificationToken = "notification_token";
   static const String selectedLocale = "selected_locale";
+  static const String token = "token";
 
 
 

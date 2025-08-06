@@ -1,10 +1,11 @@
-import 'package:choice_app/routes/routes.dart';
-import 'package:choice_app/screens/authentication/passwordManagement/reset_password.dart';
-import 'package:choice_app/screens/authentication/upload_docs.dart';
+import 'package:choice_app/res/toasts.dart';
+import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
@@ -13,16 +14,31 @@ import '../../../customWidgets/custom_text.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
 
-class OtpVerification extends StatelessWidget {
-  const OtpVerification({super.key, this.isResetPassFlow = false});
-
-  final bool isResetPassFlow;
+class OtpVerification extends StatefulWidget {
+  const OtpVerification({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // final extra = GoRouterState.of(context).extra as Map<String, dynamic>?;
-    // final isResetPassFlow = extra?["isResetPassFlow"] ?? false;
+  State<OtpVerification> createState() => _OtpVerificationState();
+}
 
+class _OtpVerificationState extends State<OtpVerification> {
+  String otp = "";
+
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<OtpProvider>(context, listen: false);
+    provider.init(context);
+  }
+  @override
+  Widget build(BuildContext context) {
+    final extra = GoRouterState
+        .of(context)
+        .extra as Map<String, dynamic>?;
+    final email = extra?["email"] ?? "nil";
+    final isResetPassFlow = extra?["isResetPassFlow"] ?? true;
+    final provider = context.read<OtpProvider>();
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -47,7 +63,7 @@ class OtpVerification extends StatelessWidget {
             ),
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: al.verificationPrompt,
+              text: al.verificationPrompt(email),
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
               giveLinesAsText: true,
@@ -73,6 +89,9 @@ class OtpVerification extends StatelessWidget {
               // validator: (s) {
               //   return s == '2222' ? null : 'Pin is incorrect';
               // },
+              onChanged: (value) {
+                otp = value;
+              },
               pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
               showCursor: true,
               onCompleted: (pin) => print(pin),
@@ -89,7 +108,12 @@ class OtpVerification extends StatelessWidget {
                   TextSpan(
                     text: al.resendCode,
                     style: TextStyle(color: AppColors.restaurantPrimaryColor),
-                  ),
+                      recognizer: TapGestureRecognizer
+                        ()
+                        ..onTap = () {
+                          provider.resendOtp(
+                              email: email, isResetPassFlow: isResetPassFlow);
+                        }),
                 ],
               ),
             ),
@@ -97,17 +121,23 @@ class OtpVerification extends StatelessWidget {
             CustomButton(
               buttonText: al.verifyButton,
               onTap: () {
-                if (isResetPassFlow) {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (_) => ResetPassword()));
-                  // context.push(Routes.resetPasswordRoute);
+                if (otp.length < 6) {
+                  Toasts.getErrorToast(text: "Please enter the otp");
                   return;
                 }
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => UploadDocs()));
-                // context.push(Routes.uploadDocsRoute);
+                if(isResetPassFlow){
+                  provider.verifyFgOtp(
+                    email: email,
+                    otp: otp,
+                    isResetPassFlow: isResetPassFlow,
+                  );
+                  return;
+                }
+                provider.verifyOtp(
+                  email: email,
+                  otp: otp,
+                  isResetPassFlow: isResetPassFlow,
+                );
               },
             ),
           ],

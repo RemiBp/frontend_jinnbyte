@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:choice_app/providers/multi_providers.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'common/utils.dart';
-import 'l10n/app_localizations.dart';
+// import 'l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,18 +44,12 @@ class _MyAppState extends State<MyApp> {
       return MaterialApp.router(
         key: ValueKey(provider.hashCode),
         title: 'Choice App',
-        builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: const TextScaler.linear(1.0)),
-            child: child!,
-          );
-        },
+        builder:BotToastInit(),
         locale: Locale(provider.selectedLocal),
         routerConfig: router,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

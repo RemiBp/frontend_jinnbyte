@@ -3,13 +3,15 @@ import 'package:choice_app/customWidgets/custom_button.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
-import 'package:choice_app/screens/authentication/otpVerification/otp_verification.dart';
+import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
+import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../l18n.dart';
-import '../../../routes/routes.dart';
+import '../../../res/toasts.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -19,6 +21,21 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  TextEditingController emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<PasswordProvider>(context, listen: false);
+    provider.init(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: emailController,
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
@@ -61,10 +79,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             CustomButton(
               buttonText: al.sendOtpButton,
               onTap: () {
-
-                context.push(Routes.otpVerificationRoute, extra: {
-                  "isResetPassFlow":true
-                });
+                var email = emailController.text.toString().trim();
+                if (email.isEmpty) {
+                  Toasts.getErrorToast(text: "Email is Missing");
+                } else if (email.validateEmail() == false) {
+                  Toasts.getErrorToast(text: "Invalid Email");
+                } else {
+                  context.read<PasswordProvider>().forgotPasswordApi(
+                    email: email,
+                    isResetPassFlow: true,
+                  );
+                }
               },
             ),
             SizedBox(height: getHeight() * .02),

@@ -1,5 +1,6 @@
 import 'dart:async' show Future;
 
+import 'package:choice_app/models/auth_ressponse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../res/strings.dart';
@@ -94,6 +95,13 @@ class PreferenceUtils {
 
   static bool get isSubscriber {
     return _prefsInstance?.getString(Strings.subscriptionStatus) == "Paid";
+  }
+
+  static Future<void>  setAuthResponse(AuthResponse registrationResponse)async{
+    await PreferenceUtils.setString(Strings.token, registrationResponse.accessToken??"nil");
+    await PreferenceUtils.setString(Strings.refreshToken, registrationResponse.refreshToken??"nil");
+    await PreferenceUtils.setString(Strings.email, registrationResponse.user?.email??"nil");
+    await PreferenceUtils.setString(Strings.role, registrationResponse.user?.role?.name??"nil");
   }
 
   static clearPreferences() {

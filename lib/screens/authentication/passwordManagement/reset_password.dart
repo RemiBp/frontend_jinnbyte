@@ -3,14 +3,15 @@ import 'package:choice_app/customWidgets/custom_button.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
-import 'package:choice_app/screens/authentication/login.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../l18n.dart';
+import '../../../res/toasts.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -20,8 +21,23 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState
+        .of(context)
+        .extra as Map<String, dynamic>?;
+    final email = extra?["email"] ?? "nil";
+    final otp = extra?["otp"] ?? "nil";
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -55,6 +71,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             Consumer<PasswordProvider>(
               builder: (context, state, child) {
                 return CustomField(
+                  textEditingController: passwordController,
                   borderColor: AppColors.greyBordersColor,
                   hint: al.newPasswordLabel,
                   label: al.newPasswordLabel,
@@ -71,6 +88,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             Consumer<PasswordProvider>(
               builder: (context, state, child) {
                 return CustomField(
+                  textEditingController: confirmPasswordController,
                   borderColor: AppColors.greyBordersColor,
                   hint: al.confirmPasswordLabel,
                   label: al.confirmPasswordLabel,
@@ -88,15 +106,25 @@ class _ResetPasswordState extends State<ResetPassword> {
             CustomButton(
               buttonText: al.verifyButton,
               onTap: () {
-                // while (context.canPop()) {
-                //   context.pop();
-                // }
-                // context.pushReplacement(Routes.loginRoute);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => Login()),
-                  (_) => false,
-                );
+                var password = passwordController.text.toString().trim();
+                var confirmPassword =
+                confirmPasswordController.text.toString().trim();
+                if (password.isEmpty) {
+                  Toasts.getErrorToast(text: "Password is missing");
+                } else if (confirmPassword.isEmpty) {
+                  Toasts.getErrorToast(text: "Confirm Password is missing");
+                }
+                else if (password != confirmPassword) {
+                  Toasts.getErrorToast(
+                      text: "new and confirm password not matched");
+                } else {
+                  context.read<PasswordProvider>().resetPasswordApi(
+                    email: email,
+                    otp: otp,
+                    password: password,
+                  );
+                }
+
               },
             ),
             SizedBox(height: getHeight() * .02),

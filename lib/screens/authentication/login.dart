@@ -6,9 +6,6 @@ import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
-import 'package:choice_app/screens/authentication/passwordManagement/forgot_password.dart';
-import 'package:choice_app/screens/authentication/signup.dart';
-import 'package:choice_app/screens/restaurant/profile/profile.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
+import '../../res/toasts.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -26,6 +24,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<AuthProvider>(context, listen: false);
+    provider.init(context);
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +72,7 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: emailController,
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
@@ -67,6 +81,7 @@ class _LoginState extends State<Login> {
             Consumer<AuthProvider>(
               builder: (context, state, child) {
                 return CustomField(
+                  textEditingController: passwordController,
                   borderColor: AppColors.greyBordersColor,
                   hint: al.passwordLabel,
                   label: al.passwordLabel,
@@ -112,11 +127,7 @@ class _LoginState extends State<Login> {
             SizedBox(height: getHeight() * .02),
             CustomButton(
               buttonText: al.loginButton,
-              onTap: () {
-                context.push(Routes.restaurantProfileRoute);
-                // context.push(Routes.customerHomeRoute);
-                // context.push(Routes.customerHomeRoute);
-              },
+              onTap: onLoginTap,
             ),
             SizedBox(height: getHeight() * .02),
             Row(
@@ -169,5 +180,20 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  onLoginTap() {
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
+    if (email.isEmpty) {
+      Toasts.getErrorToast(text: "Email is Missing");
+    } else if (email.validateEmail() == false) {
+      Toasts.getErrorToast(text: "Invalid Email");
+    } else if (password.isEmpty) {
+      Toasts.getErrorToast(text: "Password is missing");
+    } else {
+      context.read<AuthProvider>().loginUser(
+        email: email, password: password,);
+    }
   }
 }
