@@ -1,15 +1,11 @@
 import 'dart:async';
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/screens/bookings/bookings_view.dart';
-import 'package:choice_app/screens/restaurant/dashboard/dashboard_card.dart';
+import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
 import 'package:choice_app/screens/restaurant/home/restaurant_home.dart';
-import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:choice_app/screens/wellness/home/welness_home.dart';
-import 'package:choice_app/screens/wellness/wellness_profile_tabbar/wellness_Profile_tab_bar.dart';
 import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:choice_app/utilities/extensions.dart';
@@ -17,11 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
-import '../profile_menu/profile_menu_view.dart';
+import '../../customer/profile/customer_profile/customer_profile_view.dart';
+import '../../wellness/wellness_profile/wellness_profile_view.dart';
 
 class RestaurantBottomTab extends StatefulWidget {
   const RestaurantBottomTab({super.key});
@@ -73,12 +69,10 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
       HomeView(),
       Events(),
       BookingsView(),
-      if(role == UserRole.user)
-        ProfileMenuView(),
-      if(!(role == UserRole.user))
-        WellnessProfileTabBar(),
-
-      // SettingView()
+      if (role == UserRole.user) CustomerProfileView(),
+      if (role == UserRole.wellness) WellnessProfileView(),
+      if (role == UserRole.leisure) LeisureProfileView(),
+      if (role == UserRole.restaurant) LeisureProfileView(),
     ];
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),

@@ -351,8 +351,8 @@ class CancelConfirmationAlert extends StatelessWidget {
             CustomField(
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
-              hint: al.writeSomethingBrief,
-              label: al.briefDescription,
+              hint: "Share your reason here...",
+              label: "Reason",
             ),
             SizedBox(
               height: getHeightRatio() * 24,

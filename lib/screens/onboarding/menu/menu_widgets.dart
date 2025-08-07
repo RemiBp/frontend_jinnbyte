@@ -8,8 +8,11 @@ import '../../../res/res.dart';
 class MenuGroupWidget extends StatelessWidget {
   final MenuGroup menuGroup;
   final Function onAddDish;
+  final bool? showOption;
+  final String? optionText;
+  final String? header;
 
-  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish});
+  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish, this.showOption, this.optionText, this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +20,23 @@ class MenuGroupWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
+          padding: showOption??false?EdgeInsets.symmetric(horizontal: getWidth() * 0.05):EdgeInsets.zero,
           child: Row(
             children: [
               CustomText(
-                text: '${menuGroup.title} (${menuGroup.dishes.length})',
-                fontSize: sizes?.fontSize18,
+                text: header??'${menuGroup.title} (${menuGroup.dishes.length})',
+                fontSize: sizes?.fontSize16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.blackColor,
               ),
               const Spacer(),
+              if(showOption??false)
               const Icon(Icons.add, color: AppColors.restaurantPrimaryColor),
               SizedBox(width: getWidth() * 0.01),
               GestureDetector(
                 onTap: ()=> onAddDish(),
                 child: CustomText(
-                  text: 'Add Dish',
+                  text: optionText??'Add Dish',
                   fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.restaurantPrimaryColor,
@@ -42,7 +46,7 @@ class MenuGroupWidget extends StatelessWidget {
           ),
         ),
         // SizedBox(height: getHeight() * 0.02),
-        ...menuGroup.dishes.map((dish) => DishItemWidget(dish: dish)),
+        ...menuGroup.dishes.map((dish) => DishItemWidget(dish: dish, showOption: showOption,)),
         Divider(height: getHeight() * 0.03),
       ],
     );
@@ -53,13 +57,14 @@ class MenuGroupWidget extends StatelessWidget {
 
 class DishItemWidget extends StatelessWidget {
   final Dish dish;
+  final bool? showOption;
 
-  const DishItemWidget({super.key, required this.dish});
+  const DishItemWidget({super.key, required this.dish, this.showOption});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: getWidth() * 0.05),
+      contentPadding: showOption??false? EdgeInsets.only(left: getWidth() * 0.05):EdgeInsets.zero,
       title: CustomText(
         text: dish.name,
         fontSize: sizes?.fontSize14,
@@ -81,7 +86,9 @@ class DishItemWidget extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: AppColors.blackColor,
           ),
-          // const SizedBox(width: 8),
+          if(showOption??false)
+          SizedBox(width: sizes!.pagePadding),
+          if(showOption??false)
           PopupMenuButton<String>(
             padding: EdgeInsets.zero,
             icon: const Icon(Icons.more_vert),

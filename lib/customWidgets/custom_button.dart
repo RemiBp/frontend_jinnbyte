@@ -69,7 +69,7 @@ class CustomButton extends StatelessWidget {
         height: height ?? getHeightRatio() * 44,
         width: buttonWidth ?? width,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: borderColor ?? Colors.transparent),
           color: backgroundColor ?? AppColors.getPrimaryColorFromContext(context),
         ),
@@ -78,6 +78,58 @@ class CustomButton extends StatelessWidget {
             text: buttonText,
             fontSize: textFontSize ?? sizes?.fontSize16,
             fontFamily: textFontFamily ?? Assets.onsetSemiBold,
+            color: textColor ?? Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardButton extends StatelessWidget {
+  const CardButton({
+    super.key,
+    required this.buttonText,
+    this.buttonWidth,
+    this.height,
+    this.backgroundColor,
+    this.borderColor,
+    this.textColor,
+    this.textFontFamily,
+    this.textFontWeight,
+    this.textFontSize,
+    this.onTap,
+  });
+
+  final String buttonText;
+  final Function()? onTap;
+  final double? height;
+  final double? buttonWidth;
+  final Color? borderColor;
+  final Color? backgroundColor;
+  final double? textFontSize;
+  final FontWeight? textFontWeight;
+  final String? textFontFamily;
+  final Color? textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: height ?? getHeightRatio() * 36,
+        width: buttonWidth ?? width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: borderColor ?? Colors.transparent),
+          color: backgroundColor ?? AppColors.getPrimaryColorFromContext(context),
+        ),
+        child: Center(
+          child: CustomText(
+            text: buttonText,
+            fontSize: textFontSize ?? sizes?.fontSize14,
+            fontWeight: FontWeight.w400,
             color: textColor ?? Colors.white,
           ),
         ),

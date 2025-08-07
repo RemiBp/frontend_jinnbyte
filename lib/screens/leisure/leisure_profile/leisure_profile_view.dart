@@ -1,29 +1,33 @@
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import '../../../userRole/role_provider.dart';
 import '../../restaurant/profile_menu/profile_menu_widgets.dart';
-import '../../restaurant/profile_menu/restaurant_about_view.dart';
+import '../../restaurant/profile_menu/restaurant_about/restaurant_about_view.dart';
 import '../../restaurant/profile_menu/restaurant_choice_view.dart';
 import '../../restaurant/profile_menu/restaurant_posts_view.dart';
 import '../../restaurant/setting/setting_view.dart';
+import '../leisure_about/leisure_about_view.dart';
 
-class WellnessProfileTabBar extends StatefulWidget {
-  const WellnessProfileTabBar({super.key});
+class LeisureProfileView extends StatefulWidget {
+  const LeisureProfileView({super.key});
 
   @override
-  State<WellnessProfileTabBar> createState() => _WellnessProfileTabBarState();
+  State<LeisureProfileView> createState() => _LeisureProfileViewState();
 }
 
-class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with SingleTickerProviderStateMixin{
-
+class _LeisureProfileViewState extends State<LeisureProfileView> with SingleTickerProviderStateMixin{
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       if (_tabController.indexIsChanging || _tabController.index != _selectedTabIndex) {
@@ -52,9 +56,9 @@ class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with Sing
         : Colors.grey;
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final roleProvider = Provider.of<RoleProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: ProfileMenuAppBar(
@@ -77,8 +81,8 @@ class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with Sing
       body: Column(
         children: [
           SizedBox(height: getHeight() * 0.02),
-          RestaurantProfileHeader(),
-          // CustomerProfileHeader(),
+          // RestaurantProfileHeader(),
+          CustomerProfileHeader(),
           SizedBox(height: getHeight() * 0.01),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -107,7 +111,7 @@ class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with Sing
               padding: EdgeInsets.zero,
               tabs: [
                 ProfileTabItem(
-                  iconPath: Assets.choiceIcon,
+                  iconPath: Assets.calenderIcon,
                   label: 'Choices',
                   tabIndex: 0,
                   selectedTabIndex: _selectedTabIndex,
@@ -130,10 +134,11 @@ class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with Sing
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
-                RestaurantChoiceView(),
-                RestaurantPostsView(),
-                RestaurantAboutView(),
+              children: [
+                const RestaurantChoiceView(enableOnTap: true,),
+                const RestaurantPostsView(),
+                if(roleProvider.role == UserRole.leisure) const LeisureAboutView(),
+                if(roleProvider.role == UserRole.restaurant) const RestaurantAboutView(),
               ],
             ),
           ),

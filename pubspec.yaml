@@ -10,9 +10,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# Read more leisure_about Android versioning at https://developer.android.com/studio/publish/versioning
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
+# Read more leisure_about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
@@ -59,7 +59,7 @@ dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
+  # package. See that file for information leisure_about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
@@ -95,15 +95,19 @@ flutter:
       - family: OnestRegular
         fonts:
           - asset: assets/fonts/onset/OnestRegular1602-hint.ttf
+            weight: 400
       - family: OnestMedium
         fonts:
           - asset: assets/fonts/onset/OnestMedium1602-hint.ttf
+            weight: 500
       - family: OnestBold
         fonts:
           - asset: assets/fonts/onset/OnestBold1602-hint.ttf
+            weight: 700
       - family: OnestExtraBold
         fonts:
           - asset: assets/fonts/onset/OnestExtraBold1602-hint.ttf
+            weight: 800
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
