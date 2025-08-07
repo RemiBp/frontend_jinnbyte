@@ -2,9 +2,9 @@ import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/common_app_bar.dart';
-import '../../../res/res.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../res/res.dart';
 
 class BookmarkedView extends StatefulWidget {
   const BookmarkedView({super.key});

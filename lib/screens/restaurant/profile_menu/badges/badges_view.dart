@@ -1,11 +1,11 @@
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appAssets/app_assets.dart';
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/common_app_bar.dart';
-import '../../../customWidgets/custom_text.dart';
-import '../../../res/res.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_text.dart';
+import '../../../../res/res.dart';
 
 class BadgesView extends StatelessWidget {
   const BadgesView({super.key});

@@ -1,6 +1,6 @@
 import 'package:choice_app/appColors/colors.dart';
-import 'package:choice_app/screens/restaurant/profile_menu/follower_view.dart';
-import 'package:choice_app/screens/restaurant/profile_menu/following_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/follower/follower_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/following/following_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../appAssets/app_assets.dart';
@@ -480,11 +480,13 @@ class SwitchAccountBottomSheet extends StatelessWidget {
                         text: "The Wholesome Fork",
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
+                        color: AppColors.blackColor,
                       ),
                       CustomText(
                         text: "example@thewholesomefork.com",
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w400,
+                        color: AppColors.inputHintColor,
                       )
                     ],
                   ),
@@ -494,7 +496,7 @@ class SwitchAccountBottomSheet extends StatelessWidget {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                      color: AppColors.userPrimaryColor,
+                      color: AppColors.getPrimaryColorFromContext(context),
                       shape: BoxShape.circle
                   ),
                   child: Center(
@@ -526,11 +528,13 @@ class SwitchAccountBottomSheet extends StatelessWidget {
                         text: "Create New Profile",
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
+                        color: AppColors.blackColor,
                       ),
                       CustomText(
                         text: "Switch between profile with one login",
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w400,
+                        color: AppColors.inputHintColor,
                       )
                     ],
                   ),
@@ -609,23 +613,26 @@ class BlockUserBottomSheet extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomButton(
-                    buttonText: 'Cancel',
-                    onTap: () => Navigator.pop(context),
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.blackColor,
-                    textColor: AppColors.blackColor,
-                    textFontWeight: FontWeight.w700,
+                  Expanded(
+                    child: CustomButton(
+                      buttonText: 'Cancel',
+                      onTap: () => Navigator.pop(context),
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.blackColor,
+                      textColor: AppColors.blackColor,
+                      textFontWeight: FontWeight.w700,
+                    ),
                   ),
-                  CustomButton(
-                    buttonText: 'Block',
-                    onTap: () {},
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                    borderColor: Colors.transparent,
-                    textColor: Colors.white,
-                    textFontWeight: FontWeight.w700,
+                  SizedBox(width: getWidth() * 0.03),
+                  Expanded(
+                    child: CustomButton(
+                      buttonText: 'Block',
+                      onTap: () {},
+                      backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                      borderColor: Colors.transparent,
+                      textColor: Colors.white,
+                      textFontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -716,23 +723,26 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomButton(
-                    buttonText: 'Cancel',
-                    onTap: () => Navigator.pop(context),
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.blackColor,
-                    textColor: AppColors.blackColor,
-                    textFontWeight: FontWeight.w700,
+                  Expanded(
+                    child: CustomButton(
+                      buttonText: 'Cancel',
+                      onTap: () => Navigator.pop(context),
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.blackColor,
+                      textColor: AppColors.blackColor,
+                      textFontWeight: FontWeight.w700,
+                    ),
                   ),
-                  CustomButton(
-                    buttonText: 'Submit',
-                    onTap: () {},
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                    borderColor: Colors.transparent,
-                    textColor: Colors.white,
-                    textFontWeight: FontWeight.w700,
+                  SizedBox(width: getWidth() * 0.03),
+                  Expanded(
+                    child: CustomButton(
+                      buttonText: 'Submit',
+                      onTap: () {},
+                      backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                      borderColor: Colors.transparent,
+                      textColor: Colors.white,
+                      textFontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -1166,7 +1176,7 @@ class XPCard extends StatelessWidget {
                       text: subtitle,
                       fontSize: sizes?.fontSize12,
                       fontWeight: FontWeight.w200,
-                      color: AppColors.primarySlateColor,
+                      color: AppColors.inputHintColor,
                       giveLinesAsText: true,
                     ),
                   ],
@@ -1222,6 +1232,9 @@ class XPCard extends StatelessWidget {
     );
   }
 }
+
+
+
 
 
 

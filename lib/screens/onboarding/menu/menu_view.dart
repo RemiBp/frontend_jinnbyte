@@ -53,6 +53,7 @@ class _MenuViewState extends State<MenuView> {
                 itemBuilder: (context, index) {
                   return MenuGroupWidget(
                       menuGroup: menuGroups[index],
+                    showOption: true,
                     onAddDish: (){
                       showModalBottomSheet(
                         context: context,

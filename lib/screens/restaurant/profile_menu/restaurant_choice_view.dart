@@ -1,6 +1,11 @@
-import 'package:choice_app/screens/restaurant/profile_menu/restaurant_menu_detail_view.dart';
+import 'package:choice_app/screens/customer/profile/customer_profile_tab_bar/customer_profile_tab_bar.dart';
+import 'package:choice_app/screens/leisure/leisure_profile_tab_bar/leisure_profile_tab_bar.dart';
+import 'package:choice_app/screens/wellness/wellness_profile_tab_bar/wellness_Profile_tab_bar.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../res/res.dart';
+import '../../../userRole/role_provider.dart';
 import '../../customer/home/home_widgets.dart';
 
 class RestaurantChoiceView extends StatefulWidget {
@@ -15,6 +20,7 @@ class _RestaurantChoiceViewState extends State<RestaurantChoiceView> {
 
   @override
   Widget build(BuildContext context) {
+    final role = context.read<RoleProvider>().role;
     return ListView.builder(
       padding: EdgeInsets.symmetric(
           horizontal: sizes!.pagePadding
@@ -24,10 +30,24 @@ class _RestaurantChoiceViewState extends State<RestaurantChoiceView> {
         return GestureDetector(
           onTap: (){
             if(widget.enableOnTap??false){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RestaurantMenuDetailView()),
-              );
+              if(role == UserRole.user){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CustomerProfileTabBar()),
+                );
+              }
+              else if(role == UserRole.restaurant || role == UserRole.leisure){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LeisureProfileTabBar()),
+                );
+              }
+              else{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WellnessProfileTabBar()),
+                );
+              }
             }
           },
           child: PostCard(),

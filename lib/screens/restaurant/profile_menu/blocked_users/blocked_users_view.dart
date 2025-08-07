@@ -2,47 +2,41 @@ import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appAssets/app_assets.dart';
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/common_app_bar.dart';
-import '../../../customWidgets/custom_textfield.dart';
-import '../../../res/res.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../res/res.dart';
 
-class FollowerView extends StatefulWidget {
-  const FollowerView({super.key});
+class BlockedUsersView extends StatefulWidget {
+  const BlockedUsersView({super.key});
 
   @override
-  State<FollowerView> createState() => _FollowerViewState();
+  State<BlockedUsersView> createState() => _BlockedUsersViewState();
 }
 
-class _FollowerViewState extends State<FollowerView> {
+class _BlockedUsersViewState extends State<BlockedUsersView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Follower"),
+      appBar: CommonAppBar(title: "Blocked List"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
           children: [
-            CustomField(
-              borderColor: AppColors.greyBordersColor,
-              hint: "Search by name...",
-              label: "",
-              prefixIconSvg: Assets.searchIcon,
-              // obscure: true,
-            ),
             SizedBox(height: getHeight() * 0.02),
             Expanded(
               child: ListView.separated(
                 itemCount: users.length,
-                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025,),
+                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
                 itemBuilder: (context, index) {
                   final user = users[index];
                   return UserTile(
                     name: user['name']!,
                     username: user['username']!,
                     imageUrl: user['image']!,
+                    btnText: "Unblock",
                   );
                 },
               ),
@@ -52,7 +46,6 @@ class _FollowerViewState extends State<FollowerView> {
       ),
     );
   }
-
 
   final List<Map<String, String>> users = const [
     {
