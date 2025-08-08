@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account_provider.dart';
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
@@ -29,6 +30,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<OtpProvider>(
     create: (_) => OtpProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<ReclaimAccountProvider>(
+    create: (_) => ReclaimAccountProvider(),
     lazy: true,
   ),
 ];

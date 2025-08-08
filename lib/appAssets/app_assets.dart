@@ -95,4 +95,7 @@ class Assets {
   static const String restaurantLocationIcon = "assets/icons/restaurant_location_icon.svg";
   static const String reportUserIcon = "assets/icons/report_user.svg";
   static const String blockUser = "assets/icons/block_user.svg";
+
+  //images
+  static const String waiting = "assets/images/waiting.png";
 }

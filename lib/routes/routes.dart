@@ -1,5 +1,7 @@
+import 'package:choice_app/screens/authentication/accountReclaim/review.dart';
 import 'package:choice_app/screens/authentication/authentication.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_verification.dart';
+import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account.dart';
 import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/screens/authentication/upload_docs.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
@@ -11,6 +13,7 @@ import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
 import 'package:go_router/go_router.dart';
 
+import '../screens/authentication/accountReclaim/upload_reclaim_docs.dart';
 import '../screens/authentication/login.dart';
 import '../screens/authentication/passwordManagement/forgot_password.dart';
 import '../screens/authentication/passwordManagement/reset_password.dart';
@@ -25,6 +28,9 @@ class Routes {
   static const String initialRoute = '/';
   static const String languageSelectionRoute = '/language_selection';
   static const String authRoute = '/auth';
+  static const String reClaimAccountRoute = '/re_claim_account';
+  static const String uploadReclaimDocsRoute = '/upload_reclaim_docs';
+  static const String reviewRoute = '/review';
   static const String signupRoute = '/signup';
   static const String otpVerificationRoute = '/otp_verification';
   static const String uploadDocsRoute = '/upload_docs';
@@ -53,6 +59,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const Splash()),
     GoRoute(path: '/language_selection', builder: (context, state) => const LanguageSelection()),
+    GoRoute(path: '/re_claim_account', builder: (context, state) => const ReclaimAccount()),
     GoRoute(path: '/auth', builder: (context, state) => const Authentication()),
     GoRoute(path: '/signup', builder: (context, state) => const Signup()),
     GoRoute(
@@ -62,6 +69,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/upload_docs',
       builder: (context, state) => const UploadDocs(),
+    ),
+    GoRoute(
+      path: '/upload_reclaim_docs',
+      builder: (context, state) => const UploadReclaimDocs(),
+    ),
+    GoRoute(
+      path: '/review',
+      builder: (context, state) => const Review(),
     ),
     GoRoute(
       path: '/login',
