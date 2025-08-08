@@ -2,25 +2,25 @@ import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appAssets/app_assets.dart';
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/common_app_bar.dart';
-import '../../../customWidgets/custom_textfield.dart';
-import '../../../res/res.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../res/res.dart';
 
-class FollowingView extends StatefulWidget {
-  const FollowingView({super.key});
+class FollowerView extends StatefulWidget {
+  const FollowerView({super.key});
 
   @override
-  State<FollowingView> createState() => _FollowingViewState();
+  State<FollowerView> createState() => _FollowerViewState();
 }
 
-class _FollowingViewState extends State<FollowingView> {
+class _FollowerViewState extends State<FollowerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Following"),
+      appBar: CommonAppBar(title: "Follower"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
@@ -36,10 +36,10 @@ class _FollowingViewState extends State<FollowingView> {
             Expanded(
               child: ListView.separated(
                 itemCount: users.length,
-                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
+                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025,),
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return FollowUnFollowTile(
+                  return UserTile(
                     name: user['name']!,
                     username: user['username']!,
                     imageUrl: user['image']!,
@@ -52,6 +52,7 @@ class _FollowingViewState extends State<FollowingView> {
       ),
     );
   }
+
 
   final List<Map<String, String>> users = const [
     {

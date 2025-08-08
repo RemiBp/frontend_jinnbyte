@@ -1,21 +1,22 @@
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_posts_view.dart';
-import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:flutter/material.dart';
-import '../../../appAssets/app_assets.dart';
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/custom_text.dart';
-import '../../../res/res.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/custom_button.dart';
+import '../../../../customWidgets/custom_text.dart';
+import '../../../../res/res.dart';
+import '../../../restaurant/profile_menu/chat_view.dart';
 
-class ProfileMenuView extends StatefulWidget {
-  const ProfileMenuView({super.key});
+class CustomerProfileTabBar extends StatefulWidget {
+  const CustomerProfileTabBar({super.key});
 
   @override
-  State<ProfileMenuView> createState() => _ProfileMenuViewState();
+  State<CustomerProfileTabBar> createState() => _CustomerProfileTabBarState();
 }
 
-class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProviderStateMixin {
+class _CustomerProfileTabBarState extends State<CustomerProfileTabBar> with SingleTickerProviderStateMixin{
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
@@ -54,7 +55,7 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: ProfileMenuAppBar(
+      appBar: ProfileMenuDetailAppBar(
         onSwitchAccount: (){
           showModalBottomSheet(
             context: context,
@@ -64,17 +65,28 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
             },
           );
         },
-        onSetting: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SettingView()),
+        onBlock: (){
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return BlockUserBottomSheet(context: context);
+            },
+          );
+        },
+        onReport: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return ReportBottomSheet(context: context);
+            },
           );
         },
       ),
       body: Column(
         children: [
           SizedBox(height: getHeight() * 0.02),
-          // RestaurantProfileHeader(),
           CustomerProfileHeader(),
           SizedBox(height: getHeight() * 0.01),
           Padding(
@@ -88,7 +100,38 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
               giveLinesAsText: true,
             ),
           ),
-          SizedBox(height: getHeight() * 0.01),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.02),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CardButton(
+                    buttonText: 'Follow',
+                    onTap: () {
+
+                    },
+                    textColor: Colors.white,
+                    textFontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(width: getWidth() * 0.03),
+                Expanded(
+                  child: CardButton(
+                    buttonText: 'Message',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ChatView()),
+                      );
+                    },
+                    backgroundColor: AppColors.greyColor,
+                    textColor: AppColors.blackColor,
+                    textFontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
             decoration: BoxDecoration(
               color: AppColors.greyColor,
@@ -115,12 +158,6 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
                   tabIndex: 1,
                   selectedTabIndex: _selectedTabIndex,
                 ),
-                // ProfileTabItem(
-                //   iconPath: Assets.guestsIcon,
-                //   label: 'About',
-                //   tabIndex: 2,
-                //   selectedTabIndex: _selectedTabIndex,
-                // ),
               ],
             ),
           ),
@@ -128,9 +165,8 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
             child: TabBarView(
               controller: _tabController,
               children: const [
-                RestaurantChoiceView(enableOnTap: true,),
+                RestaurantChoiceView(),
                 RestaurantPostsView(),
-                // RestaurantAboutView(),
               ],
             ),
           ),
@@ -139,4 +175,3 @@ class _ProfileMenuViewState extends State<ProfileMenuView> with SingleTickerProv
     );
   }
 }
-

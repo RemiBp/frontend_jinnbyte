@@ -5,6 +5,7 @@ import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/icon_svg.dart';
 import '../../../res/res.dart';
+import '../profile_menu/profile_menu_widgets.dart';
 
 class ProfileOptionButton extends StatelessWidget {
   final String title;
@@ -130,25 +131,38 @@ class SettingHeader extends StatelessWidget {
                         text: "The Wholesome Fork",
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
+                        color: AppColors.blackColor,
                       ),
                       CustomText(
                         text: "example@thewholesomefork.com",
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w400,
+                        color: AppColors.inputHintColor,
                       )
                     ],
                   ),
               ),
               SizedBox(width: getWidth() * 0.02),
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.greyColor,
-                  shape: BoxShape.circle
-                ),
-                child: Center(
-                  child: Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.primarySlateColor,),
+              GestureDetector(
+                onTap: (){
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return SwitchAccountBottomSheet(context: context);
+                    },
+                  );
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.greyColor,
+                    shape: BoxShape.circle
+                  ),
+                  child: Center(
+                    child: Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.primarySlateColor,),
+                  ),
                 ),
               )
             ],
@@ -176,11 +190,13 @@ class SettingHeader extends StatelessWidget {
                       text: "Create New Profile",
                       fontSize: sizes?.fontSize14,
                       fontWeight: FontWeight.w500,
+                      color: AppColors.blackColor,
                     ),
                     CustomText(
                       text: "Switch between profile with one login",
                       fontSize: sizes?.fontSize12,
                       fontWeight: FontWeight.w400,
+                      color: AppColors.inputHintColor,
                     )
                   ],
                 ),

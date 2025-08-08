@@ -1,4 +1,3 @@
-import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:readmore/readmore.dart';
@@ -6,28 +5,15 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
-import '../../onboarding/gallery/gallery_widgets.dart';
 
-class RestaurantAboutView extends StatefulWidget {
-  const RestaurantAboutView({super.key});
+class LeisureAboutView extends StatefulWidget {
+  const LeisureAboutView({super.key});
 
   @override
-  State<RestaurantAboutView> createState() => _RestaurantAboutViewState();
+  State<LeisureAboutView> createState() => _LeisureAboutViewState();
 }
 
-class _RestaurantAboutViewState extends State<RestaurantAboutView> {
-
-  final List<Map<String, String>> operatingHours = [
-    {'day': 'Monday', 'time': '09:00 AM - 05:00 PM'},
-    {'day': 'Tuesday', 'time': '10:00 AM - 06:00 PM'},
-    {'day': 'Wednesday', 'time': '11:00 AM - 07:00 PM'},
-    {'day': 'Thursday', 'time': '09:30 AM - 05:30 PM'},
-    {'day': 'Friday', 'time': '09:00 AM - 04:00 PM'},
-    {'day': 'Saturday', 'time': 'Closed'},
-    {'day': 'Sunday', 'time': 'Closed'},
-  ];
-
-
+class _LeisureAboutViewState extends State<LeisureAboutView> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -38,7 +24,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
           children: [
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "About Event",
+              text: "About",
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -63,80 +49,6 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             ),
             Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
             CustomText(
-              text: "Services",
-              fontSize: sizes?.fontSize16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.blackColor,
-            ),
-            SizedBox(height: getHeight() * .01),
-            CustomText(
-              text: "Aesthetic Care & Well-Being",
-              fontSize: sizes?.fontSize14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.blackColor,
-            ),
-            CustomText(
-              text: "Hair Care & Hair Services",
-              fontSize: sizes?.fontSize14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.blackColor,
-            ),
-            CustomText(
-              text: "Nail Care & Body Modifications",
-              fontSize: sizes?.fontSize14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.blackColor,
-            ),
-            Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  text: "Gallery",
-                  fontSize: sizes?.fontSize16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.blackColor,
-                ),
-                CustomText(
-                  text: "See Full Gallery",
-                  fontSize: sizes?.fontSize14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.getPrimaryColorFromContext(context),
-                ),
-              ],
-            ),
-            SizedBox(height: getHeight() * .01),
-            SizedBox(
-              height: getHeight() * 0.12,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(right: getWidth() * 0.02),
-                    child: Container(
-                        height: getHeight() * 0.12,
-                        width: getWidth() * 0.26,
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.asset(
-                          Assets.galleryImage,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            color: AppColors.getPrimaryColorFromContext(context),
-                          ),
-                        )
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
-            CustomText(
               text: "Location",
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
@@ -150,26 +62,6 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             Image.asset(Assets.mapImage, height: getHeight() * .2),
             SizedBox(height: getHeight() * .01),
             Divider(color: AppColors.greyColor),
-            SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: "Business Hour",
-              fontSize: sizes?.fontSize16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.blackColor,
-            ),
-            // SizedBox(height: getHeight() * .01),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: operatingHours.length,
-              itemBuilder: (context, index) {
-                return OperatingHourItem(
-                  day: operatingHours[index]["day"]??"",
-                  time: operatingHours[index]["time"]??"",
-                );
-              },
-            ),
-            SizedBox(height: getHeight() * .02),
             CustomText(
               text: "Socia Links",
               fontSize: sizes?.fontSize16,

@@ -34,6 +34,10 @@ class _CancelledBookingsState extends State<CancelledBookings> {
                     MaterialPageRoute(builder: (context) => BookingDetails(isCancelled: true,)),
                   );
                 },
+                // onCheckIn: () {},
+                onCancel: () {
+                  // showCancelConfirmationAlert(context: context, id: 0);
+                },
               );
             },
           ),

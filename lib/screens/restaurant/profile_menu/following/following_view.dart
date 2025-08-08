@@ -2,29 +2,36 @@ import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appAssets/app_assets.dart';
-import '../../../appColors/colors.dart';
-import '../../../customWidgets/common_app_bar.dart';
-import '../../../customWidgets/custom_textfield.dart';
-import '../../../res/res.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../res/res.dart';
 
-class BlockedUsersView extends StatefulWidget {
-  const BlockedUsersView({super.key});
+class FollowingView extends StatefulWidget {
+  const FollowingView({super.key});
 
   @override
-  State<BlockedUsersView> createState() => _BlockedUsersViewState();
+  State<FollowingView> createState() => _FollowingViewState();
 }
 
-class _BlockedUsersViewState extends State<BlockedUsersView> {
+class _FollowingViewState extends State<FollowingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Blocked List"),
+      appBar: CommonAppBar(title: "Following"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
           children: [
+            CustomField(
+              borderColor: AppColors.greyBordersColor,
+              hint: "Search by name...",
+              label: "",
+              prefixIconSvg: Assets.searchIcon,
+              // obscure: true,
+            ),
             SizedBox(height: getHeight() * 0.02),
             Expanded(
               child: ListView.separated(
@@ -32,11 +39,10 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
                 separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return UserTile(
+                  return FollowUnFollowTile(
                     name: user['name']!,
                     username: user['username']!,
                     imageUrl: user['image']!,
-                    btnText: "Unblock",
                   );
                 },
               ),

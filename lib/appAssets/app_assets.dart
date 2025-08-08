@@ -79,6 +79,7 @@ class Assets {
   static const String choiceIcon = "assets/icons/choice_icon.png";
   static const String interestIcon = "assets/icons/interest_icon.png";
   static const String postIcon = "assets/icons/post_icon.png";
+  static const String eventPngIcon = "assets/icons/event_png_icon.png";
 
   static const String galleryImage = "assets/images/gallery_image.png";
   static const String originMapImage = "assets/images/origin_map_image.png";
