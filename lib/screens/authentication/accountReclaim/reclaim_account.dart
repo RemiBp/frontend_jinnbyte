@@ -29,126 +29,125 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
     final pad = MediaQuery.of(context).size.width * 0.06;
     final roleProvider = context.read<RoleProvider>();
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(pad, 20, pad, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: getHeight() * .02),
-              CustomText(
-                text: "Reclaim Your Account",
-                fontSize: sizes?.fontSize26,
-                fontFamily: Assets.onsetSemiBold,
-              ),
-              CustomText(
-                text: "Retrieve access to your existing profile",
-                fontSize: sizes?.fontSize16,
-                color: AppColors.primarySlateColor,
-              ),
-              SizedBox(height: getHeight() * .01),
-              CustomText(
-                text: "Choose your option",
-                fontSize: sizes?.fontSize14,
-                fontFamily: Assets.onsetMedium,
-                color: AppColors.primarySlateColor,
-              ),
+      backgroundColor: AppColors.whiteColor,
+      appBar: AppBar(backgroundColor: AppColors.whiteColor),
+      body:SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(pad, 0, pad, 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: getHeight() * .02),
+            CustomText(
+              text: "Reclaim Your Account",
+              fontSize: sizes?.fontSize26,
+              fontFamily: Assets.onsetSemiBold,
+            ),
+            CustomText(
+              text: "Retrieve access to your existing profile",
+              fontSize: sizes?.fontSize16,
+              color: AppColors.primarySlateColor,
+            ),
+            SizedBox(height: getHeight() * .01),
+            CustomText(
+              text: "Choose your option",
+              fontSize: sizes?.fontSize14,
+              fontFamily: Assets.onsetMedium,
+              color: AppColors.primarySlateColor,
+            ),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-              // Category chips
-              Row(
-                children: [
-                  CategoryChip(
-                    label: 'Restaurant',
-                    svgString: Assets.restaurantIcon,
-                    selected: _selected == 0,
-                    onTap: () {
-                      roleProvider.setRole(UserRole.restaurant);
-                      setState(() => _selected = 0);
-                    },
-                    selectedColor: AppColors.restaurantPrimaryColor,
-                  ),
-                  const SizedBox(width: 12),
-                  CategoryChip(
-                    label: 'Leisure',
-                    svgString: Assets.leisureIcon,
-                    selected: _selected == 1,
-                    onTap: () {
-                      roleProvider.setRole(UserRole.leisure);
-                      setState(() => _selected = 1);
-                    },
-                    selectedColor: AppColors.leisurePrimaryColor,
-                  ),
-                  const SizedBox(width: 12),
-                  CategoryChip(
-                    label: 'Wellness',
-                    svgString: Assets.wellnessIcon,
-                    selected: _selected == 2,
-                    onTap:() {
-                      roleProvider.setRole(UserRole.wellness);
-                      setState(() => _selected = 2);
-                    },
+            // Category chips
+            Row(
+              children: [
+                CategoryChip(
+                  label: 'Restaurant',
+                  svgString: Assets.restaurantIcon,
+                  selected: _selected == 0,
+                  onTap: () {
+                    roleProvider.setRole(UserRole.restaurant);
+                    setState(() => _selected = 0);
+                  },
+                  selectedColor: AppColors.restaurantPrimaryColor,
+                ),
+                const SizedBox(width: 12),
+                CategoryChip(
+                  label: 'Leisure',
+                  svgString: Assets.leisureIcon,
+                  selected: _selected == 1,
+                  onTap: () {
+                    roleProvider.setRole(UserRole.leisure);
+                    setState(() => _selected = 1);
+                  },
+                  selectedColor: AppColors.leisurePrimaryColor,
+                ),
+                const SizedBox(width: 12),
+                CategoryChip(
+                  label: 'Wellness',
+                  svgString: Assets.wellnessIcon,
+                  selected: _selected == 2,
+                  onTap:() {
+                    roleProvider.setRole(UserRole.wellness);
+                    setState(() => _selected = 2);
+                  },
 
-                    selectedColor: AppColors.wellnessPrimaryColor,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+                  selectedColor: AppColors.wellnessPrimaryColor,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
 
-              CustomField(
-                borderColor: AppColors.greyBordersColor,
-                hint: "Search by name...",
-                prefixIconSvg: Assets.searchIcon,
-              ),
-              SizedBox(height: getHeight() * .03),
+            CustomField(
+              borderColor: AppColors.greyBordersColor,
+              hint: "Search by name...",
+              prefixIconSvg: Assets.searchIcon,
+            ),
+            SizedBox(height: getHeight() * .03),
 
-              CustomButton(
-                buttonText: "Claim Account",
-                backgroundColor:
-                    _selected == 0
-                        ? AppColors.restaurantPrimaryColor
-                        : _selected == 1
-                        ? AppColors.leisurePrimaryColor
-                        : AppColors.wellnessPrimaryColor,
-                onTap: () {
-                  context.push(Routes.uploadReclaimDocsRoute);
-                },
-              ),
+            CustomButton(
+              buttonText: "Claim Account",
+              backgroundColor:
+              _selected == 0
+                  ? AppColors.restaurantPrimaryColor
+                  : _selected == 1
+                  ? AppColors.leisurePrimaryColor
+                  : AppColors.wellnessPrimaryColor,
+              onTap: () {
+                context.push(Routes.uploadReclaimDocsRoute);
+              },
+            ),
 
-              SizedBox(height: getHeight() * .02),
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.greyBordersColor,
-                      thickness: 1,
-                    ),
+            SizedBox(height: getHeight() * .02),
+            Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: AppColors.greyBordersColor,
+                    thickness: 1,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: CustomText(text: "Or", fontSize: sizes?.fontSize14),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: CustomText(text: "Or", fontSize: sizes?.fontSize14),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: AppColors.greyBordersColor,
+                    thickness: 1,
                   ),
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.greyBordersColor,
-                      thickness: 1,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: getHeight() * .02),
-              CustomButton(
-                buttonText: "Sign Up",
-                backgroundColor: AppColors.blackColor,
-                onTap: () {
-                  context.push(Routes.signupRoute);
-                },
-              ),
-              SizedBox(height: getHeight() * .02),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: getHeight() * .02),
+            CustomButton(
+              buttonText: "Sign Up",
+              backgroundColor: AppColors.blackColor,
+              onTap: () {
+                context.push(Routes.signupRoute);
+              },
+            ),
+            SizedBox(height: getHeight() * .02),
+          ],
         ),
       ),
     );

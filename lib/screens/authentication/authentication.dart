@@ -46,8 +46,7 @@ class Authentication extends StatelessWidget {
               onTap: () {
                 roleProvider.setRole(UserRole.user);
                 context.push(Routes.signupRoute);
-                // context.push(Routes.customerHomeRoute);
-              },
+                },
             ),
 
             AuthSelectionCard(
@@ -59,7 +58,8 @@ class Authentication extends StatelessWidget {
               svgString: Assets.knifeForkIcon,
               onTap: () {
                 roleProvider.setRole(UserRole.restaurant);
-                context.push(Routes.signupRoute);
+                // context.push(Routes.signupRoute);
+                context.push(Routes.reClaimAccountRoute);
               },
             ),
             AuthSelectionCard(
@@ -71,7 +71,8 @@ class Authentication extends StatelessWidget {
               svgString: Assets.leisureIcon,
               onTap: () {
                 roleProvider.setRole(UserRole.leisure);
-                context.push(Routes.signupRoute);
+                // context.push(Routes.signupRoute);
+                context.push(Routes.reClaimAccountRoute);
               },
             ),
             AuthSelectionCard(
@@ -83,7 +84,8 @@ class Authentication extends StatelessWidget {
               svgString: Assets.wellnessIcon,
               onTap: () {
                 roleProvider.setRole(UserRole.wellness);
-                context.push(Routes.restaurantBottomTabRoute);
+                // context.push(Routes.restaurantBottomTabRoute);
+                context.push(Routes.reClaimAccountRoute);
               },
             ),
           ],
