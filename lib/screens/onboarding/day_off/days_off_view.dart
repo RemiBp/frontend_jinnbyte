@@ -162,7 +162,7 @@ class _DaysOffViewState extends State<DaysOffView> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Continue',
+                  buttonText: 'Save Changes',
                   onTap: () {
                   },
                   buttonWidth: getWidth() * .42,

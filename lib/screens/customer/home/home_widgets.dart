@@ -21,6 +21,7 @@ class PostCard extends StatelessWidget {
       children: [
         // Top bar with user info
         ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: CircleAvatar(
             radius: getHeight() * .03,
             backgroundImage: NetworkImage(
@@ -40,38 +41,31 @@ class PostCard extends StatelessWidget {
           ),
           trailing: Icon(Icons.more_vert),
         ),
-
         // Post description
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CustomText(
-            text:
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum',
-            fontSize: sizes?.fontSize14,
-            giveLinesAsText: true,
-          ),
+        CustomText(
+          text:
+              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum',
+          fontSize: sizes?.fontSize14,
+          giveLinesAsText: true,
         ),
-
+        SizedBox(height: getHeight() * 0.01),
         // Hashtags
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: Wrap(
-            spacing: 8,
-            children:
-                [
-                      '#cozy',
-                      '#outdoor_seating',
-                      '#live_music',
-                      '#family_friendly',
-                      '#budget_friendly',
-                    ]
-                    .map(
-                      (tag) => Text(tag, style: TextStyle(color: Colors.blue)),
-                    )
-                    .toList(),
-          ),
+        Wrap(
+          spacing: 8,
+          children:
+              [
+                    '#cozy',
+                    '#outdoor_seating',
+                    '#live_music',
+                    '#family_friendly',
+                    '#budget_friendly',
+                  ]
+                  .map(
+                    (tag) => Text(tag, style: TextStyle(color: Colors.blue)),
+                  )
+                  .toList(),
         ),
-
+        SizedBox(height: getHeight() * 0.01),
         // Image carousel with indicator
         Stack(
           children: [

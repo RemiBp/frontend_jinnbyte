@@ -1,20 +1,25 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class DashboardCard extends StatelessWidget {
   final String? header;
   final String? price;
   final String? duration;
+  final bool? hideDetailText;
   final double? width;
   final String? percentage;
-  const DashboardCard({super.key, this.price, this.header, this.percentage, this.width, this.duration});
+  const DashboardCard({super.key, this.price, this.header, this.percentage, this.width, this.duration, this.hideDetailText});
 
   @override
   Widget build(BuildContext context) {
+    final role = context.read<RoleProvider>().role;
     return Container(
       padding: EdgeInsets.all(getHeightRatio() * 16),
       width: width,
@@ -45,7 +50,9 @@ class DashboardCard extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: AppColors.blackColor,
           ),
+          if(!(role == UserRole.restaurant))
           SizedBox(height: getHeightRatio() * 6),
+          if(!(role == UserRole.restaurant))
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

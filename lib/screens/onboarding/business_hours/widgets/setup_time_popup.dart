@@ -125,7 +125,7 @@ class _SetupTimePopupState extends State<SetupTimePopup> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: '"Set Up Time"',
+                  buttonText: 'Set Up Time',
                   onTap: () {
                     widget.onConfirm(startTime!, endTime!);
                     Navigator.pop(context);

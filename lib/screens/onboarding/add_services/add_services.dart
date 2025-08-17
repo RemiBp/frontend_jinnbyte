@@ -101,7 +101,7 @@ class _AddServicesState extends State<AddServices> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
-                      buttonText: 'Back',
+                      buttonText: 'Cancel',
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -112,7 +112,7 @@ class _AddServicesState extends State<AddServices> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Continue',
+                      buttonText: 'Save Changes',
                       onTap: () {
 
                       },

@@ -838,6 +838,7 @@ class UserTile extends StatelessWidget {
   final String username;
   final String imageUrl;
   final String? btnText;
+  final bool? hideButton;
 
   const UserTile({
     super.key,
@@ -845,6 +846,7 @@ class UserTile extends StatelessWidget {
     this.btnText,
     required this.username,
     required this.imageUrl,
+    this.hideButton
   });
 
   @override
@@ -875,6 +877,7 @@ class UserTile extends StatelessWidget {
             ],
           ),
         ),
+        if(hideButton == false)
         Container(
           padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.03, vertical: getHeight() * 0.01),
           decoration: BoxDecoration(

@@ -31,21 +31,21 @@ class _MenuViewState extends State<MenuView> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Menu"),
+      appBar: CommonAppBar(title: "Menu", showEditButton: true,),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: getHeight() * 0.015),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
-              child: CustomText(
-                text: "Set Up Your Menu",
-                fontSize: sizes?.fontSize28,
-                fontWeight: FontWeight.w600,
-                color: AppColors.blackColor,
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
+            //   child: CustomText(
+            //     text: "Set Up Your Menu",
+            //     fontSize: sizes?.fontSize28,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.blackColor,
+            //   ),
+            // ),
             SizedBox(height: getHeight() * 0.02),
             Expanded(
               child: ListView.builder(
@@ -103,7 +103,7 @@ class _MenuViewState extends State<MenuView> {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Continue',
+                    buttonText: 'Save Changes',
                     onTap: () {},
                     buttonWidth: getWidth() * .42,
                     backgroundColor: AppColors.getPrimaryColorFromContext(context),

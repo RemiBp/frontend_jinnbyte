@@ -188,7 +188,7 @@ class _SettingViewState extends State<SettingView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LanguageSelection()),
+                      MaterialPageRoute(builder: (context) => LanguageSelection(isFromProfile: true,)),
                     );
                   },
                 ),
