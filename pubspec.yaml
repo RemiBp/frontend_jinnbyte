@@ -93,23 +93,65 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+#  fonts:
+#    - family: OnestRegular
+#      fonts:
+#        - asset: assets/fonts/onset/OnestRegular1602-hint.ttf
+#          weight: 400
+#      - family: OnestRegular
+#        fonts:
+#          - asset: assets/fonts/onset/OnestRegular1602-hint.ttf
+#            weight: 400
+#      - family: OnestMedium
+#        fonts:
+#          - asset: assets/fonts/onset/OnestMedium1602-hint.ttf
+#            weight: 500
+#      - family: OnestBold
+#        fonts:
+#          - asset: assets/fonts/onset/OnestBold1602-hint.ttf
+#            weight: 700
+#      - family: OnestExtraBold
+#        fonts:
+#          - asset: assets/fonts/onset/OnestExtraBold1602-hint.ttf
+#            weight: 800
+
   fonts:
-      - family: OnestRegular
-        fonts:
-          - asset: assets/fonts/onset/OnestRegular1602-hint.ttf
-            weight: 400
-      - family: OnestMedium
-        fonts:
-          - asset: assets/fonts/onset/OnestMedium1602-hint.ttf
-            weight: 500
-      - family: OnestBold
-        fonts:
-          - asset: assets/fonts/onset/OnestBold1602-hint.ttf
-            weight: 700
-      - family: OnestExtraBold
-        fonts:
-          - asset: assets/fonts/onset/OnestExtraBold1602-hint.ttf
-            weight: 800
+    - family: OnestThin
+      fonts:
+        - asset: assets/fonts/onset/Onest-Thin.ttf
+          weight: 100
+    - family: OnestExtraLight
+      fonts:
+        - asset: assets/fonts/onset/Onest-ExtraLight.ttf
+          weight: 200
+    - family: OnestLight
+      fonts:
+        - asset: assets/fonts/onset/Onest-Light.ttf
+          weight: 300
+    - family: OnestRegular
+      fonts:
+        - asset: assets/fonts/onset/Onest-Regular.ttf
+          weight: 400
+    - family: OnestMedium
+      fonts:
+        - asset: assets/fonts/onset/Onest-Medium.ttf
+          weight: 500
+    - family: OnestSemiBold
+      fonts:
+        - asset: assets/fonts/onset/Onest-SemiBold.ttf
+          weight: 600
+    - family: OnestBold
+      fonts:
+        - asset: assets/fonts/onset/Onest-Bold.ttf
+          weight: 700
+    - family: OnestExtraBold
+      fonts:
+        - asset: assets/fonts/onset/Onest-ExtraBold.ttf
+          weight: 800
+    - family: OnestBlack
+      fonts:
+        - asset: assets/fonts/onset/Onest-Black.ttf
+          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

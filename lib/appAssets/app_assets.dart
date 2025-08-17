@@ -2,10 +2,20 @@ class Assets {
   Assets._();
 
   //fonts
+  // static const String onsetRegular = "OnestRegular";
+  // static const String onsetMedium = "OnestMedium";
+  // static const String onsetSemiBold = "OnestBold";
+  // static const String onsetBold = "OnestExtraBold";
+
+  static const String onestThin = "OnestThin";
+  static const String onestExtraLight = "OnestExtraLight";
+  static const String onestLight = "OnestLight";
   static const String onsetRegular = "OnestRegular";
   static const String onsetMedium = "OnestMedium";
-  static const String onsetSemiBold = "OnestBold";
-  static const String onsetBold = "OnestExtraBold";
+  static const String onsetSemiBold = "OnestSemiBold";
+  static const String onsetBold = "OnestBold";
+  static const String onestExtraBold = "OnestExtraBold";
+  static const String onestBlack = "OnestBlack";
 
   //app icons
   static const String splashImage = "assets/images/splash_image.png";
@@ -52,6 +62,8 @@ class Assets {
   static const String noNotificationIcon = "assets/icons/no_notification_icon.png";
   static const String reviewsIcon = "assets/icons/reviews_icon.svg";
   static const String settingIcon = "assets/icons/setting_icon.png";
+  static const String addUserIcon = "assets/icons/add_user_icon.png";
+  static const String chatSentIcon = "assets/icons/chat_sent.png";
 
   static const String messagesIcon = "assets/icons/messages_icon.svg";
   static const String editProfileIcon = "assets/icons/edit_profile_icon.svg";
@@ -83,6 +95,7 @@ class Assets {
 
   static const String galleryImage = "assets/images/gallery_image.png";
   static const String originMapImage = "assets/images/origin_map_image.png";
+  static const String originMapImageRes = "assets/images/origin_map_image_res.png";
   static const String mapImage = "assets/images/map.png";
   static const String choiceImage = "assets/images/choice_image.png";
   static const String verticalLine = "assets/images/vertical_line.png";

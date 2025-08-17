@@ -76,5 +76,6 @@
   "logout": "Logout",
   "deleteAccount": "Delete Account",
   "cuisine": "Cuisine",
-  "services": "Services"
+  "services": "Services",
+  "update": "Update"
 }

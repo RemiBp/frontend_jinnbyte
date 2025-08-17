@@ -28,10 +28,17 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           if (showBackArrow)
-            IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.blackColor,),
-              onPressed: () => Navigator.pop(context),
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Padding(
+                padding: EdgeInsets.only(right: getWidth() * 0.02),
+                child: const Icon(Icons.arrow_back, color: AppColors.blackColor,),
+              ),
             ),
+            // IconButton(
+            //   icon: const Icon(Icons.arrow_back, color: AppColors.blackColor,),
+            //   onPressed: () => Navigator.pop(context),
+            // ),
           Expanded(
             child: CustomText(
               text: title,

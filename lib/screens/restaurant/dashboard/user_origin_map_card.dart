@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class UserOriginMapCard extends StatelessWidget {
   const UserOriginMapCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final role = context.read<RoleProvider>().role;
     return Container(
       padding: EdgeInsets.all(getHeightRatio() * 16),
       decoration: BoxDecoration(
@@ -33,7 +37,11 @@ class UserOriginMapCard extends StatelessWidget {
             color: AppColors.primarySlateColor,
           ),
           SizedBox(height: getHeightRatio() * 16),
-          Image.asset(Assets.originMapImage, fit: BoxFit.cover,)
+          if(!(role == UserRole.restaurant))
+            role == UserRole.restaurant?
+            Image.asset(Assets.originMapImageRes, fit: BoxFit.cover):
+          Image.asset(Assets.originMapImage, fit: BoxFit.cover),
+
         ],
       ),
     );

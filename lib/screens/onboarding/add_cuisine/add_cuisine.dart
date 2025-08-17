@@ -95,7 +95,7 @@ class _AddCuisineState extends State<AddCuisine> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    buttonText: 'Back',
+                    buttonText: 'Cancel',
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -106,7 +106,7 @@ class _AddCuisineState extends State<AddCuisine> {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Continue',
+                    buttonText: 'Save Changes',
                     onTap: () {
                     },
                     buttonWidth: getWidth() * .42,
