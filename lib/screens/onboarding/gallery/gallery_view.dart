@@ -109,7 +109,7 @@ class _GalleryViewState extends State<GalleryView> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Continue',
+                  buttonText: 'Save Changes',
                   onTap: () {
 
                   },

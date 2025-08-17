@@ -69,6 +69,7 @@ class CustomField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
+          SizedBox(height: getHeight() * .006),
           CustomText(
             text: label!,
             fontSize: sizes!.fontSize14,

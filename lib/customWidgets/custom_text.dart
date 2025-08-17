@@ -46,7 +46,7 @@ class CustomText extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           color: color ?? Colors.black,
-          fontFamily: fontFamily ?? Assets.onsetRegular,
+          fontFamily: fontFamily ?? _resolveFontFamily(),
           decoration: textDecoration,
           decorationColor:decorationColor?? AppColors.restaurantPrimaryColor,
         ),
@@ -57,5 +57,33 @@ class CustomText extends StatelessWidget {
         maxLines: lines,
       ),
     );
+  }
+
+
+  String _resolveFontFamily() {
+    if (fontFamily != null) return fontFamily!;
+
+    switch (fontWeight) {
+      case FontWeight.w100:
+        return Assets.onestThin;
+      case FontWeight.w200:
+        return Assets.onestExtraLight;
+      case FontWeight.w300:
+        return Assets.onestLight;
+      case FontWeight.w400:
+        return Assets.onsetRegular;
+      case FontWeight.w500:
+        return Assets.onsetMedium;
+      case FontWeight.w600:
+        return Assets.onsetSemiBold;
+      case FontWeight.w700:
+        return Assets.onsetBold;
+      case FontWeight.w800:
+        return Assets.onestExtraBold;
+      case FontWeight.w900:
+        return Assets.onestBlack;
+      default:
+        return Assets.onsetRegular; // fallback
+    }
   }
 }

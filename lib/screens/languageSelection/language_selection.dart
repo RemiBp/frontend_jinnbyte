@@ -1,3 +1,4 @@
+import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/res.dart';
@@ -9,10 +10,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../appAssets/app_assets.dart';
+import '../../customWidgets/custom_button.dart';
 import '../../routes/routes.dart';
 
 class LanguageSelection extends StatefulWidget {
-  const LanguageSelection({super.key});
+  final bool? isFromProfile;
+  const LanguageSelection({super.key, this.isFromProfile});
 
   @override
   _LanguageSelectionState createState() => _LanguageSelectionState();
@@ -41,6 +44,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
   Widget build(BuildContext context) {
     final provider = Provider.of<LanguageSelectionProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -72,6 +76,34 @@ class _LanguageSelectionState extends State<LanguageSelection> {
 
             const SizedBox(height: 32),
             Spacer(),
+            widget.isFromProfile??false?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  buttonText: 'Cancel',
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: Colors.transparent,
+                  borderColor: AppColors.blackColor,
+                  textColor: AppColors.blackColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+                CustomButton(
+                  buttonText: 'Save Changes',
+                  onTap: () {
+
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  borderColor: Colors.transparent,
+                  textColor: Colors.white,
+                  textFontWeight: FontWeight.w700,
+                ),
+              ],
+            ):
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -82,14 +114,14 @@ class _LanguageSelectionState extends State<LanguageSelection> {
                   context.go(Routes.signupRoute);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
+                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: CustomText(
-                  text: al.continueText,
+                  text: al.update,
                   fontSize: sizes?.fontSize16,
                   fontFamily: Assets.onsetSemiBold,
                   color: Colors.white,
@@ -110,9 +142,10 @@ class _LanguageSelectionState extends State<LanguageSelection> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : Colors.white,
+          color: isSelected ? AppColors.getPrimaryColorFromContext(context).withAlpha(20) : Colors.white,
           border: Border.all(
-            color: isSelected ? Colors.lightBlue : Colors.grey.shade300,
+            // color: isSelected ? Colors.lightBlue : Colors.grey.shade300,
+            color: isSelected ? AppColors.getPrimaryColorFromContext(context) : AppColors.greyBordersColor,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(12),
@@ -128,7 +161,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
             ),
             const Spacer(),
             if (isSelected)
-              const Icon(Icons.check, color: Colors.lightBlue, size: 20),
+              Icon(Icons.check, color: AppColors.getPrimaryColorFromContext(context), size: 20),
           ],
         ),
       ),

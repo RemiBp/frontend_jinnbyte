@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/customer/chat/user_chat/user_chat_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_posts_view.dart';
@@ -121,7 +122,7 @@ class _CustomerProfileTabBarState extends State<CustomerProfileTabBar> with Sing
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ChatView()),
+                        MaterialPageRoute(builder: (context) => UserChatView()),
                       );
                     },
                     backgroundColor: AppColors.greyColor,

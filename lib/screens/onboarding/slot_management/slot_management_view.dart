@@ -288,7 +288,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Continue',
+                      buttonText: 'Save Changes',
                       onTap: () {
                       },
                       buttonWidth: getWidth() * .42,

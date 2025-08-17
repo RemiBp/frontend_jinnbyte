@@ -174,7 +174,7 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
         backgroundColor: AppColors.whiteColor,
         height: getHeight() * .1,
         activeIndex: _bottomNavIndex,
-        splashColor: Colors.transparent,
+        splashColor: AppColors.getPrimaryColorFromContext(context),
         notchAndCornersAnimation: borderRadiusAnimation,
         splashSpeedInMilliseconds: 300,
         notchSmoothness: NotchSmoothness.defaultEdge,

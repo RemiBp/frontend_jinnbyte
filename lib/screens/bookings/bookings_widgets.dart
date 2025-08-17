@@ -57,7 +57,7 @@ class BookingCard extends StatelessWidget {
               children: [
                 CustomText(
                   text: "Booking ID: #3956839",
-                  fontSize: sizes?.fontSize16,
+                  fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.blackColor,
                 ),
@@ -134,8 +134,8 @@ class BookingCard extends StatelessWidget {
                         children: [
                           Image.asset(
                             Assets.guestsIcon,
-                            width: getWidthRatio() * 12,
-                            height:getHeightRatio() * 12,
+                            width: getWidthRatio() * 16,
+                            height:getHeightRatio() * 16,
                             color: AppColors.getPrimaryColorFromContext(context),
                           ),
                           SizedBox(width: getWidthRatio() * 4),
@@ -155,7 +155,7 @@ class BookingCard extends StatelessWidget {
                         children: [
                           Image.asset(
                             Assets.calenderIcon,
-                            width: getWidthRatio() * 12,
+                            width: getWidthRatio() * 16,
                             height:getHeightRatio() * 12,
                             color: AppColors.getPrimaryColorFromContext(context),
                           ),
@@ -180,8 +180,8 @@ class BookingCard extends StatelessWidget {
                         children: [
                           Image.asset(
                             Assets.priceIcon,
-                            width: getWidthRatio() * 12,
-                            height:getHeightRatio() * 12,
+                            width: getWidthRatio() * 16,
+                            height:getHeightRatio() * 16,
                             color: AppColors.getPrimaryColorFromContext(context),
                           ),
                           SizedBox(width: getWidthRatio() * 4),
