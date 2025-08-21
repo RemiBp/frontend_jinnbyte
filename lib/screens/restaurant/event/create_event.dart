@@ -35,16 +35,16 @@ class _CreateEventState extends State<CreateEvent> {
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
 
-  List<XFile> _images = [];
+  List<XFile> images = [];
   final ImagePicker _picker = ImagePicker();
 
   // Function to pick images
   Future<void> _pickImages() async {
-    if (_images.length >= 5) return;
+    if (images.length >= 5) return;
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _images.add(pickedFile);
+        images.add(pickedFile);
       });
     }
   }
@@ -52,7 +52,7 @@ class _CreateEventState extends State<CreateEvent> {
   // Remove image
   void _removeImage(int index) {
     setState(() {
-      _images.removeAt(index);
+      images.removeAt(index);
     });
   }
 
@@ -174,13 +174,13 @@ class _CreateEventState extends State<CreateEvent> {
                     Wrap(
                       spacing: 10,
                       runSpacing: 10,
-                      children: List.generate(_images.length, (index) {
+                      children: List.generate(images.length, (index) {
                         return Stack(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.file(
-                                File(_images[index].path),
+                                File(images[index].path),
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,

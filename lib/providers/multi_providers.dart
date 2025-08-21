@@ -1,3 +1,4 @@
+import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account_provider.dart';
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
@@ -34,6 +35,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<ReclaimAccountProvider>(
     create: (_) => ReclaimAccountProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<NetworkProvider>(
+    create: (_) => NetworkProvider(),
     lazy: true,
   ),
 ];

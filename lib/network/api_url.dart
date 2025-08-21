@@ -10,3 +10,4 @@ const String resendFgOtpApiUrl = "$baseUrl/api/producer/auth/resendForgotPasswor
 const String forgotPasswordApiUrl = "$baseUrl/api/producer/auth/forgotPassword";
 const String resetPasswordApiUrl = "$baseUrl/api/producer/auth/resetPassword";
 const String submitDocsApiUrl = "$baseUrl/api/producer/auth/submitDocuments";
+const String preSignedFileUploadApiUrl = "$baseUrl/api/producer/auth/getPreSignedUrl";

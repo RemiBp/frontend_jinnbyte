@@ -26,10 +26,6 @@ class Loader {
     Navigator.of(context).pop();
   }
 
-  hideWhenBottomPersist(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-
 
 }
 
