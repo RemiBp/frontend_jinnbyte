@@ -20,6 +20,7 @@ import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
 import '../../onboarding/menu/menu_view.dart';
+import '../profile/profile.dart';
 import '../profile_menu/badges/badges_view.dart';
 import '../profile_menu/profile_menu_widgets.dart';
 
@@ -53,10 +54,10 @@ class _SettingViewState extends State<SettingView> {
                   title: al.editProfile,
                   leadingAssetPath: Assets.editProfileIcon,
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => HomeView()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
                   },
                 ),
                 ProfileOptionButton(
@@ -102,31 +103,13 @@ class _SettingViewState extends State<SettingView> {
                       );
                     },
                   ),
+                if(!(role == UserRole.user))
                 ProfileOptionButton(
                   title: al.documents,
                   leadingAssetPath: Assets.documentsIcon,
                   onTap: () {},
                 ),
-                ProfileOptionButton(
-                  title: al.services,
-                  leadingAssetPath: Assets.businessHourIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddServices()),
-                    );
-                  },
-                ),
-                ProfileOptionButton(
-                  title: al.cuisine,
-                  leadingAssetPath: Assets.businessHourIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddCuisine()),
-                    );
-                  },
-                ),
+                if(role == UserRole.restaurant || role == UserRole.wellness)
                 ProfileOptionButton(
                   title: al.businessHours,
                   leadingAssetPath: Assets.businessHourIcon,
@@ -139,6 +122,7 @@ class _SettingViewState extends State<SettingView> {
                     );
                   },
                 ),
+                if(role == UserRole.restaurant || role == UserRole.wellness)
                 ProfileOptionButton(
                   title: al.manageSlots,
                   leadingAssetPath: Assets.slotsIcon,
@@ -152,18 +136,31 @@ class _SettingViewState extends State<SettingView> {
                     );
                   },
                 ),
+                if(role == UserRole.restaurant)
                 ProfileOptionButton(
                   title: al.menu,
                   leadingAssetPath: Assets.menuIcon,
                   onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MenuView()),
-                  );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MenuView()),
+                    );
                   },
                 ),
+                if(role == UserRole.wellness)
                 ProfileOptionButton(
-                  title: al.gallery,
+                  title: al.services,
+                  leadingAssetPath: Assets.businessHourIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddServices()),
+                    );
+                  },
+                ),
+                if(role == UserRole.restaurant || role == UserRole.wellness)
+                ProfileOptionButton(
+                  title: "Gallery",
                   leadingAssetPath: Assets.galleryIcon,
                   onTap: () {
                     Navigator.push(
@@ -172,6 +169,7 @@ class _SettingViewState extends State<SettingView> {
                     );
                   },
                 ),
+                if(role == UserRole.restaurant || role == UserRole.wellness)
                 ProfileOptionButton(
                   title: al.unavailability,
                   leadingAssetPath: Assets.unavailabilityIcon,
@@ -179,6 +177,17 @@ class _SettingViewState extends State<SettingView> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => DaysOffView()),
+                    );
+                  },
+                ),
+                if(role == UserRole.restaurant)
+                ProfileOptionButton(
+                  title: al.cuisine,
+                  leadingAssetPath: Assets.businessHourIcon,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddCuisine()),
                     );
                   },
                 ),

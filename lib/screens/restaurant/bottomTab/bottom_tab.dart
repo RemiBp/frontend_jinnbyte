@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
+import '../../customer/explore/customer_explore/explore_view.dart';
 import '../../customer/profile/customer_profile/customer_profile_view.dart';
 import '../../wellness/wellness_profile/wellness_profile_view.dart';
 
@@ -39,21 +40,9 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
   late AnimationController _hideBottomBarAnimationController;
   UserRole role = UserRole.restaurant;
 
-  final labels = <String>["Home", "Dashboard", "Events", "Bookings", "Profile"];
-  final iconList = <String>[
-    Assets.homeIcon,
-    Assets.dashboardIcon,
-    Assets.eventsIcon,
-    Assets.bookingIcon,
-    Assets.profileIcon,
-  ];
-  final activeIconList = <String>[
-    Assets.homeActiveIcon,
-    Assets.dashboardActiveIcon,
-    Assets.eventActiveIcon,
-    Assets.bookingActiveIcon,
-    Assets.profileActiveIcon,
-  ];
+  late List<String> labels;
+  late List<String> iconList;
+  late List<String> activeIconList;
 
   List<Widget> widgets = [
 
@@ -64,10 +53,33 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     super.initState();
     final roleProvider = Provider.of<RoleProvider>(context, listen: false);
     role = roleProvider.role;
+    labels = [
+      "Home",
+      "Dashboard",
+      role == UserRole.user ? "Explore" : "Events",
+      "Bookings",
+      "Profile"
+    ];
+    iconList = [
+      Assets.homeIcon,
+      Assets.dashboardIcon,
+      role == UserRole.user ? Assets.exploreIcon : Assets.eventsIcon,
+      Assets.bookingIcon,
+      Assets.profileIcon,
+    ];
+
+    activeIconList = [
+      Assets.homeActiveIcon,
+      Assets.dashboardActiveIcon,
+      role == UserRole.user ? Assets.exploreActiveIcon : Assets.eventActiveIcon,
+      Assets.bookingActiveIcon,
+      Assets.profileActiveIcon,
+    ];
+
     widgets = [
       role == UserRole.wellness ? WellnessHome() : RestaurantHome(),
       HomeView(),
-      Events(),
+      role == UserRole.user?ExploreView():Events(),
       BookingsView(),
       if (role == UserRole.user) CustomerProfileView(),
       if (role == UserRole.wellness) WellnessProfileView(),

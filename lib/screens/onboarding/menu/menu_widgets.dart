@@ -9,10 +9,11 @@ class MenuGroupWidget extends StatelessWidget {
   final MenuGroup menuGroup;
   final Function onAddDish;
   final bool? showOption;
+  final bool? hideBorder;
   final String? optionText;
   final String? header;
 
-  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish, this.showOption, this.optionText, this.header});
+  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish, this.hideBorder, this.showOption, this.optionText, this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,37 @@ class MenuGroupWidget extends StatelessWidget {
               ),
             ],
           ),
+        ),
+        // SizedBox(height: getHeight() * 0.02),
+        ...menuGroup.dishes.map((dish) => DishItemWidget(dish: dish, showOption: showOption,)),
+        hideBorder??false?SizedBox():
+        Divider(height: getHeight() * 0.03),
+      ],
+    );
+  }
+}
+
+
+class MenuGroupWithoutOptionWidget extends StatelessWidget {
+  final MenuGroup menuGroup;
+  final Function onAddDish;
+  final bool? showOption;
+  final bool? hideBorder;
+  final String? optionText;
+  final String? header;
+
+  const MenuGroupWithoutOptionWidget({super.key, required this.menuGroup, required this.onAddDish, this.hideBorder, this.showOption, this.optionText, this.header});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          text: header??'${menuGroup.title} (${menuGroup.dishes.length})',
+          fontSize: sizes?.fontSize16,
+          fontWeight: FontWeight.w600,
+          color: AppColors.blackColor,
         ),
         // SizedBox(height: getHeight() * 0.02),
         ...menuGroup.dishes.map((dish) => DishItemWidget(dish: dish, showOption: showOption,)),
