@@ -979,6 +979,7 @@ class FavouriteRestaurantCard extends StatelessWidget {
   final String restaurantName;
   final String address;
   final bool isFavourite;
+  final EdgeInsetsGeometry? margin;
   final VoidCallback? onFavouriteTap;
   final VoidCallback? onRestaurantTap;
 
@@ -990,6 +991,7 @@ class FavouriteRestaurantCard extends StatelessWidget {
     this.isFavourite = true,
     this.onFavouriteTap,
     this.onRestaurantTap,
+    this.margin
   });
 
   @override
@@ -997,7 +999,8 @@ class FavouriteRestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: onRestaurantTap,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.015),
+        height: getHeightRatio() * 210,
+        margin: margin?? EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.015),
         padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.015),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
@@ -1015,71 +1018,56 @@ class FavouriteRestaurantCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image + Favourite Button Stack
-            Stack(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          Assets.galleryImage,
-                          height: getHeight() * 0.2,
-                          fit: BoxFit.cover,
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      Assets.galleryImage,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: getHeight() * 0.015,
+                    right: getWidth() * 0.04,
+                    child: GestureDetector(
+                      onTap: onFavouriteTap,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
                         ),
-                        // Uncomment this to use CachedNetworkImage
-                        // child: CachedNetworkImage(
-                        //   height: getHeight() * 0.2,
-                        //   imageUrl: imageUrl,
-                        //   fit: BoxFit.cover,
-                        //   placeholder: (context, url) => CustomShimmerEffect(
-                        //     child: Container(color: AppColors.greyNoButton),
-                        //   ),
-                        //   errorWidget: (context, url, error) =>
-                        //       Image.asset(Assets.restaurantPlaceHolder, fit: BoxFit.cover),
-                        // ),
+                        child: Icon(
+                          isFavourite ? Icons.favorite : Icons.favorite_border,
+                          color: AppColors.redColor,
+                          size: 20,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                Positioned(
-                  top: getHeight() * 0.015,
-                  right: getWidth() * 0.04,
-                  child: GestureDetector(
-                    onTap: onFavouriteTap,
+                  ),
+                  Positioned(
+                    top: getHeight() * 0.015,
+                    left: getWidth() * 0.04,
                     child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                      padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.01),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.getPrimaryColorFromContext(context).withAlpha(90),
+                        // shape: BoxShape.circle,
                       ),
-                      child: Icon(
-                        isFavourite ? Icons.favorite : Icons.favorite_border,
-                        color: AppColors.redColor,
-                        size: 20,
+                      child: CustomText(
+                        text: "Wellness",
+                        color: AppColors.getPrimaryColorFromContext(context),
+                        fontSize: sizes?.fontSize12,
+                        fontWeight: FontWeight.w500
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: getHeight() * 0.015,
-                  left: getWidth() * 0.04,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.01),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.getPrimaryColorFromContext(context).withAlpha(90),
-                      // shape: BoxShape.circle,
-                    ),
-                    child: CustomText(
-                      text: "Wellness",
-                      color: AppColors.getPrimaryColorFromContext(context),
-                      fontSize: sizes?.fontSize12,
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: getHeight() * 0.01),
             CustomText(

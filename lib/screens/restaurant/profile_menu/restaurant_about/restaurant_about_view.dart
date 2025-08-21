@@ -6,6 +6,8 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
+import '../../../customer/explore/customer_gallery/customer_gallery_screen.dart';
+import '../../../customer/explore/full_menu/full_menu_view.dart';
 import '../../../onboarding/gallery/gallery_widgets.dart';
 import '../../../onboarding/menu/menu_widgets.dart';
 
@@ -76,34 +78,12 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
               header: "Menu",
               optionText: "See Full Menu",
               onAddDish: (){
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return AddDishBottomSheet(context: context);
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FullMenuView()),
                 );
               },
             ),
-            // CustomText(
-            //   text: "Aesthetic Care & Well-Being",
-            //   fontSize: sizes?.fontSize14,
-            //   fontWeight: FontWeight.w500,
-            //   color: AppColors.blackColor,
-            // ),
-            // CustomText(
-            //   text: "Hair Care & Hair Services",
-            //   fontSize: sizes?.fontSize14,
-            //   fontWeight: FontWeight.w500,
-            //   color: AppColors.blackColor,
-            // ),
-            // CustomText(
-            //   text: "Nail Care & Body Modifications",
-            //   fontSize: sizes?.fontSize14,
-            //   fontWeight: FontWeight.w500,
-            //   color: AppColors.blackColor,
-            // ),
-            // Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -113,11 +93,19 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackColor,
                 ),
-                CustomText(
-                  text: "See Full Gallery",
-                  fontSize: sizes?.fontSize14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.getPrimaryColorFromContext(context),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ImageGalleryScreen(restaurantId: "3",)),
+                    );
+                  },
+                  child: CustomText(
+                    text: "See Full Gallery",
+                    fontSize: sizes?.fontSize14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.getPrimaryColorFromContext(context),
+                  ),
                 ),
               ],
             ),

@@ -64,6 +64,8 @@ class Assets {
   static const String settingIcon = "assets/icons/setting_icon.png";
   static const String addUserIcon = "assets/icons/add_user_icon.png";
   static const String chatSentIcon = "assets/icons/chat_sent.png";
+  static const String exploreActiveIcon = "assets/icons/explore_active_icon.svg";
+  static const String exploreIcon = "assets/icons/explore_icon.svg";
 
   static const String messagesIcon = "assets/icons/messages_icon.svg";
   static const String editProfileIcon = "assets/icons/edit_profile_icon.svg";
@@ -77,9 +79,12 @@ class Assets {
   static const String logoutIcon = "assets/icons/logout_icon.svg";
   static const String languageIcon = "assets/icons/language_icon.svg";
   static const String profileAvatar = "assets/images/profile_avatar.svg";
-  static const badgeIcon = "assets/icons/badge_icon.svg";
-  static const blockUserIcon = "assets/icons/block_user_icon.svg";
-  static const bookmarkIcon = "assets/icons/bookmark_icon.svg";
+  static const String badgeIcon = "assets/icons/badge_icon.svg";
+  static const String blockUserIcon = "assets/icons/block_user_icon.svg";
+  static const String bookmarkIcon = "assets/icons/bookmark_icon.svg";
+  static const String calender = "assets/icons/calender_svg.svg";
+  static const String phoneIcon = "assets/icons/phone_icon.svg";
+  static const String ticketIcon = "assets/icons/ticket_icon.svg";
 
 
   static const String editIcon = "assets/icons/edit_icon.png";
