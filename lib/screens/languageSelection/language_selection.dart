@@ -111,7 +111,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
                   final locale = selectedLanguage == "English" ? "en" : "fr";
                   //
                   provider.changeLocale(locale);
-                  context.go(Routes.signupRoute);
+                  context.go(Routes.authRoute);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

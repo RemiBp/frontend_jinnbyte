@@ -11,6 +11,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class CreateEvent extends StatefulWidget {
@@ -118,7 +119,7 @@ class _CreateEventState extends State<CreateEvent> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: BackButton(color: Colors.black),
-        title: Text("Create Event", style: TextStyle(color: Colors.black)),
+        title: Text(al.createEvent, style: TextStyle(color: Colors.black)),
         centerTitle: false,
       ),
       body: SingleChildScrollView(
@@ -132,19 +133,19 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle("Event Details"),
+                    _buildSectionTitle(al.eventDetails,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
                       hint: "E.g: Brochette boeuf...",
-                      label: "Event Name",
+                      label: al.eventName,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       height: getHeight() * .1,
                       borderColor: AppColors.greyBordersColor,
-                      hint: "Describe your event...",
-                      label: "Description",
+                      hint: al.eventDescriptionPlaceholder,
+                      label: al.description,
                     ),
                   ],
                 ),
@@ -157,12 +158,12 @@ class _CreateEventState extends State<CreateEvent> {
                   children: [
                     _buildSectionTitle("Event Gallery"),
                     CustomText(
-                      text: "Upload Event Images*",
+                      text: al.uploadEventImages,
                       fontSize: sizes?.fontSize14,
                       fontFamily: Assets.onsetMedium,
                     ),
                     CustomText(
-                      text: "Upload up to 5 images",
+                      text: al.uploadEventImages,
                       fontSize: sizes?.fontSize12,
                     ),
                     SizedBox(height: 12),
@@ -215,18 +216,18 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle("Location"),
+                    _buildSectionTitle(al.location,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
-                      hint: "Restaurant name or venue",
-                      label: "Venue Name",
+                      hint: al.restaurantOrVenue,
+                      label: al.venueName,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
-                      hint: "Address of venue",
-                      label: "Address",
+                      hint: al.venueAddress,
+                      label: al.address,
                     ),
                   ],
                 ),
@@ -237,18 +238,18 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle("Capacity & Pricing"),
+                    _buildSectionTitle(al.capacityPricing,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
-                      hint: "Maximum number of persons",
-                      label: "Maximum Capacity",
+                      hint: al.maxPersons,
+                      label: al.maxCapacity,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
                       hint: "\$ 0.00",
-                      label: "Price per person",
+                      label: al.pricePerPerson,
                     ),
                   ],
                 ),
@@ -259,15 +260,15 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle("Schedule"),
+                    _buildSectionTitle(al.schedule,),
                     SizedBox(height: getHeight() * .02),
                     InkWell(
                       onTap: _pickDate,
                       child: AbsorbPointer(
                         child: CustomField(
                           borderColor: AppColors.greyBordersColor,
-                          hint: "Select date",
-                          label: "Event Date",
+                          hint: al.selectDate,
+                          label:al.eventDate,
                           suffixIcon: Icons.calendar_month_rounded,
                           obscure: true,
                           textEditingController: TextEditingController(
@@ -291,7 +292,7 @@ class _CreateEventState extends State<CreateEvent> {
                               child: CustomField(
                                 borderColor: AppColors.greyBordersColor,
                                 hint: "",
-                                label: "Start Time",
+                                label: al.startTime,
                                 suffixIconSvg: Assets.clockSvg,
                                 textEditingController: TextEditingController(
                                   text: _startTime?.format(context) ?? "",
@@ -309,7 +310,7 @@ class _CreateEventState extends State<CreateEvent> {
                               child: CustomField(
                                 borderColor: AppColors.greyBordersColor,
                                 hint: "",
-                                label: "End Time",
+                                label: al.endTime,
                                 suffixIconSvg: Assets.clockSvg,
                                 textEditingController: TextEditingController(
                                   text: _endTime?.format(context) ?? "",
@@ -332,7 +333,7 @@ class _CreateEventState extends State<CreateEvent> {
                     Expanded(
                       child: CustomButton(
                         backgroundColor: Colors.transparent,
-                        buttonText: "Save as Draft",
+                        buttonText: al.saveAsDraft,
                         textColor: Colors.black,
                         borderColor: Colors.black,
                         onTap: () {},
@@ -340,7 +341,7 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                     SizedBox(width: 12),
                     Expanded(
-                      child: CustomButton(buttonText: "Publish", onTap: () {}),
+                      child: CustomButton(buttonText: al.publish, onTap: () {}),
                     ),
                   ],
                 ),
@@ -375,7 +376,7 @@ class DottedBorderContainer extends StatelessWidget {
                 SvgPicture.asset(Assets.imageIcon),
                 SizedBox(height: 8),
                 CustomText(
-                  text: "Tap to upload image",
+                  text: al.tapToUpload,
                   fontSize: sizes?.fontSize14,
                   fontFamily: Assets.onsetMedium,
                 ),

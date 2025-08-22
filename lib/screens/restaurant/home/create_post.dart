@@ -11,6 +11,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../utilities/extensions.dart';
 
@@ -71,7 +72,7 @@ class _CreatePostState extends State<CreatePost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Post'),
+        title: Text(al.createPost,),
         leading: BackButton(),
         elevation: 0,
       ),
@@ -88,12 +89,12 @@ class _CreatePostState extends State<CreatePost> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "Photos",
+                  text: al.photos,
                   fontFamily: Assets.onsetMedium,
                   fontSize: sizes?.fontSize16,
                 ),
                 CustomText(
-                  text: "File supported: PNG, JPG",
+                  text: "${al.fileSupported} PNG, JPG",
                   fontSize: sizes?.fontSize12,
                 ),
                 GestureDetector(
@@ -113,12 +114,12 @@ class _CreatePostState extends State<CreatePost> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText(
-                              text: "Choose a file",
+                              text: al.chooseFile,
                               fontFamily: Assets.onsetMedium,
                               fontSize: sizes?.fontSize14,
                             ),
                             CustomText(
-                              text: "Up to 5 images",
+                              text: al.imageLimit,
                               fontSize: sizes?.fontSize14,
                               color: HexColor.fromHex("#686A82"),
                             ),
@@ -170,8 +171,8 @@ class _CreatePostState extends State<CreatePost> {
             CustomField(
               textEditingController: titleController,
               borderColor: AppColors.greyBordersColor,
-              hint: "e.g Sunday Brunch at The Maple House",
-              label: "Title",
+              hint:al.exampleTitle,
+              label:al.title,
             ),
             SizedBox(height: getHeight() * .02),
 
@@ -179,22 +180,22 @@ class _CreatePostState extends State<CreatePost> {
               textEditingController: descriptionController,
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
-              hint: "Describe your event...",
-              label: "Description",
+              hint: al.eventDescriptionPlaceholder,
+              label:al.description,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
               textEditingController: tagsController,
               borderColor: AppColors.greyBordersColor,
-              hint: "e.g: #cozy, #outdoor_seating",
-              label: "Tags",
+              hint: al.exampleTags,
+              label:al.tags,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
               textEditingController: locationController,
               borderColor: AppColors.greyBordersColor,
-              hint: "Add location",
-              label: "Location",
+              hint: al.addLocation,
+              label:al.location,
               suffixIcon:Icons.location_on,
               obscure: true,
             ),
@@ -210,7 +211,7 @@ class _CreatePostState extends State<CreatePost> {
                     child: CustomButton(
                       height: getHeight() * .055,
                       backgroundColor: Colors.transparent,
-                      buttonText: "Cancel",
+                      buttonText: al.cancel,
                       textColor: Colors.black,
                       borderColor: Colors.black,
                       onTap: () {},
@@ -220,7 +221,7 @@ class _CreatePostState extends State<CreatePost> {
                   Expanded(
                     child: CustomButton(
                       height: getHeight() * .055,
-                      buttonText: "Publish",
+                      buttonText: al.publish,
                       onTap: () async{
                         final title = titleController.text.trim();
                         final description = descriptionController.text.trim();
@@ -228,19 +229,19 @@ class _CreatePostState extends State<CreatePost> {
                         final location = locationController.text.trim();
                         if (images.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please Select at least one image");
+                              text:al.errorSelectImage,);
                         } else if (title.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please Enter title");
+                              text: al.errorEnterTitle,);
                         }else if (description.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please Enter description");
+                              text: al.errorEnterDescription,);
                         }else if (tags.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please Enter relative tags");
+                              text: al.errorEnterTags,);
                         }else if (location.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please Enter address");
+                              text: al.errorEnterAddress,);
                         }else{
                           for (var i in images) {
                             final bytes = await i.readAsBytes();

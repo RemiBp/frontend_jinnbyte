@@ -1,6 +1,7 @@
 import 'package:choice_app/appAssets/app_assets.dart';
 import 'package:choice_app/customWidgets/custom_button.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
+import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
@@ -41,7 +42,7 @@ class RestaurantHome extends StatelessWidget {
             SizedBox(height: getHeight() * .02),
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by username or name...",
+              hint: al.searchUserPlaceholder,
               prefixIconSvg: Assets.searchIcon,
             ),
             Expanded(
@@ -69,7 +70,7 @@ class RestaurantHome extends StatelessWidget {
         children: [
           Icon(Icons.add, color: Colors.white,),
           CustomText(
-            text: "Create",
+            text:al.create,
             fontSize: sizes?.fontSize12,
             fontFamily: Assets.onsetMedium,
             color: Colors.white,

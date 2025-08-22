@@ -6,6 +6,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import 'eventWidgets/delete_event.dart';
 import 'eventWidgets/event_info.dart';
@@ -84,14 +85,14 @@ class EventDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Participants",
+                        text:al.participants,
                         fontSize: sizes?.fontSize16,
                         fontFamily: Assets.onsetSemiBold,
                       ),
                       TextButton(
                         onPressed: () {},
                         child: CustomText(
-                          text: "Show All",
+                          text:al.showAll,
                           fontSize: sizes?.fontSize14,
                           fontFamily: Assets.onsetMedium,
                           color: AppColors.getPrimaryColorFromContext(context),
@@ -144,7 +145,7 @@ class EventDetails extends StatelessWidget {
                   Divider(color: AppColors.greyColor),
                   SizedBox(height: getHeight() * .02),
                   CustomText(
-                    text: "About Event",
+                    text: al.aboutEvent,
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
@@ -154,8 +155,8 @@ class EventDetails extends StatelessWidget {
                     trimMode: TrimMode.Line,
                     trimLines: 2,
                     colorClickableText: Colors.pink,
-                    trimCollapsedText: 'Read More',
-                    trimExpandedText: 'See Less',
+                    trimCollapsedText: al.readMore,
+                    trimExpandedText: al.seeLess,
                     style: TextStyle(
                       fontSize: sizes?.fontSize16,
                       color: AppColors.blackColor,
@@ -170,7 +171,7 @@ class EventDetails extends StatelessWidget {
                   Divider(color: AppColors.greyColor),
                   SizedBox(height: getHeight() * .02),
                   CustomText(
-                    text: "Location",
+                    text: al.location,
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
@@ -183,7 +184,7 @@ class EventDetails extends StatelessWidget {
                   Divider(color: AppColors.greyColor),
                   SizedBox(height: getHeight() * .02),
                   CustomText(
-                    text: "Socia Links",
+                    text: al.socialLinks,
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
@@ -212,7 +213,7 @@ class EventDetails extends StatelessWidget {
                     child: CustomButton(
                       height: getHeight() * .055,
                       backgroundColor: Colors.transparent,
-                      buttonText: "Delete",
+                      buttonText: al.delete,
                       textColor: Colors.red,
                       borderColor: Colors.red,
                       onTap: () {
@@ -229,7 +230,7 @@ class EventDetails extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       height: getHeight() * .055,
-                      buttonText: "Edit",
+                      buttonText: al.edit,
                       onTap: () {},
                     ),
                   ),

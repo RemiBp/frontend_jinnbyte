@@ -8,6 +8,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, this.isDraft = false});
@@ -172,7 +173,7 @@ class EventCard extends StatelessWidget {
                         child: CustomButton(
                           height: getHeight() * .055,
                           backgroundColor: Colors.transparent,
-                          buttonText: "Delete",
+                          buttonText: al.delete,
                           textColor: Colors.red,
                           borderColor: Colors.red,
                           onTap: () {
@@ -189,7 +190,7 @@ class EventCard extends StatelessWidget {
                       Expanded(
                         child: CustomButton(
                           height: getHeight() * .055,
-                          buttonText: "Edit",
+                          buttonText:al.edit,
                           onTap: () {},
                         ),
                       ),

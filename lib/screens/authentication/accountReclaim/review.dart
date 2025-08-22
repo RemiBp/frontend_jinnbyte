@@ -4,6 +4,7 @@ import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../l18n.dart';
 
 class Review extends StatelessWidget {
   const Review({super.key});
@@ -33,13 +34,12 @@ class Review extends StatelessWidget {
                 SizedBox(height: getHeight() * .02),
 
                 CustomText(
-                  text: "Thank you!",
+                  text: al.thankYou,
                   fontSize: sizes?.fontSize24,
                   fontFamily: Assets.onsetSemiBold,
                 ),
                 CustomText(
-                  text:
-                      "Your profile are now under review. We will get back to you in two business day.",
+                  text:al.underReviewMessage,
                   fontSize: sizes?.fontSize16,
                   fontFamily: Assets.onsetMedium,
                   color: AppColors.primarySlateColor,

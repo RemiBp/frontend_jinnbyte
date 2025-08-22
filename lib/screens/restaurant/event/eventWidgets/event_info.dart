@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class EventInfoSection extends StatelessWidget {
@@ -21,7 +22,7 @@ class EventInfoSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             label: CustomText(
-              text: "Event",
+              text: al.event,
               fontSize: sizes?.fontSize12,
               fontFamily: Assets.onsetMedium,
               color: HexColor.fromHex("#FF5655"),
@@ -35,7 +36,7 @@ class EventInfoSection extends StatelessWidget {
           ),
           SizedBox(height: 12),
           IconTextRow(
-            text: "Monday, June 28, 2025 ",
+            text: "Monday, June 28, 2025",
             svgString: Assets.calenderCircleSvg,
             subText: "08:00 PM - 11:00 PM",
           ),

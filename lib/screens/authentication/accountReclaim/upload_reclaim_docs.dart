@@ -38,13 +38,13 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Upload Documents",
+              text: al.uploadDocumentsTitle,
               fontSize: sizes?.fontSize26,
               fontFamily: Assets.onsetSemiBold,
             ),
 
             CustomText(
-              text: "Please upload your document to proceed with verification.",
+              text:al.uploadDocumentsDescription,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
               giveLinesAsText: true,
@@ -82,7 +82,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
 
             SizedBox(height: getHeight() * .01),
             CustomText(
-              text: "Upload Documents",
+              text: al.uploadDocuments,
               fontSize: sizes?.fontSize14,
               fontFamily: Assets.onsetMedium,
             ),
@@ -137,7 +137,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
             Spacer(),
             provider.step == 0
                 ? CustomButton(
-                  buttonText: "Continue",
+                  buttonText: al.continueText,
                   onTap: () {
                     provider.updatedStep = 1;
                   },
@@ -147,7 +147,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                   children: [
                     CustomButton(
                       backgroundColor: Colors.transparent,
-                      buttonText: "Back",
+                      buttonText: al.backButton,
                       textColor: AppColors.blackColor,
                       borderColor: AppColors.blackColor,
                       onTap: () {
@@ -156,7 +156,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                       buttonWidth: getWidth() * .43,
                     ),
                     CustomButton(
-                      buttonText: "Continue",
+                      buttonText:al.continueText,
                       onTap: () {
                         if (provider.step == provider.docs.length-1) {
                           context.push(Routes.reviewRoute);

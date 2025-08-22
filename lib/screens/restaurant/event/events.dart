@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
+import '../../../l18n.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -35,7 +36,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: "Events",
+          text:al.events,
           fontSize: sizes?.fontSize18,
           fontFamily: Assets.onsetSemiBold,
         ),
@@ -53,9 +54,9 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
               fontFamily: Assets.onsetMedium,
             ),
             tabs: [
-              Tab(text: 'Active'),
-              Tab(text: 'Draft'),
-              Tab(text: 'Completed'),
+              Tab(text: al.statusActive,),
+              Tab(text: al.statusDraft,),
+              Tab(text: al.statusCompleted,),
             ],
           ),
 
@@ -168,7 +169,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
                 ),
               ),
               child: Text(
-                "Create Event",
+                al.createEvent,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),

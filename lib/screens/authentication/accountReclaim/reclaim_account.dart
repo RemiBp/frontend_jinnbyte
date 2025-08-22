@@ -9,6 +9,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
@@ -38,18 +39,18 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
           children: [
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "Reclaim Your Account",
+              text: al.reclaimAccount,
               fontSize: sizes?.fontSize26,
               fontFamily: Assets.onsetSemiBold,
             ),
             CustomText(
-              text: "Retrieve access to your existing profile",
+              text:al.retrieveAccess,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
             ),
             SizedBox(height: getHeight() * .01),
             CustomText(
-              text: "Choose your option",
+              text:al.chooseOption,
               fontSize: sizes?.fontSize14,
               fontFamily: Assets.onsetMedium,
               color: AppColors.primarySlateColor,
@@ -61,7 +62,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
             Row(
               children: [
                 CategoryChip(
-                  label: 'Restaurant',
+                  label:al.categoryRestaurant,
                   svgString: Assets.restaurantIcon,
                   selected: _selected == 0,
                   onTap: () {
@@ -72,7 +73,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
                 ),
                 const SizedBox(width: 12),
                 CategoryChip(
-                  label: 'Leisure',
+                  label:al.categoryLeisure,
                   svgString: Assets.leisureIcon,
                   selected: _selected == 1,
                   onTap: () {
@@ -83,7 +84,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
                 ),
                 const SizedBox(width: 12),
                 CategoryChip(
-                  label: 'Wellness',
+                  label: al.categoryWellness,
                   svgString: Assets.wellnessIcon,
                   selected: _selected == 2,
                   onTap:() {
@@ -99,13 +100,13 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
 
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by name...",
+              hint: al.searchPlaceholder,
               prefixIconSvg: Assets.searchIcon,
             ),
             SizedBox(height: getHeight() * .03),
 
             CustomButton(
-              buttonText: "Claim Account",
+              buttonText: al.claimAccount,
               backgroundColor:
               _selected == 0
                   ? AppColors.restaurantPrimaryColor
@@ -128,7 +129,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: CustomText(text: "Or", fontSize: sizes?.fontSize14),
+                  child: CustomText(text: al.orText, fontSize: sizes?.fontSize14),
                 ),
                 Expanded(
                   child: Divider(
@@ -140,7 +141,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
             ),
             SizedBox(height: getHeight() * .02),
             CustomButton(
-              buttonText: "Sign Up",
+              buttonText:al.signupTitle,
               backgroundColor: AppColors.blackColor,
               onTap: () {
                 context.push(Routes.signupRoute);
