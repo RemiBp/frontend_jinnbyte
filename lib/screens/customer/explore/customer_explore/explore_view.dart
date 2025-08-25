@@ -116,7 +116,9 @@ class _ExploreViewState extends State<ExploreView> {
                   SizedBox(height: getHeight() * 0.02),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                    child: SeeMoreWidget(),
+                    child: SeeMoreWidget(
+                      header: "Events Near me",
+                    ),
                   ),
                   SizedBox(
                     height: getHeightRatio() * 230,

@@ -2,7 +2,6 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/res.dart';
-import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,9 +108,9 @@ class _LanguageSelectionState extends State<LanguageSelection> {
               child: ElevatedButton(
                 onPressed: () async {
                   final locale = selectedLanguage == "English" ? "en" : "fr";
-                  //
                   provider.changeLocale(locale);
-                  context.go(Routes.authRoute);
+                  context.push(Routes.authRoute).then((_) =>
+                      setState(() {}));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

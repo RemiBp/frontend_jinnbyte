@@ -124,16 +124,16 @@ class _WellnessProfileTabBarState extends State<WellnessProfileTabBar> with Sing
                   ),
                 ),
                 SizedBox(width: getWidth() * 0.03),
-                Expanded(
-                  child: CardButton(
-                    buttonText: 'Call',
-                    onTap: () {
-                    },
-                    backgroundColor: AppColors.greyColor,
-                    textColor: AppColors.blackColor,
-                    textFontWeight: FontWeight.w700,
-                  ),
-                ),
+                // Expanded(
+                //   child: CardButton(
+                //     buttonText: 'Call',
+                //     onTap: () {
+                //     },
+                //     backgroundColor: AppColors.greyColor,
+                //     textColor: AppColors.blackColor,
+                //     textFontWeight: FontWeight.w700,
+                //   ),
+                // ),
               ],
             ),
           ),

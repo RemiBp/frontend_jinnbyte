@@ -16,6 +16,7 @@ class Authentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final roleProvider = context.read<RoleProvider>();
+    AppTranslations.init(context);
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(

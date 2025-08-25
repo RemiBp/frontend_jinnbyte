@@ -1,6 +1,9 @@
 import 'dart:async';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:choice_app/screens/bookings/bookings_view.dart';
+import 'package:choice_app/screens/customer/home/customer_home.dart';
+import 'package:choice_app/screens/customer/maps/customer_maps/customer_maps_view.dart';
 import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
@@ -55,14 +59,14 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     role = roleProvider.role;
     labels = [
       "Home",
-      "Dashboard",
+      role == UserRole.user ?"Map":"Dashboard",
       role == UserRole.user ? "Explore" : "Events",
       "Bookings",
       "Profile"
     ];
     iconList = [
       Assets.homeIcon,
-      Assets.dashboardIcon,
+      role == UserRole.user ?Assets.mapIcon: Assets.dashboardIcon,
       role == UserRole.user ? Assets.exploreIcon : Assets.eventsIcon,
       Assets.bookingIcon,
       Assets.profileIcon,
@@ -70,15 +74,17 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
 
     activeIconList = [
       Assets.homeActiveIcon,
-      Assets.dashboardActiveIcon,
+      role == UserRole.user ?Assets.mapIcon:  Assets.dashboardActiveIcon,
       role == UserRole.user ? Assets.exploreActiveIcon : Assets.eventActiveIcon,
       Assets.bookingActiveIcon,
       Assets.profileActiveIcon,
     ];
 
     widgets = [
-      role == UserRole.wellness ? WellnessHome() : RestaurantHome(),
-      HomeView(),
+      role == UserRole.wellness ? WellnessHome() : role == UserRole.user
+          ? CustomerHome()
+          : RestaurantHome(),
+      role == UserRole.user?CustomerMapsView(): HomeView(),
       role == UserRole.user?ExploreView():Events(),
       BookingsView(),
       if (role == UserRole.user) CustomerProfileView(),

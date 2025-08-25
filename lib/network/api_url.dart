@@ -2,6 +2,7 @@ const String baseUrl = "http://choice-app-prod-env.eba-wqrm9be2.eu-west-3.elasti
 
 
 const String loginApiUrl = "$baseUrl/api/producer/auth/login";
+const String userLoginApiUrl = "$baseUrl/api/app/auth/login";
 const String signUpApiUrl = "$baseUrl/api/producer/auth/register";
 const String verifySignupOtpApiUrl = "$baseUrl/api/producer/auth/verifyOtp";
 const String resendSignupOtpApiUrl = "$baseUrl/api/producer/auth/resendSignUpOtp";

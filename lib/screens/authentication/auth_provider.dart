@@ -1,9 +1,12 @@
 import 'package:choice_app/common/utils.dart';
 import 'package:choice_app/models/auth_ressponse.dart';
+import 'package:choice_app/userRole/role_provider.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../network/API.dart';
 import '../../network/api_url.dart';
@@ -117,6 +120,7 @@ class AuthProvider extends ChangeNotifier{
   }) async {
     try {
       _loader.showLoader(context: context);
+      final roleProvider = context?.read<RoleProvider>();
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {
         "email": email,
@@ -125,7 +129,7 @@ class AuthProvider extends ChangeNotifier{
       };
       debugPrint("body is : ---------->$body");
       authResponse = await MyApi.callPostApi(
-        url: loginApiUrl,
+        url:roleProvider?.role == UserRole.user?userLoginApiUrl: loginApiUrl,
         myHeaders: headers,
         body: body,
         modelName: Models.AuthModel,
@@ -134,7 +138,13 @@ class AuthProvider extends ChangeNotifier{
       if (authResponse.user != null) {
         await PreferenceUtils.setAuthResponse(authResponse);
         _loader.hideLoader(context!);
-        context?.push(Routes.restaurantBottomTabRoute);
+        // if(roleProvider?.role == UserRole.user){
+        //   context?.push(Routes.customerHomeRoute);
+        // }else
+        // {
+          context?.push(Routes.restaurantBottomTabRoute);
+        // }
+
         return;
       }
       _loader.hideLoader(context!);

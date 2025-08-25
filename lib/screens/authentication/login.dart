@@ -116,7 +116,7 @@ class _LoginState extends State<Login> {
                   child: CustomText(
                     text: "${al.forgotPassword}?",
                     fontSize: sizes?.fontSize16,
-                    color: AppColors.restaurantPrimaryColor,
+                    color: AppColors.getPrimaryColorFromContext(context),
                     textDecoration: TextDecoration.underline,
 
                     giveLinesAsText: true,
@@ -165,7 +165,7 @@ class _LoginState extends State<Login> {
                   children: [
                     TextSpan(
                       text: al.signupTitle,
-                      style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                      style: TextStyle(color:  AppColors.getPrimaryColorFromContext(context),),
                       recognizer:
                           TapGestureRecognizer()
                             ..onTap = () {
