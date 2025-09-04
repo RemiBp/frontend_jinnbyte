@@ -2,13 +2,15 @@
 
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/res/res.dart';
+import 'package:choice_app/screens/customer/maps/customer_maps/wellness_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
-import 'filters_bottom_sheet.dart';
+import 'leisure_bottom_sheet.dart';
+import 'restaurant_bottom_sheet.dart';
 
 class CustomerMapsView extends StatefulWidget {
   const CustomerMapsView({super.key});
@@ -19,7 +21,7 @@ class CustomerMapsView extends StatefulWidget {
 
 class _CustomerMapsViewState extends State<CustomerMapsView> {
   final List<Map<String, dynamic>> filters = [
-    {"title": "All", "icon": Assets.leisureIcon},
+    // {"title": "All", "icon": Assets.leisureIcon},
     {"title": "Friends", "icon": Assets.profileIcon},
     {"title": "Restaurant", "icon": Assets.knifeForkIcon},
     {"title": "Wellness", "icon": Assets.wellnessIcon},
@@ -32,7 +34,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(title: "Map & Location"),
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: Stack(
@@ -101,14 +103,44 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
               right: 10,
               child: Column(
                 children: [
+                  // Side button to open bottom sheet
                   _buildSideButton(Icons.filter_list_sharp, () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true, // allows 90% height (since you used 0.9 of screen height)
-                      backgroundColor: Colors.transparent, // keeps your rounded corners visible
-                      builder: (context) => const FiltersBottomSheet(),
-                    );
+                    final selectedFilter = filters[selectedFilterIndex]["title"];
+
+                    if (selectedFilter == "Restaurant" ||
+                        selectedFilter == "Wellness" ||
+                        selectedFilter == "Leisure") {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          switch (selectedFilter) {
+                            case "Restaurant":
+                              return const RestaurantBottomSheet();
+                            case "Wellness":
+                              return const WellnessBottomSheet();
+                            case "Leisure":
+                              return const LeisureBottomSheet();
+                            default:
+                              return const SizedBox.shrink();
+                          }
+                        },
+                      );
+                    }
                   }),
+
+
+                  // _buildSideButton(Icons.filter_list_sharp, () {
+                  //   showModalBottomSheet(
+                  //     context: context,
+                  //     isScrollControlled: true, // allows 90% height (since you used 0.9 of screen height)
+                  //     backgroundColor: Colors.transparent, // keeps your rounded corners visible
+                  //     // builder: (context) => const RestaurantBottomSheet(),
+                  //     // builder: (context) => const LeisureBottomSheet(),
+                  //     builder: (context) => const WellnessBottomSheet(),
+                  //   );
+                  // }),
 
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.public, () {
