@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:choice_app/customWidgets/custom_text.dart';
+import 'package:choice_app/network/network_provider.dart';
+import 'package:choice_app/screens/restaurant/event/event_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
@@ -13,6 +16,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_textfield.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../../res/toasts.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({super.key});
@@ -23,6 +27,7 @@ class CreateEvent extends StatefulWidget {
 
 class _CreateEventState extends State<CreateEvent> {
   final _formKey = GlobalKey<FormState>();
+  NetworkProvider networkProvider = NetworkProvider();
 
   // Form controllers
   final _eventNameController = TextEditingController();
@@ -37,6 +42,7 @@ class _CreateEventState extends State<CreateEvent> {
   TimeOfDay? _endTime;
 
   List<XFile> images = [];
+  List<String> imageUrls = [];
   final ImagePicker _picker = ImagePicker();
 
   // Function to pick images
@@ -112,6 +118,23 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    networkProvider = Provider.of<NetworkProvider>(context, listen: false);
+    networkProvider.context = context;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventNameController.dispose();
+    _descriptionController.dispose();
+    _venueController.dispose();
+    _priceController.dispose();
+    _addressController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
@@ -136,12 +159,14 @@ class _CreateEventState extends State<CreateEvent> {
                     _buildSectionTitle(al.eventDetails,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _eventNameController,
                       borderColor: AppColors.greyBordersColor,
                       hint: "E.g: Brochette boeuf...",
                       label: al.eventName,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _descriptionController,
                       height: getHeight() * .1,
                       borderColor: AppColors.greyBordersColor,
                       hint: al.eventDescriptionPlaceholder,
@@ -167,7 +192,8 @@ class _CreateEventState extends State<CreateEvent> {
                       fontSize: sizes?.fontSize12,
                     ),
                     SizedBox(height: 12),
-                    GestureDetector(
+                    InkWell(
+
                       onTap: _pickImages,
                       child: DottedBorderContainer(),
                     ),
@@ -219,12 +245,14 @@ class _CreateEventState extends State<CreateEvent> {
                     _buildSectionTitle(al.location,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _venueController,
                       borderColor: AppColors.greyBordersColor,
                       hint: al.restaurantOrVenue,
                       label: al.venueName,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _addressController,
                       borderColor: AppColors.greyBordersColor,
                       hint: al.venueAddress,
                       label: al.address,
@@ -241,12 +269,14 @@ class _CreateEventState extends State<CreateEvent> {
                     _buildSectionTitle(al.capacityPricing,),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _capacityController,
                       borderColor: AppColors.greyBordersColor,
                       hint: al.maxPersons,
                       label: al.maxCapacity,
                     ),
                     SizedBox(height: getHeight() * .02),
                     CustomField(
+                      textEditingController: _priceController,
                       borderColor: AppColors.greyBordersColor,
                       hint: "\$ 0.00",
                       label: al.pricePerPerson,
@@ -341,7 +371,64 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                     SizedBox(width: 12),
                     Expanded(
-                      child: CustomButton(buttonText: al.publish, onTap: () {}),
+                      child: CustomButton(
+                        buttonText: al.publish, onTap: () async {
+                        final eventName = _eventNameController.text.trim();
+                        final description = _descriptionController.text.trim();
+                        final venue = _venueController.text.trim();
+                        final address = _addressController.text.trim();
+                        final capacity = _capacityController.text.trim();
+                        final price = _priceController.text.trim();
+
+                        if (images.isEmpty) {
+                          Toasts.getErrorToast(
+                              text: "Please select at least one image.");
+                        } else if (eventName.isEmpty) {
+                          Toasts.getErrorToast(
+                              text: "Please enter the event name.");
+                        } else if (description.isEmpty) {
+                          Toasts.getErrorToast(
+                              text: "Please enter the event description.");
+                        } else if (venue.isEmpty) {
+                          Toasts.getErrorToast(text: "Please enter the venue.");
+                        } else if (address.isEmpty) {
+                          Toasts.getErrorToast(
+                              text: "Please enter the address.");
+                        } else if (capacity.isEmpty) {
+                          Toasts.getErrorToast(
+                              text: "Please enter the capacity.");
+                        } else if (int.tryParse(capacity) == null) {
+                          Toasts.getErrorToast(
+                              text: "Please enter a valid number for capacity.");
+                        } else if (price.isEmpty) {
+                          Toasts.getErrorToast(text: "Please enter the price.");
+                        } else if (double.tryParse(price) == null) {
+                          Toasts.getErrorToast(
+                              text: "Please enter a valid price.");
+                        } else {
+                          for (var i in images) {
+                            final bytes = await i.readAsBytes();
+                            final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                            debugPrint("file url is : $fileUrl");
+                            if (fileUrl != null) {
+                              imageUrls.add(fileUrl);
+                            }
+                          }
+                          context.read<EventProvider>().createEventApi(
+                            eventName: eventName,
+                            description: description,
+                            venue: "Restaurant",
+                            address: address,
+                            capacity: capacity,
+                            price: price,
+                            images: [],
+                            date: "${_selectedDate?.day}-${_selectedDate?.month}-${_selectedDate?.year}",
+                            startTime: "${_startTime?.hour}:${_startTime?.minute}",
+                            endTime: "${_endTime?.hour}:${_endTime?.minute}",
+
+                          );
+                        }
+                      },),
                     ),
                   ],
                 ),

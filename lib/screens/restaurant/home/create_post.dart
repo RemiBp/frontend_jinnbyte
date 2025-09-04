@@ -14,6 +14,7 @@ import '../../../customWidgets/custom_textfield.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../utilities/extensions.dart';
+import 'choice_provider.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -57,6 +58,7 @@ class _CreatePostState extends State<CreatePost> {
     super.initState();
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
+
   }
 
   @override
@@ -70,6 +72,7 @@ class _CreatePostState extends State<CreatePost> {
 
   @override
   Widget build(BuildContext context) {
+    final choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(al.createPost,),
@@ -243,14 +246,23 @@ class _CreatePostState extends State<CreatePost> {
                           Toasts.getErrorToast(
                               text: al.errorEnterAddress,);
                         }else{
-                          for (var i in images) {
-                            final bytes = await i.readAsBytes();
-                            final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
-                            debugPrint("file url is : $fileUrl");
-                            if (fileUrl != null) {
-                              imageUrls.add(fileUrl);
-                            }
-                          }
+                          // for (var i in images) {
+                          //   final bytes = await i.readAsBytes();
+                          //   final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                          //   debugPrint("file url is : $fileUrl");
+                          //   if (fileUrl != null) {
+                          //     imageUrls.add(fileUrl);
+                          //   }
+                          // }
+                          debugPrint("date : ${DateTime.now().toIso8601String()}");
+                          choiceProvider.createChoiceApi(title: title,
+                            description: description,
+                            tags: tags,
+                            location: location,
+                            images: [
+                              "https://media.baamboozle.com/uploads/images/239644/1611890196_384578"
+                            ],);
+
                         }
                       },
                     ),

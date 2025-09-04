@@ -12,3 +12,6 @@ const String forgotPasswordApiUrl = "$baseUrl/api/producer/auth/forgotPassword";
 const String resetPasswordApiUrl = "$baseUrl/api/producer/auth/resetPassword";
 const String submitDocsApiUrl = "$baseUrl/api/producer/auth/submitDocuments";
 const String preSignedFileUploadApiUrl = "$baseUrl/api/producer/auth/getPreSignedUrl";
+const String createUserPostApiUrl = "$baseUrl/api/producer/post/createUserPost";
+const String createEventPostApiUrl = "$baseUrl/api/producer/event/createEvent";
+const String getAllEventsApiUrl = "$baseUrl/api/producer/event/getAllEvents";

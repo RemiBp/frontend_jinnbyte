@@ -132,7 +132,7 @@ class AuthProvider extends ChangeNotifier{
         url:roleProvider?.role == UserRole.user?userLoginApiUrl: loginApiUrl,
         myHeaders: headers,
         body: body,
-        modelName: Models.AuthModel,
+        modelName: Models.authModel,
       );
       debugPrint("login response : ${authResponse.toJson()}");
       if (authResponse.user != null) {
@@ -142,7 +142,7 @@ class AuthProvider extends ChangeNotifier{
         //   context?.push(Routes.customerHomeRoute);
         // }else
         // {
-          context?.push(Routes.restaurantBottomTabRoute);
+          context?.go(Routes.restaurantBottomTabRoute);
         // }
 
         return;

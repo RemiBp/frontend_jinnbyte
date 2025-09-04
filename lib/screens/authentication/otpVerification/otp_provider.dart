@@ -49,7 +49,7 @@ class OtpProvider extends ChangeNotifier {
         url: isResetPassFlow ? verifyFgOtpApiUrl : verifySignupOtpApiUrl,
         myHeaders: headers,
         body: body,
-        modelName:isResetPassFlow?null: Models.AuthModel,
+        modelName:isResetPassFlow?null: Models.authModel,
       );
       if (registrationResponse.user != null) {
         debugPrint("register response : ${registrationResponse.toJson()}");

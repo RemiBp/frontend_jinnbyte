@@ -4,17 +4,32 @@ import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
+import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_textfield.dart';
 
-class CustomerHome extends StatelessWidget {
+class CustomerHome extends StatefulWidget {
   const CustomerHome({super.key});
 
   @override
+  State<CustomerHome> createState() => _CustomerHomeState();
+}
+
+class _CustomerHomeState extends State<CustomerHome> {
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ChoiceProvider>(context, listen: false);
+    provider.init(context);
+
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -47,7 +62,7 @@ class CustomerHome extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(
-                  top: getHeight()*.03
+                    top: getHeight()*.03
                 ),
                 itemCount: 2,
                 itemBuilder: (context, index) {
@@ -59,12 +74,13 @@ class CustomerHome extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100)
-        ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100)
+          ),
           backgroundColor: AppColors.userPrimaryColor,
           onPressed: (){
-          context.push(Routes.choiceSelectionRoute);
+            // context.push(Routes.choiceSelectionRoute);
+            context.push(Routes.restaurantCreatePostRoute);
           }, label: Row(
         children: [
           Icon(Icons.add, color: Colors.white,),
@@ -79,3 +95,4 @@ class CustomerHome extends StatelessWidget {
     );
   }
 }
+

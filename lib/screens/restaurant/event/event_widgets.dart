@@ -1,19 +1,23 @@
+import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/restaurant/event/eventWidgets/delete_event.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../l18n.dart';
+import 'event_provider.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, this.isDraft = false});
+  const EventCard({super.key, this.isDraft = false,  this.eventsResponse});
 
   final bool isDraft;
+  final Data? eventsResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +47,7 @@ class EventCard extends StatelessWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 image: DecorationImage(
                   image: NetworkImage(
-                    "https://i.pinimg.com/originals/30/01/e8/3001e885d7c49f851aaa9008b2a2e562.jpg",
-                  ),
+                   eventsResponse?.eventImages?.first??"" ),
                   fit: BoxFit.cover,
                 ),
               ),

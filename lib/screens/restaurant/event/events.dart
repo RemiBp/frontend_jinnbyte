@@ -1,9 +1,11 @@
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
+import 'package:choice_app/screens/restaurant/event/event_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
@@ -18,11 +20,20 @@ class Events extends StatefulWidget {
 
 class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  EventProvider _eventProvider = EventProvider();
+
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _eventProvider = Provider.of<EventProvider>(context, listen: false);
+      _eventProvider.init(context);
+    });
+
+
+
   }
 
   @override
@@ -33,6 +44,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<EventProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -66,9 +78,11 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
               controller: _tabController,
               children: [
                 ListView.builder(
-                  itemCount: 3,
+                  itemCount: _eventProvider.getAllEventsResponse.data?.length??0,
                   itemBuilder: (context, index) {
-                    return EventCard();
+                    return EventCard(
+                      eventsResponse: _eventProvider.getAllEventsResponse.data?[index],
+                    );
                   },
                 ),
 
