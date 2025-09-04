@@ -130,18 +130,6 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                     }
                   }),
 
-
-                  // _buildSideButton(Icons.filter_list_sharp, () {
-                  //   showModalBottomSheet(
-                  //     context: context,
-                  //     isScrollControlled: true, // allows 90% height (since you used 0.9 of screen height)
-                  //     backgroundColor: Colors.transparent, // keeps your rounded corners visible
-                  //     // builder: (context) => const RestaurantBottomSheet(),
-                  //     // builder: (context) => const LeisureBottomSheet(),
-                  //     builder: (context) => const WellnessBottomSheet(),
-                  //   );
-                  // }),
-
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.public, () {
                     // change map type
