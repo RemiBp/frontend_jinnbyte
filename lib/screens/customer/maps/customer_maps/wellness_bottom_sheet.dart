@@ -1,43 +1,33 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
-import '../../../../customWidgets/custom_textfield.dart';
 import '../../../../res/res.dart';
 import 'customer_maps_widgets.dart';
 
-class FiltersBottomSheet extends StatefulWidget {
-  const FiltersBottomSheet({super.key});
+class WellnessBottomSheet extends StatefulWidget {
+  const WellnessBottomSheet({super.key});
 
   @override
-  State<FiltersBottomSheet> createState() => _FiltersBottomSheetState();
+  State<WellnessBottomSheet> createState() => _WellnessBottomSheetState();
 }
 
-class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
+class _WellnessBottomSheetState extends State<WellnessBottomSheet> {
+
   double distance = 20;
-  List<String> cuisines = ["Asian", "Italian", "Vegan"];
-  List<String> selectedCuisines = ["Asian"]; // ✅ multiple selection
+  List<String> cuisines = ["Spa", "Hair Salon", "Nail Studio"];
+  List<String> selectedCuisines = ["Spa"];
 
-  // Ratings
-  int ambianceRating = 0;
-  int serviceRating = 0;
-  int portionsRating = 0;
-  int placeRating = 0;
-  int dishRating = 0;
+// Ratings
+  int careQualityRating = 0;
+  int cleanlinessRating = 0;
+  int welcomeRating = 0;
+  int valueForMoneyRating = 0;
+  int atmosphereRating = 0;
+  int staffExperienceRating = 0;
+  int averageScoreRating = 0;
 
-  // Dishes
-  List<String> dishes = [
-    "Truffle Mushroom Risotto",
-    "Ratatouille",
-    "Pad Thai",
-    "Biryani",
-    "Korean Bibimbap",
-    "Tacos al Pastor",
-  ];
-  List<String> selectedDishes = ["Truffle Mushroom Risotto", "Pad Thai"];
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +95,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       ],
                     ),
 
-                    const CustomSectionTitle(title: "Cuisine"),
+                    const CustomSectionTitle(title: "Venue"),
                     Column(
                       children: cuisines.map((c) {
                         final selected = selectedCuisines.contains(c);
@@ -128,59 +118,19 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       }).toList(),
                     ),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Ambiance", ambianceRating, (r) => setState(() => ambianceRating = r)),
+                    _buildRatingRow("Care Quality", careQualityRating, (r) => setState(() => careQualityRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Service", serviceRating, (r) => setState(() => serviceRating = r)),
+                    _buildRatingRow("Cleanliness", cleanlinessRating, (r) => setState(() => cleanlinessRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Portions", portionsRating, (r) => setState(() => portionsRating = r)),
+                    _buildRatingRow("Welcome", welcomeRating, (r) => setState(() => welcomeRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Place", placeRating, (r) => setState(() => placeRating = r)),
+                    _buildRatingRow("Value for Money", valueForMoneyRating, (r) => setState(() => valueForMoneyRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-
-                    const CustomSectionTitle(title: "Dish Name"),
-                    CustomField(
-                      borderColor: AppColors.greyBordersColor,
-                      hint: "Search by username or name...",
-                      prefixIconSvg: Assets.searchIcon,
-                      height: getHeightRatio() * 44,
-                    ),
+                    _buildRatingRow("Atmosphere", atmosphereRating, (r) => setState(() => atmosphereRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-
-                    // ✅ dishes selection (multi-select same as cuisine)
-                    Column(
-                      children: dishes.map((d) {
-                        final selected = selectedDishes.contains(d);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: CustomMultiSelectOption(
-                            label: d,
-                            selected: selected,
-                            onTap: () {
-                              setState(() {
-                                if (selected) {
-                                  selectedDishes.remove(d);
-                                } else {
-                                  selectedDishes.add(d);
-                                }
-                              });
-                            },
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    Row(
-                      children: [
-                        CustomText(
-                          text: "Show more",
-                          color: AppColors.inputHintColor,
-                          fontSize: sizes?.fontSize14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.inputHintColor,)
-                      ],
-                    ),
+                    _buildRatingRow("Staff Experience", staffExperienceRating, (r) => setState(() => staffExperienceRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Dish Rating", dishRating, (r) => setState(() => dishRating = r)),
+                    _buildRatingRow("Average Score", averageScoreRating, (r) => setState(() => averageScoreRating = r)),
                     SizedBox(height: getHeight() * 0.02),
                   ],
                 ),
@@ -299,64 +249,4 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
       ],
     );
   }
-
-
-// Ratings row stays similar, you can also refactor text into CustomText
-  // Widget _buildRatingRow(String title, int selected, Function(int) onSelected) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       CustomSectionTitle(title: title),
-  //       Row(
-  //         children: List.generate(
-  //           6,
-  //               (index) {
-  //             if (index == 0) {
-  //               return GestureDetector(
-  //                 onTap: () => onSelected(0),
-  //                 child: Container(
-  //                   margin: const EdgeInsets.only(right: 8),
-  //                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-  //                   decoration: BoxDecoration(
-  //                     color: selected == 0 ? AppColors.userPrimaryColor : AppColors.greyColor.withOpacity(0.2),
-  //                     borderRadius: BorderRadius.circular(8),
-  //                   ),
-  //                   child: CustomText(
-  //                     text: "Any",
-  //                     color: AppColors.whiteColor,
-  //                     fontSize: sizes?.fontSize14,
-  //                     fontWeight: FontWeight.w400,
-  //                   ),
-  //                 ),
-  //               );
-  //             }
-  //             return GestureDetector(
-  //               onTap: () => onSelected(index),
-  //               child: Container(
-  //                 margin: const EdgeInsets.only(right: 8),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-  //                 decoration: BoxDecoration(
-  //                   color: selected == index ? AppColors.userPrimaryColor : AppColors.greyColor.withOpacity(0.2),
-  //                   borderRadius: BorderRadius.circular(8),
-  //                 ),
-  //                 child: Row(
-  //                   children: [
-  //                     const Icon(Icons.star, size: 16, color: Colors.yellow),
-  //                     const SizedBox(width: 2),
-  //                     CustomText(
-  //                       text: "$index",
-  //                       color: AppColors.inputHintColor,
-  //                       fontSize: sizes?.fontSize14,
-  //                       fontWeight: FontWeight.w500,
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
 }
