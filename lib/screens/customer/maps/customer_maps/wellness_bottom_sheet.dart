@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
-import '../../../../customWidgets/custom_textfield.dart';
 import '../../../../res/res.dart';
 import 'customer_maps_widgets.dart';
 
