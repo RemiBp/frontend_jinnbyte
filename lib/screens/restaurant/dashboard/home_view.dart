@@ -3,6 +3,7 @@ import 'package:choice_app/screens/restaurant/dashboard/repeat_customers_card.da
 import 'package:choice_app/screens/restaurant/dashboard/user_origin_map_card.dart';
 import 'package:choice_app/screens/restaurant/notifications/notifications_view.dart';
 import 'package:flutter/material.dart';
+import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
 import 'booking_chart_card.dart';

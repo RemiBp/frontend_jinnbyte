@@ -37,9 +37,9 @@ class UserOriginMapCard extends StatelessWidget {
             color: AppColors.primarySlateColor,
           ),
           SizedBox(height: getHeightRatio() * 16),
-          if(!(role == UserRole.restaurant))
+          // if(!(role == UserRole.restaurant))
             role == UserRole.restaurant?
-            Image.asset(Assets.originMapImageRes, fit: BoxFit.cover):
+            Image.asset(Assets.originMapImage, fit: BoxFit.cover):
           Image.asset(Assets.originMapImage, fit: BoxFit.cover),
 
         ],

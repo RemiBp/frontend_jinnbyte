@@ -52,11 +52,24 @@ class ProfileOptionButton extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgIcon(
-              leadingAssetPath,
-              width: getWidthRatio() * 20,
-              color: AppColors.getPrimaryColorFromContext(context),
+            SizedBox(
+              width: getHeightRatio() * 20,   // fixed visual size for ALL icons
+              height: getHeightRatio() * 20,
+              child: Center(
+                child: SvgIcon(
+                  leadingAssetPath,
+                  width: getHeightRatio() * 16,   // actual drawing size
+                  height: getHeightRatio() * 16,
+                  color: AppColors.getPrimaryColorFromContext(context),
+                ),
+              ),
             ),
+            // SvgIcon(
+            //   leadingAssetPath,
+            //   width: getWidthRatio() * 16,
+            //   height: getHeightRatio() * 16,
+            //   color: AppColors.getPrimaryColorFromContext(context),
+            // ),
             SizedBox(
               width: getHeightRatio() * 12,
             ),
