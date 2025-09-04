@@ -176,7 +176,7 @@ class _LeisureBottomSheetState extends State<LeisureBottomSheet> {
                         ),
                         selected: isSelected,
                         backgroundColor: AppColors.greyColor, // default grey
-                        selectedColor: AppColors.userPrimaryColor.withOpacity(0.15), // light blue look
+                        selectedColor: AppColors.userPrimaryColor.withAlpha(40), // light blue look
                         showCheckmark: false,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -230,83 +230,6 @@ class _LeisureBottomSheetState extends State<LeisureBottomSheet> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildRatingRow(String title, int selected, Function(int) onSelected) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomSectionTitle(title: title),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.greyBordersColor),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(6, (index) {
-              bool isSelected = selected == index;
-
-              // "Any" button
-              if (index == 0) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () => onSelected(0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppColors.userPrimaryColor : Colors.transparent,
-                        borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
-                      ),
-                      child: CustomText(
-                        text: "Any",
-                        color: isSelected ? Colors.white : AppColors.inputHintColor,
-                        fontSize: sizes?.fontSize14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              // Star rating buttons
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () => onSelected(index),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: isSelected ? AppColors.userPrimaryColor : Colors.transparent,
-                      border: Border(
-                        left: BorderSide(color: AppColors.greyBordersColor),
-                      ),
-                      borderRadius: index == 5
-                          ? const BorderRadius.horizontal(right: Radius.circular(8))
-                          : BorderRadius.zero,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.star, size: 18, color: Colors.orange),
-                        const SizedBox(width: 4),
-                        CustomText(
-                          text: "$index",
-                          color: isSelected ? Colors.white : AppColors.inputHintColor,
-                          fontSize: sizes?.fontSize14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ),
-        ),
-      ],
     );
   }
 }
