@@ -16,6 +16,7 @@
   "signupTitle": "Inscription",
   "signupSubtitle": "Entrez votre email et mot de passe pour vous inscrire",
   "businessName": "Nom de l'entreprise",
+  "businessNamePlaceholder": "Nom de l'entreprise",
   "emailLabel": "Email",
   "emailPlaceholder": "Adresse e-mail",
   "passwordLabel": "Mot de passe",

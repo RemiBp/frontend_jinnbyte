@@ -19,8 +19,9 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      // context.pushReplacement(Routes.languageSelectionRoute);
-      context.pushReplacement(Routes.authRoute);
+       context.pushReplacement(Routes.languageSelectionRoute);
+      //context.go(Routes.choiceSelectionRoute);
+      // context.pushReplacement(Routes.authRoute);
 
     });
   }

@@ -50,6 +50,7 @@ class Routes {
 }
 
 final GoRouter router = GoRouter(
+  initialLocation: Routes.initialRoute,
   routes: [
     GoRoute(path: '/', builder: (context, state) => const Splash()),
     GoRoute(path: '/language_selection', builder: (context, state) => const LanguageSelection()),

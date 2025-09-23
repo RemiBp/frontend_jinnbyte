@@ -43,6 +43,7 @@ class Assets {
   static const String clockSvg = "assets/icons/clock.svg";
   static const String calenderCircleSvg = "assets/icons/calender_circle.svg";
   static const String locationCircleSvg = "assets/icons/location_circle.svg";
+  static const String locationSvg = "assets/icons/location_icon.svg";
   static const String ticketCircleSvg = "assets/icons/ticket_circle.svg";
   static const String peopleIcon = "assets/icons/people.svg";
   static const String webCircleIcon = "assets/icons/web_circle.svg";

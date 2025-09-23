@@ -39,30 +39,40 @@ class _SignupState extends State<Signup> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (context.canPop()) ...[
                   CustomBackButton(),
                   SizedBox(width: getWidth() * .02),
                 ],
-                CustomText(
-                  text: al.signupTitle,
-                  fontSize: sizes?.fontSize28,
-                  fontFamily: Assets.onsetSemiBold,
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: al.signupTitle,
+                          fontSize: sizes?.fontSize28,
+                          fontFamily: Assets.onsetSemiBold,
+                        ),
+                        SizedBox(height: getHeight() * .005),
+                        CustomText(
+                          text: al.signupSubtitle,
+                          fontSize: sizes?.fontSize16,
+                          color: AppColors.primarySlateColor,
+                          giveLinesAsText: true,
+                        ),
+                      ],
                 ),
+                ),
+
               ],
             ),
-            SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.signupSubtitle,
-              fontSize: sizes?.fontSize16,
-              color: AppColors.primarySlateColor,
-              giveLinesAsText: true,
-            ),
+
             SizedBox(height: getHeight() * .01),
             CustomField(
               borderColor: AppColors.greyBordersColor,
               hint: al.businessName,
-              label: al.businessName,
+              label: al.businessNamePlaceholder,
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
@@ -86,40 +96,53 @@ class _SignupState extends State<Signup> {
                 );
               },
             ),
-            SizedBox(height: getHeight() * .01),
+            SizedBox(height: getHeight() * .02),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Checkbox(
-                  side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
-                  value: true,
-                  onChanged: (value) {},
+                Transform.translate(
+                  offset: const Offset(0, -7),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: getWidth() * 0.02), // small gap between box & text
+                    child: Checkbox(
+                      side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
+                      value: true,
+                      onChanged: (value) {},
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // shrink default padding
+                      visualDensity: VisualDensity(horizontal: -4, vertical: -4), // tighter sizing
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: Text.rich(
-                    TextSpan(
-                      text: "${al.signupAgreement} ",
-                      style: TextStyle(
-                        fontSize: sizes?.fontSize14,
-                        fontFamily: Assets.onsetRegular,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text.rich(
+                      TextSpan(
+                        text: "${al.signupAgreement} ",
+                        style: TextStyle(
+                          fontSize: sizes?.fontSize14,
+                          fontFamily: Assets.onsetRegular,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: al.termsOfService,
+                            style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                          ),
+                          TextSpan(text: " ${al.andLabel} "),
+                          TextSpan(
+                            text: al.privacyPolicy,
+                            style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                          ),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: al.termsOfService,
-                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
-                        ),
-                        TextSpan(text: " ${al.andLabel} "),
-                        TextSpan(
-                          text: " ${al.privacyPolicy} ",
-                          style: TextStyle(color: AppColors.restaurantPrimaryColor),
-                        ),
-                      ],
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: getHeight() * .02),
+
+            SizedBox(height: getHeight() * .025),
             CustomButton(
               buttonText: al.signupTitle,
               onTap: () {

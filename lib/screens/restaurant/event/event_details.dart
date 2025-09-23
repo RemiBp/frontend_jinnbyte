@@ -80,8 +80,10 @@ class EventDetails extends StatelessWidget {
                   SizedBox(height: getHeight() * .01),
                   Divider(color: AppColors.greyColor),
                   SizedBox(height: getHeight() * .02),
+                  // Row 1: Title + Show All
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomText(
                         text: "Participants",
@@ -89,6 +91,11 @@ class EventDetails extends StatelessWidget {
                         fontFamily: Assets.onsetSemiBold,
                       ),
                       TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.only(right: getWidth() * 0.01), // <--- Prevents extra height
+                          minimumSize: Size(0, 0),  // <--- Keeps button compact
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                         onPressed: () {},
                         child: CustomText(
                           text: "Show All",
@@ -99,47 +106,53 @@ class EventDetails extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: getHeight() * .015),
+
+                // Row 2: Avatars + User Count
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Stack(
+                      // Avatars
+                      SizedBox(
+                        height: getHeight() * .05,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            _buildAvatar('https://randomuser.me/api/portraits/women/65.jpg'),
+                            Positioned(
+                              left: getWidth() * .05,
+                              child: _buildAvatar('https://randomuser.me/api/portraits/women/60.jpg'),
+                            ),
+                            Positioned(
+                              left: getWidth() * .10,
+                              child: _buildAvatar('https://randomuser.me/api/portraits/men/62.jpg'),
+                            ),
+                            Positioned(
+                              left: getWidth() * .15,
+                              child: _buildAvatarCircle('+10'),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // User count aligned with Show All
+                      Row(
                         children: [
-                          Container(width: getWidth() * .3),
-                          CircleAvatar(backgroundColor: Colors.transparent),
-                          Positioned(
-                            right: 60,
-                            child: _buildAvatar(
-                              'https://randomuser.me/api/portraits/women/65.jpg',
-                            ),
+                          SvgPicture.asset(
+                            Assets.peopleIcon,
+                            height: getHeight() * .022,
                           ),
-                          Positioned(
-                            right: 60,
-                            child: _buildAvatar(
-                              'https://randomuser.me/api/portraits/women/65.jpg',
-                            ),
-                          ),
-                          Positioned(
-                            right: 40,
-                            child: _buildAvatar(
-                              'https://randomuser.me/api/portraits/women/60.jpg',
-                            ),
-                          ),
-                          Positioned(
-                            right: 20,
-                            child: _buildAvatar(
-                              'https://randomuser.me/api/portraits/men/62.jpg',
-                            ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            child: _buildAvatarCircle('+10'),
+                          SizedBox(width: getWidth() * .01),
+                          CustomText(
+                            text: "10/120",
+                            fontSize: sizes?.fontSize12,
                           ),
                         ],
                       ),
-                      Spacer(),
-                      SvgPicture.asset(Assets.peopleIcon),
-                      CustomText(text: " 10/120", fontSize: sizes?.fontSize12),
                     ],
                   ),
+
                   SizedBox(height: getHeight() * .01),
                   Divider(color: AppColors.greyColor),
                   SizedBox(height: getHeight() * .02),
@@ -174,10 +187,25 @@ class EventDetails extends StatelessWidget {
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
-                  CustomText(
-                    text: " Av. Gustave Eiffel, 75007 Paris, France",
-                    fontSize: sizes?.fontSize12,
+                  SizedBox(height: getHeight() * 0.015), // small vertical gap
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.locationSvg,
+                        height: getHeight() * 0.022,
+                        width: getHeight() * 0.022,
+                      ),
+                      SizedBox(width: getWidth() * 0.02), // horizontal gap
+                      Expanded(
+                        child: CustomText(
+                          text: "Av. Gustave Eiffel, 75007 Paris, France",
+                          fontSize: sizes?.fontSize12,
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: getHeight() * 0.008), // small vertical gap
                   Image.asset(Assets.mapImage, height: getHeight() * .2),
                   SizedBox(height: getHeight() * .01),
                   Divider(color: AppColors.greyColor),
@@ -187,12 +215,15 @@ class EventDetails extends StatelessWidget {
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
-                  SizedBox(height: getHeight() * .01),
+                  SizedBox(height: getHeight() * .015),
                   Row(
                     children: [
                       SvgPicture.asset(Assets.webCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.instaCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.xCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.facebookCircleIcon),
                     ],
                   ),

@@ -299,7 +299,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
             child: LineChart(
               LineChartData(
                 minX: 0,
-                maxX: 3,
+                maxX: xLabels.length-1,
                 minY: 0,
                 maxY: 250,
                 gridData: const FlGridData(show: false),
@@ -334,12 +334,17 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                         if (index < 0 || index >= xLabels.length) {
                           return const SizedBox.shrink();
                         }
-                        return Padding(
-                          padding: EdgeInsets.only(top: getHeight() * 0.02),
-                          child: CustomText(
-                            text: xLabels[index],
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                        final double slotWidth = getWidth() / xLabels.length;
+
+                        return SizedBox(
+                          width: slotWidth,
+                          child: Center(
+                            child: CustomText(
+                              text: xLabels[index],
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         );
                       },

@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: getHeight() * .02),
             Stack(
               alignment: Alignment.bottomRight,
+              clipBehavior: Clip.none, // allow overflow
               children: [
                 CircleAvatar(
                   radius: getHeight() * .07,
@@ -82,22 +83,26 @@ class _ProfileState extends State<Profile> {
                           )
                           : null,
                 ),
-                IconButton.filled(
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.restaurantPrimaryColor,
-                  ),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return bottomSheet(context);
-                      },
-                    );
-                  },
-                  icon: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: getHeight() * .022,
+                Positioned(
+                  right: -getWidth() * .017,  // push outward horizontally
+                  bottom: -getHeight() * .017, // push outward vertically
+                  child: IconButton.filled(
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppColors.restaurantPrimaryColor,
+                    ),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return bottomSheet(context);
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: getHeight() * .022,
+                    ),
                   ),
                 ),
               ],
@@ -108,17 +113,21 @@ class _ProfileState extends State<Profile> {
               hint: al.address,
               label: al.address,
             ),
-            SizedBox(height: getHeight() * .01),
-            CustomField(
-              borderColor: AppColors.greyBordersColor,
-              hint: al.passwordLabel,
-              label: al.passwordLabel,
-            ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.phoneNumber,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.phoneNumber,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
             ),
             SizedBox(height: getHeight() * .01),
             PhoneFormField(

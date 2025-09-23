@@ -48,11 +48,10 @@ class _LanguageSelectionState extends State<LanguageSelection> {
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
-          vertical: getHeight() * .1,
+          vertical: getHeight() * .08,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             CustomText(
               text: al.selectLanguage,
@@ -65,70 +64,76 @@ class _LanguageSelectionState extends State<LanguageSelection> {
               fontSize: sizes?.fontSize16,
               giveLinesAsText: true,
             ),
-
             SizedBox(height: getHeight() * .03),
 
             languageOption(label: 'English', flagPath: Assets.ukFlagIcon),
-
             const SizedBox(height: 12),
-
             languageOption(label: 'French', flagPath: Assets.franceFlagIcon),
+          ],
+        ),
+      ),
 
-            const SizedBox(height: 32),
-            Spacer(),
-            widget.isFromProfile??false?
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                  buttonText: 'Cancel',
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  buttonWidth: getWidth() * .42,
-                  backgroundColor: Colors.transparent,
-                  borderColor: AppColors.blackColor,
-                  textColor: AppColors.blackColor,
-                  textFontWeight: FontWeight.w700,
-                ),
-                CustomButton(
-                  buttonText: 'Save Changes',
-                  onTap: () {
-
-                  },
-                  buttonWidth: getWidth() * .42,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                  borderColor: Colors.transparent,
-                  textColor: Colors.white,
-                  textFontWeight: FontWeight.w700,
-                ),
-              ],
-            ):
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final locale = selectedLanguage == "English" ? "en" : "fr";
-                  //
-                  provider.changeLocale(locale);
-                  context.go(Routes.signupRoute);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: CustomText(
-                  text: al.update,
-                  fontSize: sizes?.fontSize16,
-                  fontFamily: Assets.onsetSemiBold,
-                  color: Colors.white,
-                ),
-              ),
+      // ✅ Stick buttons to the bottom
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: getWidth() * .05,
+          vertical: getHeight() * .02,
+        ),
+        child: widget.isFromProfile ?? false
+            ? Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomButton(
+              buttonText: 'Cancel',
+              onTap: () {
+                Navigator.pop(context);
+              },
+              buttonWidth: getWidth() * .42,
+              backgroundColor: Colors.transparent,
+              borderColor: AppColors.blackColor,
+              textColor: AppColors.blackColor,
+              textFontWeight: FontWeight.w700,
+            ),
+            CustomButton(
+              buttonText: 'Save Changes',
+              onTap: () {
+                // Add save logic here
+              },
+              buttonWidth: getWidth() * .42,
+              backgroundColor:
+              AppColors.getPrimaryColorFromContext(context),
+              borderColor: Colors.transparent,
+              textColor: AppColors.whiteColor,
+              textFontWeight: FontWeight.w700,
             ),
           ],
+        )
+            : SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () async {
+              final locale =
+              selectedLanguage == "English" ? "en" : "fr";
+              provider.changeLocale(locale);
+              context.go(Routes.authRoute);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+              AppColors.getPrimaryColorFromContext(context),
+              padding: EdgeInsets.symmetric(
+                vertical: getHeight() * .02,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: CustomText(
+              text: al.continueText,
+              fontSize: sizes?.fontSize16,
+              fontFamily: Assets.onsetSemiBold,
+              color: AppColors.whiteColor,
+            ),
+          ),
         ),
       ),
     );

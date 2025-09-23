@@ -48,7 +48,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   carousel_slider: ^5.1.1
   connectivity_plus: ^6.1.4
-  fl_chart: ^1.0.0
+  fl_chart: ^1.1.1
   readmore: ^3.0.0
   animated_bottom_navigation_bar: ^1.4.0
   cached_network_image: ^3.4.1

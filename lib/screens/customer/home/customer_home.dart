@@ -65,17 +65,19 @@ class CustomerHome extends StatelessWidget {
           backgroundColor: AppColors.userPrimaryColor,
           onPressed: (){
           context.push(Routes.choiceSelectionRoute);
-          }, label: Row(
-        children: [
-          Icon(Icons.add, color: Colors.white,),
-          CustomText(
-            text: "Create",
-            fontSize: sizes?.fontSize12,
-            fontFamily: Assets.onsetMedium,
-            color: Colors.white,
-          ),
-        ],
-      )),
+          },
+          label: Row(
+            children: [
+              Icon(Icons.add, color: Colors.white,),
+              CustomText(
+                text: "Create",
+                fontSize: sizes?.fontSize12,
+                fontFamily: Assets.onsetMedium,
+                color: Colors.white,
+              ),
+            ],
+           )
+      ),
     );
   }
 }

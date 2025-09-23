@@ -80,6 +80,8 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      minimumSize: Size(double.infinity, getHeight() * 0.058), // ~44px
+
                     ),
                     child: CustomText(
                       text: "Cancel",
@@ -121,6 +123,8 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      minimumSize: Size(double.infinity, getHeight() * 0.058), // ~44px
+
                     ),
                     child: CustomText(
                       text: "Next",

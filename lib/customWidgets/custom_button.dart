@@ -23,6 +23,7 @@ class CustomBackButton extends StatelessWidget {
         }
       },
       child: Container(
+        height: getHeightRatio() * 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppColors.restaurantPrimaryColor,
