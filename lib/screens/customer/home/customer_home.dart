@@ -16,12 +16,10 @@ class CustomerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: getWidth() * .05,
-          vertical: getHeight() * .07,
-        ),
-        child: Column(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: getWidth() * .05),
+          child: Column(
           children: [
             Row(
               children: [
@@ -44,6 +42,7 @@ class CustomerHome extends StatelessWidget {
               hint: "Search by username or name...",
               prefixIconSvg: Assets.searchIcon,
             ),
+            SizedBox(height: getHeight() * .03),
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(
@@ -51,13 +50,17 @@ class CustomerHome extends StatelessWidget {
                 ),
                 itemCount: 2,
                 itemBuilder: (context, index) {
-                  return PostCard();
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: getHeight() * .02), // spacing between posts
+                    child: PostCard(),
+                  );
                 },
               ),
             ),
           ],
         ),
       ),
+    ),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100)

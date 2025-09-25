@@ -112,7 +112,8 @@ class PostCard extends StatelessWidget {
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
               _buildIconText(Icons.reply, '1.2k'),
-              Icon(Icons.star, color: AppColors.textGreyColor),
+              _buildInterestedTag("Interested (0)"),
+             // Icon(Icons.star, color: AppColors.textGreyColor),
             ],
           ),
         ),
@@ -120,18 +121,69 @@ class PostCard extends StatelessWidget {
     );
   }
 
+
+// Icon + Text with border
   Widget _buildIconText(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: AppColors.textGreyColor),
-        SizedBox(width: 4),
-        CustomText(
-          text: text,
-          fontSize: sizes?.fontSize12,
-          fontFamily: Assets.onsetMedium,
-          color: AppColors.textGreyColor,
-        ),
-      ],
+    return Container(
+      height: getHeight() * 0.035, // ~28px
+      width: getWidth() * 0.14,    // ~55px
+      margin: EdgeInsets.only(right: getWidth() * 0.01), //control spacing
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.textGreyColor, width: 1),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: getHeight() * 0.016, color: AppColors.textGreyColor),
+          SizedBox(width: getWidth() * 0.008), // tighter spacing inside
+          Flexible(
+            child: CustomText(
+              text: text,
+              fontSize: sizes?.fontSize10,
+              fontFamily: Assets.onsetMedium,
+              color: AppColors.textGreyColor,
+            ),
+          ),
+        ],
+      ),
     );
   }
+
+// Interested Tag (wider now)
+  Widget _buildInterestedTag(String label) {
+    return Container(
+      height: getHeight() * 0.035, // ~28px
+      width: getWidth() * 0.28,    // (~105px)
+      margin: EdgeInsets.only(left: getWidth() * 0.017), // control spacing
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF964DFF),
+            Color(0xFFFC5D4A),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.star, color: Colors.white, size: getHeight() * 0.016),
+          SizedBox(width: getWidth() * 0.01),
+          Flexible(
+            child: CustomText(
+              text: label,
+              fontSize: sizes?.fontSize10,
+              fontFamily: Assets.onsetMedium,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 }
