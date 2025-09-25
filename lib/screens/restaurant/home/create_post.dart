@@ -27,6 +27,7 @@ class _CreatePostState extends State<CreatePost> {
         title: Text('Create Post'),
         leading: BackButton(),
         elevation: 0,
+        titleSpacing: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -40,42 +41,53 @@ class _CreatePostState extends State<CreatePost> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: "Photos",
-                  fontFamily: Assets.onsetMedium,
-                  fontSize: sizes?.fontSize16,
+                Row(
+                  children: [
+                    CustomText(
+                      text: "Photos",
+                      fontFamily: Assets.onsetMedium,
+                      fontSize: sizes?.fontSize16,
+                      ),
+                    CustomText(
+                      text: " *",
+                      fontSize: sizes?.fontSize16,
+                      color: Colors.red,
+                    ),
+                  ]
                 ),
                 CustomText(
                   text: "File supported: PNG, JPG",
                   fontSize: sizes?.fontSize12,
                 ),
-                Container(
-                  height: getHeight() * .2,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.greyBordersColor,
-                      )
-                  ),
-                  child: Center(
+                SizedBox(height: getHeight() * .02),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    // ~342 x 200 in responsive terms
+                    width: getWidth() * 0.91,   // ~342px on standard widths
+                    height: getHeight() * 0.25, // ~200px on standard heights
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.greyBordersColor),
+                    ),
+                    child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomText(
                             text: "Choose a file",
                             fontFamily: Assets.onsetMedium,
                             fontSize: sizes?.fontSize14,
                           ),
+                          SizedBox(height: getHeight() * 0.005),
                           CustomText(
                             text: "Up to 5 images",
                             fontSize: sizes?.fontSize14,
                             color: HexColor.fromHex("#686A82"),
                           ),
-
                         ],
-                      )
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -85,7 +97,7 @@ class _CreatePostState extends State<CreatePost> {
             CustomField(
               borderColor: AppColors.greyBordersColor,
               hint: "e.g Sunday Brunch at The Maple House",
-              label: "Tite",
+              label: "Title",
             ),
             SizedBox(height: getHeight() * .02),
 
@@ -120,6 +132,7 @@ class _CreatePostState extends State<CreatePost> {
                   Expanded(
                     child: CustomButton(
                       height: getHeight() * .055,
+                      buttonWidth: getWidth() * 0.43,   // ~163px
                       backgroundColor: Colors.transparent,
                       buttonText: "Cancel",
                       textColor: Colors.black,
@@ -127,9 +140,10 @@ class _CreatePostState extends State<CreatePost> {
                       onTap: () {},
                     ),
                   ),
-                  SizedBox(width: 12),
+                  SizedBox(width: 14),
                   Expanded(
                     child: CustomButton(
+                      buttonWidth: getWidth() * 0.43,   // ~163px
                       height: getHeight() * .055,
                       buttonText: "Publish",
                       onTap: () {},

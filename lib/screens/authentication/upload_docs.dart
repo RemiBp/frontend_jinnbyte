@@ -10,6 +10,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../routes/routes.dart';
 
 class UploadDocs extends StatelessWidget {
   const UploadDocs({super.key});
@@ -233,7 +234,7 @@ class UploadDocs extends StatelessWidget {
             CustomButton(
               buttonText: al.submitForReview,
               onTap: () {
-
+                context.push(Routes.loginRoute);
               },
             ),
           ],

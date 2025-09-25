@@ -126,6 +126,7 @@ class _CreateEventState extends State<CreateEvent> {
         leading: BackButton(color: Colors.black),
         title: Text("Create Event", style: TextStyle(color: Colors.black)),
         centerTitle: false,
+        titleSpacing: 0,
         // For Divider
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),

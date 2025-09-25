@@ -22,19 +22,30 @@ class _CreateChoiceState extends State<CreateChoice> {
   String selectedDish = '';
   String visibility = 'Public';
 
-  Widget buildRatingRow(String title, double rating, {
-    String?review,
-  }) {
+  Widget buildRatingRow(
+      String title,
+      double rating, {
+        String? review,
+        bool isLast = false, // 👈 new flag to control divider
+      }) {
+    final bool isZero = rating == 0;
+    final Color activeColor = isZero ? AppColors.inputHintColor : Colors.orange;
+
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(review != null)...[
+        // Title + optional Remove
+        if (review != null) ...[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: title, fontSize: sizes?.fontSize16),
-              InkWell(onTap: () {},
+              CustomText(
+                text: title,
+                fontSize: sizes?.fontSize16,
+                fontFamily: Assets.onsetMedium,
+              ),
+              InkWell(
+                onTap: () {},
                 child: CustomText(
                   text: "Remove",
                   fontSize: sizes?.fontSize14,
@@ -42,41 +53,70 @@ class _CreateChoiceState extends State<CreateChoice> {
                   color: Colors.red,
                   decorationColor: Colors.red,
                   textDecoration: TextDecoration.underline,
-                ),),
+                ),
+              ),
             ],
           ),
-          CustomText(text: review, fontSize: sizes?.fontSize12),
-        ] else
-          ...[
-            CustomText(text: title, fontSize: sizes?.fontSize16),
-          ],
+          SizedBox(height: getHeight() * .005),
+          CustomText(
+            text: review,
+            fontSize: sizes?.fontSize12,
+          ),
+        ] else ...[
+          CustomText(
+            text: title,
+            fontSize: sizes?.fontSize16,
+            fontFamily: Assets.onsetMedium,
+          ),
+        ],
 
         SizedBox(height: getHeight() * .01),
+
+        // Stars + Rating Badge
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: List.generate(
                 5,
-                (index) => Icon(
-                  Icons.star,
-                  size: getHeight() * .03,
-                  color: index < rating ? Colors.amber : AppColors.greyColor,
-                ),
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(
+                                        Icons.star,
+                                        size: 28, // exactly 28px
+                                        color: index < rating ? Colors.amber : AppColors.greyColor,
+                                      ),
+                    ),
               ),
             ),
-            SizedBox(width: 8),
             Container(
+              width: getWidth() * 0.12,
+              height: getHeight() * 0.045,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.yellow),
+                color: Colors.white,
+                border: Border.all(color: activeColor, width: 1.5), // 👈 fixed border
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: CustomText(
+                text: rating.toStringAsFixed(1),
+                fontSize: sizes?.fontSize14,
+                fontFamily: Assets.onsetMedium,
+                color: activeColor, // 👈 same as border
               ),
             ),
           ],
         ),
+
+        if (!isLast) ...[
+          SizedBox(height: getHeight() * .015),
+          Divider(height: 1, color: AppColors.greyBordersColor),
+          SizedBox(height: getHeight() * .015),
+        ],
       ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +128,7 @@ class _CreateChoiceState extends State<CreateChoice> {
         title: Text('Create Choice'),
         leading: BackButton(),
         elevation: 0,
+        titleSpacing: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -180,7 +221,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                   SizedBox(height: getHeight() * .01),
                   buildRatingRow("Portions", 4.0),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow("Ambiance", 4.0),
+                  buildRatingRow("Ambiance", 4.0, isLast: true),
                 ],
               ),
             ),
@@ -204,23 +245,24 @@ class _CreateChoiceState extends State<CreateChoice> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
-                    title: CustomText(
+
+                     CustomText(
                       text: "Dishes and Menus Consumed",
                       fontFamily: Assets.onsetMedium,
                       fontSize: sizes?.fontSize16,
                     ),
-                  ),
+                  SizedBox(height: getHeight() * .01),
+
                   Column(
                     children: [
                       dishRadio(
                           menuName: "Brochettes (3)",
-                          dishDetails: "Sauce blanche, saumon fume 2jdfj 232 1231 ",
+                          dishDetails: "Sauce blanche, saumon fume ",
                           "Al Salmone", "\$20"),
                       dishRadio(menuName: "Maki (3)",
                           dishDetails: "Sauce blanche, saumon fume",
                           "Maki (3)",
-                          "\$20"),
+                          "\$20", isLast: true),
                     ],
                   ),
                 ],
@@ -247,7 +289,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Overall Restaurant Rating",
+                    text: "Rate The Selected Dishesh",
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
@@ -256,7 +298,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                       "Al Salmone", 2.0, review: "Your rating for this dish:"),
                   SizedBox(height: getHeight() * .01),
                   buildRatingRow(
-                      "Maki Saumon", 4.0, review: "Your rating for this dish:"),
+                      "Maki Saumon", 4.0, review: "Your rating for this dish:", isLast: true),
                 ],
               ),
             ),
@@ -290,8 +332,8 @@ class _CreateChoiceState extends State<CreateChoice> {
                     fontSize: sizes?.fontSize12,
                   ),
                   Container(
-                    height: getHeight() * .2,
-                    width: double.infinity,
+                    height: getHeight() * 0.237,  // ~200px
+                    width: getWidth() * 0.77,     // ~302px
                     margin: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -383,53 +425,109 @@ class _CreateChoiceState extends State<CreateChoice> {
   Widget dishRadio(String title, String price, {
     required String menuName,
     required String dishDetails,
+    bool isLast = false, // new flag for divider
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(
-          text: menuName,
-          fontSize: sizes?.fontSize16,
-          fontFamily: Assets.onsetSemiBold,
+        // menu title (e.g. "Brochettes (3)")
+        Padding(
+          padding: EdgeInsets.only(bottom: getHeight() * 0.008),
+          child: CustomText(
+            text: menuName,
+            fontSize: sizes?.fontSize16,
+            fontFamily: Assets.onsetSemiBold,
+          ),
         ),
+
+        // keep ListView.builder as you requested
         ListView.builder(
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 3,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return RadioListTile(
-                controlAffinity: ListTileControlAffinity.trailing,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: 3, // keep your item count
+          itemBuilder: (context, index) {
+            // create a unique value for each radio (prevents collisions across groups)
+            final itemValue = '$menuName|$title|$index';
+            final bool isSelected = selectedDish == itemValue;
+
+            return InkWell(
+              onTap: () {
+                setState(() {
+                  selectedDish = itemValue;
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: getHeight() * 0.012),
+                // ensure consistent visual alignment between items
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center, // <-- key: center aligns price+radio
                   children: [
-                    CustomText(
-                      text: title,
-                      fontSize: sizes?.fontSize16,
-                    ),
-                    CustomText(
-                      text: price,
-                      fontSize: sizes?.fontSize16,
+                    // left side: title + subtitle (expands)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: title,
+                            fontSize: sizes?.fontSize14,
+                          ),
+                          SizedBox(height: getHeight() * 0.006),
+                          CustomText(
+                            text: dishDetails,
+                            fontSize: sizes?.fontSize12,
+                          ),
+                        ],
+                      ),
                     ),
 
+                    SizedBox(width: getWidth() * 0.03),
+
+                    // right side: price and radio grouped together so they align vertically
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: price,
+                          fontSize: sizes?.fontSize14,
+                        ),
+                        SizedBox(width: getWidth() * 0.02),
+                        // ✅ custom radio
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSelected
+                                  ? Colors.blue
+                                  : AppColors.greyColor,
+                              width: 2,
+                            ),
+                            color: isSelected ? Colors.blue : Colors.transparent,
+                          ),
+                          child: isSelected
+                              ? Icon(
+                            Icons.check,
+                            size: 16,
+                            color: Colors.white,
+                          )
+                              : null,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                value: title,
-                subtitle: SizedBox(
-                  width: getWidth() * .6,
-                  child: CustomText(
-                    text: dishDetails,
-                    fontSize: sizes?.fontSize12,
-                  ),
-                ),
-                groupValue: selectedDish,
-                onChanged: (value) {
-                  setState(() {
-                    selectedDish = value.toString();
-                  });
-                },
-              );
-            })
+              ),
+            );
+          },
+        ),
+        if (!isLast) ...[
+          SizedBox(height: getHeight() * 0.01),
+          Divider(color: AppColors.greyBordersColor, thickness: 1),
+          SizedBox(height: getHeight() * 0.01),
+        ],
       ],
     );
   }

@@ -47,7 +47,14 @@ class _ShareExperienceWidgetState extends State<ShareExperienceWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+        boxShadow: [
+          BoxShadow(
+          color: Colors.grey.shade300,
+          offset: Offset(0, 4),
+          blurRadius: 2,
+          spreadRadius: 4,
+         ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -55,8 +55,8 @@ class OtpVerification extends StatelessWidget {
             SizedBox(height: getHeight() * .03),
             Pinput(
               length: 6,
-              obscureText: true,
-              obscuringCharacter: "*",
+              //obscureText: true,
+              //obscuringCharacter: "*",
               defaultPinTheme: PinTheme(
                 width: getWidth() * .15,
                 height: getHeight() * .065,

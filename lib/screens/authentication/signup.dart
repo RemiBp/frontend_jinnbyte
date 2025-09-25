@@ -25,6 +25,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  bool _agreed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +107,12 @@ class _SignupState extends State<Signup> {
                     padding: EdgeInsets.only(right: getWidth() * 0.02), // small gap between box & text
                     child: Checkbox(
                       side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
-                      value: true,
-                      onChanged: (value) {},
+                      value: _agreed,
+                      onChanged: (value) {
+                        setState(() {
+                          _agreed = value!;
+                        });
+                      },
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // shrink default padding
                       visualDensity: VisualDensity(horizontal: -4, vertical: -4), // tighter sizing
                     ),
