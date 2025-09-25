@@ -128,7 +128,7 @@ class TermsAndConditionsCheckbox extends StatelessWidget {
                         TextSpan(
                           text: "Privacy Policy",
                           style: TextStyle(
-                            color: AppColors?.restaurantPrimaryColor,
+                            color: AppColors.restaurantPrimaryColor,
                             fontSize: sizes?.fontSize14,
                             fontWeight: FontWeight.w500,
                             fontFamily: Assets.onsetRegular,
