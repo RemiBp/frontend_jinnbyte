@@ -18,7 +18,6 @@ class ExploreView extends StatefulWidget {
 }
 
 class _ExploreViewState extends State<ExploreView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,7 @@ class _ExploreViewState extends State<ExploreView> {
         padding: EdgeInsets.symmetric(vertical: getHeight() * .07),
         child: Column(
           children: [
-            // ---- HEADER (fixed) ----
+            // ---- HEADER ----
             Padding(
               padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
               child: Row(
@@ -42,22 +41,32 @@ class _ExploreViewState extends State<ExploreView> {
                       ),
                       Row(
                         children: [
-                          Icon(Icons.location_on_sharp, color: AppColors.userPrimaryColor),
+                          Icon(Icons.location_on_sharp,
+                              color: AppColors.userPrimaryColor),
                           CustomText(
                             text: "Lyon, France",
                             fontSize: sizes?.fontSize16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.userPrimaryColor,
                           ),
-                          Icon(Icons.keyboard_arrow_down, color: AppColors.userPrimaryColor),
+                          Icon(Icons.keyboard_arrow_down,
+                              color: AppColors.userPrimaryColor),
                         ],
                       ),
                     ],
                   ),
-                  Spacer(),
-                  CustomIconButton(svgString: Assets.mapIcon, onPress: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => CustomerMapsView()));
-                  }),
+                  const Spacer(),
+                  CustomIconButton(
+                    svgString: Assets.mapIcon,
+                    onPress: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CustomerMapsView(),
+                        ),
+                      );
+                    },
+                  ),
                   SizedBox(width: getWidth() * .02),
                   CustomIconButton(svgString: Assets.chatIcon),
                   SizedBox(width: getWidth() * .02),
@@ -68,7 +77,7 @@ class _ExploreViewState extends State<ExploreView> {
 
             SizedBox(height: getHeight() * .02),
 
-            // ---- SEARCH (fixed as part of header) ----
+            // ---- SEARCH ----
             Padding(
               padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
               child: CustomField(
@@ -85,32 +94,58 @@ class _ExploreViewState extends State<ExploreView> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
+                  // ---- Browse by Category ----
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                    child: SeeMoreWidget(),
+                    child: BrowseCategoryWidget(
+                      imagePaths: [
+                        Assets.restaurantImage,
+                        Assets.wellnessImage,
+                        Assets.leisureImage,
+                      ],
+                      labels: [
+                        "Restaurants",
+                        "Wellness",
+                        "Leisure",
+                      ],
+                    ),
                   ),
 
+                  SizedBox(height: getHeight() * 0.02),
+
+                  // ---- Events ----
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+                    child: SeeMoreWidget(header: "Events near you"),
+                  ),
+
+                  SizedBox(height: getHeight() * 0.015),
+
                   SizedBox(
-                    height: getHeightRatio() * 310,
+                    height: getHeight() * 0.36, // responsive height for events
                     child: ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
                       scrollDirection: Axis.horizontal,
                       itemCount: dummyEvents.length,
                       itemBuilder: (context, index) {
                         return SizedBox(
-                          width: getWidthRatio() * 280,
+                          width: getWidth() * 0.75,
                           child: ExploreEventsCard(
                             event: dummyEvents[index],
                             margin: EdgeInsets.only(
-                              top: getHeightRatio() * 8,
-                              bottom: getHeightRatio() * 8,
+                              top: getHeight() * 0.01,
+                              bottom: getHeight() * 0.01,
                               right: getWidth() * 0.03,
                             ),
                             onDetails: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RestaurantExploreDetails(tag: dummyEvents[index].tag),
+                                  builder: (context) =>
+                                      RestaurantExploreDetails(
+                                        tag: dummyEvents[index].tag,
+                                      ),
                                 ),
                               );
                             },
@@ -121,28 +156,34 @@ class _ExploreViewState extends State<ExploreView> {
                   ),
 
                   SizedBox(height: getHeight() * 0.02),
+
+                  // ---- Surprise Me ----
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                    child: SeeMoreWidget(),
+                    child: SeeMoreWidget(header: "Surprise me"),
                   ),
 
+                  SizedBox(height: getHeight() * 0.015),
+
                   SizedBox(
-                    height: getHeightRatio() * 230,
+                    height: getHeight() * 0.28, // responsive height
                     child: ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return SizedBox(
-                          width: getWidthRatio() * 280,
+                          width: getWidth() * 0.75,
                           child: FavouriteRestaurantCard(
-                            imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
+                            imageUrl:
+                            "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
                             restaurantName: "Restaurant ${index + 1}",
                             address: "123 Main Street, City",
                             isFavourite: index % 2 == 0,
                             margin: EdgeInsets.only(
-                              top: getHeightRatio() * 8,
-                              bottom: getHeightRatio() * 8,
+                              top: getHeight() * 0.01,
+                              bottom: getHeight() * 0.01,
                               right: getWidth() * 0.03,
                             ),
                             onFavouriteTap: () {},
@@ -161,7 +202,6 @@ class _ExploreViewState extends State<ExploreView> {
     );
   }
 
-
   final List<Event> dummyEvents = [
     Event(
       title: "Wine & Dine Evening",
@@ -169,7 +209,8 @@ class _ExploreViewState extends State<ExploreView> {
       location: "Lyon, France",
       dateTime: "June 20, 10:00 PM – 12:00 PM",
       price: "\$30.00",
-      imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
+      imageUrl:
+      "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
     ),
     Event(
       title: "Beach Leisure Party",
@@ -177,7 +218,8 @@ class _ExploreViewState extends State<ExploreView> {
       location: "Nice, France",
       dateTime: "July 15, 6:00 PM – 11:00 PM",
       price: "\$45.00",
-      imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
+      imageUrl:
+      "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
     ),
     Event(
       title: "Romantic Dinner Night",
@@ -185,7 +227,8 @@ class _ExploreViewState extends State<ExploreView> {
       location: "Paris, France",
       dateTime: "Aug 5, 8:00 PM – 11:00 PM",
       price: "\$55.00",
-      imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
+      imageUrl:
+      "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
     ),
     Event(
       title: "Wellness Yoga Camp",
@@ -193,13 +236,11 @@ class _ExploreViewState extends State<ExploreView> {
       location: "Bali, Indonesia",
       dateTime: "Sep 1, 7:00 AM – 6:00 PM",
       price: "\$90.00",
-      imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
+      imageUrl:
+      "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
     ),
   ];
-
-
 }
-
 
 class Event {
   final String title;

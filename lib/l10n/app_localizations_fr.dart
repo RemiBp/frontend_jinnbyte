@@ -66,6 +66,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emailPlaceholder => 'Adresse e-mail';
 
   @override
+  String get fullName => 'Nom complet';
+
+  @override
+  String get fullNamePlaceholder => 'Nom et prénom';
+
+  @override
+  String get userName => 'Nom d\'utilisateur';
+
+  @override
+  String get userNamePlaceholder => 'Nom d\'utilisateur';
+
+  @override
   String get passwordLabel => 'Mot de passe';
 
   @override

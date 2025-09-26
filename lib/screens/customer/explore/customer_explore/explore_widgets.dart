@@ -33,6 +33,60 @@ class SeeMoreWidget extends StatelessWidget {
   }
 }
 
+class BrowseCategoryWidget extends StatelessWidget {
+  final List<String> imagePaths;
+  final List<String> labels;
+
+  const BrowseCategoryWidget({
+    super.key,
+    required this.imagePaths,
+    required this.labels,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SeeMoreWidget(header: "Browse by Category"),
+        SizedBox(height: getHeight() * 0.015),
+        SizedBox(
+          height: getHeight() * 0.17, // container height = image + text
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: imagePaths.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(right: getWidth() * 0.04),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        imagePaths[index],
+                        width: getWidth() * 0.28, // ~106px on std screen
+                        height: getWidth() * 0.28,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(height: getHeight() * 0.008),
+                    CustomText(
+                      text: labels[index],
+                      fontSize: sizes?.fontSize14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 class ExploreEventsCard extends StatelessWidget {
   final Event event;
   final Function onDetails;

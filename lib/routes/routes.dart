@@ -2,6 +2,7 @@ import 'package:choice_app/screens/authentication/authentication.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_verification.dart';
 import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/screens/authentication/upload_docs.dart';
+import 'package:choice_app/screens/authentication/userSignup.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
@@ -26,6 +27,7 @@ class Routes {
   static const String languageSelectionRoute = '/language_selection';
   static const String authRoute = '/auth';
   static const String signupRoute = '/signup';
+  static const String userSignupRoute = '/userSignup';
   static const String otpVerificationRoute = '/otp_verification';
   static const String uploadDocsRoute = '/upload_docs';
   static const String loginRoute = '/login';
@@ -56,6 +58,7 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/language_selection', builder: (context, state) => const LanguageSelection()),
     GoRoute(path: '/auth', builder: (context, state) => const Authentication()),
     GoRoute(path: '/signup', builder: (context, state) => const Signup()),
+    GoRoute(path: '/userSignup', builder: (context, state) => const UserSignup()),
     GoRoute(
       path: '/otp_verification',
       builder: (context, state) => const OtpVerification(),

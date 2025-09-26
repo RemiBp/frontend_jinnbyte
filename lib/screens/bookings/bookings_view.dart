@@ -17,10 +17,22 @@ class BookingsView extends StatefulWidget {
 
 class _BookingsViewState extends State<BookingsView> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String _title = "Booking Details"; // default title
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this,initialIndex: 0);
+
+    _tabController.addListener(() {
+      setState(() {
+        if (_tabController.index == 3) {
+          _title = "Bookings Cancelled"; // changed title to Bookings Cancelled
+        } else {
+          _title = "Booking Details"; // All other tabs
+        }
+      });
+    });
   }
 
   @override
@@ -34,7 +46,7 @@ class _BookingsViewState extends State<BookingsView> with SingleTickerProviderSt
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: "Bookings",
+        title: _title, // dynamic title
         showBackArrow: false,
         hideBottomBorder: true,
       ),

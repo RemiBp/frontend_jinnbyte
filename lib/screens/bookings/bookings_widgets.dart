@@ -44,7 +44,7 @@ class BookingCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppColors.blackColor.withOpacity(0.05),
+              color: AppColors.blackColor.withValues(alpha: 0.05),
               blurRadius: 24,
               offset: Offset(0, 4),
             ),
@@ -56,24 +56,43 @@ class BookingCard extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Booking ID: #3956839",
-                  fontSize: sizes?.fontSize14,
+                  text: "Booking ID: 3956839",
+                  fontSize: sizes?.fontSize12,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.blackColor,
+                  color: AppColors.inputHintColor,
                 ),
                 Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.035, vertical: getHeight() * 0.01),
-                  decoration: BoxDecoration(
-                    color: AppColors.redColor.withAlpha(40),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: CustomText(
-                    text: "Event",
-                    fontSize: sizes?.fontSize12,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.redColor,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.035, vertical: getHeight() * 0.01),
+                      decoration: BoxDecoration(
+                        color: AppColors.redColor.withAlpha(40),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: CustomText(
+                        text: "Event",
+                        fontSize: sizes?.fontSize12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.redColor,
+                      ),
+                    ),
+                    SizedBox(width: getWidth() * 0.01),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.035, vertical: getHeight() * 0.01),
+                      decoration: BoxDecoration(
+                        color: AppColors.restaurantPrimaryColor.withAlpha(40),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: CustomText(
+                        text: "Restaurant",
+                        fontSize: sizes?.fontSize10,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.restaurantPrimaryColor,
+                      ),
+                    ),
+
+                  ],
                 ),
                 if(onCheckIn == null  && onCancel== null)
                 Padding(

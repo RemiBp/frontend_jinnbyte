@@ -103,8 +103,13 @@ class Assets {
   static const String originMapImage = "assets/images/origin_map_image.png";
   static const String originMapImageRes = "assets/images/origin_map_image_res.png";
   static const String mapImage = "assets/images/map.png";
+  static const String mapImage2 = "assets/images/map_img2.png";
   static const String choiceImage = "assets/images/choice_image.png";
   static const String verticalLine = "assets/images/vertical_line.png";
+  static const String leisureImage = "assets/images/leisure.png";
+  static const String restaurantImage = "assets/images/restaurant.png";
+  static const String wellnessImage = "assets/images/wellness.png";
+
 
   static const String badge1 = "assets/images/badge1.png";
   static const String badge2 = "assets/images/badge2.png";

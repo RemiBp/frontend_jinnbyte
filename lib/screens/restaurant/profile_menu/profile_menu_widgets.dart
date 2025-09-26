@@ -240,7 +240,7 @@ class CustomerProfileHeader extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => FollowingView()),
                         );
                       },
-                      child: _buildStatItem("02", "Followers"),
+                      child: _buildStatItem("02", "Following"),
                     ),
                   ],
                 ),
@@ -972,6 +972,151 @@ class _FollowUnFollowTileState extends State<FollowUnFollowTile> {
     );
   }
 }
+class BookmarkRestaurantCard extends StatelessWidget {
+  final String imageUrl;
+  final String address;
+  final double rating;
+  final String tag; // e.g. "Wellness"
+  final bool isBookmarked;
+  final EdgeInsetsGeometry? margin;
+  final VoidCallback? onBookmarkTap;
+  final VoidCallback? onCardTap;
+
+  const BookmarkRestaurantCard({
+    super.key,
+    required this.imageUrl,
+    required this.address,
+    required this.rating,
+    required this.tag,
+    this.isBookmarked = false,
+    this.onBookmarkTap,
+    this.onCardTap,
+    this.margin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onCardTap,
+      child: Container(
+        height: getHeightRatio() * 210,
+        margin: margin ??
+            EdgeInsets.symmetric(
+              horizontal: sizes!.pagePadding,
+              vertical: getHeight() * 0.015,
+            ),
+        padding: EdgeInsets.symmetric(
+          horizontal: getWidth() * 0.025,
+          vertical: getHeight() * 0.015,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.blackColor.withAlpha(20),
+              offset: const Offset(0, 0),
+              blurRadius: 24,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image + Bookmark + Tag
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      Assets.galleryImage,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  // Bookmark icon (top-right)
+                  Positioned(
+                    top: getHeight() * 0.015,
+                    right: getWidth() * 0.04,
+                    child: GestureDetector(
+                      onTap: onBookmarkTap,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isBookmarked
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: AppColors.redColor, // 🔴 red again
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Tag chip (top-left)
+                  Positioned(
+                    top: getHeight() * 0.015,
+                    left: getWidth() * 0.04,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getWidth() * 0.025,
+                        vertical: getHeight() * 0.01,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors
+                            .getPrimaryColorFromContext(context)
+                            .withAlpha(90),
+                      ),
+                      child: CustomText(
+                        text: tag,
+                        color: AppColors.whiteColor,
+                        fontSize: sizes?.fontSize12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: getHeight() * 0.01),
+
+            // ⭐ Rating Row
+            Row(
+              children: [
+                Icon(Icons.star, color: Colors.amber, size: 16),
+                SizedBox(width: getWidth() * 0.01),
+                CustomText(
+                  text: rating.toStringAsFixed(1), // e.g. 4.3
+                  fontSize: sizes?.fontSize12,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.blackColor,
+                ),
+              ],
+            ),
+            SizedBox(height: getHeight() * 0.005),
+
+            // Address only
+            CustomText(
+              text: address,
+              fontSize: sizes?.fontSize12,
+              fontWeight: FontWeight.w500,
+              lines: 2,
+              textOverflow: TextOverflow.ellipsis,
+              color: AppColors.primarySlateColor,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
 class FavouriteRestaurantCard extends StatelessWidget {
@@ -1060,7 +1205,7 @@ class FavouriteRestaurantCard extends StatelessWidget {
                       ),
                       child: CustomText(
                         text: "Wellness",
-                        color: AppColors.getPrimaryColorFromContext(context),
+                        color: AppColors.whiteColor,
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w500
                       ),

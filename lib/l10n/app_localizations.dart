@@ -200,6 +200,30 @@ abstract class AppLocalizations {
   /// **'Email address'**
   String get emailPlaceholder;
 
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @fullNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullNamePlaceholder;
+
+  /// No description provided for @userName.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get userName;
+
+  /// No description provided for @userNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get userNamePlaceholder;
+
   /// No description provided for @passwordLabel.
   ///
   /// In en, this message translates to:

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
 import '../../../../res/res.dart';
 
@@ -20,7 +21,7 @@ class _FollowerViewState extends State<FollowerView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Follower"),
+      appBar: CommonAppBar(title: "Followers"),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
@@ -36,17 +37,48 @@ class _FollowerViewState extends State<FollowerView> {
             Expanded(
               child: ListView.separated(
                 itemCount: users.length,
-                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025,),
+                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return UserTile(
-                    name: user['name']!,
-                    username: user['username']!,
-                    imageUrl: user['image']!,
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // User info
+                      Expanded(
+                        child: UserTile(
+                          name: user['name']!,
+                          username: user['username']!,
+                          imageUrl: user['image']!,
+                        ),
+                      ),
+
+                      // Message button
+                      GestureDetector(
+                        onTap: () {
+                          // later handle navigation or chat
+                        },
+                        child: Container(
+                          height: getHeight() * 0.03, // ~75px
+                          width: getWidth() * 0.2,   //
+                          decoration: BoxDecoration(
+                            color: AppColors.greyColor,
+                            borderRadius: BorderRadius.circular(getWidth() * 0.02),
+                          ),
+                          alignment: Alignment.center,
+                          child: CustomText(
+                            text: "Message",
+                            color: AppColors.blackColor,
+                            fontSize: sizes?.fontSize12,
+                            fontFamily: Assets.onsetRegular,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
