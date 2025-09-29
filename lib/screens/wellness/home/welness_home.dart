@@ -53,6 +53,7 @@ class WellnessHome extends StatelessWidget {
               hint: "Search by username or name...",
               prefixIconSvg: Assets.searchIcon,
             ),
+            SizedBox(height: getHeight() * .02),
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(

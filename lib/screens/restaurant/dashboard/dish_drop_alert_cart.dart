@@ -55,12 +55,14 @@ class DishDropAlertsCard extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: 1,
                       getTitlesWidget: (value, _) => Text(value.toStringAsFixed(0)),
                     ),
                   ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: 1,
                       getTitlesWidget: (value, _) {
                         final days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'];
                         if (value.toInt() < 0 || value.toInt() >= days.length) {

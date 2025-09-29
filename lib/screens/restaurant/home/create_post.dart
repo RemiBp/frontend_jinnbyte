@@ -131,20 +131,21 @@ class _CreatePostState extends State<CreatePost> {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      height: getHeight() * .055,
-                      buttonWidth: getWidth() * 0.43,   // ~163px
                       backgroundColor: Colors.transparent,
+                      buttonWidth: getWidth() * 0.43,
+                      height: getHeight() * 0.055,
                       buttonText: "Cancel",
-                      textColor: Colors.black,
-                      borderColor: Colors.black,
+                      textColor: AppColors.blackColor,
+                      borderColor: AppColors.blackColor,
                       onTap: () {},
                     ),
                   ),
-                  SizedBox(width: 14),
+                  SizedBox(width: getWidth() * 0.035),
                   Expanded(
                     child: CustomButton(
-                      buttonWidth: getWidth() * 0.43,   // ~163px
-                      height: getHeight() * .055,
+                      buttonWidth: getWidth() * 0.43,
+                      height: getHeight() * 0.055,
+                      borderColor: AppColors.getPrimaryColorFromContext(context),
                       buttonText: "Publish",
                       onTap: () {},
                     ),

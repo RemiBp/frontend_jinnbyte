@@ -75,7 +75,7 @@ class _CreateEventState extends State<CreateEvent> {
       context: context,
       initialTime: isStart
           ? (_startTime ?? const TimeOfDay(hour: 0, minute: 0)) // default 12 AM
-          : (_endTime ?? TimeOfDay.now()), //end time stays as it is
+          :  (_endTime ?? const TimeOfDay(hour: 0, minute: 0)),   //end time stays as it is
     );
     if (picked != null) {
       setState(() {
@@ -329,7 +329,8 @@ class _CreateEventState extends State<CreateEvent> {
                                 label: "End Time",
                                 suffixIconSvg: Assets.clockSvg,
                                 textEditingController: TextEditingController(
-                                  text: _endTime?.format(context) ?? "",
+                                  text: (_endTime ?? const TimeOfDay(hour: 0, minute: 0)) // fallback
+                                      .format(context),
                                 ),
                               ),
                             ),

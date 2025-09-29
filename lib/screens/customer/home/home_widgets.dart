@@ -3,6 +3,7 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../appAssets/app_assets.dart';
 
@@ -111,7 +112,7 @@ class PostCard extends StatelessWidget {
             children: [
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
-              _buildIconText(Icons.reply, '1.2k'),
+              _buildIconText(Assets.shareIcon, '1.2k'),
               _buildInterestedTag("Interested (0)"),
              // Icon(Icons.star, color: AppColors.textGreyColor),
             ],
@@ -123,11 +124,31 @@ class PostCard extends StatelessWidget {
 
 
 // Icon + Text with border
-  Widget _buildIconText(IconData icon, String text) {
+  Widget _buildIconText(dynamic icon, String text) {
+    Widget iconWidget;
+
+    if (icon is IconData) {
+      // Normal material icon
+      iconWidget = Icon(
+        icon,
+        size: getHeight() * 0.016,
+        color: AppColors.textGreyColor,
+      );
+    } else if (icon is String) {
+      // SVG asset path
+      iconWidget = SvgPicture.asset(
+        icon,
+        height: getHeight() * 0.016,
+        colorFilter: ColorFilter.mode(AppColors.textGreyColor,BlendMode.srcIn),
+      );
+    } else {
+      throw ArgumentError("icon must be IconData or String (SVG path)");
+    }
+
     return Container(
       height: getHeight() * 0.035, // ~28px
       width: getWidth() * 0.14,    // ~55px
-      margin: EdgeInsets.only(right: getWidth() * 0.01), //control spacing
+      margin: EdgeInsets.only(right: getWidth() * 0.01),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.textGreyColor, width: 1),
         borderRadius: BorderRadius.circular(40),
@@ -135,8 +156,8 @@ class PostCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: getHeight() * 0.016, color: AppColors.textGreyColor),
-          SizedBox(width: getWidth() * 0.008), // tighter spacing inside
+          iconWidget,
+          SizedBox(width: getWidth() * 0.008),
           Flexible(
             child: CustomText(
               text: text,

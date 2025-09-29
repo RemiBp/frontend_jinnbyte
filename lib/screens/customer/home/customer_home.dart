@@ -18,7 +18,10 @@ class CustomerHome extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getWidth() * .05),
+          padding: EdgeInsets.symmetric(
+              horizontal: getWidth() * .05,
+              vertical: getHeight() * .07,
+          ),
           child: Column(
           children: [
             Row(
@@ -42,7 +45,7 @@ class CustomerHome extends StatelessWidget {
               hint: "Search by username or name...",
               prefixIconSvg: Assets.searchIcon,
             ),
-            SizedBox(height: getHeight() * .03),
+            SizedBox(height: getHeight() * .02),
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(

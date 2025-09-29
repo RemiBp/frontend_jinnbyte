@@ -86,6 +86,8 @@ class Assets {
   static const String calender = "assets/icons/calender_svg.svg";
   static const String phoneIcon = "assets/icons/phone_icon.svg";
   static const String ticketIcon = "assets/icons/ticket_icon.svg";
+  static const String shareIcon = "assets/icons/share.svg";
+
 
 
   static const String editIcon = "assets/icons/edit_icon.png";

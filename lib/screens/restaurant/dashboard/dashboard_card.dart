@@ -14,8 +14,9 @@ class DashboardCard extends StatelessWidget {
   final String? duration;
   final bool? hideDetailText;
   final double? width;
+  final double? height;
   final String? percentage;
-  const DashboardCard({super.key, this.price, this.header, this.percentage, this.width, this.duration, this.hideDetailText});
+  const DashboardCard({super.key, this.height, this.price, this.header, this.percentage, this.width, this.duration, this.hideDetailText});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +24,13 @@ class DashboardCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(getHeightRatio() * 16),
       width: width,
+      height: height,
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.blackColor.withOpacity(0.05),
+            color: AppColors.blackColor.withValues(alpha:0.05),
             blurRadius: 24,
             offset: Offset(0, 4),
           ),

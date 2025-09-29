@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../res/res.dart';
@@ -179,13 +180,13 @@ class _BookingChartCardState extends State<BookingChartCard> {
   }
 
   void fetchChartData(String range) {
-    // Simulated backend response based on range
     if (range == 'Category') {
       xLabels = ['Bowl', 'Lasagna', 'Sushi', 'Burger', 'Ramen'];
-      barData = [85, 65, 28, 70,];
+      // Ratings (1.0–5.0)
+      barData = [3.2, 3.5, 3.0, 3.3, 5.0];
     } else if (range == 'Last Month') {
       xLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-      barData = [150, 200, 120, 100];
+      barData = [2.5, 3.8, 4.1, 3.6];
     }
     setState(() {});
   }
@@ -193,7 +194,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getHeight() * 0.3,
+      height: getHeight() * 0.35,
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: getWidthRatio() * 16,
@@ -205,7 +206,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
         boxShadow: [
           BoxShadow(
             color: AppColors.blackColor.withAlpha(20),
-            offset: Offset(0, 0),
+            offset: const Offset(0, 0),
             blurRadius: 24,
             spreadRadius: 0,
           ),
@@ -214,16 +215,45 @@ class _BookingChartCardState extends State<BookingChartCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ... header, dropdown etc. here ...
+          /// Header with dropdown
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: "Dish Ratings",
+                fontSize: sizes?.fontSize14,
+                fontFamily: Assets.onsetMedium,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primarySlateColor,
+              ),
+              DropdownButton<String>(
+                value: selectedRange,
+                underline: const SizedBox(),
+                items: ['Category', 'Last Month']
+                    .map((e) => DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => selectedRange = value);
+                    fetchChartData(value);
+                  }
+                },
+              ),
+            ],
+          ),
 
           SizedBox(height: getHeightRatio() * 16),
 
-          /// Only this part scrolls horizontally
-          Expanded(
+          /// Chart
+          Flexible(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: barData.length * getWidthRatio() * 80, // slot width per bar
+                height: getHeight() * 0.3, // chart height stays consistent
+                width: barData.length * getWidthRatio() * 70,
                 child: BarChart(
                   BarChartData(
                     backgroundColor: AppColors.whiteColor,
@@ -239,30 +269,33 @@ class _BookingChartCardState extends State<BookingChartCard> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: getWidth() * 0.08,
+                          reservedSize: 40,
+                          interval: 1,
                           getTitlesWidget: (value, meta) {
-                            return CustomText(
-                              text: value.toInt().toString(),
-                              fontSize: sizes?.fontSize12,
-                              fontWeight: FontWeight.w400,
-                            );
+                            if (value >= 1 && value <= 5) {
+                              return CustomText(
+                                text: value.toStringAsFixed(1),
+                                fontSize: sizes?.fontSize12,
+                                fontWeight: FontWeight.w400,
+                              );
+                            }
+                            return const SizedBox();
                           },
                         ),
                       ),
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: getHeight() * 0.06,
+                          reservedSize: 40,
                           getTitlesWidget: (value, meta) {
-                            if (value.toInt() >= 0 && value.toInt() < xLabels.length) {
-                              return SizedBox(
-                                width: getWidthRatio() * 40, // fixed slot for each label
-                                child: Center(
-                                  child: CustomText(
-                                    text: xLabels[value.toInt()],
-                                    fontSize: sizes?.fontSize12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                            if (value.toInt() >= 0 &&
+                                value.toInt() < xLabels.length) {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 10),
+                                child: CustomText(
+                                  text: xLabels[value.toInt()],
+                                  fontSize: sizes?.fontSize12,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               );
                             }
@@ -270,8 +303,10 @@ class _BookingChartCardState extends State<BookingChartCard> {
                           },
                         ),
                       ),
-                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      topTitles:
+                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles:
+                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
                     barGroups: barData.asMap().entries.map((entry) {
                       final index = entry.key;
@@ -292,11 +327,11 @@ class _BookingChartCardState extends State<BookingChartCard> {
                       touchTooltipData: BarTouchTooltipData(
                         getTooltipColor: (touchedSpot) => AppColors.greyColor,
                       ),
-                      touchCallback: (event, response) {},
                       handleBuiltInTouches: true,
                     ),
-                    maxY: (barData.isNotEmpty ? (barData.reduce(max) + 20) : 100),
-                    minY: 0,
+                    maxY: 5.2,
+                    minY: 1,
+                    alignment: BarChartAlignment.spaceAround,
                   ),
                 ),
               ),
@@ -305,7 +340,6 @@ class _BookingChartCardState extends State<BookingChartCard> {
         ],
       ),
     );
-
   }
 }
 
