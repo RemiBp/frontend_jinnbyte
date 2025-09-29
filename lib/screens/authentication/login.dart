@@ -183,6 +183,8 @@ class _LoginState extends State<Login> {
   }
 
   onLoginTap() {
+    context.push(Routes.restaurantProfileRoute);
+    return;
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();
     if (email.isEmpty) {

@@ -8,6 +8,7 @@ import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
+import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
 import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
@@ -37,6 +38,9 @@ class Routes {
   static const String loginRoute = '/login';
   static const String forgotPasswordRoute = '/forgot_password';
   static const String resetPasswordRoute = '/reset_password';
+  static const String editOperationHoursRoute = '/edit_operation_hours';
+
+  // restaurant
   static const String restaurantProfileRoute = '/restaurant_profile';
   static const String restaurantEventsRoute = '/restaurant_events';
   static const String restaurantCreateEventRoute = '/restaurant_create_events';
@@ -91,7 +95,13 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const ResetPassword(),
     ),
     GoRoute(
-      path: '/restaurant_profile',
+      path: Routes.editOperationHoursRoute,
+      builder: (context, state) => const EditOperationalHours(),
+    ),
+
+    // restaurant
+    GoRoute(
+      path: Routes.restaurantProfileRoute,
       builder: (context, state) => const Profile(),
     ),
     GoRoute(
