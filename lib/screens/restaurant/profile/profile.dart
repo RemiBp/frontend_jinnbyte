@@ -104,15 +104,18 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: getHeight() * .03),
             CustomField(
+              textEditingController: provider.addressController,
               borderColor: AppColors.greyBordersColor,
               hint: al.address,
               label: al.address,
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: provider.passwordController,
               borderColor: AppColors.greyBordersColor,
               hint: al.passwordLabel,
               label: al.passwordLabel,
+              obscure: true,
             ),
             SizedBox(height: getHeight() * .02),
             CustomText(
@@ -122,9 +125,9 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: getHeight() * .01),
             PhoneFormField(
-              initialValue: PhoneNumber.parse('+33'),
+              initialValue: provider.phoneNumber ?? PhoneNumber.parse('+33'),
               countrySelectorNavigator: const CountrySelectorNavigator.page(),
-              onChanged: (phoneNumber) => debugPrint('changed into $phoneNumber'),
+              onChanged: (phoneNumber) => provider.setPhoneNumber(phoneNumber),
               decoration: InputDecoration(
                 border:buildOutlineInputBorder(AppColors.greyBordersColor),
                 focusedBorder: buildOutlineInputBorder(AppColors.inputHintColor),
@@ -149,40 +152,50 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
+              textEditingController: provider.websiteController,
               borderColor: AppColors.greyBordersColor,
               hint: "yoursite.io",
               prefixIconSvg: Assets.websiteIcon,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
+              textEditingController: provider.instagramController,
               borderColor: AppColors.greyBordersColor,
               hint: "https://www.instagram.com/@yourhan...",
               prefixIconSvg: Assets.instagramIcon,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
+              textEditingController: provider.twitterController,
               borderColor: AppColors.greyBordersColor,
               hint: "https://www.twitter.com/@yourhandle...",
               prefixIconSvg: Assets.xIcon,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
+              textEditingController: provider.facebookController,
               borderColor: AppColors.greyBordersColor,
               hint: "https://www.facebook.com/@yourhan...",
               prefixIconSvg: Assets.facebookIcon,
             ),
             SizedBox(height: getHeight() * .02),
             CustomField(
+              textEditingController: provider.descriptionController,
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
               hint: al.writeSomethingBrief,
               label: al.briefDescription,
+              maxLines: 3,
             ),
             SizedBox(height: getHeight() * .02),
             CustomButton(
               buttonText: al.next,
-              onTap: () {
-                context.push(Routes.restaurantBottomTabRoute);
+              onTap: () async {
+                final success = await provider.updateProfile();
+                // Only navigate to next screen if API call was successful
+                if (success && context.mounted) {
+                  context.push(Routes.editOperationHoursRoute);
+                }
               },
             ),
           ],
