@@ -18,47 +18,49 @@ class RestaurantHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: getWidth() * .05,
-          vertical: getHeight() * .07,
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                CustomText(
-                  text: "Choice",
-                  fontSize: sizes?.fontSize28,
-                  fontFamily: Assets.onsetSemiBold,
-                ),
-                Spacer(),
-                CustomIconButton(svgString: Assets.mapIcon),
-                SizedBox(width: getWidth() * .02),
-                CustomIconButton(svgString: Assets.chatIcon),
-                SizedBox(width: getWidth() * .02),
-                CustomIconButton(svgString: Assets.notificationIcon),
-              ],
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              borderColor: AppColors.greyBordersColor,
-              hint: al.searchUserPlaceholder,
-              prefixIconSvg: Assets.searchIcon,
-            ),
-            Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(
-                    top: getHeight()*.03
-                ),
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return PostCard();
-                },
-              ),
-            ),
-          ],
-        ),
+      padding: EdgeInsets.symmetric(
+        horizontal: getWidth() * .05,
+        vertical: getHeight() * .07,
       ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CustomText(
+                text: "Choice",
+                fontSize: sizes?.fontSize28,
+                fontFamily: Assets.onsetSemiBold,
+              ),
+              Spacer(),
+              CustomIconButton(svgString: Assets.mapIcon),
+              SizedBox(width: getWidth() * .02),
+              CustomIconButton(svgString: Assets.chatIcon),
+              SizedBox(width: getWidth() * .02),
+              CustomIconButton(svgString: Assets.notificationIcon),
+            ],
+          ),
+          SizedBox(height: getHeight() * .02),
+          CustomField(
+            borderColor: AppColors.greyBordersColor,
+            hint: al.searchUserPlaceholder,
+            prefixIconSvg: Assets.searchIcon,
+          ),
+          SizedBox(height: getHeight() * .02),
+
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.only(
+                  top: getHeight()*.01
+              ),
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return PostCard();
+              },
+            ),
+          ),
+        ],
+      ),
+            ),
       floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100)

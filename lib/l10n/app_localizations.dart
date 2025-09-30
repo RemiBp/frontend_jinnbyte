@@ -182,6 +182,30 @@ abstract class AppLocalizations {
   /// **'Business Name'**
   String get businessName;
 
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @fullNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullNamePlaceholder;
+
+  /// No description provided for @userName.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get userName;
+
+  /// No description provided for @userNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get userNamePlaceholder;
+
   /// No description provided for @emailLabel.
   ///
   /// In en, this message translates to:
@@ -191,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailPlaceholder.
   ///
   /// In en, this message translates to:
-  /// **'Email addressd'**
+  /// **'Email address'**
   String get emailPlaceholder;
 
   /// No description provided for @passwordLabel.

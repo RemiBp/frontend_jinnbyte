@@ -58,10 +58,20 @@ class UploadDocs extends StatelessWidget {
               giveLinesAsText: true,
             ),
             SizedBox(height: getHeight() * .015),
-            CustomText(
-              text: al.expiryDate,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.expiryDate,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
             ),
             SizedBox(height: getHeight() * .02),
             InkWell(
@@ -89,10 +99,20 @@ class UploadDocs extends StatelessWidget {
               ),
             ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.uploadDocumentsTitle,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.uploadDocumentsTitle,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
             ),
             SizedBox(height: getHeight() * .02),
             InkWell(
@@ -150,10 +170,20 @@ class UploadDocs extends StatelessWidget {
               fontFamily: Assets.onsetSemiBold,
             ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.expiryDate,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.expiryDate,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
             ),
             SizedBox(height: getHeight() * .02),
             InkWell(
@@ -180,10 +210,20 @@ class UploadDocs extends StatelessWidget {
               ),
             ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.uploadDocumentsTitle,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.uploadDocumentsTitle,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
             ),
             SizedBox(height: getHeight() * .02),
             InkWell(

@@ -93,11 +93,13 @@ class _HomeViewState extends State<HomeView> {
               ),
               SizedBox(height: getHeightRatio() * 16),
               DashboardCard(
+                width: getWidth() * 0.9,
                 header: "Post Conversion Rate",
                 price: "18%",
               ),
               SizedBox(height: getHeightRatio() * 16),
               DashboardCard(
+                width: getWidth() * 0.9,
                 header: "Favorite choice of the month",
                 price: "18%",
                 duration: "This Week",

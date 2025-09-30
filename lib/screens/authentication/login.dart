@@ -96,19 +96,33 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: getHeight() * .01),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center, // ensures vertical alignment
               children: [
-                Checkbox(
-                  side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
-                  value: true,
-                  onChanged: (value) {},
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Consumer<AuthProvider>(
+                      builder: (context, state, child) {
+                        return Checkbox(
+                          side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
+                          value: state.rememberMe,
+                          onChanged: (value) {
+                            state.toggleRememberMe(value!);
+                          },
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                        );
+                      },
+                    ),
+                    SizedBox(width: getWidth() * 0.02,),
+                    CustomText(
+                      text: al.rememberMe,
+                      fontSize: sizes?.fontSize16,
+                      color: AppColors.primarySlateColor,
+                    ),
+                  ],
                 ),
-                CustomText(
-                  text: al.rememberMe,
-                  fontSize: sizes?.fontSize16,
-                  color: AppColors.primarySlateColor,
-                  giveLinesAsText: true,
-                ),
-                Spacer(),
                 TextButton(
                   onPressed: () {
                     context.push(Routes.forgotPasswordRoute);
@@ -118,8 +132,6 @@ class _LoginState extends State<Login> {
                     fontSize: sizes?.fontSize16,
                     color: AppColors.getPrimaryColorFromContext(context),
                     textDecoration: TextDecoration.underline,
-
-                    giveLinesAsText: true,
                   ),
                 ),
               ],
@@ -184,6 +196,7 @@ class _LoginState extends State<Login> {
 
   onLoginTap() {
     context.push(Routes.restaurantProfileRoute);
+    //context.push(Routes.restaurantBottomTabRoute);
     return;
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();

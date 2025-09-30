@@ -18,6 +18,7 @@ import '../screens/authentication/accountReclaim/upload_reclaim_docs.dart';
 import '../screens/authentication/login.dart';
 import '../screens/authentication/passwordManagement/forgot_password.dart';
 import '../screens/authentication/passwordManagement/reset_password.dart';
+import '../screens/authentication/user_Signup.dart';
 import '../screens/customer/home/choiceWidgets/sub_choice_selection.dart';
 import '../screens/restaurant/bottomTab/bottom_tab.dart';
 import '../screens/restaurant/event/events.dart';
@@ -33,6 +34,7 @@ class Routes {
   static const String uploadReclaimDocsRoute = '/upload_reclaim_docs';
   static const String reviewRoute = '/review';
   static const String signupRoute = '/signup';
+  static const String userSignupRoute = '/userSignup';
   static const String otpVerificationRoute = '/otp_verification';
   static const String uploadDocsRoute = '/upload_docs';
   static const String loginRoute = '/login';
@@ -66,6 +68,7 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/re_claim_account', builder: (context, state) => const ReclaimAccount()),
     GoRoute(path: '/auth', builder: (context, state) => const Authentication()),
     GoRoute(path: '/signup', builder: (context, state) => const Signup()),
+    GoRoute(path: '/userSignup', builder: (context, state) => const UserSignup()),
     GoRoute(
       path: '/otp_verification',
       builder: (context, state) => const OtpVerification(),

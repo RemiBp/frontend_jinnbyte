@@ -1,3 +1,4 @@
+import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,17 +37,48 @@ class _FollowerViewState extends State<FollowerView> {
             Expanded(
               child: ListView.separated(
                 itemCount: users.length,
-                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025,),
+                separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return UserTile(
-                    name: user['name']!,
-                    username: user['username']!,
-                    imageUrl: user['image']!,
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // User info
+                      Expanded(
+                        child: UserTile(
+                          name: user['name']!,
+                          username: user['username']!,
+                          imageUrl: user['image']!,
+                        ),
+                      ),
+
+                      // Message button
+                      GestureDetector(
+                        onTap: () {
+                          // later handle navigation or chat
+                        },
+                        child: Container(
+                          height: getHeight() * 0.03, // ~75px
+                          width: getWidth() * 0.2,   //
+                          decoration: BoxDecoration(
+                            color: AppColors.greyColor,
+                            borderRadius: BorderRadius.circular(getWidth() * 0.02),
+                          ),
+                          alignment: Alignment.center,
+                          child: CustomText(
+                            text: "Message",
+                            color: AppColors.blackColor,
+                            fontSize: sizes?.fontSize12,
+                            fontFamily: Assets.onsetRegular,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

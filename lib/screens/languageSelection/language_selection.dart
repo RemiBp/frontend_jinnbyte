@@ -72,10 +72,17 @@ class _LanguageSelectionState extends State<LanguageSelection> {
             const SizedBox(height: 12),
 
             languageOption(label: 'French', flagPath: Assets.franceFlagIcon),
+            ],
+        ),
+      ),
 
-            const SizedBox(height: 32),
-            Spacer(),
-            widget.isFromProfile??false?
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: getWidth() * .05,
+            vertical: getHeight() * .02,
+          ),
+
+            child: widget.isFromProfile??false?
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -120,16 +127,14 @@ class _LanguageSelectionState extends State<LanguageSelection> {
                   ),
                 ),
                 child: CustomText(
-                  text: al.update,
+                  text: al.continueText,
                   fontSize: sizes?.fontSize16,
                   fontFamily: Assets.onsetSemiBold,
                   color: Colors.white,
                 ),
               ),
             ),
-          ],
         ),
-      ),
     );
   }
 

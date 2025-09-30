@@ -71,8 +71,8 @@ class _OtpVerificationState extends State<OtpVerification> {
             SizedBox(height: getHeight() * .03),
             Pinput(
               length: 6,
-              obscureText: true,
-              obscuringCharacter: "-",
+              //obscureText: true,
+              //obscuringCharacter: "-",
               defaultPinTheme: PinTheme(
                 width: getWidth() * .15,
                 height: getHeight() * .065,
@@ -85,6 +85,14 @@ class _OtpVerificationState extends State<OtpVerification> {
                   border: Border.all(color: AppColors.greyBordersColor),
                   borderRadius: BorderRadius.circular(15),
                 ),
+
+              ),
+              preFilledWidget: CustomText(
+                text: "-",
+                fontSize: 16,
+                fontFamily: Assets.onsetMedium,
+                color: AppColors.inputHintColor,
+                fontWeight: FontWeight.w500,
               ),
               // validator: (s) {
               //   return s == '2222' ? null : 'Pin is incorrect';

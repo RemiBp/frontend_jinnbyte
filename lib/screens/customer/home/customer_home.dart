@@ -59,10 +59,11 @@ class _CustomerHomeState extends State<CustomerHome> {
               hint: "Search by username or name...",
               prefixIconSvg: Assets.searchIcon,
             ),
+            SizedBox(height: getHeight() * .02),
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.only(
-                    top: getHeight()*.03
+                    top: getHeight()*.01
                 ),
                 itemCount: 2,
                 itemBuilder: (context, index) {

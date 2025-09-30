@@ -80,7 +80,9 @@ class _CreateEventState extends State<CreateEvent> {
   Future<void> _pickTime(bool isStart) async {
     final picked = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: isStart
+          ? (_startTime ?? const TimeOfDay(hour: 0, minute: 0)) // default 12 AM
+          :  (_endTime ?? const TimeOfDay(hour: 0, minute: 0)),   //end time stays as it is
     );
     if (picked != null) {
       setState(() {
@@ -144,6 +146,16 @@ class _CreateEventState extends State<CreateEvent> {
         leading: BackButton(color: Colors.black),
         title: Text(al.createEvent, style: TextStyle(color: Colors.black)),
         centerTitle: false,
+        titleSpacing: 0,
+
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1),
+          child: Divider(
+            height: 1,
+            thickness: 1,
+            color: AppColors.greyBordersColor, // use your app's border color
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -325,7 +337,8 @@ class _CreateEventState extends State<CreateEvent> {
                                 label: al.startTime,
                                 suffixIconSvg: Assets.clockSvg,
                                 textEditingController: TextEditingController(
-                                  text: _startTime?.format(context) ?? "",
+                                  text: (_startTime ?? const TimeOfDay(hour: 0, minute: 0)) // fallback
+                                      .format(context),
                                 ),
                               ),
                             ),
@@ -343,7 +356,8 @@ class _CreateEventState extends State<CreateEvent> {
                                 label: al.endTime,
                                 suffixIconSvg: Assets.clockSvg,
                                 textEditingController: TextEditingController(
-                                  text: _endTime?.format(context) ?? "",
+                                  text: (_endTime ?? const TimeOfDay(hour: 0, minute: 0)) // fallback
+                                      .format(context),
                                 ),
                               ),
                             ),

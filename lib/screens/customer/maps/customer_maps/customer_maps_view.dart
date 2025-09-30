@@ -40,7 +40,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
             /// Map image placeholder
             Positioned.fill(
               child: Image.asset(
-                Assets.mapImage, // replace with your map screenshot
+                Assets.mapImage2, // replace with your map screenshot
                 fit: BoxFit.cover,
               ),
             ),
@@ -140,15 +140,25 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                   itemBuilder: (context, index) {
                     return SizedBox(
                       width: getWidthRatio() * 280,
-                      child: FavouriteRestaurantCard(
+                      child: BookmarkRestaurantCard(
                         imageUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
-                        restaurantName: "Restaurant ${index + 1}",
                         address: "123 Main Street, City",
-                        isFavourite: index % 2 == 0,
-                        margin: EdgeInsets.only(top: getHeightRatio() * 8, bottom: getHeightRatio() * 8, right: getWidth() * 0.03),
-                        onFavouriteTap: () {},
-                        onRestaurantTap: () {},
+                        rating: 4.2,
+                        tag: "Wellness", // ← shows in top-left chip
+                        isBookmarked: true,
+                        margin: EdgeInsets.only(
+                          top: getHeightRatio() * 8,
+                          bottom: getHeightRatio() * 8,
+                          right: getWidth() * 0.03,
+                        ),
+                        onBookmarkTap: () {
+                          // handle bookmark toggle
+                        },
+                        onCardTap: () {
+                          // handle navigation
+                        },
                       ),
+
                     );
                   },
                 ),

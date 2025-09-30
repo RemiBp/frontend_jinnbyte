@@ -21,6 +21,14 @@ class AuthProvider extends ChangeNotifier{
   bool signupPassVisibility = false;
   BuildContext? context;
   bool isDataFetch = false;
+  bool _agreed = false;
+  bool _rememberMe = false;
+
+
+
+  bool get agreed => _agreed;
+  bool get rememberMe => _rememberMe;
+
 
   final Loader _loader = Loader();
   PlatformFile? selectedDoc1;
@@ -73,6 +81,15 @@ class AuthProvider extends ChangeNotifier{
   }
   toggleSignupPassVisibility(){
     signupPassVisibility = !signupPassVisibility;
+    notifyListeners();
+  }
+
+  void toggleAgreement(bool value) {
+    _agreed = value;
+    notifyListeners();
+  }
+  void toggleRememberMe(bool value) {
+    _rememberMe = value;
     notifyListeners();
   }
 
