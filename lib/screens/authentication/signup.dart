@@ -25,6 +25,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+
   TextEditingController businessNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -108,34 +109,52 @@ class _SignupState extends State<Signup> {
                 );
               },
             ),
-            SizedBox(height: getHeight() * .01),
+            SizedBox(height: getHeight() * .02),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Checkbox(
-                  side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
-                  value: true,
-                  onChanged: (value) {},
+                Transform.translate(
+                  offset: const Offset(0, -7),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: getWidth() * 0.02),
+                    child: Consumer<AuthProvider>(
+                      builder: (context, state, child) {
+                        return Checkbox(
+                          side: BorderSide(color: HexColor.fromHex("#B3B3B3")),
+                          value: state.agreed,
+                          onChanged: (value) {
+                            state.toggleAgreement(value!);
+                          },
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                        );
+                      },
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: Text.rich(
-                    TextSpan(
-                      text: "${al.signupAgreement} ",
-                      style: TextStyle(
-                        fontSize: sizes?.fontSize14,
-                        fontFamily: Assets.onsetRegular,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text.rich(
+                      TextSpan(
+                        text: "${al.signupAgreement} ",
+                        style: TextStyle(
+                          fontSize: sizes?.fontSize14,
+                          fontFamily: Assets.onsetRegular,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: al.termsOfService,
+                            style: TextStyle(color: AppColors.getPrimaryColorFromContext(context)),
+                          ),
+                          TextSpan(text: " ${al.andLabel} "),
+                          TextSpan(
+                            text: al.privacyPolicy,
+                            style: TextStyle(color: AppColors.getPrimaryColorFromContext(context)),
+                          ),
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: al.termsOfService,
-                          style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
-                        ),
-                        TextSpan(text: " ${al.andLabel} "),
-                        TextSpan(
-                          text: " ${al.privacyPolicy} ",
-                          style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
-                        ),
-                      ],
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 ),

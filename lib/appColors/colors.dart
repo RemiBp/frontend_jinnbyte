@@ -17,6 +17,7 @@ class AppColors{
   static  const Color primarySlateColor = Color(0xff4F516D);
   static  const Color greyColor = Color(0xffE6E6EA);
   static  const Color textGreyColor = Color(0xff9A9BAB);
+  static const Color eventChipBackgroundColor = Color(0xffFFEEEE);
 
   static const Color blueColor = Color(0xFF148FFF);
   static const Color blackColor = Color(0xFF000116);

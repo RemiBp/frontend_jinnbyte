@@ -78,6 +78,7 @@ class _CreatePostState extends State<CreatePost> {
         title: Text(al.createPost,),
         leading: BackButton(),
         elevation: 0,
+        titleSpacing: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -91,48 +92,59 @@ class _CreatePostState extends State<CreatePost> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: al.photos,
-                  fontFamily: Assets.onsetMedium,
-                  fontSize: sizes?.fontSize16,
+                Row(
+                  children: [
+                    CustomText(
+                      text: al.photos,
+                      fontFamily: Assets.onsetMedium,
+                      fontSize: sizes?.fontSize16,
+                    ),
+                    CustomText(
+                      text: " *",
+                      fontSize: sizes?.fontSize16,
+                      color: Colors.red,
+                    ),
+                  ],
                 ),
                 CustomText(
                   text: "${al.fileSupported} PNG, JPG",
                   fontSize: sizes?.fontSize12,
                 ),
+                SizedBox(height: getHeight() * .02),
                 GestureDetector(
                   onTap: _pickImages,
-                  child: Container(
-                    height: getHeight() * .2,
-                    width: double.infinity,
-                    margin: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.greyBordersColor,
-                        )
-                    ),
-                    child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              text: al.chooseFile,
-                              fontFamily: Assets.onsetMedium,
-                              fontSize: sizes?.fontSize14,
-                            ),
-                            CustomText(
-                              text: al.imageLimit,
-                              fontSize: sizes?.fontSize14,
-                              color: HexColor.fromHex("#686A82"),
-                            ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      width: getWidth() * 0.91,   // ~342px on standard widths
+                      height: getHeight() * 0.25, // ~200px on standard heights                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.greyBordersColor,
+                          )
+                      ),
+                      child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                text: al.chooseFile,
+                                fontFamily: Assets.onsetMedium,
+                                fontSize: sizes?.fontSize14,
+                              ),
+                              CustomText(
+                                text: al.imageLimit,
+                                fontSize: sizes?.fontSize14,
+                                color: HexColor.fromHex("#686A82"),
+                              ),
 
-                          ],
-                        )
+                            ],
+                          )
+                      ),
                     ),
                   ),
-                )
-                , Wrap(
+                ), Wrap(
                   spacing: 10,
                   runSpacing: 10,
                   children: List.generate(images.length, (index) {
@@ -212,7 +224,8 @@ class _CreatePostState extends State<CreatePost> {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      height: getHeight() * .055,
+                      buttonWidth: getWidth() * 0.43,
+                      height: getHeight() * 0.055,
                       backgroundColor: Colors.transparent,
                       buttonText: al.cancel,
                       textColor: Colors.black,
@@ -223,7 +236,9 @@ class _CreatePostState extends State<CreatePost> {
                   SizedBox(width: 12),
                   Expanded(
                     child: CustomButton(
-                      height: getHeight() * .055,
+                      buttonWidth: getWidth() * 0.43,
+                      height: getHeight() * 0.055,
+                      borderColor: AppColors.getPrimaryColorFromContext(context),
                       buttonText: al.publish,
                       onTap: () async{
                         final title = titleController.text.trim();

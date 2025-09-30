@@ -3,6 +3,7 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../appAssets/app_assets.dart';
 
@@ -111,8 +112,8 @@ class PostCard extends StatelessWidget {
             children: [
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
-              _buildIconText(Icons.reply, '1.2k'),
-              Icon(Icons.star, color: AppColors.textGreyColor),
+              _buildIconText(Assets.shareIcon, '1.2k'),
+              _buildInterestedTag("Interested (0)"),
             ],
           ),
         ),
@@ -120,18 +121,87 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Widget _buildIconText(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 20, color: AppColors.textGreyColor),
-        SizedBox(width: 4),
-        CustomText(
-          text: text,
-          fontSize: sizes?.fontSize12,
-          fontFamily: Assets.onsetMedium,
-          color: AppColors.textGreyColor,
+  // Icon + Text with border
+  Widget _buildIconText(dynamic icon, String text) {
+    Widget iconWidget;
+
+    if (icon is IconData) {
+      // Normal material icon
+      iconWidget = Icon(
+        icon,
+        size: getHeight() * 0.016,
+        color: AppColors.textGreyColor,
+      );
+    } else if (icon is String) {
+      // SVG asset path
+      iconWidget = SvgPicture.asset(
+        icon,
+        height: getHeight() * 0.016,
+        colorFilter: ColorFilter.mode(AppColors.textGreyColor,BlendMode.srcIn),
+      );
+    } else {
+      throw ArgumentError("icon must be IconData or String (SVG path)");
+    }
+
+    return Container(
+      height: getHeight() * 0.035, // ~28px
+      width: getWidth() * 0.14,    // ~55px
+      margin: EdgeInsets.only(right: getWidth() * 0.01),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.textGreyColor, width: 1),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          iconWidget,
+          SizedBox(width: getWidth() * 0.008),
+          Flexible(
+            child: CustomText(
+              text: text,
+              fontSize: sizes?.fontSize10,
+              fontFamily: Assets.onsetMedium,
+              color: AppColors.textGreyColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  // Interested Tag (wider now)
+  Widget _buildInterestedTag(String label) {
+    return Container(
+      height: getHeight() * 0.035, // ~28px
+      width: getWidth() * 0.28,    // (~105px)
+      margin: EdgeInsets.only(left: getWidth() * 0.017), // control spacing
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF964DFF),
+            Color(0xFFFC5D4A),
+          ],
         ),
-      ],
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.star, color: Colors.white, size: getHeight() * 0.016),
+          SizedBox(width: getWidth() * 0.01),
+          Flexible(
+            child: CustomText(
+              text: label,
+              fontSize: sizes?.fontSize10,
+              fontFamily: Assets.onsetMedium,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

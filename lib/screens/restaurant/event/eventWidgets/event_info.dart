@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../l18n.dart';
 import '../../../../res/res.dart';
@@ -18,6 +19,8 @@ class EventInfoSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Chip(
+            backgroundColor: AppColors.eventChipBackgroundColor, // remove background fill
+            side: BorderSide.none,               // remove border
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),

@@ -10,6 +10,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/shadow_icon.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../onboarding/menu/menu_widgets.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
@@ -117,7 +118,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: "Participants",
+                    text: al.participants,
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
@@ -129,7 +130,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                       );
                     },
                     child: CustomText(
-                      text: "Show All",
+                      text: al.showAll,
                       fontSize: sizes?.fontSize14,
                       fontFamily: Assets.onsetMedium,
                       color: getTagColor(),

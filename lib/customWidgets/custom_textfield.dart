@@ -70,10 +70,24 @@ class CustomField extends StatelessWidget {
       children: [
         if (label != null) ...[
           SizedBox(height: getHeight() * .006),
-          CustomText(
-            text: label!,
-            fontSize: sizes!.fontSize14,
-            fontFamily: Assets.onsetMedium,
+          RichText(
+            text: TextSpan(
+              text: label!,
+              style: TextStyle(
+                fontSize: sizes!.fontSize14,
+                fontFamily: Assets.onsetMedium,
+                color: AppColors.blackColor, // or your normal label color
+              ),
+              children: const [
+                TextSpan(
+                  text: " *",
+                  style: TextStyle(
+                    color: AppColors.redColor,
+                    fontSize: 14, // same as label font size
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: getHeight() * .01),
         ],

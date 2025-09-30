@@ -56,10 +56,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get businessName => 'Business Name';
 
   @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get fullNamePlaceholder => 'Full Name';
+
+  @override
+  String get userName => 'Username';
+
+  @override
+  String get userNamePlaceholder => 'Username';
+
+  @override
   String get emailLabel => 'Email';
 
   @override
-  String get emailPlaceholder => 'Email addressd';
+  String get emailPlaceholder => 'Email address';
 
   @override
   String get passwordLabel => 'Password';

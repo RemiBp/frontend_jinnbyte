@@ -8,6 +8,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../customer/explore/participants/participants_screen.dart';
 import 'eventWidgets/delete_event.dart';
 import 'eventWidgets/event_info.dart';
 
@@ -85,14 +86,19 @@ class EventDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text:al.participants,
+                        text: al.participants,
                         fontSize: sizes?.fontSize16,
                         fontFamily: Assets.onsetSemiBold,
                       ),
-                      TextButton(
-                        onPressed: () {},
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ParticipantsScreen()),
+                          );
+                        },
                         child: CustomText(
-                          text:al.showAll,
+                          text: al.showAll,
                           fontSize: sizes?.fontSize14,
                           fontFamily: Assets.onsetMedium,
                           color: AppColors.getPrimaryColorFromContext(context),
@@ -100,11 +106,12 @@ class EventDetails extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: getHeight() * 0.01),
                   Row(
                     children: [
                       Stack(
                         children: [
-                          Container(width: getWidth() * .3),
+                          Container(width: getWidth() * .23),
                           CircleAvatar(backgroundColor: Colors.transparent),
                           Positioned(
                             right: 60,
@@ -175,10 +182,25 @@ class EventDetails extends StatelessWidget {
                     fontSize: sizes?.fontSize16,
                     fontFamily: Assets.onsetSemiBold,
                   ),
-                  CustomText(
-                    text: " Av. Gustave Eiffel, 75007 Paris, France",
-                    fontSize: sizes?.fontSize12,
+                  SizedBox(height: getHeight() * 0.015), // small vertical gap
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.locationIcon,
+                        height: getHeight() * 0.022,
+                        width: getHeight() * 0.022,
+                      ),
+                      SizedBox(width: getWidth() * 0.02), // horizontal gap
+                      Expanded(
+                        child: CustomText(
+                          text: "Av. Gustave Eiffel, 75007 Paris, France",
+                          fontSize: sizes?.fontSize12,
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: getHeight() * 0.008), // small vertical gap
                   Image.asset(Assets.mapImage, height: getHeight() * .2),
                   SizedBox(height: getHeight() * .01),
                   Divider(color: AppColors.greyColor),
@@ -192,8 +214,11 @@ class EventDetails extends StatelessWidget {
                   Row(
                     children: [
                       SvgPicture.asset(Assets.webCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.instaCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.xCircleIcon),
+                      SizedBox(width: getWidth() * .04),
                       SvgPicture.asset(Assets.facebookCircleIcon),
                     ],
                   ),

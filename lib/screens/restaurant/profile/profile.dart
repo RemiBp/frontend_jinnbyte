@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: getHeight() * .02),
             Stack(
               alignment: Alignment.bottomRight,
+              clipBehavior: Clip.none, // allow overflow
               children: [
                 CircleAvatar(
                   radius: getHeight() * .07,
@@ -78,13 +79,16 @@ class _ProfileState extends State<Profile> {
                           ? SvgPicture.asset(
                             Assets.userIcon,
                             height: getHeight() * .05,
-                            color: Colors.grey.shade600,
+                            colorFilter: ColorFilter.mode(Colors.grey.shade600,BlendMode.srcIn),
                           )
                           : null,
                 ),
-                IconButton.filled(
+                Positioned(
+                  right: -getWidth() * .017,  // push outward horizontally
+                  bottom: -getHeight() * .017, // push outward vertically
+                child: IconButton.filled(
                   style: IconButton.styleFrom(
-                    backgroundColor: AppColors.restaurantPrimaryColor,
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
                   ),
                   onPressed: () {
                     showModalBottomSheet(
@@ -100,6 +104,7 @@ class _ProfileState extends State<Profile> {
                     size: getHeight() * .022,
                   ),
                 ),
+                ),
               ],
             ),
             SizedBox(height: getHeight() * .03),
@@ -109,19 +114,22 @@ class _ProfileState extends State<Profile> {
               hint: al.address,
               label: al.address,
             ),
-            SizedBox(height: getHeight() * .01),
-            CustomField(
-              textEditingController: provider.passwordController,
-              borderColor: AppColors.greyBordersColor,
-              hint: al.passwordLabel,
-              label: al.passwordLabel,
-              obscure: true,
-            ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.phoneNumber,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
+            Row(
+              children: [
+                CustomText(
+                  text: al.phoneNumber,
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                CustomText(
+                  text: ' *',
+                  fontSize: sizes!.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+
+              ],
             ),
             SizedBox(height: getHeight() * .01),
             PhoneFormField(
