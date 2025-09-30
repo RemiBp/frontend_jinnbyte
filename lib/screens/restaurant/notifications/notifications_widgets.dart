@@ -54,7 +54,7 @@ class NotificationsCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppColors.blackColor.
-              withOpacity(0.05),
+              withValues(alpha: 0.05),
               blurRadius: 24,
               offset: Offset(0, 4),
             ),

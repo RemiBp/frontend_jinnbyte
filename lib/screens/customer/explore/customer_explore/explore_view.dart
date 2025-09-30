@@ -110,10 +110,7 @@ class _ExploreViewState extends State<ExploreView> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: getHeight() * 0.02),
-
-                  // ---- Events ----
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
                     child: SeeMoreWidget(header: "Events near you"),
