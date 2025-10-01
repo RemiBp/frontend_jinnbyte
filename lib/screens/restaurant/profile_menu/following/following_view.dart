@@ -6,6 +6,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class FollowingView extends StatefulWidget {
@@ -27,7 +28,7 @@ class _FollowingViewState extends State<FollowingView> {
           children: [
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by name...",
+              hint: al.searchPlaceholder,
               label: "",
               prefixIconSvg: Assets.searchIcon,
               // obscure: true,

@@ -86,10 +86,12 @@ class _ProfileState extends State<Profile> {
                   CustomBackButton(),
                   SizedBox(width: getWidth() * .02),
                 ],
-                CustomText(
-                  text: al.profileSetup,
-                  fontSize: sizes?.fontSize28,
-                  fontFamily: Assets.onsetSemiBold,
+                Expanded(
+                  child: CustomText(
+                    text: al.profileSetup,
+                    fontSize: sizes?.fontSize28,
+                    fontFamily: Assets.onsetSemiBold,
+                  ),
                 ),
               ],
             ),
@@ -125,7 +127,7 @@ class _ProfileState extends State<Profile> {
                           : null,
                 ),
                 Positioned(
-                  right: -getWidth() * .017, // push outward horizontally
+                  right: -getWidth() * .017,  // push outward horizontally
                   bottom: -getHeight() * .017, // push outward vertically
                   child: IconButton.filled(
                     style: IconButton.styleFrom(
@@ -171,6 +173,7 @@ class _ProfileState extends State<Profile> {
                   fontFamily: Assets.onsetMedium,
                   color: AppColors.redColor,
                 ),
+
               ],
             ),
             SizedBox(height: getHeight() * .01),
@@ -240,39 +243,61 @@ class _ProfileState extends State<Profile> {
               maxLines: 3,
             ),
             SizedBox(height: getHeight() * .02),
-            CustomButton(
-              buttonText: al.next,
-              onTap: () async {
-                // context.push(Routes.editOperationHoursRoute);
-                // return;
 
-                if (provider.profilePhoto != null) {
-                  final bytes = await provider.profilePhoto!.readAsBytes();
-                  final fileUrl = await networkProvider.getUrlForFileUpload(
-                    bytes,
-                  );
-                  if(fileUrl == null) {
-                    Toasts.getErrorToast(text: "Failed to get image url");
-                    return;
-                  }
-                  final success = await provider.updateProfile(
-                      address: addressController.text,
-                      password: passwordController.text,
-                      website: websiteController.text,
-                      instagram: instagramController.text,
-                      twitter: twitterController.text,
-                      facebook: facebookController.text,
-                      description: descriptionController.text,
-                      profileImageUrl: fileUrl,
-                  );
-                  // Only navigate to next screen if API call was successful
-                  if (success && context.mounted) {
-                    context.push(Routes.editOperationHoursRoute);
-                  }
-                } else {
-                  Toasts.getErrorToast(text: "Select profile image");
-                }
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  buttonText: 'Cancel',
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: Colors.transparent,
+                  borderColor: AppColors.blackColor,
+                  textColor: AppColors.blackColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+                CustomButton(
+                  buttonText: 'Save Changes',
+                  onTap: () async {
+                      // context.push(Routes.editOperationHoursRoute);
+                      // return;
+
+                      if (provider.profilePhoto != null) {
+                        final bytes = await provider.profilePhoto!.readAsBytes();
+                        final fileUrl = await networkProvider.getUrlForFileUpload(
+                          bytes,
+                        );
+                        if(fileUrl == null) {
+                          Toasts.getErrorToast(text: "Failed to get image url");
+                          return;
+                        }
+                        final success = await provider.updateProfile(
+                          address: addressController.text,
+                          password: passwordController.text,
+                          website: websiteController.text,
+                          instagram: instagramController.text,
+                          twitter: twitterController.text,
+                          facebook: facebookController.text,
+                          description: descriptionController.text,
+                          profileImageUrl: fileUrl,
+                        );
+                        // Only navigate to next screen if API call was successful
+                        if (success && context.mounted) {
+                          context.push(Routes.editOperationHoursRoute);
+                        }
+                      } else {
+                        Toasts.getErrorToast(text: "Select profile image");
+                      }
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  borderColor: AppColors.getPrimaryColorFromContext(context),
+                  textColor: AppColors.whiteColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+              ],
             ),
           ],
         ),

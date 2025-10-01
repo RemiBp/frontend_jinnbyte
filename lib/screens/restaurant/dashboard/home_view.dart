@@ -1,10 +1,14 @@
 import 'package:choice_app/screens/restaurant/dashboard/rating_by_theme_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/repeat_customers_card.dart';
 import 'package:choice_app/screens/restaurant/dashboard/user_origin_map_card.dart';
+import 'package:choice_app/screens/restaurant/dashboard/weekly_rating_card.dart';
 import 'package:choice_app/screens/restaurant/notifications/notifications_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../res/res.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 import 'booking_chart_card.dart';
 import 'customers_chart_card.dart';
 import 'dashboard_card.dart';
@@ -39,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     // Provider.of<NotificationProvider>(context, listen: true);
+    final role = context.read<RoleProvider>().role;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: SafeArea(
@@ -107,19 +112,44 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(height: getHeightRatio() * 16),
               UserOriginMapCard(),
               SizedBox(height: getHeightRatio() * 16),
-              const CustomersChartCard(),
+              /// Role-based chart
+              if (role == UserRole.restaurant) ...[
+                const CustomersChartCard(), // monthly
+              ] else if (role == UserRole.wellness || role == UserRole.leisure) ...[
+                WeeklyRatingsChartCard(), // weekly 0–5 chart
+              ],
               SizedBox(height: getHeightRatio() * 16),
               const BookingChartCard(),
               SizedBox(height: getHeightRatio() * 16),
               const RepeatCustomersCard(),
               SizedBox(height: getHeightRatio() * 16),
-              MostChosenDishCard(
+              if (role == UserRole.restaurant) ...[
+                MostChosenDishCard(
+                  header: "Most Chosen Dish",
+                  price: "Crème Brûlée",
+                ),
+              ] else if (role == UserRole.wellness) ...[
+                MostChosenDishCard(
+                  header: "Waiting Time Complaints",
+                  price: "23%",
+                  bottomText: "choices flagged long wait times",
+                ),
+              ] else if (role == UserRole.leisure) ...[
+                MostChosenDishCard(
+                  header: "Top Performing Event Type",
+                  price: "Drag Show",
+                  bottomText: "2x more than live music",
+                ),
+              ],
 
-                header: "Most Chosen Dish",
-                price: "Crème Brûlée",
-              ),
+
+
               SizedBox(height: getHeightRatio() * 16),
-              const DishDropAlertsCard(),
+              if (role == UserRole.restaurant) ...[
+                const DishDropAlertsCard(), // monthly
+              ] else if (role == UserRole.wellness || role == UserRole.leisure) ...[
+                WeeklyRatingsChartCard(), // weekly 0–5 chart
+              ],
               SizedBox(height: getHeightRatio() * 16),
               const RatingsByThemeCard(),
               SizedBox(height: getHeight() * 0.025),

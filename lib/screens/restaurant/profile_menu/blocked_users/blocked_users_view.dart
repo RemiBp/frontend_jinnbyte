@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/blurry_back_ground.dart';
 import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../customWidgets/custom_button.dart';
+import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
 import '../../../../res/res.dart';
 
@@ -32,12 +35,52 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
                 separatorBuilder: (_, __) => Divider(height: getHeight() * 0.025),
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return UserTile(
-                    name: user['name']!,
-                    username: user['username']!,
-                    imageUrl: user['image']!,
-                    btnText: "Unblock",
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: UserTile(
+                          name: user['name']!,
+                          username: user['username']!,
+                          imageUrl: user['image']!,
+                          btnText: "Unblock",
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showUnblockConfirmationAlert(
+                            context: context,
+                            id: index, // you can pass user ID if you have it
+                            onUnblock: () async {
+                              //  Example unblock logic
+                              setState(() {
+                                users.removeAt(index);
+                              });
+                              // You can also call an API here
+                              print("${user['name']} unblocked ");
+                            },
+                          );                        },
+                        child: Container(
+                          height: getHeight() * 0.03, // ~75px
+                          width: getWidth() * 0.2,   //
+                          decoration: BoxDecoration(
+                            color: AppColors.greyColor,
+                            borderRadius: BorderRadius.circular(getWidth() * 0.02),
+                          ),
+                          alignment: Alignment.center,
+                          child: CustomText(
+                            text: "Unblock",
+                            color: AppColors.blackColor,
+                            fontSize: sizes?.fontSize12,
+                            fontFamily: Assets.onsetRegular,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+
+                    ],
                   );
+
                 },
               ),
             )
@@ -45,7 +88,115 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
         ),
       ),
     );
+
+
+
   }
+
+  void showUnblockConfirmationAlert({
+    required BuildContext context,
+    required int id,
+    required VoidCallback onUnblock,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return BlurryBackground(
+          child: unblockConfirmationAlert(
+            context: context,
+            onConfirm: onUnblock,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget unblockConfirmationAlert({
+    required BuildContext context,
+    required VoidCallback onConfirm,
+  }) {
+    return Dialog(
+      backgroundColor: AppColors.whiteColor,
+      insetPadding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            /// Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                  text: 'Unblock User',
+                  fontWeight: FontWeight.w600,
+                  fontSize: sizes?.fontSize16,
+                  color: AppColors.blackColor,
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.close_outlined,
+                    color: AppColors.primarySlateColor,
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: getHeightRatio() * 16),
+
+            /// Message
+            CustomText(
+              text: 'Are you sure you want to unblock this user?',
+              fontWeight: FontWeight.w400,
+              fontSize: sizes?.fontSize16,
+              color: AppColors.primarySlateColor,
+              giveLinesAsText: true,
+            ),
+
+            SizedBox(height: getHeightRatio() * 24),
+
+            /// Action buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  buttonText: 'Cancel',
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  buttonWidth: getWidth() * .38,
+                  height: getHeight() * 0.06,
+                  backgroundColor: Colors.transparent,
+                  borderColor: AppColors.blackColor,
+                  textColor: AppColors.blackColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+                CustomButton(
+                  buttonText: 'Unblock',
+                  onTap: () {
+                    Navigator.pop(context);
+                    onConfirm();
+                  },
+                  buttonWidth: getWidth() * .38,
+                  height: getHeight() * 0.06,
+                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  borderColor: Colors.transparent,
+                  textColor: Colors.white,
+                  textFontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
 
   final List<Map<String, String>> users = const [
     {
@@ -68,3 +219,6 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
     },
   ];
 }
+
+
+

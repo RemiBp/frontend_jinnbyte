@@ -124,8 +124,6 @@ class AuthProvider extends ChangeNotifier{
           "email": email,
           "isResetPassFlow": false,
         });
-        final profileProvider = Provider.of<ProfileProvider>(context!, listen: false);
-        profileProvider.businessName = businessName;
       }
       _loader.hideLoader(context!);
     } catch (err) {
@@ -200,7 +198,7 @@ class AuthProvider extends ChangeNotifier{
       if (response?["message"] != null) {
         Toasts.getSuccessToast(text: response?["message"]);
         _loader.hideLoader(context!);
-        context?.push(Routes.restaurantProfileRoute);
+        context?.push(Routes.restaurantBottomTabRoute);
         return;
       }
       _loader.hideLoader(context!);

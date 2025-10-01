@@ -335,7 +335,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photos => 'Photos';
 
   @override
-  String get fileSupported => 'File supported:';
+  String get fileSupport => 'File supported:';
 
   @override
   String get imageLimit => 'Up to 5 images';
@@ -503,4 +503,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edit => 'Edit';
+
+  @override
+  String get yourExperience => 'Your Experience';
+
+  @override
+  String get overallRestaurantRating => 'Overall Restaurant Rating';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get portions => 'Portions';
+
+  @override
+  String get ambiance => 'Ambiance';
+
+  @override
+  String get dishesAndMenusConsumed => 'Dishes and Menus Consumed';
+
+  @override
+  String get rateTheSelectedDishes => 'Rate The Selected Dishes';
+
+  @override
+  String get yourRatingForThisDish => 'Your rating for this dish:';
+
+  @override
+  String get fileSupported => 'File supported: PNG, JPG';
+
+  @override
+  String get chooseAFile => 'Choose a file';
+
+  @override
+  String get upTo5Images => 'Up to 5 images';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get whichRestaurantDidYouVisit => 'Which restaurant did you visit?';
+
+  @override
+  String get whichWellnessDidYouVisit => 'Which wellness did you visit?';
+
+  @override
+  String get whichLeisureEventDidYouAttend =>
+      'Which leisure event did you attend?';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get distance => 'Distance';
+
+  @override
+  String get place => 'Place';
+
+  @override
+  String get dishName => 'Dish Name';
+
+  @override
+  String get dishRating => 'Dish Rating';
+
+  @override
+  String get resetAll => 'Reset All';
+
+  @override
+  String get applyFilters => 'Apply Filters';
+
+  @override
+  String get any => 'Any';
 }

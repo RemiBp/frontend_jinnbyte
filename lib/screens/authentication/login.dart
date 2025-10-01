@@ -123,15 +123,17 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.push(Routes.forgotPasswordRoute);
-                  },
-                  child: CustomText(
-                    text: "${al.forgotPassword}?",
-                    fontSize: sizes?.fontSize16,
-                    color: AppColors.getPrimaryColorFromContext(context),
-                    textDecoration: TextDecoration.underline,
+                Flexible(
+                  child: TextButton(
+                    onPressed: () {
+                      context.push(Routes.forgotPasswordRoute);
+                    },
+                    child: CustomText(
+                      text: "${al.forgotPassword}?",
+                      fontSize: sizes?.fontSize16,
+                      color: AppColors.getPrimaryColorFromContext(context),
+                      textDecoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ],

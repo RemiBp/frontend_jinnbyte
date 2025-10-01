@@ -6,6 +6,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import 'customer_maps_widgets.dart';
 
@@ -19,7 +20,7 @@ class FiltersBottomSheet extends StatefulWidget {
 class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
   double distance = 20;
   List<String> cuisines = ["Asian", "Italian", "Vegan"];
-  List<String> selectedCuisines = ["Asian"]; // ✅ multiple selection
+  List<String> selectedCuisines = ["Asian"]; //  multiple selection
 
   // Ratings
   int ambianceRating = 0;
@@ -60,7 +61,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: "Filters",
+                    text: al.filters,
                     color: AppColors.blackColor,
                     fontSize: sizes?.fontSize18,
                     fontWeight: FontWeight.w600,
@@ -79,7 +80,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                   padding: EdgeInsets.zero,
                   controller: scrollController,
                   children: [
-                    const CustomSectionTitle(title: "Distance"),
+                     CustomSectionTitle(title: al.distance),
                     Row(
                       children: [
                         Expanded(
@@ -105,7 +106,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       ],
                     ),
 
-                    const CustomSectionTitle(title: "Cuisine"),
+                    CustomSectionTitle(title: al.cuisine),
                     Column(
                       children: cuisines.map((c) {
                         final selected = selectedCuisines.contains(c);
@@ -128,19 +129,19 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       }).toList(),
                     ),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Ambiance", ambianceRating, (r) => setState(() => ambianceRating = r)),
+                    _buildRatingRow(al.ambiance, ambianceRating, (r) => setState(() => ambianceRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Service", serviceRating, (r) => setState(() => serviceRating = r)),
+                    _buildRatingRow(al.service, serviceRating, (r) => setState(() => serviceRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Portions", portionsRating, (r) => setState(() => portionsRating = r)),
+                    _buildRatingRow(al.portions, portionsRating, (r) => setState(() => portionsRating = r)),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Place", placeRating, (r) => setState(() => placeRating = r)),
+                    _buildRatingRow(al.place, placeRating, (r) => setState(() => placeRating = r)),
                     SizedBox(height: getHeight() * 0.01),
 
                     const CustomSectionTitle(title: "Dish Name"),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
-                      hint: "Search by username or name...",
+                      hint: al.searchUserPlaceholder,
                       prefixIconSvg: Assets.searchIcon,
                       height: getHeightRatio() * 44,
                     ),
@@ -180,7 +181,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                       ],
                     ),
                     SizedBox(height: getHeight() * 0.01),
-                    _buildRatingRow("Dish Rating", dishRating, (r) => setState(() => dishRating = r)),
+                    _buildRatingRow(al.dishRating, dishRating, (r) => setState(() => dishRating = r)),
                     SizedBox(height: getHeight() * 0.02),
                   ],
                 ),
@@ -192,7 +193,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    buttonText: 'Reset All',
+                    buttonText: al.resetAll,
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -203,7 +204,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Apply Filters',
+                    buttonText: al.applyFilters,
                     onTap: () {
 
                     },
@@ -251,7 +252,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                         borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
                       ),
                       child: CustomText(
-                        text: "Any",
+                        text: al.any,
                         color: isSelected ? Colors.white : AppColors.inputHintColor,
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,

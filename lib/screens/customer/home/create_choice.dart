@@ -8,6 +8,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../utilities/extensions.dart';
 
@@ -47,7 +48,7 @@ class _CreateChoiceState extends State<CreateChoice> {
               InkWell(
                 onTap: () {},
                 child: CustomText(
-                  text: "Remove",
+                  text: al.remove,
                   fontSize: sizes?.fontSize14,
                   fontFamily: Assets.onsetMedium,
                   color: Colors.red,
@@ -184,7 +185,7 @@ class _CreateChoiceState extends State<CreateChoice> {
             ),
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "Your Experience",
+              text: al.yourExperience,
               fontFamily: Assets.onsetSemiBold,
               fontSize: sizes?.fontSize18,
             ),
@@ -210,18 +211,18 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Overall Restaurant Rating",
+                    text: al.overallRestaurantRating,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow("Service", 2.0),
+                  buildRatingRow(al.service, 2.0),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow("Price", 0.0),
+                  buildRatingRow(al.price, 0.0),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow("Portions", 4.0),
+                  buildRatingRow(al.portions, 4.0),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow("Ambiance", 4.0, isLast: true),
+                  buildRatingRow(al.ambiance, 4.0, isLast: true),
                 ],
               ),
             ),
@@ -247,7 +248,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                 children: [
 
                   CustomText(
-                    text: "Dishes and Menus Consumed",
+                    text: al.dishesAndMenusConsumed,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
@@ -289,16 +290,16 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Rate The Selected Dishesh",
+                    text: al.rateTheSelectedDishes,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
                   SizedBox(height: getHeight() * .01),
                   buildRatingRow(
-                      "Al Salmone", 2.0, review: "Your rating for this dish:"),
+                      "Al Salmone", 2.0, review: al.yourRatingForThisDish),
                   SizedBox(height: getHeight() * .01),
                   buildRatingRow(
-                      "Maki Saumon", 4.0, review: "Your rating for this dish:", isLast: true),
+                      "Maki Saumon", 4.0, review: al.yourRatingForThisDish, isLast: true),
                 ],
               ),
             ),
@@ -328,7 +329,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                     fontSize: sizes?.fontSize16,
                   ),
                   CustomText(
-                    text: "File supported: PNG, JPG",
+                    text: al.fileSupport,
                     fontSize: sizes?.fontSize12,
                   ),
                   Container(
@@ -346,12 +347,12 @@ class _CreateChoiceState extends State<CreateChoice> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText(
-                              text: "Choose a file",
+                              text: al.chooseAFile,
                               fontFamily: Assets.onsetMedium,
                               fontSize: sizes?.fontSize14,
                             ),
                             CustomText(
-                              text: "Up to 5 images",
+                              text: al.upTo5Images,
                               fontSize: sizes?.fontSize14,
                               color: HexColor.fromHex("#686A82"),
                             ),
@@ -382,7 +383,7 @@ class _CreateChoiceState extends State<CreateChoice> {
               child: CustomField(
                 borderColor: AppColors.greyBordersColor,
                 hint: "e.g: #cozy, #outdoor_seating",
-                label: "Tags",
+                label: al.tags,
               ),
             ),
             SizedBox(height: getHeight() * .02),
@@ -399,7 +400,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                     child: CustomButton(
                       buttonWidth: getWidth() * 0.43,
                       height: getHeight() * 0.055,
-                      buttonText: "Cancel",
+                      buttonText: al.cancel,
                       backgroundColor: Colors.transparent,
                       textColor: AppColors.blackColor,
                       borderColor: AppColors.blackColor,
@@ -412,7 +413,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                       buttonWidth: getWidth() * 0.43,
                       height: getHeight() * 0.055,
                       borderColor: AppColors.getPrimaryColorFromContext(context),                      backgroundColor: AppColors.userPrimaryColor,
-                      buttonText: "Next",
+                      buttonText: al.next,
                       textColor: AppColors.whiteColor,
                       onTap: () {},
                     ),
