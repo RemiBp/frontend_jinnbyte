@@ -1,5 +1,6 @@
 import 'package:choice_app/common/utils.dart';
 import 'package:choice_app/models/auth_ressponse.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:file_picker/file_picker.dart';
@@ -123,6 +124,8 @@ class AuthProvider extends ChangeNotifier{
           "email": email,
           "isResetPassFlow": false,
         });
+        final profileProvider = Provider.of<ProfileProvider>(context!, listen: false);
+        profileProvider.businessName = businessName;
       }
       _loader.hideLoader(context!);
     } catch (err) {
@@ -197,7 +200,7 @@ class AuthProvider extends ChangeNotifier{
       if (response?["message"] != null) {
         Toasts.getSuccessToast(text: response?["message"]);
         _loader.hideLoader(context!);
-        context?.push(Routes.restaurantBottomTabRoute);
+        context?.push(Routes.restaurantProfileRoute);
         return;
       }
       _loader.hideLoader(context!);
