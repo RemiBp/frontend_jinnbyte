@@ -197,7 +197,7 @@ class AuthProvider extends ChangeNotifier{
       if (response?["message"] != null) {
         Toasts.getSuccessToast(text: response?["message"]);
         _loader.hideLoader(context!);
-        context?.push(Routes.restaurantBottomTabRoute);
+        context?.push(Routes.loginRoute);
         return;
       }
       _loader.hideLoader(context!);

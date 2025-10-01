@@ -48,10 +48,12 @@ class _ProfileState extends State<Profile> {
                   CustomBackButton(),
                   SizedBox(width: getWidth() * .02),
                 ],
-                CustomText(
-                  text: al.profileSetup,
-                  fontSize: sizes?.fontSize28,
-                  fontFamily: Assets.onsetSemiBold,
+                Expanded(
+                  child: CustomText(
+                    text: al.profileSetup,
+                    fontSize: sizes?.fontSize28,
+                    fontFamily: Assets.onsetSemiBold,
+                  ),
                 ),
               ],
             ),
@@ -196,15 +198,37 @@ class _ProfileState extends State<Profile> {
               maxLines: 3,
             ),
             SizedBox(height: getHeight() * .02),
-            CustomButton(
-              buttonText: al.next,
-              onTap: () async {
-                final success = await provider.updateProfile();
-                // Only navigate to next screen if API call was successful
-                if (success && context.mounted) {
-                  context.push(Routes.editOperationHoursRoute);
-                }
-              },
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  buttonText: 'Cancel',
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: Colors.transparent,
+                  borderColor: AppColors.blackColor,
+                  textColor: AppColors.blackColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+                CustomButton(
+                  buttonText: 'Save Changes',
+                  onTap: () async {
+                      final success = await provider.updateProfile();
+                      // Only navigate to next screen if API call was successful
+                      if (success && context.mounted) {
+                        context.push(Routes.editOperationHoursRoute);
+                      }
+                  },
+                  buttonWidth: getWidth() * .42,
+                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  borderColor: AppColors.getPrimaryColorFromContext(context),
+                  textColor: AppColors.whiteColor,
+                  textFontWeight: FontWeight.w700,
+                ),
+              ],
             ),
           ],
         ),
@@ -212,3 +236,15 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
+
+
+// CustomButton(
+//   buttonText: al.next,
+//   onTap: () async {
+//     final success = await provider.updateProfile();
+//     // Only navigate to next screen if API call was successful
+//     if (success && context.mounted) {
+//       context.push(Routes.editOperationHoursRoute);
+//     }
+//   },
+// ),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class ChoiceSelection extends StatefulWidget {
@@ -22,12 +23,6 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
       'subtitle': 'Lorem ipsum dolor sit amet',
       'icon': Assets.knifeForkIcon,
       'color': Colors.orange,
-    },
-    {
-      'label': 'Events',
-      'subtitle': 'Lorem ipsum dolor sit amet',
-      'icon': Assets.eventIcon,
-      'color': Colors.red,
     },
     {
       'label': 'Leisure',
@@ -93,26 +88,23 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                   child: ElevatedButton(
                     onPressed: () {
                       // context.push(Routes.subChoiceSelectionRoute);
-                      if(selectedChoice == "Events"){
-                        return;
-                      }
                       context.push(
                           '/sub_choice_selection?selectedChoice=$selectedChoice',
                           extra: selectedChoice == "Restaurant" ? {
                             "title": "Restaurant",
                             "icon": Assets.restaurantIcon
                             ,
-                            "description": "Which restaurant did you visit?"}
+                            "description": al.whichRestaurantDidYouVisit}
                               : selectedChoice == "Leisure" ? {
                             "title": "Leisure",
                             "icon": Assets.leisureIcon
                             ,
-                            "description": "Which leisure event did you attend?"
+                            "description": al.whichLeisureEventDidYouAttend
                           } : {
                             "title": "Wellness",
                             "icon": Assets.wellnessIcon
                             ,
-                            "description": "Which wellness did you visit?"
+                            "description": al.whichWellnessDidYouVisit
                           }
                       );
                     },

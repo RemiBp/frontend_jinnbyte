@@ -65,7 +65,7 @@ class AuthSelectionCard extends StatelessWidget {
                   ),
                   SizedBox(height: getHeight() * .005),
                   CustomText(
-                    text: al.userAccountDescription,
+                    text: description,
                     fontSize: sizes?.fontSize14,
                     giveLinesAsText: true,
                   ),

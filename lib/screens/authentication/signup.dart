@@ -220,19 +220,29 @@ class _SignupState extends State<Signup> {
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();
     var businessName = businessNameController.text.toString().trim();
+
+    final nameRegex = RegExp(r"^[a-zA-Z0-9\s\-,.&']+$");
+    final passwordRegex = RegExp(r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}|<>_\-]+$');
+
     if (businessName.isEmpty) {
       Toasts.getErrorToast(text: "Business Name is Missing");
+    } else if (!nameRegex.hasMatch(businessName)) {
+    Toasts.getErrorToast(text: "Business Name contains invalid characters (no emojis allowed)");
     } else if (email.isEmpty) {
-      Toasts.getErrorToast(text: "Email is Missing");
+    Toasts.getErrorToast(text: "Email is Missing");
     } else if (email.validateEmail() == false) {
-      Toasts.getErrorToast(text: "Invalid Email");
+    Toasts.getErrorToast(text: "Invalid Email");
     } else if (password.isEmpty) {
-      Toasts.getErrorToast(text: "Password is missing");
+    Toasts.getErrorToast(text: "Password is missing");
+    } else if (!passwordRegex.hasMatch(password)) {
+    Toasts.getErrorToast(text: "Password contains invalid characters (no emojis allowed)");
     } else {
-      context.read<AuthProvider>().registerUser(
-        businessName: businessName, email: email, role: context
-          .read<RoleProvider>()
-          .role.name, password: password,);
+    context.read<AuthProvider>().registerUser(
+    businessName: businessName,
+    email: email,
+    role: context.read<RoleProvider>().role.name,
+    password: password,
+    );
     }
   }
 }

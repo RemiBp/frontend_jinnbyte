@@ -110,7 +110,7 @@
   "create": "Create",
   "createPost": "Create Post",
   "photos": "Photos",
-  "fileSupported": "File supported:",
+  "fileSupport": "File supported:",
   "chooseFile": "Choose a file",
   "imageLimit": "Up to 5 images",
   "exampleTitle": "e.g Sunday Brunch at The Maple House",
@@ -175,6 +175,36 @@
   "socialLinks": "Social Links",
   "delete": "Delete",
   "edit": "Edit",
+  "yourExperience": "Your Experience",
+  "overallRestaurantRating": "Overall Restaurant Rating",
+  "service": "Service",
+  "price": "Price",
+  "portions": "Portions",
+  "ambiance": "Ambiance",
+  "dishesAndMenusConsumed": "Dishes and Menus Consumed",
+  "rateTheSelectedDishes": "Rate The Selected Dishes",
+  "yourRatingForThisDish": "Your rating for this dish:",
+  "fileSupported": "File supported: PNG, JPG",
+  "chooseAFile": "Choose a file",
+  "upTo5Images": "Up to 5 images",
+  "remove": "Remove",
+
+  "whichRestaurantDidYouVisit": "Which restaurant did you visit?",
+  "whichWellnessDidYouVisit": "Which wellness did you visit?",
+  "whichLeisureEventDidYouAttend": "Which leisure event did you attend?",
+
+  "filters": "Filters",
+  "distance": "Distance",
+  "place": "Place",
+  "dishName": "Dish Name",
+  "dishRating": "Dish Rating",
+  "resetAll": "Reset All",
+  "applyFilters": "Apply Filters",
+  "any": "Any",
+
+
+
+
 
 
 
