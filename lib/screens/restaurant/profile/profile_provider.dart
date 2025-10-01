@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:choice_app/network/models.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,18 +16,11 @@ class ProfileProvider extends ChangeNotifier {
   BuildContext? context;
 
   File? profileImage;
-  
-  // Form controllers
-  final TextEditingController addressController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController websiteController = TextEditingController();
-  final TextEditingController instagramController = TextEditingController();
-  final TextEditingController twitterController = TextEditingController();
-  final TextEditingController facebookController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  
+
   PhoneNumber? phoneNumber;
-  
+  XFile? profilePhoto;
+  String businessName = "";
+
   final Loader _loader = Loader();
 
   init(context) {
@@ -42,6 +36,7 @@ class ProfileProvider extends ChangeNotifier {
       maxWidth: 640,
       imageQuality: 50,
     );
+    profilePhoto = photo;
     if (photo != null) {
       profileImage = File(photo.path);
       // final croppedFile = await ImageCropper().cropImage(
@@ -74,84 +69,125 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _validateForm() {
+  bool _validateForm({
+    required String address,
+    required String password,
+    required String website,
+    required String instagram,
+    required String twitter,
+    required String facebook,
+    required String description,
+  }) {
     // Check if at least one field is filled
-    bool hasAddress = addressController.text.trim().isNotEmpty;
-    bool hasPassword = passwordController.text.trim().isNotEmpty;
-    bool hasPhone = phoneNumber != null && phoneNumber!.international.length > 4; // More than just country code
-    bool hasWebsite = websiteController.text.trim().isNotEmpty;
-    bool hasInstagram = instagramController.text.trim().isNotEmpty;
-    bool hasTwitter = twitterController.text.trim().isNotEmpty;
-    bool hasFacebook = facebookController.text.trim().isNotEmpty;
-    bool hasDescription = descriptionController.text.trim().isNotEmpty;
+    bool hasAddress = address.trim().isNotEmpty;
+    bool hasPassword = password.trim().isNotEmpty;
+    bool hasPhone =
+        phoneNumber != null &&
+        phoneNumber!.international.length > 4; // More than just country code
+    bool hasWebsite = website.trim().isNotEmpty;
+    bool hasInstagram = instagram.trim().isNotEmpty;
+    bool hasTwitter = twitter.trim().isNotEmpty;
+    bool hasFacebook = facebook.trim().isNotEmpty;
+    bool hasDescription = description.trim().isNotEmpty;
+    bool hasBusinessName = businessName.trim().isNotEmpty;
 
     // Debug logging
     debugPrint("Validation check:");
-    debugPrint("hasAddress: $hasAddress (${addressController.text.trim()})");
-    debugPrint("hasPassword: $hasPassword (${passwordController.text.trim()})");
+    debugPrint("hasAddress: $hasAddress (${address.trim()})");
+    debugPrint("hasPassword: $hasPassword (${password.trim()})");
     debugPrint("hasPhone: $hasPhone (${phoneNumber?.international})");
-    debugPrint("hasWebsite: $hasWebsite (${websiteController.text.trim()})");
-    debugPrint("hasInstagram: $hasInstagram (${instagramController.text.trim()})");
-    debugPrint("hasTwitter: $hasTwitter (${twitterController.text.trim()})");
-    debugPrint("hasFacebook: $hasFacebook (${facebookController.text.trim()})");
-    debugPrint("hasDescription: $hasDescription (${descriptionController.text.trim()})");
+    debugPrint("hasWebsite: $hasWebsite (${website.trim()})");
+    debugPrint("hasInstagram: $hasInstagram (${instagram.trim()})");
+    debugPrint("hasTwitter: $hasTwitter (${twitter.trim()})");
+    debugPrint("hasFacebook: $hasFacebook (${facebook.trim()})");
+    debugPrint("hasDescription: $hasDescription (${description.trim()})");
 
-    if (!hasAddress && !hasPassword && !hasPhone && !hasWebsite && 
-        !hasInstagram && !hasTwitter && !hasFacebook && !hasDescription) {
+    if (!hasAddress &&
+        !hasPassword &&
+        !hasPhone &&
+        !hasWebsite &&
+        !hasInstagram &&
+        !hasTwitter &&
+        !hasFacebook &&
+        !hasDescription) {
       debugPrint("All fields are empty - validation failed");
-      Toasts.getErrorToast(text: "Please fill at least one field to update your profile");
+      Toasts.getErrorToast(
+        text: "Please fill at least one field to update your profile",
+      );
+      return false;
+    }
+
+    if (!hasBusinessName) {
+      debugPrint(
+        "Business name validation failed: too short (${businessName.trim().length} chars)",
+      );
+      Toasts.getErrorToast(
+        text: "Please enter a valid business name",
+      );
       return false;
     }
 
     // Validate address format if provided
-    if (!hasAddress && addressController.text.trim().length < 5) {
-      debugPrint("Address validation failed: too short (${addressController.text.trim().length} chars)");
-      Toasts.getErrorToast(text: "Please enter a valid address (at least 5 characters)");
+    if (!hasAddress && address.trim().length < 5) {
+      debugPrint(
+        "Address validation failed: too short (${address.trim().length} chars)",
+      );
+      Toasts.getErrorToast(
+        text: "Please enter a valid address (at least 5 characters)",
+      );
       return false;
     }
 
     // Validate password format if provided
-    if (!hasPassword && passwordController.text.trim().length < 6) {
-      debugPrint("Password validation failed: too short (${passwordController.text.trim().length} chars)");
-      Toasts.getErrorToast(text: "Password must be at least 6 characters long");
-      return false;
-    }
+    // if (!hasPassword && password.trim().length < 6) {
+    //   debugPrint(
+    //     "Password validation failed: too short (${password.trim().length} chars)",
+    //   );
+    //   Toasts.getErrorToast(text: "Password must be at least 6 characters long");
+    //   return false;
+    // }
 
     // Validate phone number format if provided
     if (!hasPhone && phoneNumber!.international.length < 8) {
-      debugPrint("Phone validation failed: too short (${phoneNumber!.international.length} chars)");
+      debugPrint(
+        "Phone validation failed: too short (${phoneNumber!.international.length} chars)",
+      );
       Toasts.getErrorToast(text: "Please enter a valid phone number");
       return false;
     }
 
     // Validate description format if provided
-    if (!hasDescription && descriptionController.text.trim().length < 10) {
-      debugPrint("Description validation failed: too short (${descriptionController.text.trim().length} chars)");
-      Toasts.getErrorToast(text: "Please enter a meaningful description (at least 10 characters)");
+    if (!hasDescription && description.trim().length < 10) {
+      debugPrint(
+        "Description validation failed: too short (${description.trim().length} chars)",
+      );
+      Toasts.getErrorToast(
+        text: "Please enter a meaningful description (at least 10 characters)",
+      );
       return false;
     }
 
     // Validate URL formats if provided
-    if (websiteController.text.trim().isEmpty && !_isValidUrl(websiteController.text.trim())) {
-      debugPrint("Website URL validation failed: ${websiteController.text.trim()}");
+    if (!hasWebsite && !_isValidUrl(website.trim())) {
+      debugPrint("Website URL validation failed: ${website.trim()}");
       Toasts.getErrorToast(text: "Please enter a valid website URL");
       return false;
     }
 
-    if (instagramController.text.trim().isEmpty && !_isValidUrl(instagramController.text.trim())) {
-      debugPrint("Instagram URL validation failed: ${instagramController.text.trim()}");
+    if (!hasInstagram && !_isValidUrl(instagram.trim())) {
+      debugPrint("Instagram URL validation failed: ${instagram.trim()}");
       Toasts.getErrorToast(text: "Please enter a valid Instagram URL");
       return false;
     }
 
-    if (twitterController.text.trim().isEmpty && !_isValidUrl(twitterController.text.trim())) {
-      debugPrint("Twitter URL validation failed: ${twitterController.text.trim()}");
+    if (!hasTwitter && !_isValidUrl(twitter.trim())) {
+      debugPrint("Twitter URL validation failed: ${twitter.trim()}");
       Toasts.getErrorToast(text: "Please enter a valid Twitter URL");
       return false;
     }
 
-    if (facebookController.text.trim().isEmpty && !_isValidUrl(facebookController.text.trim())) {
-      debugPrint("Facebook URL validation failed: ${facebookController.text.trim()}");
+    if (!hasFacebook && !_isValidUrl(facebook.trim())) {
+      debugPrint("Facebook URL validation failed: ${facebook.trim()}");
       Toasts.getErrorToast(text: "Please enter a valid Facebook URL");
       return false;
     }
@@ -181,52 +217,75 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateProfile() async {
+  Future<bool> updateProfile({
+    required String address,
+    required String password,
+    required String website,
+    required String instagram,
+    required String twitter,
+    required String facebook,
+    required String description,
+    required String profileImageUrl,
+  }) async {
     try {
       // Validate form before making API call
-      if (!_validateForm()) {
+      if (!_validateForm(
+        address: address,
+        password: password,
+        website: website,
+        instagram: instagram,
+        twitter: twitter,
+        facebook: facebook,
+        description: description,
+      )) {
         return false;
       }
 
       _loader.showLoader(context: context);
-      
+
       Map<String, dynamic> body = {};
 
       // Only add fields that have values
-      if (addressController.text.trim().isNotEmpty) {
-        body["address"] = addressController.text.trim();
+      if (address.trim().isNotEmpty) {
+        body["address"] = address.trim();
       }
-      if (passwordController.text.trim().isNotEmpty) {
-        body["password"] = passwordController.text.trim();
-      }
+      // if (password.trim().isNotEmpty) {
+      //   body["password"] = password.trim();
+      // }
       if (phoneNumber != null && phoneNumber!.international.length > 4) {
         body["phoneNumber"] = phoneNumber!.international;
       }
-      if (websiteController.text.trim().isNotEmpty) {
-        body["website"] = websiteController.text.trim();
+      if (website.trim().isNotEmpty) {
+        body["website"] = website.trim();
       }
-      if (instagramController.text.trim().isNotEmpty) {
-        body["instagram"] = instagramController.text.trim();
+      if (instagram.trim().isNotEmpty) {
+        body["instagram"] = instagram.trim();
       }
-      if (twitterController.text.trim().isNotEmpty) {
-        body["twitter"] = twitterController.text.trim();
+      if (twitter.trim().isNotEmpty) {
+        body["twitter"] = twitter.trim();
       }
-      if (facebookController.text.trim().isNotEmpty) {
-        body["facebook"] = facebookController.text.trim();
+      if (facebook.trim().isNotEmpty) {
+        body["facebook"] = facebook.trim();
       }
-      if (descriptionController.text.trim().isNotEmpty) {
-        body["description"] = descriptionController.text.trim();
+      if (description.trim().isNotEmpty) {
+        body["description"] = description.trim();
       }
 
+      body["businessName"] = businessName;
+      body["profileImageUrl"] = profileImageUrl;
+      body["latitude"] = 48.8566;
+      body["longitude"] = 2.3522;
+
       debugPrint("Update profile body: $body");
-      
-      final response = await MyApi.callPatchApi(
+
+      final response = await MyApi.callPutApi(
         url: updateProfileApiUrl,
         body: body,
+        modelName: Models.restaurantUpdateProfileModel,
       );
-      
+
       debugPrint("Update profile response: $response");
-      
+
       if (response != null) {
         Toasts.getSuccessToast(text: "Profile updated successfully");
         _loader.hideLoader(context!);
@@ -244,15 +303,64 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> setOperationalHours({
+    required List<String> days,
+    required Map<String, bool> isActive,
+    required Map<String, TimeOfDay> startTimes,
+    required Map<String, TimeOfDay> endTimes,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+
+      // Build the hours array
+      List<Map<String, dynamic>> hours = [];
+      for (String day in days) {
+        hours.add({
+          "day": day,
+          "startTime": _formatTo24Hour(startTimes[day]!),
+          "endTime": _formatTo24Hour(endTimes[day]!),
+          "isClosed": !isActive[day]!,
+        });
+      }
+
+      Map<String, dynamic> body = {
+        "hours": hours,
+      };
+
+      debugPrint("Set operational hours body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: setOperationalHoursApiUrl,
+        body: body,
+      );
+
+      debugPrint("Set operational hours response: $response");
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: "Operational hours saved successfully");
+        _loader.hideLoader(context!);
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to save operational hours");
+        _loader.hideLoader(context!);
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error setting operational hours: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to save operational hours");
+      return false;
+    }
+  }
+
+  String _formatTo24Hour(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   @override
   void dispose() {
-    addressController.dispose();
-    passwordController.dispose();
-    websiteController.dispose();
-    instagramController.dispose();
-    twitterController.dispose();
-    facebookController.dispose();
-    descriptionController.dispose();
     super.dispose();
   }
 }
