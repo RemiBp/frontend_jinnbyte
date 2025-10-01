@@ -1,7 +1,9 @@
 import 'package:choice_app/common/utils.dart';
 import 'package:choice_app/models/auth_ressponse.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
@@ -9,6 +11,7 @@ import '../../../network/models.dart';
 import '../../../res/loader.dart';
 import '../../../res/toasts.dart';
 import '../../../routes/routes.dart';
+import '../../../userRole/role_provider.dart';
 
 class OtpProvider extends ChangeNotifier {
   AuthResponse registrationResponse = AuthResponse();
@@ -45,8 +48,15 @@ class OtpProvider extends ChangeNotifier {
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {"email": email, "otp": otp};
       debugPrint("body is : ---------->$body");
+      final roleProvider = context?.read<RoleProvider>();
+      final verifyFgOtpApi = roleProvider?.role == UserRole.user
+          ? verifyUserFgOtpApiUrl
+          : verifyFgOtpApiUrl;
+      final verifySignupOtpApi = roleProvider?.role == UserRole.user
+          ? verifyUserSignupOtpApiUrl
+          : verifySignupOtpApiUrl;
       registrationResponse = await MyApi.callPostApi(
-        url: isResetPassFlow ? verifyFgOtpApiUrl : verifySignupOtpApiUrl,
+        url: isResetPassFlow ? verifyFgOtpApi : verifySignupOtpApi,
         myHeaders: headers,
         body: body,
         modelName:isResetPassFlow?null: Models.authModel,
@@ -80,8 +90,12 @@ class OtpProvider extends ChangeNotifier {
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {"email": email, "otp": otp};
       debugPrint("body is : ---------->$body");
+      final roleProvider = context?.read<RoleProvider>();
+      final verifyFgOtpApi = roleProvider?.role == UserRole.user
+          ? verifyUserFgOtpApiUrl
+          : verifyFgOtpApiUrl;
       final response = await MyApi.callPostApi(
-        url: verifyFgOtpApiUrl ,
+        url: verifyFgOtpApi ,
         myHeaders: headers,
         body: body,
       );
@@ -109,8 +123,15 @@ class OtpProvider extends ChangeNotifier {
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {"email": email};
       debugPrint("body is : ---------->$body");
+      final roleProvider = context?.read<RoleProvider>();
+      final resendFgOtpApi = roleProvider?.role == UserRole.user
+          ? resendUserFgOtpApiUrl
+          : resendFgOtpApiUrl;
+      final resendSignupOtpApi = roleProvider?.role == UserRole.user
+          ? resendUserSignupOtpApiUrl
+          : resendSignupOtpApiUrl;
       final response = await MyApi.callPostApi(
-        url: isResetPassFlow ? resendFgOtpApiUrl : resendSignupOtpApiUrl,
+        url: isResetPassFlow ? resendFgOtpApi : resendSignupOtpApi,
         myHeaders: headers,
         body: body,
       );

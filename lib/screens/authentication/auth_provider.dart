@@ -93,7 +93,7 @@ class AuthProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> registerUser({
+  Future<void> register({
     required String businessName,
     required String email,
     required String role,
@@ -130,6 +130,49 @@ class AuthProvider extends ChangeNotifier{
       _loader.hideLoader(context!);
     }
   }
+
+  Future<void> registerUser({
+    required String fullName,
+    required String userName,
+    required String phone,
+    required String email,
+    required String role,
+    required String password,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+      Map<String, dynamic> headers = {"Content-Type": "application/json"};
+      Map<String, dynamic> body = {
+      "fullName": fullName,
+      "userName": userName,
+      "email": email,
+      "password": password,
+      "phoneNumber": phone
+      };
+      debugPrint("body is : ---------->$body");
+      final signupResponse = await MyApi.callPostApi(
+        url: userSignUpApiUrl,
+        myHeaders: headers,
+        body: body,
+        // modelName: Models.loginModel,
+      );
+      debugPrint("register response : $signupResponse");
+      if (signupResponse?["message"] != null) {
+        debugPrint("register response : ${signupResponse?["message"]}");
+        Toasts.getSuccessToast(text: "Registration Successful");
+        context?.push(Routes.otpVerificationRoute, extra: {
+          "email": email,
+          "isResetPassFlow": false,
+        });
+      }
+      _loader.hideLoader(context!);
+    } catch (err) {
+      debugPrint("error during registering new user : $err");
+      _loader.hideLoader(context!);
+    }
+  }
+
+
 
   Future<void> loginUser({
     required String email,

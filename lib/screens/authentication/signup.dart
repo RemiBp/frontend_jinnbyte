@@ -229,7 +229,7 @@ class _SignupState extends State<Signup> {
     } else if (password.isEmpty) {
       Toasts.getErrorToast(text: "Password is missing");
     } else {
-      context.read<AuthProvider>().registerUser(
+      context.read<AuthProvider>().register(
         businessName: businessName, email: email, role: context
           .read<RoleProvider>()
           .role.name, password: password,);
