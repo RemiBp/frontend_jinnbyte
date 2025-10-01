@@ -238,7 +238,7 @@ class _SignupState extends State<Signup> {
     } else if (!passwordRegex.hasMatch(password)) {
     Toasts.getErrorToast(text: "Password contains invalid characters (no emojis allowed)");
     } else {
-    context.read<AuthProvider>().registerUser(
+    context.read<AuthProvider>().register(
     businessName: businessName,
     email: email,
     role: context.read<RoleProvider>().role.name,
