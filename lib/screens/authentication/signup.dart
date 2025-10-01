@@ -5,6 +5,7 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
@@ -217,6 +218,9 @@ class _SignupState extends State<Signup> {
   }
 
   onSignupTap() {
+    // context.push(Routes.restaurantProfileRoute);
+    // return;
+
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();
     var businessName = businessNameController.text.toString().trim();
