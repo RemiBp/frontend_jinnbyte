@@ -23,3 +23,4 @@ const String createUserPostApiUrl = "$baseUrl/api/producer/post/createUserPost";
 const String createEventPostApiUrl = "$baseUrl/api/producer/event/createEvent";
 const String getAllEventsApiUrl = "$baseUrl/api/producer/event/getAllEvents";
 const String updateProfileApiUrl = "$baseUrl/api/producer/profile/updateProfile";
+const String setOperationalHoursApiUrl = "$baseUrl/api/producer/profile/setOperationalHours";

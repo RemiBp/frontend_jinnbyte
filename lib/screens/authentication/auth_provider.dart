@@ -1,5 +1,6 @@
 import 'package:choice_app/common/utils.dart';
 import 'package:choice_app/models/auth_ressponse.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:file_picker/file_picker.dart';

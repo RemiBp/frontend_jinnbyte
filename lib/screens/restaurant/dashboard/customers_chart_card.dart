@@ -334,12 +334,20 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                         if (index < 0 || index >= xLabels.length) {
                           return const SizedBox.shrink();
                         }
-                        return Padding(
-                          padding: EdgeInsets.only(top: getHeight() * 0.02),
-                          child: CustomText(
-                            text: xLabels[index],
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                        return SideTitleWidget(
+                          meta: meta,
+                          child: Transform.translate(
+                            offset: Offset(
+                              index == 0
+                                  ? 17 // push Week 1 right
+                                  : (index == xLabels.length - 1 ? -22 : 0), // push Week 4 left more
+                              0,
+                            ),
+                            child: CustomText(
+                              text: xLabels[index],
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         );
                       },

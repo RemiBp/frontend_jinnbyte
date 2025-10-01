@@ -722,11 +722,11 @@ abstract class AppLocalizations {
   /// **'Photos'**
   String get photos;
 
-  /// No description provided for @fileSupported.
+  /// No description provided for @fileSupport.
   ///
   /// In en, this message translates to:
   /// **'File supported:'**
-  String get fileSupported;
+  String get fileSupport;
 
   /// No description provided for @imageLimit.
   ///
@@ -1057,6 +1057,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
+
+  /// No description provided for @yourExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Experience'**
+  String get yourExperience;
+
+  /// No description provided for @overallRestaurantRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Restaurant Rating'**
+  String get overallRestaurantRating;
+
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get service;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @portions.
+  ///
+  /// In en, this message translates to:
+  /// **'Portions'**
+  String get portions;
+
+  /// No description provided for @ambiance.
+  ///
+  /// In en, this message translates to:
+  /// **'Ambiance'**
+  String get ambiance;
+
+  /// No description provided for @dishesAndMenusConsumed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dishes and Menus Consumed'**
+  String get dishesAndMenusConsumed;
+
+  /// No description provided for @rateTheSelectedDishes.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate The Selected Dishes'**
+  String get rateTheSelectedDishes;
+
+  /// No description provided for @yourRatingForThisDish.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rating for this dish:'**
+  String get yourRatingForThisDish;
+
+  /// No description provided for @fileSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'File supported: PNG, JPG'**
+  String get fileSupported;
+
+  /// No description provided for @chooseAFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file'**
+  String get chooseAFile;
+
+  /// No description provided for @upTo5Images.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 5 images'**
+  String get upTo5Images;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @whichRestaurantDidYouVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Which restaurant did you visit?'**
+  String get whichRestaurantDidYouVisit;
+
+  /// No description provided for @whichWellnessDidYouVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Which wellness did you visit?'**
+  String get whichWellnessDidYouVisit;
+
+  /// No description provided for @whichLeisureEventDidYouAttend.
+  ///
+  /// In en, this message translates to:
+  /// **'Which leisure event did you attend?'**
+  String get whichLeisureEventDidYouAttend;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @distance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distance;
+
+  /// No description provided for @place.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get place;
+
+  /// No description provided for @dishName.
+  ///
+  /// In en, this message translates to:
+  /// **'Dish Name'**
+  String get dishName;
+
+  /// No description provided for @dishRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Dish Rating'**
+  String get dishRating;
+
+  /// No description provided for @resetAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All'**
+  String get resetAll;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @any.
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get any;
 }
 
 class _AppLocalizationsDelegate

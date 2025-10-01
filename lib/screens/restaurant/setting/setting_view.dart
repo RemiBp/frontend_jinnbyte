@@ -70,17 +70,28 @@ class _SettingViewState extends State<SettingView> {
                     // );
                   },
                 ),
-                // if(role == UserRole.user)
-                //   ProfileOptionButton(
-                //     title: "Badge & XP",
-                //     leadingAssetPath: Assets.badgeIcon,
-                //     onTap: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(builder: (context) => BadgesView()),
-                //       );
-                //     },
-                //   ),
+                if(role == UserRole.user)
+                  ProfileOptionButton(
+                    title: "Badge & XP",
+                    leadingAssetPath: Assets.badgeIcon,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BadgesView()),
+                      );
+                    },
+                  ),
+                if(role == UserRole.user)
+                  ProfileOptionButton(
+                    title: al.location,
+                    leadingAssetPath: Assets.locationIcon,
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => BadgesView()),
+                      // );
+                    },
+                  ),
                 if(role == UserRole.user)
                   ProfileOptionButton(
                     title: "Bookmarked",

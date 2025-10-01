@@ -339,7 +339,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get photos => 'Photos';
 
   @override
-  String get fileSupported => 'Fichier pris en charge :';
+  String get fileSupport => 'Fichier pris en charge :';
 
   @override
   String get imageLimit => 'Jusqu\'à 5 images';
@@ -508,4 +508,78 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get edit => 'Modifier';
+
+  @override
+  String get yourExperience => 'Votre exprience';
+
+  @override
+  String get overallRestaurantRating => 'Note globale du restaurant';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get price => 'Prix';
+
+  @override
+  String get portions => 'Portions';
+
+  @override
+  String get ambiance => 'Ambiance';
+
+  @override
+  String get dishesAndMenusConsumed => 'Plats et menus consommés';
+
+  @override
+  String get rateTheSelectedDishes => 'Évaluer les plats sélectionnés';
+
+  @override
+  String get yourRatingForThisDish => 'Votre note pour ce plat :';
+
+  @override
+  String get fileSupported => 'Formats pris en charge : PNG, JPG';
+
+  @override
+  String get chooseAFile => 'Choisir un fichier';
+
+  @override
+  String get upTo5Images => 'Jusqu\'à 5 images';
+
+  @override
+  String get remove => 'Supprimer';
+
+  @override
+  String get whichRestaurantDidYouVisit => 'Quel restaurant avez-vous visité ?';
+
+  @override
+  String get whichWellnessDidYouVisit =>
+      'Quel centre de bien-être avez-vous visité ?';
+
+  @override
+  String get whichLeisureEventDidYouAttend =>
+      'À quel événement de loisirs avez-vous assisté ?';
+
+  @override
+  String get filters => 'Filtres';
+
+  @override
+  String get distance => 'Distance';
+
+  @override
+  String get place => 'Lieu';
+
+  @override
+  String get dishName => 'Nom du plat';
+
+  @override
+  String get dishRating => 'Note du plat';
+
+  @override
+  String get resetAll => 'Réinitialiser tout';
+
+  @override
+  String get applyFilters => 'Appliquer les filtres';
+
+  @override
+  String get any => 'N\'importe lequel';
 }

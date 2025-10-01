@@ -95,7 +95,7 @@
   "title": "Titre",
   "createPost": "Créer une publication",
   "photos": "Photos",
-  "fileSupported": "Fichier pris en charge :",
+  "fileSupport": "Fichier pris en charge :",
   "chooseFile": "Choisir un fichier",
   "imageLimit": "Jusqu'à 5 images",
   "exampleTitle": "ex. Brunch du dimanche à The Maple House",
@@ -155,10 +155,35 @@
   "seeLess": "Voir moins",
   "socialLinks": "Liens sociaux",
   "delete": "Supprimer",
-  "edit": "Modifier"
+  "edit": "Modifier",
+
+  "yourExperience": "Votre exprience",
+  "overallRestaurantRating": "Note globale du restaurant",
+  "service": "Service",
+  "price": "Prix",
+  "portions": "Portions",
+  "ambiance": "Ambiance",
+  "remove": "Supprimer",
+  "dishesAndMenusConsumed": "Plats et menus consommés",
+  "rateTheSelectedDishes": "Évaluer les plats sélectionnés",
+  "yourRatingForThisDish": "Votre note pour ce plat :",
+  "fileSupported": "Formats pris en charge : PNG, JPG",
+  "chooseAFile": "Choisir un fichier",
+  "upTo5Images": "Jusqu'à 5 images",
+
+  "whichRestaurantDidYouVisit": "Quel restaurant avez-vous visité ?",
+  "whichWellnessDidYouVisit": "Quel centre de bien-être avez-vous visité ?",
+  "whichLeisureEventDidYouAttend": "À quel événement de loisirs avez-vous assisté ?",
 
 
 
-
+  "filters": "Filtres",
+  "distance": "Distance",
+  "place": "Lieu",
+  "dishName": "Nom du plat",
+  "dishRating": "Note du plat",
+  "resetAll": "Réinitialiser tout",
+  "applyFilters": "Appliquer les filtres",
+  "any": "N'importe lequel"
 
 }

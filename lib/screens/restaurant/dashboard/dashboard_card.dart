@@ -82,7 +82,16 @@ class MostChosenDishCard extends StatelessWidget {
   final String? price;
   final String? duration;
   final String? percentage;
-  const MostChosenDishCard({super.key, this.price, this.header, this.percentage, this.duration});
+  final String? bottomText; // 👈 new field
+
+  const MostChosenDishCard({
+    super.key,
+    this.price,
+    this.header,
+    this.percentage,
+    this.duration,
+    this.bottomText, // 👈 add to constructor
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -105,53 +114,62 @@ class MostChosenDishCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: header??'Profile Views',
+                text: header ?? 'Profile Views',
                 fontSize: sizes?.fontSize14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primarySlateColor,
               ),
               SizedBox(height: getHeightRatio() * 6),
               CustomText(
-                text: price??'932',
+                text: price ?? '932',
                 fontSize: sizes?.fontSize20,
                 fontWeight: FontWeight.w600,
                 color: AppColors.blackColor,
               ),
               SizedBox(height: getHeightRatio() * 6),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Chosen ',
-                      style: TextStyle(
-                        fontSize: sizes?.fontSize12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primarySlateColor,
-                        fontFamily: Assets.onsetRegular,
-                      ),
-                    ),
-                    TextSpan(
-                      text: percentage ?? '88 ',
-                      style: TextStyle(
-                        fontSize: sizes?.fontSize12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.wellnessPrimaryColor,
-                        fontFamily: Assets.onsetRegular,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'times this week',
-                      style: TextStyle(
-                        fontSize: sizes?.fontSize12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primarySlateColor,
-                        fontFamily: Assets.onsetRegular,
-                      ),
-                    ),
-                  ],
-                ),
-              )
 
+              // 👇 Dynamic bottom text
+              if (bottomText != null)
+                CustomText(
+                  text: bottomText!,
+                  fontSize: sizes?.fontSize12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primarySlateColor,
+                )
+              else
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Chosen ',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primarySlateColor,
+                          fontFamily: Assets.onsetRegular,
+                        ),
+                      ),
+                      TextSpan(
+                        text: percentage ?? '88 ',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.wellnessPrimaryColor,
+                          fontFamily: Assets.onsetRegular,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: 'times this week',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primarySlateColor,
+                          fontFamily: Assets.onsetRegular,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ],
