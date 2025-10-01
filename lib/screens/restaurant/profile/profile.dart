@@ -261,7 +261,6 @@ class _ProfileState extends State<Profile> {
                 CustomButton(
                   buttonText: 'Save Changes',
                   onTap: () async {
-                    onTap: () async {
                       // context.push(Routes.editOperationHoursRoute);
                       // return;
 
