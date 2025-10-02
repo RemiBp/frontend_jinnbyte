@@ -92,14 +92,14 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
               text: "Monday, June 28, 2025 ",
               icon: Assets.calender,
               subText: "08:00 PM - 11:00 PM",
-              color: getTagColor(),
+              color: AppColors.getPrimaryColorFromContext(context),
             ),
             SizedBox(height: getHeight() * 0.01),
             IconTextWidget(
               text: "Gustave Eiffel, Paris, France",
               icon: Assets.restaurantLocationIcon,
               subText: " Av. Gustave Eiffel, 75007 Paris, France",
-              color: getTagColor(),
+              color: AppColors.getPrimaryColorFromContext(context),
             ),
 
             SizedBox(height: getHeight() * 0.01),
@@ -107,7 +107,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
               text: "Gustave Eiffel, Paris, France",
               icon: Assets.ticketIcon,
               subText: " Av. Gustave Eiffel, 75007 Paris, France",
-              color: getTagColor(),
+              color: AppColors.getPrimaryColorFromContext(context),
             ),
 
             Divider(color: AppColors.greyColor,),
@@ -133,7 +133,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                       text: al.showAll,
                       fontSize: sizes?.fontSize14,
                       fontFamily: Assets.onsetMedium,
-                      color: getTagColor(),
+                      color: AppColors.getPrimaryColorFromContext(context),
                     ),
                   ),
                 ],
@@ -184,17 +184,17 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                 ],
               ),
             ),
-            if(widget.tag == "restaurant")
+            if(widget.tag.toLowerCase() == "restaurant")
             Divider(color: AppColors.greyColor,),
-            if(widget.tag == "restaurant")
+            if(widget.tag.toLowerCase() == "restaurant")
             SizedBox(height: getHeight() * 0.01),
-            if(widget.tag == "restaurant")
+            if(widget.tag.toLowerCase() == "restaurant")
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: MenuGroupWidget(
                 menuGroup: menuGroups[0],
-                header: "Menu",
-                optionText: "See Full Menu",
+                header: al.menu,
+                optionText: al.seeFullMenu,
                 hideBorder: true,
                 onAddDish: (){
                   Navigator.push(
@@ -209,7 +209,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: CustomText(
-                text: "About Event",
+                text: al.aboutEvent,
                 fontSize: sizes?.fontSize16,
                 fontFamily: Assets.onsetSemiBold,
               ),
@@ -222,15 +222,15 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                 trimMode: TrimMode.Line,
                 trimLines: 2,
                 colorClickableText: Colors.pink,
-                trimCollapsedText: 'Read More',
-                trimExpandedText: 'See Less',
+                trimCollapsedText: al.readMore,
+                trimExpandedText: al.seeLess,
                 style: TextStyle(
                   fontSize: sizes?.fontSize16,
                   color: AppColors.blackColor,
                 ),
                 moreStyle: TextStyle(
                   fontSize: sizes?.fontSize14,
-                  color: getTagColor(),
+                  color: AppColors.getPrimaryColorFromContext(context),
                   fontFamily: Assets.onsetMedium,
                 ),
               ),
@@ -243,7 +243,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: CustomText(
-                text: "Location",
+                text: al.location,
                 fontSize: sizes?.fontSize16,
                 fontFamily: Assets.onsetSemiBold,
               ),
@@ -251,11 +251,27 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             SizedBox(height: getHeight() * 0.01),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
-              child: CustomText(
-                text: " Av. Gustave Eiffel, 75007 Paris, France",
-                fontSize: sizes?.fontSize12,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    Assets.locationIcon,
+                    height: getHeight() * 0.022,
+                    width: getHeight() * 0.022,
+                    colorFilter: ColorFilter.mode(AppColors.getPrimaryColorFromContext(context),BlendMode.srcIn),
+
+                  ),
+                  SizedBox(width: getWidth() * 0.01), // horizontal gap
+                  Expanded(
+                    child: CustomText(
+                      text: "Av. Gustave Eiffel, 75007 Paris, France",
+                      fontSize: sizes?.fontSize12,
+                    ),
+                  ),
+                ],
               ),
             ),
+            SizedBox(height: getHeight() * 0.008), // small vertical gap
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: Image.asset(Assets.mapImage, height: getHeight() * .2),
@@ -280,22 +296,22 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                 children: [
                   ShadowIcon(
                     icon: Assets.websiteIcon,
-                    color: getTagColor(),
+                    color: AppColors.getPrimaryColorFromContext(context),
                   ),
                   SizedBox(width: getWidth() * 0.02),
                   ShadowIcon(
                     icon: Assets.instagramIcon,
-                    color: getTagColor(),
+                    color: AppColors.getPrimaryColorFromContext(context),
                   ),
                   SizedBox(width: getWidth() * 0.02),
                   ShadowIcon(
                     icon: Assets.xIcon,
-                    color: getTagColor(),
+                    color: AppColors.getPrimaryColorFromContext(context),
                   ),
                   SizedBox(width: getWidth() * 0.02),
                   ShadowIcon(
                     icon: Assets.facebookIcon,
-                    color: getTagColor(),
+                    color: AppColors.getPrimaryColorFromContext(context),
                   ),
                 ],
               ),
@@ -314,7 +330,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
               ),
             ),
             SizedBox(height: getHeight() * 0.01),
-            OrganizerTile(color: getTagColor()),
+            OrganizerTile(color: AppColors.getPrimaryColorFromContext(context)),
             SizedBox(height: getHeight() * 0.01),
             Divider(color: AppColors.greyColor),
             SizedBox(height: getHeight() * 0.01),
@@ -323,18 +339,20 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: "More Events Like This",
-                    fontSize: sizes?.fontSize16,
-                    fontFamily: Assets.onsetSemiBold,
+                  Expanded(
+                    child: CustomText(
+                      text: al.moreEventsLikeThis,
+                      fontSize: sizes?.fontSize16,
+                      fontFamily: Assets.onsetSemiBold,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {},
                     child: CustomText(
-                      text: "Show All",
+                      text: al.showAll,
                       fontSize: sizes?.fontSize14,
                       fontFamily: Assets.onsetMedium,
-                      color: getTagColor(),
+                      color: AppColors.getPrimaryColorFromContext(context),
                     ),
                   ),
                 ],
@@ -373,7 +391,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Ticket Price",
+                        text: al.ticketPrice,
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.inputHintColor,
@@ -387,7 +405,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                             fontWeight: FontWeight.w600,
                           ),
                           CustomText(
-                            text: "/per person",
+                            text: al.perPerson,
                             fontSize: sizes?.fontSize14,
                             color: AppColors.inputHintColor,
                             fontWeight: FontWeight.w400,
@@ -397,7 +415,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
                     ],
                   ),
                   CustomButton(
-                    buttonText: 'Book Now',
+                    buttonText: al.bookNow,
                     onTap: () {
                       Navigator.push(
                         context,

@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../l18n.dart';
 import '../../network/API.dart';
 import '../../network/api_url.dart';
 import '../../network/models.dart';
@@ -119,7 +120,7 @@ class AuthProvider extends ChangeNotifier{
       debugPrint("register response : $signupResponse");
       if (signupResponse?["message"] != null) {
         debugPrint("register response : ${signupResponse?["message"]}");
-        Toasts.getSuccessToast(text: "Registration Successful");
+        Toasts.getSuccessToast(text: al.registrationSuccessful);
         context?.push(Routes.otpVerificationRoute, extra: {
           "email": email,
           "isResetPassFlow": false,
@@ -175,13 +176,13 @@ class AuthProvider extends ChangeNotifier{
   Future<void> submitDocs() async {
     try {
       if(expiryDate1 == null){
-        Toasts.getErrorToast(text: "Please Select Expiry Date 1");
+        Toasts.getErrorToast(text: al.expiryDate1Placeholder);
       }else if(selectedDoc1 == null){
-        Toasts.getErrorToast(text: "Please Select Business Registration Document");
+        Toasts.getErrorToast(text: al.businessRegistrationPlaceholder);
       }else  if(expiryDate2 == null){
-        Toasts.getErrorToast(text: "Please Select Expiry Date 2");
+        Toasts.getErrorToast(text: al.expiryDate2Placeholder);
       }else if(selectedDoc2 == null){
-        Toasts.getErrorToast(text: "Please Select Utility Bill or Invoice");
+        Toasts.getErrorToast(text: al.utilityBillPlaceholder);
       }else{ _loader.showLoader(context: context);
       Map<String, dynamic> body = {
         "document1": selectedDoc1?.path,

@@ -229,17 +229,17 @@ class _SignupState extends State<Signup> {
     final passwordRegex = RegExp(r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}|<>_\-]+$');
 
     if (businessName.isEmpty) {
-      Toasts.getErrorToast(text: "Business Name is Missing");
+      Toasts.getErrorToast(text: al.businessNameMissing);
     } else if (!nameRegex.hasMatch(businessName)) {
-    Toasts.getErrorToast(text: "Business Name contains invalid characters (no emojis allowed)");
+    Toasts.getErrorToast(text: al.businessNameInvalidCharacters);
     } else if (email.isEmpty) {
-    Toasts.getErrorToast(text: "Email is Missing");
+    Toasts.getErrorToast(text: al.emailMissing);
     } else if (email.validateEmail() == false) {
-    Toasts.getErrorToast(text: "Invalid Email");
+    Toasts.getErrorToast(text: al.invalidEmail);
     } else if (password.isEmpty) {
-    Toasts.getErrorToast(text: "Password is missing");
+    Toasts.getErrorToast(text: al.passwordMissing);
     } else if (!passwordRegex.hasMatch(password)) {
-    Toasts.getErrorToast(text: "Password contains invalid characters (no emojis allowed)");
+    Toasts.getErrorToast(text: al.passwordInvalidCharacters);
     } else {
     context.read<AuthProvider>().registerUser(
     businessName: businessName,

@@ -111,7 +111,7 @@ class _ExploreViewState extends State<ExploreView> {
                   SizedBox(height: getHeight() * 0.02),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                    child: SeeMoreWidget(header: "Events near you"),
+                    child: SeeMoreWidget(header: al.eventsNearYou),
                   ),
 
                   SizedBox(height: getHeight() * 0.015),
@@ -155,7 +155,7 @@ class _ExploreViewState extends State<ExploreView> {
                   //  Surprise Me
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                    child: SeeMoreWidget(header: "Surprise me"),
+                    child: SeeMoreWidget(header: al.surpriseMe),
                   ),
 
                   SizedBox(height: getHeight() * 0.015),

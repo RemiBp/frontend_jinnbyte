@@ -2,6 +2,7 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import 'explore_view.dart';
 
@@ -21,7 +22,7 @@ class BrowseCategoryWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SeeMoreWidget(header: "Browse by Category"),
+        SeeMoreWidget(header: al.browseByCategory),
         SizedBox(height: getHeight() * 0.015),
         SizedBox(
           height: getHeight() * 0.17, // container height = image + text
@@ -72,14 +73,14 @@ class SeeMoreWidget extends StatelessWidget {
       children: [
         Expanded(
           child: CustomText(
-            text: header??"Browse by Category",
+            text: header??al.browseByCategory,
             fontSize: sizes?.fontSize18,
             fontWeight: FontWeight.w600,
             color: AppColors.blackColor,
           ),
         ),
         CustomText(
-          text: "See more",
+          text: al.seeMore,
           fontSize: sizes?.fontSize14,
           fontWeight: FontWeight.w500,
           color: AppColors.userPrimaryColor,

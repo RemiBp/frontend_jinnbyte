@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../appAssets/app_assets.dart';
 import '../../appColors/colors.dart';
 import '../../customWidgets/common_app_bar.dart';
+import '../../l18n.dart';
 import '../../res/res.dart';
 
 class BookingsView extends StatefulWidget {
@@ -34,7 +35,7 @@ class _BookingsViewState extends State<BookingsView> with SingleTickerProviderSt
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: "Bookings",
+        title: al.bookings,
         showBackArrow: false,
         hideBottomBorder: true,
       ),
@@ -60,11 +61,11 @@ class _BookingsViewState extends State<BookingsView> with SingleTickerProviderSt
               ),
               // labelPadding: EdgeInsets.only(left: 0),
               indicatorSize: TabBarIndicatorSize.tab,
-              tabs: const [
-                Tab(text: 'Upcoming'),
-                Tab(text: 'In-Progress'),
-                Tab(text: 'Completed'),
-                Tab(text: 'Cancelled'),
+              tabs:  [
+                Tab(text: al.upcoming),
+                Tab(text: al.inProgress),
+                Tab(text: al.completed),
+                Tab(text: al.cancelled),
               ],
             ),
           ),

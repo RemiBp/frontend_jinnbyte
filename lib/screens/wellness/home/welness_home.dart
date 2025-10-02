@@ -6,9 +6,13 @@ import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class WellnessHome extends StatelessWidget {
   const WellnessHome({super.key});
@@ -67,23 +71,36 @@ class WellnessHome extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100)
+            borderRadius: BorderRadius.circular(100),
           ),
           backgroundColor: AppColors.getPrimaryColorFromContext(context),
-          onPressed: (){
-            context.push(Routes.restaurantCreatePostRoute);
-          }, label: Row(
-        children: [
-          Icon(Icons.add, color: Colors.white,),
-          CustomText(text: "Create Posts",
-              fontSize: sizes?.fontSize12,
-            fontFamily: Assets.onsetMedium,
-            color: Colors.white,
+          onPressed: () {
+            final role = context.read<RoleProvider>().role;
+            debugPrint("Current user role: $role");
+
+            if (role == UserRole.user) {
+              debugPrint("Navigating to Choice Selection");
+              context.push(Routes.choiceSelectionRoute);
+            } else {
+              debugPrint("Navigating to Restaurant Create Post");
+              context.push(Routes.restaurantCreatePostRoute);
+            }
+          },
+          label: Row(
+            children: [
+              const Icon(Icons.add, color: Colors.white),
+              CustomText(
+                text: al.create,
+                fontSize: sizes?.fontSize12,
+                fontFamily: Assets.onsetMedium,
+                color: Colors.white,
+              ),
+            ],
           ),
-        ],
-      )),
+        )
+
     );
   }
 }

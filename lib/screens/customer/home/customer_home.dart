@@ -11,6 +11,9 @@ import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class CustomerHome extends StatefulWidget {
   const CustomerHome({super.key});
@@ -74,25 +77,35 @@ class _CustomerHomeState extends State<CustomerHome> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100)
+            borderRadius: BorderRadius.circular(100),
           ),
-          backgroundColor: AppColors.userPrimaryColor,
-          onPressed: (){
-            // context.push(Routes.choiceSelectionRoute);
-            context.push(Routes.restaurantCreatePostRoute);
-          }, label: Row(
-        children: [
-          Icon(Icons.add, color: Colors.white,),
-          CustomText(
-            text: "Create",
-            fontSize: sizes?.fontSize12,
-            fontFamily: Assets.onsetMedium,
-            color: Colors.white,
+          backgroundColor: AppColors.getPrimaryColorFromContext(context),
+          onPressed: () {
+            final role = context.read<RoleProvider>().role;
+            debugPrint("Current user role: $role");
+
+            if (role == UserRole.user) {
+              debugPrint("Navigating to Choice Selection");
+              context.push(Routes.choiceSelectionRoute);
+            } else {
+              debugPrint("Navigating to Restaurant Create Post");
+              context.push(Routes.restaurantCreatePostRoute);
+            }
+          },
+          label: Row(
+            children: [
+              const Icon(Icons.add, color: Colors.white),
+              CustomText(
+                text: al.create,
+                fontSize: sizes?.fontSize12,
+                fontFamily: Assets.onsetMedium,
+                color: Colors.white,
+              ),
+            ],
           ),
-        ],
-      )),
+        )
     );
   }
 }

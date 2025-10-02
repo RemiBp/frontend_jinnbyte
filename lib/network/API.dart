@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../common/utils.dart';
+import '../l18n.dart';
 import '../models/error_model.dart';
 import '../res/refresh_token.dart';
 import '../res/strings.dart';
@@ -147,7 +148,7 @@ class MyApi {
             return null;
 
           case 404:
-            Toasts.getErrorToast(text: errorResponse.message??Strings.badHappenedError);
+            Toasts.getErrorToast(text: errorResponse.message??al.genericError);
             return null;
           case 400:
             if (errorResponse.message ==
@@ -170,19 +171,19 @@ class MyApi {
               });
               return modelobj;
             } else {
-              Toasts.getErrorToast(text: errorResponse.message??Strings.badHappenedError);
+              Toasts.getErrorToast(text: errorResponse.message??al.genericError);
               return null;
             }
           default:
-            Toasts.getErrorToast(text: Strings.badHappenedError);
+            Toasts.getErrorToast(text: al.genericError);
             return null;
         }
       } else {
-        Toasts.getErrorToast(text: Strings.badHappenedError);
+        Toasts.getErrorToast(text: al.genericError);
       }
     } on Exception catch (ex) {
       debugPrint("ex is : $ex");
-      Toasts.getErrorToast(text: Strings.badHappenedError);
+      Toasts.getErrorToast(text: al.genericError);
       return null;
     }
   }
@@ -218,11 +219,11 @@ class MyApi {
             return modelObj;
 
           default:
-            Toasts.getErrorToast(text: Strings.badHappenedError);
+            Toasts.getErrorToast(text: al.genericError);
             return null;
         }
       } else {
-        Toasts.getErrorToast(text: Strings.noInternetError);
+        Toasts.getErrorToast(text: al.noInternetConnection);
         return null;
       }
     } on DioException catch (ex) {
@@ -257,15 +258,15 @@ class MyApi {
               return;
             }
           default:
-            Toasts.getErrorToast(text: Strings.badHappenedError);
+            Toasts.getErrorToast(text: al.genericError);
             return null;
         }
       } else {
-        Toasts.getErrorToast(text: Strings.badHappenedError);
+        Toasts.getErrorToast(text: al.genericError);
       }
     } on Exception catch (ex) {
       debugPrint("ex is : $ex");
-      Toasts.getErrorToast(text: Strings.badHappenedError);
+      Toasts.getErrorToast(text: al.genericError);
       return null;
     }
   }
@@ -303,11 +304,11 @@ class MyApi {
             return getModelObj;
 
           default:
-            Toasts.getErrorToast(text: Strings.badHappenedError);
+            Toasts.getErrorToast(text: al.genericError);
             return null;
         }
       } else {
-        Toasts.getErrorToast(text: "No internet");
+        Toasts.getErrorToast(text: al.noInternet);
         return null;
       }
     } on DioException catch (ex) {
@@ -343,16 +344,16 @@ class MyApi {
             return modelobj;
 
           default:
-            Toasts.getErrorToast(text: Strings.badHappenedError);
+            Toasts.getErrorToast(text: al.genericError);
             return;
         }
       } else {
-        Toasts.getErrorToast(text: Strings.badHappenedError);
+        Toasts.getErrorToast(text: al.genericError);
         return null;
       }
     } on Exception catch (ex) {
       debugPrint("ex is : $ex");
-      Toasts.getErrorToast(text: Strings.badHappenedError);
+      Toasts.getErrorToast(text: al.genericError);
       return;
     }
   }

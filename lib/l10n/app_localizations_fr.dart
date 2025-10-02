@@ -245,6 +245,62 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unavailability => 'Unavailability';
 
   @override
+  String get modify => 'Modifier';
+
+  @override
+  String get checkIn => 'Enregistrement';
+
+  @override
+  String get upcoming => 'À venir';
+
+  @override
+  String get inProgress => 'En cours';
+
+  @override
+  String get completed => 'Terminé';
+
+  @override
+  String get cancelled => 'Annulé';
+
+  @override
+  String get noUpcomingBooking => 'Aucune réservation à venir';
+
+  @override
+  String get noUpcomingBookingMessage =>
+      'Vous n’avez aucune réservation à venir';
+
+  @override
+  String get bookingInformation => 'Informations sur la réservation';
+
+  @override
+  String get internalNotes => 'Notes internes';
+
+  @override
+  String get customerInformation => 'Informations client';
+
+  @override
+  String get customerName => 'Nom du client :';
+
+  @override
+  String get emailLabel1 => 'Email :';
+
+  @override
+  String get bookings => 'Réservations';
+
+  @override
+  String get selectProfileImage => 'Sélectionner l’image de profil';
+
+  @override
+  String get failedToGetImageUrl =>
+      'Échec de la récupération de l’URL de l’image';
+
+  @override
+  String get phoneLabel => 'Téléphone :';
+
+  @override
+  String get bookingDetails => 'Détails de la réservation';
+
+  @override
   String get language => 'Language';
 
   @override
@@ -349,6 +405,120 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get title => 'Titre';
+
+  @override
+  String get passwordManager => 'Gestionnaire de mots de passe';
+
+  @override
+  String get currentPassword => 'Mot de passe actuel';
+
+  @override
+  String get saveChanges => 'Enregistrer les modifications';
+
+  @override
+  String get eventTypeLabel => 'Type d\'événement';
+
+  @override
+  String get eventTypePlaceholder => 'Sélectionner le type d\'événement';
+
+  @override
+  String get passwordMissing => 'Mot de passe manquant';
+
+  @override
+  String get passwordInvalidCharacters =>
+      'Le mot de passe contient des caractères invalides (pas d’emojis autorisés)';
+
+  @override
+  String get emailMissing => 'Email manquant';
+
+  @override
+  String get invalidEmail => 'Email invalide';
+
+  @override
+  String get invalidPassword => 'Mot de passe invalide';
+
+  @override
+  String get interest => 'Intérêt';
+
+  @override
+  String get choices => 'Choix';
+
+  @override
+  String get seeMore => 'Voir plus';
+
+  @override
+  String get eventsNearYou => 'Événements près de chez vous';
+
+  @override
+  String get surpriseMe => 'Surprenez-moi';
+
+  @override
+  String get seeFullMenu => 'Voir le menu complet';
+
+  @override
+  String get organizer => 'Organisateur';
+
+  @override
+  String get moreEventsLikeThis => 'Plus d’événements comme celui-ci';
+
+  @override
+  String get showAll => 'Tout afficher';
+
+  @override
+  String get ticketPrice => 'Prix du billet';
+
+  @override
+  String get perPerson => '/par personne';
+
+  @override
+  String get bookNow => 'Réserver maintenant';
+
+  @override
+  String get browseByCategory => 'Parcourir par catégorie';
+
+  @override
+  String get expiryDate1Placeholder =>
+      'Veuillez sélectionner la date d’expiration 1';
+
+  @override
+  String get businessRegistrationPlaceholder =>
+      'Veuillez sélectionner le document d’enregistrement de l’entreprise';
+
+  @override
+  String get expiryDate2Placeholder =>
+      'Veuillez sélectionner la date d’expiration 2';
+
+  @override
+  String get utilityBillPlaceholder =>
+      'Veuillez sélectionner une facture de services publics ou une facture';
+
+  @override
+  String get businessNameMissing => 'Le nom de l’entreprise est manquant';
+
+  @override
+  String get businessNameInvalidCharacters =>
+      'Le nom de l’entreprise contient des caractères invalides (pas d’emojis autorisés)';
+
+  @override
+  String get noInternet => 'Pas d’internet';
+
+  @override
+  String get enterOtpPlaceholder => 'Veuillez entrer l’OTP';
+
+  @override
+  String get otpVerifiedSuccess => 'OTP vérifié avec succès';
+
+  @override
+  String get genericError => 'Une erreur est survenue, réessayez.';
+
+  @override
+  String get noInternetConnection => 'Pas de connexion Internet';
+
+  @override
+  String get success => 'Succès';
+
+  @override
+  String get registrationSuccessful => 'Inscription réussie';
 
   @override
   String get eventDescriptionPlaceholder => 'Décrivez votre événement...';
@@ -487,9 +657,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get participants => 'Participants';
-
-  @override
-  String get showAll => 'Tout afficher';
 
   @override
   String get aboutEvent => 'À propos de l’événement';

@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
 import '../../res/toasts.dart';
+import '../../utilities/validators.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -76,6 +77,8 @@ class _LoginState extends State<Login> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
+              validate: (value) =>
+                  Validators.validateEmail(value, al.emailMissing, al.invalidEmail),
             ),
             SizedBox(height: getHeight() * .01),
             Consumer<AuthProvider>(
@@ -91,6 +94,8 @@ class _LoginState extends State<Login> {
                   clickIcon: () {
                     state.toggleLoginPassVisibility();
                   },
+                  validate: (value) =>
+                      Validators.validatePassword(value, al.passwordMissing, al.invalidPassword),
                 );
               },
             ),
@@ -197,18 +202,23 @@ class _LoginState extends State<Login> {
   }
 
   onLoginTap() {
-    //context.push(Routes.restaurantBottomTabRoute);
-    var email = emailController.text.toString().trim();
-    var password = passwordController.text.toString().trim();
-    if (email.isEmpty) {
-      Toasts.getErrorToast(text: "Email is Missing");
-    } else if (email.validateEmail() == false) {
-      Toasts.getErrorToast(text: "Invalid Email");
-    } else if (password.isEmpty) {
-      Toasts.getErrorToast(text: "Password is missing");
-    } else {
-      context.read<AuthProvider>().loginUser(
-        email: email, password: password,);
-    }
-  }
+    context.push(Routes.restaurantBottomTabRoute);
+    // var email = emailController.text.toString().trim();
+    // var password = passwordController.text.toString().trim();
+    //
+    // final passwordRegex = RegExp(r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}|<>_\-]+$');
+    //
+    // if (email.isEmpty) {
+    //   Toasts.getErrorToast(text: al.emailMissing);
+    // } else if (email.validateEmail() == false) {
+    //   Toasts.getErrorToast(text: al.invalidEmail);
+    // }  else if (password.isEmpty) {
+    //   Toasts.getErrorToast(text: al.passwordMissing);
+    // } else if (!passwordRegex.hasMatch(password)) {
+    //   Toasts.getErrorToast(text: al.invalidPassword);
+    // }else {
+    //   context.read<AuthProvider>().loginUser(
+    //     email: email, password: password,);
+    // }
+   }
 }
