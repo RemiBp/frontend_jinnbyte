@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
 import '../../res/toasts.dart';
+import '../../utilities/validators.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -76,6 +77,8 @@ class _LoginState extends State<Login> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
+              validate: (value) =>
+                  Validators.validateEmail(value, al.emailMissing, al.invalidEmail),
             ),
             SizedBox(height: getHeight() * .01),
             Consumer<AuthProvider>(
@@ -91,6 +94,8 @@ class _LoginState extends State<Login> {
                   clickIcon: () {
                     state.toggleLoginPassVisibility();
                   },
+                  validate: (value) =>
+                      Validators.validatePassword(value, al.passwordMissing, al.invalidPassword),
                 );
               },
             ),

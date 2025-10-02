@@ -22,20 +22,21 @@ class CreateChoice extends StatefulWidget {
 class _CreateChoiceState extends State<CreateChoice> {
   String selectedDish = '';
   String visibility = 'Public';
+  String? selectedEvent; // <-- NEW for Wellness/Leisure dropdown
 
   Widget buildRatingRow(
       String title,
       double rating, {
         String? review,
-        bool isLast = false, //  new flag to control divider
+        bool isLast = false,
       }) {
     final bool isZero = rating == 0;
-    final Color activeColor = isZero ? AppColors.inputHintColor : Colors.orange;
+    final Color activeColor =
+    isZero ? AppColors.inputHintColor : Colors.orange;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Title + optional Remove
         if (review != null) ...[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,10 +71,7 @@ class _CreateChoiceState extends State<CreateChoice> {
             fontFamily: Assets.onsetMedium,
           ),
         ],
-
         SizedBox(height: getHeight() * .01),
-
-        // Stars + Rating Badge
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -84,7 +82,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Icon(
                     Icons.star,
-                    size: 28, // exactly 28px
+                    size: 28,
                     color: index < rating ? Colors.amber : AppColors.greyColor,
                   ),
                 ),
@@ -96,19 +94,18 @@ class _CreateChoiceState extends State<CreateChoice> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: activeColor, width: 1.5), //  fixed border
+                border: Border.all(color: activeColor, width: 1.5),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: CustomText(
                 text: rating.toStringAsFixed(1),
                 fontSize: sizes?.fontSize14,
                 fontFamily: Assets.onsetMedium,
-                color: activeColor, //  same as border
+                color: activeColor,
               ),
             ),
           ],
         ),
-
         if (!isLast) ...[
           SizedBox(height: getHeight() * .015),
           Divider(height: 1, color: AppColors.greyBordersColor),
@@ -118,12 +115,68 @@ class _CreateChoiceState extends State<CreateChoice> {
     );
   }
 
+  /// Returns the appropriate rating categories based on `title`
+  List<Map<String, dynamic>> getRatingCategories(String? title) {
+    if (title == "Leisure") {
+      return [
+        {"label": "Stage Direction", "rating": 3.0},
+        {"label": "Actor Performance", "rating": 4.0},
+        {"label": "Text Quality", "rating": 2.0},
+        {"label": "Scenography", "rating": 5.0},
+      ];
+    } else if (title == "Wellness") {
+      return [
+        {"label": "Care Quality", "rating": 4.0},
+        {"label": "Cleanliness", "rating": 3.0},
+        {"label": "Welcome", "rating": 5.0},
+        {"label": "Value For Money", "rating": 2.0},
+        {"label": "Atmosphere", "rating": 4.0},
+        {"label": "Staff Experience", "rating": 3.0},
+      ];
+    } else {
+      // Restaurant
+      return [
+        {"label": al.service, "rating": 2.0},
+        {"label": al.price, "rating": 3.0},
+        {"label": al.portions, "rating": 4.0},
+        {"label": al.ambiance, "rating": 5.0},
+      ];
+    }
+  }
+
+  // --- Helper to show event picker (bottom sheet) ---
+  void _showEventPicker(String categoryTitle) {
+    final events = categoryTitle == "Leisure"
+        ? ["Theatre Play", "Concert Night", "Comedy Show"]
+        : ["Yoga Retreat", "Spa Session", "Meditation Class"];
+
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: events.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(events[index]),
+            onTap: () {
+              setState(() => selectedEvent = events[index]);
+              Navigator.pop(context);
+            },
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final data = GoRouterState
-        .of(context)
-        .extra as Map<String, dynamic>?;
+    final data = GoRouterState.of(context).extra as Map<String, dynamic>?;
+    final categoryTitle = data?["title"];
+    final ratingCategories = getRatingCategories(categoryTitle);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Choice'),
@@ -139,12 +192,13 @@ class _CreateChoiceState extends State<CreateChoice> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // --- Header ---
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: data?["title"] == "Leisure"
+                color: categoryTitle == "Leisure"
                     ? HexColor.fromHex("#F4E9F6")
-                    : data?["title"] == "Wellness"
+                    : categoryTitle == "Wellness"
                     ? HexColor.fromHex("#EDF7EE")
                     : HexColor.fromHex("#FEF5E7"),
               ),
@@ -155,9 +209,11 @@ class _CreateChoiceState extends State<CreateChoice> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: data?["title"] == "Leisure" ? HexColor.fromHex(
-                          "#E9D5EC") : data?["title"] == "Wellness" ? HexColor
-                          .fromHex("#DCEEDC") : HexColor.fromHex("#FDECCF"),
+                      color: categoryTitle == "Leisure"
+                          ? HexColor.fromHex("#E9D5EC")
+                          : categoryTitle == "Wellness"
+                          ? HexColor.fromHex("#DCEEDC")
+                          : HexColor.fromHex("#FDECCF"),
                     ),
                     padding: EdgeInsets.all(8),
                     child: SvgPicture.asset(data?["icon"]),
@@ -183,16 +239,16 @@ class _CreateChoiceState extends State<CreateChoice> {
                 ],
               ),
             ),
+
             SizedBox(height: getHeight() * .02),
             CustomText(
               text: al.yourExperience,
               fontFamily: Assets.onsetSemiBold,
               fontSize: sizes?.fontSize18,
             ),
-
             SizedBox(height: 16),
 
-            // Ratings Section
+            // --- Overall Rating Card ---
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -211,101 +267,195 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: al.overallRestaurantRating,
+                    text: categoryTitle == "Wellness"
+                        ? "Overall Wellness Rating"
+                        : categoryTitle == "Leisure"
+                        ? "Overall Leisure Rating"
+                        : al.overallRestaurantRating,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
                   SizedBox(height: getHeight() * .01),
-                  buildRatingRow(al.service, 2.0),
-                  SizedBox(height: getHeight() * .01),
-                  buildRatingRow(al.price, 0.0),
-                  SizedBox(height: getHeight() * .01),
-                  buildRatingRow(al.portions, 4.0),
-                  SizedBox(height: getHeight() * .01),
-                  buildRatingRow(al.ambiance, 4.0, isLast: true),
+                  Column(
+                    children: List.generate(ratingCategories.length, (index) {
+                      final item = ratingCategories[index];
+                      return buildRatingRow(
+                        item["label"],
+                        item["rating"],
+                        isLast: index == ratingCategories.length - 1,
+                      );
+                    }),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 16),
 
-            // Dishes Section
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    offset: Offset(0, 4),
-                    blurRadius: 2,
-                    spreadRadius: 4,
-                  ),
-                ],
+            // --- Event Dropdown for Wellness/Leisure ---
+            if (categoryTitle == "Wellness" || categoryTitle == "Leisure") ...[
+              SizedBox(height: getHeight() * .02),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      offset: Offset(0, 4),
+                      blurRadius: 2,
+                      spreadRadius: 4,
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Select ${categoryTitle} Event",
+                      fontSize: sizes?.fontSize16,
+                      fontFamily: Assets.onsetMedium,
+                    ),
+                    SizedBox(height: getHeight() * .01),
+                    DropdownButtonFormField<String>(
+                      value: selectedEvent,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: getWidth() * .04,
+                          vertical: getHeight() * .014,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: AppColors.greyBordersColor),
+                        ),
+                      ),
+                      hint: CustomText(
+                        text: "Tap to select an event",
+                        fontSize: sizes?.fontSize14,
+                        color: AppColors.inputHintColor,
+                      ),
+                      items: (categoryTitle == "Leisure"
+                          ? ["Theatre Play", "Concert Night", "Comedy Show"]
+                          : ["Yoga Retreat", "Spa Session", "Meditation Class"])
+                          .map((event) => DropdownMenuItem(
+                        value: event,
+                        child: CustomText(
+                          text: event,
+                          fontSize: sizes?.fontSize14,
+                        ),
+                      ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() => selectedEvent = value);
+                      },
+                    ),                    SizedBox(height: getHeight() * .02),
+
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) =>
+                          SizeTransition(sizeFactor: animation, child: child),
+                      child: selectedEvent == null
+                          ? SizedBox.shrink(key: ValueKey('empty'))
+                          : Container(
+                        key: ValueKey('ratings_${selectedEvent!}'),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade300,
+                              offset: Offset(0, 4),
+                              blurRadius: 2,
+                              spreadRadius: 4,
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: selectedEvent!,
+                              fontFamily: Assets.onsetSemiBold,
+                              fontSize: sizes?.fontSize16,
+                            ),
+                            SizedBox(height: getHeight() * .015),
+                            Column(
+                              children: List.generate(
+                                getRatingCategories(categoryTitle).length,
+                                    (index) {
+                                  final item = getRatingCategories(
+                                      categoryTitle)[index];
+                                  return buildRatingRow(
+                                    item["label"],
+                                    item["rating"],
+                                    isLast: index ==
+                                        getRatingCategories(categoryTitle)
+                                            .length -
+                                            1,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              SizedBox(height: getHeight() * .02), //  spacing after dropdown card
+            ],
 
-                  CustomText(
-                    text: al.dishesAndMenusConsumed,
-                    fontFamily: Assets.onsetMedium,
-                    fontSize: sizes?.fontSize16,
-                  ),
-                  SizedBox(height: getHeight() * .01),
-
-                  Column(
-                    children: [
-                      dishRadio(
+            // --- Restaurant: Dishes Section ---
+            if (categoryTitle == "Restaurant") ...[
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      offset: Offset(0, 4),
+                      blurRadius: 2,
+                      spreadRadius: 4,
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: al.dishesAndMenusConsumed,
+                      fontFamily: Assets.onsetMedium,
+                      fontSize: sizes?.fontSize16,
+                    ),
+                    SizedBox(height: getHeight() * .01),
+                    Column(
+                      children: [
+                        dishRadio(
                           menuName: "Brochettes (3)",
                           dishDetails: "Sauce blanche, saumon fume ",
-                          "Al Salmone", "\$20"),
-                      dishRadio(menuName: "Maki (3)",
+                          "Al Salmone",
+                          "\$20",
+                        ),
+                        dishRadio(
+                          menuName: "Maki (3)",
                           dishDetails: "Sauce blanche, saumon fume",
                           "Maki (3)",
-                          "\$20", isLast: true),
-                    ],
-                  ),
-                ],
+                          "\$20",
+                          isLast: true,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 16),
+              SizedBox(height: 16),
+            ],
 
-            // Dish Ratings
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    offset: Offset(0, 4),
-                    blurRadius: 2,
-                    spreadRadius: 4,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: al.rateTheSelectedDishes,
-                    fontFamily: Assets.onsetMedium,
-                    fontSize: sizes?.fontSize16,
-                  ),
-                  SizedBox(height: getHeight() * .01),
-                  buildRatingRow(
-                      "Al Salmone", 2.0, review: al.yourRatingForThisDish),
-                  SizedBox(height: getHeight() * .01),
-                  buildRatingRow(
-                      "Maki Saumon", 4.0, review: al.yourRatingForThisDish, isLast: true),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 16),
-
+            // --- Photos ---
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -332,33 +482,32 @@ class _CreateChoiceState extends State<CreateChoice> {
                     text: al.fileSupport,
                     fontSize: sizes?.fontSize12,
                   ),
+                  SizedBox(height: getHeight() * .01),
                   Container(
-                    height: getHeight() * 0.237,  // ~200px
-                    width: getWidth() * 0.77,     // ~302px
-                    margin: EdgeInsets.all(16),
+                    height: getHeight() * 0.237,
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.greyBordersColor,
-                        )
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.greyBordersColor),
+                      color: Colors.white,
                     ),
                     child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              text: al.chooseAFile,
-                              fontFamily: Assets.onsetMedium,
-                              fontSize: sizes?.fontSize14,
-                            ),
-                            CustomText(
-                              text: al.upTo5Images,
-                              fontSize: sizes?.fontSize14,
-                              color: HexColor.fromHex("#686A82"),
-                            ),
-
-                          ],
-                        )
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomText(
+                            text: al.chooseAFile,
+                            fontFamily: Assets.onsetMedium,
+                            fontSize: sizes?.fontSize14,
+                          ),
+                          SizedBox(height: getHeight() * .005),
+                          CustomText(
+                            text: al.upTo5Images,
+                            fontSize: sizes?.fontSize12,
+                            color: HexColor.fromHex("#686A82"),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -366,6 +515,8 @@ class _CreateChoiceState extends State<CreateChoice> {
             ),
 
             SizedBox(height: getHeight() * .02),
+
+            // --- Tags ---
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -386,9 +537,13 @@ class _CreateChoiceState extends State<CreateChoice> {
                 label: al.tags,
               ),
             ),
+
             SizedBox(height: getHeight() * .02),
             ShareExperienceWidget(),
+
             SizedBox(height: getHeight() * .02),
+
+            // --- Buttons ---
             Padding(
               padding: EdgeInsets.symmetric(
                 vertical: getHeight() * .02,
@@ -412,7 +567,9 @@ class _CreateChoiceState extends State<CreateChoice> {
                     child: CustomButton(
                       buttonWidth: getWidth() * 0.43,
                       height: getHeight() * 0.055,
-                      borderColor: AppColors.getPrimaryColorFromContext(context),                      backgroundColor: AppColors.userPrimaryColor,
+                      borderColor:
+                      AppColors.getPrimaryColorFromContext(context),
+                      backgroundColor: AppColors.userPrimaryColor,
                       buttonText: al.next,
                       textColor: AppColors.whiteColor,
                       onTap: () {},
@@ -420,22 +577,21 @@ class _CreateChoiceState extends State<CreateChoice> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget dishRadio(String title, String price, {
-    required String menuName,
-    required String dishDetails,
-    bool isLast = false, // new flag for divider
-  }) {
+  // --- Dish Radio Helper ---
+  Widget dishRadio(String title, String price,
+      {required String menuName,
+        required String dishDetails,
+        bool isLast = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // menu title (e.g. "Brochettes (3)")
         Padding(
           padding: EdgeInsets.only(bottom: getHeight() * 0.008),
           child: CustomText(
@@ -444,15 +600,12 @@ class _CreateChoiceState extends State<CreateChoice> {
             fontFamily: Assets.onsetSemiBold,
           ),
         ),
-
-        // keep ListView.builder as you requested
         ListView.builder(
           padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 3, // keep your item count
+          itemCount: 3,
           itemBuilder: (context, index) {
-            // create a unique value for each radio (prevents collisions across groups)
             final itemValue = '$menuName|$title|$index';
             final bool isSelected = selectedDish == itemValue;
 
@@ -464,11 +617,9 @@ class _CreateChoiceState extends State<CreateChoice> {
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: getHeight() * 0.012),
-                // ensure consistent visual alignment between items
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center, // <-- key: center aligns price+radio
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // left side: title + subtitle (expands)
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -476,8 +627,9 @@ class _CreateChoiceState extends State<CreateChoice> {
                           CustomText(
                             text: title,
                             fontSize: sizes?.fontSize14,
+                            fontFamily: Assets.onsetMedium,
                           ),
-                          SizedBox(height: getHeight() * 0.006),
+                          SizedBox(height: getHeight() * 0.004),
                           CustomText(
                             text: dishDetails,
                             fontSize: sizes?.fontSize12,
@@ -485,42 +637,20 @@ class _CreateChoiceState extends State<CreateChoice> {
                         ],
                       ),
                     ),
-
-                    SizedBox(width: getWidth() * 0.03),
-
-                    // right side: price and radio grouped together so they align vertically
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomText(
-                          text: price,
-                          fontSize: sizes?.fontSize14,
-                        ),
-                        SizedBox(width: getWidth() * 0.02),
-                        //  custom radio
-                        Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: isSelected
-                                  ? Colors.blue
-                                  : AppColors.greyColor,
-                              width: 2,
-                            ),
-                            color: isSelected ? Colors.blue : Colors.transparent,
-                          ),
-                          child: isSelected
-                              ? Icon(
-                            Icons.check,
-                            size: 16,
-                            color: Colors.white,
-                          )
-                              : null,
-                        ),
-                      ],
+                    CustomText(
+                      text: price,
+                      fontSize: sizes?.fontSize14,
+                      fontFamily: Assets.onsetMedium,
+                    ),
+                    Radio<String>(
+                      value: itemValue,
+                      groupValue: selectedDish,
+                      activeColor: Colors.orange,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedDish = value!;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -528,27 +658,8 @@ class _CreateChoiceState extends State<CreateChoice> {
             );
           },
         ),
-        if (!isLast) ...[
-          SizedBox(height: getHeight() * 0.01),
-          Divider(color: AppColors.greyBordersColor, thickness: 1),
-          SizedBox(height: getHeight() * 0.01),
-        ],
+        if (!isLast) Divider(height: 1, color: AppColors.greyBordersColor),
       ],
     );
   }
-
-
-  Widget buildRadio(String label) {
-    return RadioListTile(
-      title: Text(label),
-      value: label,
-      groupValue: visibility,
-      onChanged: (value) {
-        setState(() {
-          visibility = value.toString();
-        });
-      },
-    );
-  }
 }
-

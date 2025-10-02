@@ -130,7 +130,7 @@ class _OtpVerificationState extends State<OtpVerification> {
               buttonText: al.verifyButton,
               onTap: () {
                 if (otp.length < 6) {
-                  Toasts.getErrorToast(text: "Please enter the otp");
+                  Toasts.getErrorToast(text: al.enterOtpPlaceholder);
                   return;
                 }
                 if(isResetPassFlow){

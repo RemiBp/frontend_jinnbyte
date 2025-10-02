@@ -12,6 +12,7 @@ import '../../../userRole/user_role.dart';
 
 class PasswordProvider extends ChangeNotifier{
   bool newPassVisibility = false;
+  bool currentPassVisibility = true;
   bool confirmPassVisibility = false;
   BuildContext? context;
   bool isDataFetch = false;
@@ -27,6 +28,12 @@ class PasswordProvider extends ChangeNotifier{
     newPassVisibility = !newPassVisibility;
     notifyListeners();
   }
+
+  void toggleCurrentPassVisibility() {
+    currentPassVisibility = !currentPassVisibility;
+    notifyListeners();
+  }
+
   toggleConfirmPassVisibility(){
     confirmPassVisibility = !confirmPassVisibility;
     notifyListeners();

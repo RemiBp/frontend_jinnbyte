@@ -542,6 +542,114 @@ abstract class AppLocalizations {
   /// **'Unavailability'**
   String get unavailability;
 
+  /// No description provided for @modify.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify'**
+  String get modify;
+
+  /// No description provided for @checkIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-In'**
+  String get checkIn;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @inProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In-Progress'**
+  String get inProgress;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @noUpcomingBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming booking'**
+  String get noUpcomingBooking;
+
+  /// No description provided for @noUpcomingBookingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no upcoming booking'**
+  String get noUpcomingBookingMessage;
+
+  /// No description provided for @bookingInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Information'**
+  String get bookingInformation;
+
+  /// No description provided for @internalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal Notes'**
+  String get internalNotes;
+
+  /// No description provided for @customerInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Information'**
+  String get customerInformation;
+
+  /// No description provided for @customerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name:'**
+  String get customerName;
+
+  /// No description provided for @emailLabel1.
+  ///
+  /// In en, this message translates to:
+  /// **'Email:'**
+  String get emailLabel1;
+
+  /// No description provided for @bookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bookings;
+
+  /// No description provided for @selectProfileImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select profile image'**
+  String get selectProfileImage;
+
+  /// No description provided for @failedToGetImageUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get image url'**
+  String get failedToGetImageUrl;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone:'**
+  String get phoneLabel;
+
+  /// No description provided for @bookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetails;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
@@ -745,6 +853,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title'**
   String get title;
+
+  /// No description provided for @passwordManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Manager'**
+  String get passwordManager;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPassword;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @eventTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Type'**
+  String get eventTypeLabel;
+
+  /// No description provided for @eventTypePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select event type'**
+  String get eventTypePlaceholder;
+
+  /// No description provided for @passwordMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is missing'**
+  String get passwordMissing;
+
+  /// No description provided for @passwordInvalidCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password contains invalid characters (no emojis allowed)'**
+  String get passwordInvalidCharacters;
+
+  /// No description provided for @emailMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is missing'**
+  String get emailMissing;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Email'**
+  String get invalidEmail;
+
+  /// No description provided for @invalidPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid Password'**
+  String get invalidPassword;
+
+  /// No description provided for @interest.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest'**
+  String get interest;
+
+  /// No description provided for @choices.
+  ///
+  /// In en, this message translates to:
+  /// **'Choices'**
+  String get choices;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'See more'**
+  String get seeMore;
+
+  /// No description provided for @eventsNearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Events near you'**
+  String get eventsNearYou;
+
+  /// No description provided for @surpriseMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Surprise me'**
+  String get surpriseMe;
+
+  /// No description provided for @seeFullMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'See Full Menu'**
+  String get seeFullMenu;
+
+  /// No description provided for @organizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get organizer;
+
+  /// No description provided for @moreEventsLikeThis.
+  ///
+  /// In en, this message translates to:
+  /// **'More Events Like This'**
+  String get moreEventsLikeThis;
+
+  /// No description provided for @showAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show All'**
+  String get showAll;
+
+  /// No description provided for @ticketPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Price'**
+  String get ticketPrice;
+
+  /// No description provided for @perPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'/per person'**
+  String get perPerson;
+
+  /// No description provided for @bookNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get bookNow;
+
+  /// No description provided for @browseByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse by Category'**
+  String get browseByCategory;
+
+  /// No description provided for @expiryDate1Placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Select Expiry Date 1'**
+  String get expiryDate1Placeholder;
+
+  /// No description provided for @businessRegistrationPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Select Business Registration Document'**
+  String get businessRegistrationPlaceholder;
+
+  /// No description provided for @expiryDate2Placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Select Expiry Date 2'**
+  String get expiryDate2Placeholder;
+
+  /// No description provided for @utilityBillPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Select Utility Bill or Invoice'**
+  String get utilityBillPlaceholder;
+
+  /// No description provided for @businessNameMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Name is Missing'**
+  String get businessNameMissing;
+
+  /// No description provided for @businessNameInvalidCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Name contains invalid characters (no emojis allowed)'**
+  String get businessNameInvalidCharacters;
+
+  /// No description provided for @noInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet'**
+  String get noInternet;
+
+  /// No description provided for @enterOtpPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the otp'**
+  String get enterOtpPlaceholder;
+
+  /// No description provided for @otpVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Otp Verified Successful'**
+  String get otpVerifiedSuccess;
+
+  /// No description provided for @genericError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something bad happened,Try again.'**
+  String get genericError;
+
+  /// No description provided for @noInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet Connection'**
+  String get noInternetConnection;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @registrationSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Successful'**
+  String get registrationSuccessful;
 
   /// No description provided for @eventDescriptionPlaceholder.
   ///
@@ -1015,12 +1339,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Participants'**
   String get participants;
-
-  /// No description provided for @showAll.
-  ///
-  /// In en, this message translates to:
-  /// **'Show All'**
-  String get showAll;
 
   /// No description provided for @aboutEvent.
   ///

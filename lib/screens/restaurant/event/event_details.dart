@@ -190,8 +190,9 @@ class EventDetails extends StatelessWidget {
                         Assets.locationIcon,
                         height: getHeight() * 0.022,
                         width: getHeight() * 0.022,
+                        colorFilter: ColorFilter.mode(AppColors.getPrimaryColorFromContext(context),BlendMode.srcIn),
                       ),
-                      SizedBox(width: getWidth() * 0.02), // horizontal gap
+                      SizedBox(width: getWidth() * 0.01), // horizontal gap
                       Expanded(
                         child: CustomText(
                           text: "Av. Gustave Eiffel, 75007 Paris, France",

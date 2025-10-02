@@ -1,4 +1,5 @@
 import 'package:choice_app/l18n.dart';
+import 'package:choice_app/screens/authentication/passwordManagement/change_password.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
@@ -64,10 +65,10 @@ class _SettingViewState extends State<SettingView> {
                   title: al.changePassword,
                   leadingAssetPath: Assets.passwordManagerIcon,
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => BookingsView()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePassword()),
+                    );
                   },
                 ),
                 if(role == UserRole.user)

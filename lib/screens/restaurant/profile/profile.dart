@@ -248,7 +248,7 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -259,7 +259,7 @@ class _ProfileState extends State<Profile> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Save Changes',
+                  buttonText: al.saveChanges,
                   onTap: () async {
                       // context.push(Routes.editOperationHoursRoute);
                       // return;
@@ -270,7 +270,7 @@ class _ProfileState extends State<Profile> {
                           bytes,
                         );
                         if(fileUrl == null) {
-                          Toasts.getErrorToast(text: "Failed to get image url");
+                          Toasts.getErrorToast(text: al.failedToGetImageUrl);
                           return;
                         }
                         final success = await provider.updateProfile(
@@ -288,7 +288,7 @@ class _ProfileState extends State<Profile> {
                           context.push(Routes.editOperationHoursRoute);
                         }
                       } else {
-                        Toasts.getErrorToast(text: "Select profile image");
+                        Toasts.getErrorToast(text: al.selectProfileImage);
                       }
                   },
                   buttonWidth: getWidth() * .42,

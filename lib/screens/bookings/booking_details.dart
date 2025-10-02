@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../appColors/colors.dart';
 import '../../customWidgets/common_app_bar.dart';
 import '../../customWidgets/custom_text.dart';
+import '../../l18n.dart';
 import '../../res/res.dart';
 import 'bookings_widgets.dart';
 
@@ -19,7 +20,7 @@ class _BookingDetailsState extends State<BookingDetails> {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: "Booking Details",
+        title: al.bookingDetails,
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.02),
@@ -50,7 +51,7 @@ class _BookingDetailsState extends State<BookingDetails> {
               child: ListView(
                 children: [
                   CustomText(
-                    text: "Booking Information",
+                    text: al.bookingInformation,
                     fontSize: sizes?.fontSize16,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,
@@ -68,21 +69,21 @@ class _BookingDetailsState extends State<BookingDetails> {
                   Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
               
                   CustomText(
-                    text: "Customer Information",
+                    text: al.customerInformation,
                     fontSize: sizes?.fontSize16,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: getHeight() * 0.02),
-                  BookingInfoRow(label: "Customer Name:", value: "Mark Jones"),
+                  BookingInfoRow(label: al.customerName, value: "Mark Jones"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "Email:", value: "example@email.com"),
+                  BookingInfoRow(label: al.emailLabel1, value: "example@email.com"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "Phone:", value: "+33 (555) 000-0000"),
+                  BookingInfoRow(label: al.phoneLabel, value: "+33 (555) 000-0000"),
                   Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
               
                   CustomText(
-                    text: "Internal Notes",
+                    text: al.internalNotes,
                     fontSize: sizes?.fontSize16,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,

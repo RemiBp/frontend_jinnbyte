@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../appAssets/app_assets.dart';
 import '../../appColors/colors.dart';
 import '../../common/formatter.dart';
@@ -7,6 +8,11 @@ import '../../customWidgets/custom_text.dart';
 import '../../customWidgets/custom_textfield.dart';
 import '../../l18n.dart';
 import '../../res/res.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../userRole/role_provider.dart';
+import '../../userRole/user_role.dart';
 
 class BookingCard extends StatelessWidget {
   final String name;
@@ -18,6 +24,8 @@ class BookingCard extends StatelessWidget {
   final Function onDetails;
   final Function? onCheckIn;
   final Function? onCancel;
+  final String bookingType; // "Restaurant" | "Wellness"
+  final String? address;
 
   const BookingCard({
     super.key,
@@ -30,15 +38,21 @@ class BookingCard extends StatelessWidget {
     required this.onDetails,
     this.onCheckIn,
     this.onCancel,
+    this.bookingType = "Restaurant",
+    this.address,
   });
 
   @override
   Widget build(BuildContext context) {
+    final role = context.watch<RoleProvider>().role;
+
     return GestureDetector(
-      onTap: ()=> onDetails(),
+      onTap: () => onDetails(),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: getWidthRatio() * 12, vertical: getHeightRatio() * 12),
-        margin: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
+        padding: EdgeInsets.symmetric(
+            horizontal: getWidthRatio() * 12, vertical: getHeightRatio() * 12),
+        margin: EdgeInsets.symmetric(
+            horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
           borderRadius: BorderRadius.circular(16),
@@ -52,73 +66,51 @@ class BookingCard extends StatelessWidget {
         ),
         child: Column(
           children: [
+            /// Top Row (Booking ID + Chips)
             Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Booking ID: #3956839",
-                  fontSize: sizes?.fontSize14,
+                  text: "Booking ID: 3956839",
+                  fontSize: sizes?.fontSize12,
                   fontWeight: FontWeight.w500,
                   color: AppColors.blackColor,
                 ),
-                Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.035, vertical: getHeight() * 0.01),
-                  decoration: BoxDecoration(
-                    color: AppColors.redColor.withAlpha(40),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: CustomText(
-                    text: "Event",
-                    fontSize: sizes?.fontSize12,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.redColor,
-                  ),
+                const Spacer(),
+
+                ///  Event Chip
+                _buildChip("Event", AppColors.redColor),
+
+                SizedBox(width: 4),
+
+                ///  Restaurant / Wellness Chip
+                _buildChip(
+                  bookingType,
+                  AppColors.restaurantPrimaryColor,
                 ),
-                if(onCheckIn == null  && onCancel== null)
-                Padding(
-                  padding: EdgeInsets.only(left: getWidth() * 0.015),
-                  child: Icon(Icons.check_circle, color: AppColors.wellnessPrimaryColor,),
-                )
+
+                if (onCheckIn == null && onCancel == null)
+                  Padding(
+                    padding: EdgeInsets.only(left: getWidth() * 0.011),
+                    child: Icon(
+                      Icons.check_circle,
+                      color: AppColors.wellnessPrimaryColor,
+                      size: 18, // 👈 reduced icon size
+                    ),
+                  ),
               ],
             ),
-            Divider(color: AppColors.greyBordersColor, height:  getHeight() * 0.03,),
+
+            Divider(
+              color: AppColors.greyBordersColor,
+              height: getHeight() * 0.03,
+            ),
+
+            ///  Booking Info Content
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                imageUrl==""?
-                Container(
-                  width: getWidthRatio() * 64,
-                  height: getHeightRatio() * 64,
-                  decoration: BoxDecoration(
-                    color: AppColors.getPrimaryColorFromContext(context).withAlpha(40),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    size: 48,
-                    color: AppColors.getPrimaryColorFromContext(context),
-                  ),
-                ):
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                      imageUrl,
-                      width: getWidthRatio() * 64,
-                      height: getHeightRatio() * 64,
-                      fit: BoxFit.cover,
-                      // errorBuilder: (context, error, stackTrace) {
-                      //   return  CustomShimmerEffect(
-                      //     child: Container(
-                      //       color: AppColors.whiteColor,
-                      //       width: getWidthRatio() * 64,
-                      //       height: getHeightRatio() * 64,
-                      //     ),
-                      //   );
-                      // }
-                  ),
-                ),
-                SizedBox(width:getWidthRatio() * 8),
+                _buildImage(context),
+                SizedBox(width: getWidthRatio() * 8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,85 +122,48 @@ class BookingCard extends StatelessWidget {
                         color: AppColors.blackColor,
                       ),
                       SizedBox(height: getHeightRatio() * 8),
-                      Row(
-                        children: [
-                          Image.asset(
-                            Assets.guestsIcon,
-                            width: getWidthRatio() * 16,
-                            height:getHeightRatio() * 16,
-                            color: AppColors.getPrimaryColorFromContext(context),
-                          ),
-                          SizedBox(width: getWidthRatio() * 4),
-                          Expanded(
-                            child: CustomText(
-                              text: "$guests Guests",
-                              fontSize: sizes?.fontSize12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primarySlateColor,
-                              lines: 1,
-                            ),
-                          ),
-                        ],
-                      ),
+
+                      /// Guests
+                      _infoRow(Assets.guestsIcon, "$guests Guests", context),
+
                       SizedBox(height: getHeightRatio() * 8),
-                      Row(
-                        children: [
-                          Image.asset(
-                            Assets.calenderIcon,
-                            width: getWidthRatio() * 16,
-                            height:getHeightRatio() * 12,
-                            color: AppColors.getPrimaryColorFromContext(context),
-                          ),
-                          SizedBox(width: getWidthRatio() * 4),
-                          Expanded(
-                            child: CustomText(
-                              text: formatDateTime(
-                                  date: date,
-                                  startTime: startTime,
-                                  endTime: endTime
-                              ),
-                              fontSize: sizes?.fontSize12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primarySlateColor,
-                              lines: 1,
-                            ),
-                          ),
-                        ],
+
+                      /// Date & Time
+                      _infoRow(
+                        Assets.calenderIcon,
+                        formatDateTime(
+                            date: date, startTime: startTime, endTime: endTime),
+                        context,
                       ),
+
                       SizedBox(height: getHeightRatio() * 8),
-                      Row(
-                        children: [
-                          Image.asset(
-                            Assets.priceIcon,
-                            width: getWidthRatio() * 16,
-                            height:getHeightRatio() * 16,
-                            color: AppColors.getPrimaryColorFromContext(context),
-                          ),
-                          SizedBox(width: getWidthRatio() * 4),
-                          Expanded(
-                            child: CustomText(
-                              text: "\$90",
-                              fontSize: sizes?.fontSize12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primarySlateColor,
-                              lines: 1,
-                            ),
-                          ),
-                        ],
+
+                      ///  Price or Address
+                      role == UserRole.user
+                          ? _locationRow(
+                        Assets.locationIcon, // 👈 svg asset
+                        address ?? "123 Main St, Paris",
+                        context,
+                      )
+                          : _infoRow(
+                        Assets.priceIcon,
+                        "\$90",
+                        context,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            if(onCheckIn != null  && onCancel != null)
+
+            /// 🔹 Buttons (Cancel + Check-In / Modify)
+            if (onCheckIn != null && onCancel != null) ...[
               SizedBox(height: getHeight() * 0.02),
-            if(onCheckIn != null && onCancel != null)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    buttonText: 'Cancel',
+                    buttonText: al.cancel,
                     onTap: () => onCancel!(),
                     buttonWidth: getWidth() * .38,
                     height: getHeight() * 0.06,
@@ -218,53 +173,136 @@ class BookingCard extends StatelessWidget {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Check-In',
-                    onTap: () {
-
-                    },
+                    buttonText: role == UserRole.user ? 'Modify' : 'Check-In',
+                    onTap: () => onCheckIn!(),
                     buttonWidth: getWidth() * .38,
                     height: getHeight() * 0.06,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                    backgroundColor:
+                    AppColors.getPrimaryColorFromContext(context),
                     borderColor: Colors.transparent,
                     textColor: Colors.white,
                     textFontWeight: FontWeight.w700,
                   ),
                 ],
               ),
+            ],
           ],
         ),
       ),
     );
   }
 
+  /// Build Chips
+  Widget _buildChip(String label, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: getWidth() * 0.025, // 👈 reduced padding
+        vertical: getHeight() * 0.006,),
+      decoration: BoxDecoration(
+        color: color.withAlpha(40),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: CustomText(
+        text: label,
+        fontSize: sizes?.fontSize10,
+        fontWeight: FontWeight.w500,
+        color: color,
+      ),
+    );
+  }
 
-  String formatDateTime({String? date, String? startTime, String? endTime}) {
-    if (date == null || startTime == null || endTime == null) {
-      return '';
+  ///  Booking Image
+  Widget _buildImage(BuildContext context) {
+    if (imageUrl == "") {
+      return Container(
+        width: getWidthRatio() * 64,
+        height: getHeightRatio() * 64,
+        decoration: BoxDecoration(
+          color: AppColors.getPrimaryColorFromContext(context).withAlpha(40),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          Icons.person,
+          size: 48,
+          color: AppColors.getPrimaryColorFromContext(context),
+        ),
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          imageUrl,
+          width: getWidthRatio() * 64,
+          height: getHeightRatio() * 64,
+          fit: BoxFit.cover,
+        ),
+      );
     }
+  }
 
+  ///  Info Row (png assets)
+  Widget _infoRow(String icon, String text, BuildContext context) {
+    return Row(
+      children: [
+        Image.asset(
+          icon,
+          width: getWidthRatio() * 16,
+          height: getHeightRatio() * 16,
+          color: AppColors.getPrimaryColorFromContext(context),
+        ),
+        SizedBox(width: getWidthRatio() * 4),
+        Expanded(
+          child: CustomText(
+            text: text,
+            fontSize: sizes?.fontSize12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.primarySlateColor,
+            lines: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///  Location Row (SVG asset)
+  Widget _locationRow(String icon, String text, BuildContext context) {
+    return Row(
+      children: [
+        SvgPicture.asset(
+          icon,
+          width: getWidthRatio() * 16,
+          height: getHeightRatio() * 16,
+          color: AppColors.getPrimaryColorFromContext(context),
+        ),
+        SizedBox(width: getWidthRatio() * 4),
+        Expanded(
+          child: CustomText(
+            text: text,
+            fontSize: sizes?.fontSize12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.primarySlateColor,
+            lines: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///  Date Formatter
+  String formatDateTime({String? date, String? startTime, String? endTime}) {
+    if (date == null || startTime == null || endTime == null) return '';
     try {
-      final formattedDate = Formatter.formatDateFromString(
-        date,
-        newPattern: 'MMM d',
-      );
-
-      final formattedStart = Formatter.formatDateFromString(
-        startTime,
-        newPattern: 'h:mm a',
-      );
-
-      final formattedEnd = Formatter.formatDateFromString(
-        endTime,
-        newPattern: 'h:mm a',
-      );
-
+      final formattedDate =
+      Formatter.formatDateFromString(date, newPattern: 'MMM d');
+      final formattedStart =
+      Formatter.formatDateFromString(startTime, newPattern: 'h:mm a');
+      final formattedEnd =
+      Formatter.formatDateFromString(endTime, newPattern: 'h:mm a');
       return '$formattedDate, $formattedStart - $formattedEnd';
     } catch (e) {
       return '';
     }
   }
-
 }
 
 class BookingInfoRow extends StatelessWidget {
