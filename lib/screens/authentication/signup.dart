@@ -218,9 +218,6 @@ class _SignupState extends State<Signup> {
   }
 
   onSignupTap() {
-    // context.push(Routes.restaurantProfileRoute);
-    // return;
-
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();
     var businessName = businessNameController.text.toString().trim();
@@ -241,7 +238,7 @@ class _SignupState extends State<Signup> {
     } else if (!passwordRegex.hasMatch(password)) {
     Toasts.getErrorToast(text: al.passwordInvalidCharacters);
     } else {
-    context.read<AuthProvider>().registerUser(
+    context.read<AuthProvider>().register(
     businessName: businessName,
     email: email,
     role: context.read<RoleProvider>().role.name,

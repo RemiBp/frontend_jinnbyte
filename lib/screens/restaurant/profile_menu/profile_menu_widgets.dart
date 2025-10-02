@@ -1,14 +1,18 @@
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/common/utils.dart';
+import 'package:choice_app/res/strings.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/follower/follower_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/following/following_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
 import '../../../customWidgets/icon_svg.dart';
 import '../../../res/res.dart';
+import '../../customer/profile/customer_profile/customer_profile_provider.dart';
 
 class ProfileMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -34,7 +38,7 @@ class ProfileMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
             Padding(
               padding: EdgeInsets.only(left: sizes!.pagePadding),
               child: CustomText(
-                text: "The Wholesome Fork",
+                text: PreferenceUtils.getString(Strings.name)??"",
                 fontWeight: FontWeight.w600,
                 fontSize: sizes?.fontSize18,
                 color: AppColors.blackColor,
@@ -197,13 +201,14 @@ class CustomerProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CustomerProfileProvider>(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
       child: Row(
         children: [
-          const CircleAvatar(
+           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(Assets.choiceImage),
+            backgroundImage:NetworkImage("https://naushkinskoe-r81.gosweb.gosuslugi.ru/netcat_files/154/1671/image_3_0.jpg"),
           ),
           SizedBox(width: getWidth() * 0.02),
           Expanded( // Ensures the right side takes remaining space
@@ -211,7 +216,7 @@ class CustomerProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "The Wholesome Fork",
+                  text:provider.user?.fullName??"" ,
                   textOverflow: TextOverflow.ellipsis,
                   fontSize: sizes?.fontSize16,
                   color: AppColors.blackColor,
@@ -221,7 +226,7 @@ class CustomerProfileHeader extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildStatItem("98", "Choices"),
+                    _buildStatItem("0", "Choices"),
                     Image.asset(Assets.verticalLine, height: getHeight() * 0.03),
                     GestureDetector(
                       onTap: (){
@@ -230,7 +235,7 @@ class CustomerProfileHeader extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => FollowerView()),
                         );
                       },
-                      child: _buildStatItem("34", "Followers"),
+                      child: _buildStatItem("${provider.user?.followersCount}", "Followers"),
                     ),
                     Image.asset(Assets.verticalLine, height: getHeight() * 0.03),
                     GestureDetector(
@@ -240,7 +245,7 @@ class CustomerProfileHeader extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => FollowingView()),
                         );
                       },
-                      child: _buildStatItem("02", "Following"),
+                      child: _buildStatItem("${provider.user?.followersCount}", "Following"),
                     ),
                   ],
                 ),

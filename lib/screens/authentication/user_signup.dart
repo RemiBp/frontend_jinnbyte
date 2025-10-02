@@ -14,6 +14,8 @@ import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
+import '../../res/toasts.dart';
+import '../../userRole/role_provider.dart';
 import '../restaurant/profile/profile_provider.dart';
 import 'auth_provider.dart';
 
@@ -241,9 +243,7 @@ class _UserSignupState extends State<UserSignup> {
             // ---- SIGNUP BUTTON ----
             CustomButton(
               buttonText: al.signupTitle,
-              onTap: () {
-                context.push(Routes.otpVerificationRoute);
-              },
+              onTap: onSignupTap,
             ),
 
             SizedBox(height: getHeight() * .02),
@@ -306,5 +306,37 @@ class _UserSignupState extends State<UserSignup> {
         ),
       ),
     );
+  }
+  onSignupTap() {
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
+    var fullName = fullNameController.text.toString().trim();
+    var userName = userNameController.text.toString().trim();
+    var phone = context.read<ProfileProvider>().phoneNumber?.nsn;
+
+    // debugPrint("phone is : ${phone?.nsn}");
+    if (fullName.isEmpty) {
+      Toasts.getErrorToast(text: " Name is Missing");
+    } else if (userName.isEmpty) {
+      Toasts.getErrorToast(text: "Username is Missing");
+    }
+    else if (phone?.isEmpty??false) {
+      Toasts.getErrorToast(text: "Phone number is Missing");
+    }
+    else if (email.isEmpty) {
+      Toasts.getErrorToast(text: "Email is Missing");
+    } else if (email.validateEmail() == false) {
+      Toasts.getErrorToast(text: "Invalid Email");
+    } else if (password.isEmpty) {
+      Toasts.getErrorToast(text: "Password is missing");
+    } else {
+      context.read<AuthProvider>().registerUser(
+        fullName: fullName,
+        userName: userName,
+        phone:phone??"nil" ,
+        email: email, role: context
+          .read<RoleProvider>()
+          .role.name, password: password,);
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_provider.dart';
 import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
@@ -49,6 +50,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<EventProvider>(
     create: (_) => EventProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<CustomerProfileProvider>(
+    create: (_) => CustomerProfileProvider(),
     lazy: true,
   ),
 ];

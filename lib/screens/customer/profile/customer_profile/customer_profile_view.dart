@@ -1,13 +1,16 @@
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_posts_view.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../l18n.dart';
 import '../../../../res/res.dart';
+import 'customer_profile_widget.dart';
 
 class CustomerProfileView extends StatefulWidget {
   const CustomerProfileView({super.key});
@@ -17,6 +20,7 @@ class CustomerProfileView extends StatefulWidget {
 }
 
 class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTickerProviderStateMixin {
+  CustomerProfileProvider _profileProvider = CustomerProfileProvider();
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
@@ -32,6 +36,17 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
         });
       }
     });
+   WidgetsBinding.instance.addPostFrameCallback((_){
+     _profileProvider = Provider.of<CustomerProfileProvider>(context, listen: false);
+     _profileProvider.init(context);
+     getProfile();
+   });
+
+  }
+
+  getProfile()async{
+    await _profileProvider.getProfile();
+    _profileProvider.getCustomerPosts();
   }
 
   @override
@@ -54,6 +69,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<CustomerProfileProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: ProfileMenuAppBar(
@@ -74,6 +90,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
         },
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: getHeight() * 0.02),
           CustomerProfileHeader(),
@@ -81,7 +98,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: CustomText(
-              text: 'Lorem ipsum dolor sit amet consectetur. Nunc aliquam eu risus nibh quis consectetur.',
+              text: "${_profileProvider.user?.bio}",
               textOverflow: TextOverflow.ellipsis,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
@@ -123,8 +140,8 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
             child: TabBarView(
               controller: _tabController,
               children: const [
-                RestaurantChoiceView(enableOnTap: true,),
-                RestaurantPostsView(),
+               CustomerChoice()
+,                RestaurantPostsView(),
                 // RestaurantAboutView(),
               ],
             ),

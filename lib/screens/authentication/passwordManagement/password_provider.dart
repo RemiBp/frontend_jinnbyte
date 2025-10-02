@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
 import '../../../res/loader.dart';
 import '../../../res/toasts.dart';
 import '../../../routes/routes.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class PasswordProvider extends ChangeNotifier{
   bool newPassVisibility = false;
@@ -47,8 +50,12 @@ class PasswordProvider extends ChangeNotifier{
         "email": email
       };
       debugPrint("body is : ---------->$body");
+      final roleProvider = context?.read<RoleProvider>();
+      final forgotPasswordApi = roleProvider?.role == UserRole.user
+          ? forgotUserPasswordApiUrl
+          : forgotPasswordApiUrl;
       final response  = await MyApi.callPostApi(
-        url: forgotPasswordApiUrl,
+        url: forgotPasswordApi,
         myHeaders: headers,
         body: body,
         // modelName: Models.loginModel,
@@ -83,8 +90,12 @@ class PasswordProvider extends ChangeNotifier{
         "password": password
       };
       debugPrint("body is : ---------->$body");
+      final roleProvider = context?.read<RoleProvider>();
+      final resetPasswordApi = roleProvider?.role == UserRole.user
+          ? resetUserPasswordApiUrl
+          : resetPasswordApiUrl;
       final response  = await MyApi.callPostApi(
-        url: resetPasswordApiUrl,
+        url: resetPasswordApi,
         myHeaders: headers,
         body: body,
       );

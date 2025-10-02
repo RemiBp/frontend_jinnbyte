@@ -1,24 +1,44 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:choice_app/appColors/colors.dart';
-import 'package:choice_app/customWidgets/custom_text.dart';
-import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-import '../../../appAssets/app_assets.dart';
-import '../profile/customer_profile/customer_profile_provider.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../appColors/colors.dart';
+import '../../../../customWidgets/custom_text.dart';
+import '../../../../res/res.dart';
+import 'customer_profile_provider.dart';
 
-class PostCard extends StatelessWidget {
+class CustomerChoice extends StatelessWidget {
+  const CustomerChoice({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<CustomerProfileProvider>(context);
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+      itemCount: provider.userPosts?.length ?? 0,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {},
+          child: CustomerPostCard(index: index),
+        );
+      },
+    );
+  }
+}
+
+class CustomerPostCard extends StatelessWidget {
   final List<String> images = const [
     'https://www.imagelato.com/images/article-image-ample-service-area-34a39db5.jpg',
-    // Replace with real image URLs
     'https://i.pinimg.com/736x/90/0c/fc/900cfc673204b6debbacd5c63e074565.jpg',
     'https://content.fortune.com/wp-content/uploads/2019/05/tak-room-rendering-web.jpg',
   ];
 
-   const PostCard({super.key,  this.index = 0});
-   final int index;
+  const CustomerPostCard({super.key, this.index = 0});
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +52,22 @@ class PostCard extends StatelessWidget {
           leading: CircleAvatar(
             radius: getHeight() * .03,
             backgroundImage: NetworkImage(
-              provider.userPosts?[index].coverImage??"",
+              provider.userPosts?[index].coverImage ?? "",
             ),
           ),
           title: CustomText(
-            text: 'Liberty Bite Bistro',
+            text: provider.userPosts?[index].producer?.name ?? "",
             fontSize: sizes?.fontSize16,
             fontFamily: Assets.onsetSemiBold,
             giveLinesAsText: true,
           ),
           subtitle: CustomText(
-            text: '3 days ago',
+            text:
+                provider.userPosts?[index].publishDate != null
+                    ? timeago.format(
+                      DateTime.parse(provider.userPosts![index].publishDate!),
+                    )
+                    : 'nil',
             fontSize: sizes?.fontSize12,
             giveLinesAsText: true,
           ),
@@ -50,8 +75,7 @@ class PostCard extends StatelessWidget {
         ),
         // Post description
         CustomText(
-          text:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum',
+          text:provider.userPosts?[index].description??"",
           fontSize: sizes?.fontSize14,
           giveLinesAsText: true,
         ),
@@ -67,9 +91,7 @@ class PostCard extends StatelessWidget {
                     '#family_friendly',
                     '#budget_friendly',
                   ]
-                  .map(
-                    (tag) => Text(tag, style: TextStyle(color: Colors.blue)),
-                  )
+                  .map((tag) => Text(tag, style: TextStyle(color: Colors.blue)))
                   .toList(),
         ),
         SizedBox(height: getHeight() * 0.01),
@@ -78,11 +100,11 @@ class PostCard extends StatelessWidget {
           children: [
             CarouselSlider(
               items:
-                  images.map((url) {
+    provider.userPosts?[index].images?.map((url) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        url,
+                        url.url??"",
                         fit: BoxFit.cover,
                         width: double.infinity,
                       ),
@@ -101,7 +123,7 @@ class PostCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 color: Colors.black54,
-                child: Text('1/3', style: TextStyle(color: Colors.white)),
+                child: Text('1/${provider.userPosts?[index].images?.length}', style: TextStyle(color: Colors.white)),
               ),
             ),
           ],
@@ -143,15 +165,17 @@ class PostCard extends StatelessWidget {
       iconWidget = SvgPicture.asset(
         icon,
         height: getHeight() * 0.016,
-        colorFilter: ColorFilter.mode(AppColors.textGreyColor,BlendMode.srcIn),
+        colorFilter: ColorFilter.mode(AppColors.textGreyColor, BlendMode.srcIn),
       );
     } else {
       throw ArgumentError("icon must be IconData or String (SVG path)");
     }
 
     return Container(
-      height: getHeight() * 0.035, // ~28px
-      width: getWidth() * 0.14,    // ~55px
+      height: getHeight() * 0.035,
+      // ~28px
+      width: getWidth() * 0.14,
+      // ~55px
       margin: EdgeInsets.only(right: getWidth() * 0.01),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.textGreyColor, width: 1),
@@ -175,21 +199,20 @@ class PostCard extends StatelessWidget {
     );
   }
 
-
   // Interested Tag (wider now)
   Widget _buildInterestedTag(String label) {
     return Container(
-      height: getHeight() * 0.035, // ~28px
-      width: getWidth() * 0.28,    // (~105px)
-      margin: EdgeInsets.only(left: getWidth() * 0.017), // control spacing
+      height: getHeight() * 0.035,
+      // ~28px
+      width: getWidth() * 0.28,
+      // (~105px)
+      margin: EdgeInsets.only(left: getWidth() * 0.017),
+      // control spacing
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF964DFF),
-            Color(0xFFFC5D4A),
-          ],
+          colors: [Color(0xFF964DFF), Color(0xFFFC5D4A)],
         ),
         borderRadius: BorderRadius.circular(40),
       ),
