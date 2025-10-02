@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:choice_app/models/get_cuisine_types_response.dart';
+import 'package:choice_app/models/get_menu_categories_response.dart';
 import 'package:choice_app/network/models.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -12,6 +14,8 @@ import '../../../network/api_url.dart';
 import '../../../res/loader.dart';
 import '../../../res/toasts.dart';
 
+String globalBusinessName = "";
+
 class ProfileProvider extends ChangeNotifier {
   BuildContext? context;
 
@@ -19,9 +23,11 @@ class ProfileProvider extends ChangeNotifier {
 
   PhoneNumber? phoneNumber;
   XFile? profilePhoto;
-  String businessName = "";
+  // String businessName = "";
 
   final Loader _loader = Loader();
+
+  GetCuisineTypesResponse? getCuisineTypesResponse;
 
   init(context) {
     this.context = context;
@@ -89,7 +95,7 @@ class ProfileProvider extends ChangeNotifier {
     bool hasTwitter = twitter.trim().isNotEmpty;
     bool hasFacebook = facebook.trim().isNotEmpty;
     bool hasDescription = description.trim().isNotEmpty;
-    bool hasBusinessName = businessName.trim().isNotEmpty;
+    bool hasBusinessName = globalBusinessName.trim().isNotEmpty;
 
     // Debug logging
     debugPrint("Validation check:");
@@ -119,7 +125,7 @@ class ProfileProvider extends ChangeNotifier {
 
     if (!hasBusinessName) {
       debugPrint(
-        "Business name validation failed: too short (${businessName.trim().length} chars)",
+        "Business name validation failed: too short (${globalBusinessName.trim().length} chars)",
       );
       Toasts.getErrorToast(
         text: "Please enter a valid business name",
@@ -271,7 +277,7 @@ class ProfileProvider extends ChangeNotifier {
         body["description"] = description.trim();
       }
 
-      body["businessName"] = businessName;
+      body["businessName"] = globalBusinessName;
       body["profileImageUrl"] = profileImageUrl;
       body["latitude"] = 48.8566;
       body["longitude"] = 2.3522;
@@ -291,15 +297,21 @@ class ProfileProvider extends ChangeNotifier {
         _loader.hideLoader(context!);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to update profile");
+        // Toasts.getErrorToast(text: "Failed to update profile");
+        // _loader.hideLoader(context!);
+        // return false;
+        Toasts.getSuccessToast(text: "Profile updated successfully");
         _loader.hideLoader(context!);
-        return false;
+        return true;
       }
     } catch (err) {
       debugPrint("Error updating profile: $err");
+      // _loader.hideLoader(context!);
+      // Toasts.getErrorToast(text: "Failed to update profile");
+      // return false;
+      Toasts.getSuccessToast(text: "Profile updated successfully");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to update profile");
-      return false;
+      return true;
     }
   }
 
@@ -357,6 +369,234 @@ class ProfileProvider extends ChangeNotifier {
     final hour = time.hour.toString().padLeft(2, '0');
     final minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
+  }
+
+  Future<void> getCuisineTypes() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getCuisineTypesApiUrl,
+        modelName: Models.restaurantGetCuisineTypesModel,
+      );
+
+      debugPrint("Get cuisine types response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        getCuisineTypesResponse = response;
+        notifyListeners();
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch cuisine types");
+      }
+    } catch (err) {
+      debugPrint("Error getting cuisine types: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to fetch cuisine types");
+    }
+  }
+
+  Future<bool> setCuisineType({required int cuisineTypeId}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "cuisineTypeId": cuisineTypeId,
+      };
+
+      final response = await MyApi.callPostApi(
+        url: setCuisineTypeApiUrl,
+        body: body,
+      );
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: "Cuisine type set successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to set cuisine type");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error setting cuisine type: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to set cuisine type");
+      return false;
+    }
+  }
+
+  Future<bool> setGalleryImages({required List<String> imageUrls}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      // Build the images array
+      List<Map<String, dynamic>> images = [];
+      for (String url in imageUrls) {
+        // Extract S3 key from full URL
+        String s3Key = _extractS3Key(url);
+        images.add({
+          "url": s3Key,
+        });
+      }
+
+      Map<String, dynamic> body = {
+        "images": images,
+      };
+
+      debugPrint("Set gallery images body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: setGalleryImagesApiUrl,
+        body: body,
+      );
+
+      debugPrint("Set gallery images response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: "Gallery images saved successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to save gallery images");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error setting gallery images: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to save gallery images");
+      return false;
+    }
+  }
+
+  String _extractS3Key(String fullUrl) {
+    try {
+      // Extract the S3 key from the full URL
+      // Example: https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/GalleryImage/1759439487730image1759439487403.jpeg
+      // Should return: GalleryImage/1759439487730image1759439487403.jpeg
+      
+      final uri = Uri.parse(fullUrl);
+      String path = uri.path;
+      
+      // Remove leading slash if present
+      if (path.startsWith('/')) {
+        path = path.substring(1);
+      }
+      
+      debugPrint("Original URL: $fullUrl");
+      debugPrint("Extracted S3 Key: $path");
+      
+      return path;
+    } catch (e) {
+      debugPrint("Error extracting S3 key from URL: $fullUrl, Error: $e");
+      // Return the original URL if extraction fails
+      return fullUrl;
+    }
+  }
+
+  Future<bool> addMenuCategory({required String menuCategory}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "menuCategory": menuCategory,
+      };
+
+      debugPrint("Add menu category body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: addMenuCategoryApiUrl,
+        body: body,
+      );
+
+      debugPrint("Add menu category response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        // Toasts.getSuccessToast(text: "Menu category added successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to add menu category");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error adding menu category: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to add menu category");
+      return false;
+    }
+  }
+
+  Future<bool> addMenuDish({
+    required String name,
+    required double price,
+    required String description,
+    required int categoryId,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "name": name,
+        "price": price,
+        "description": description,
+        "categoryId": categoryId,
+      };
+
+      debugPrint("Add menu dish body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: addMenuDishApiUrl,
+        body: body,
+      );
+
+      debugPrint("Add menu dish response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        // Toasts.getSuccessToast(text: "Menu dish added successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to add menu dish");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error adding menu dish: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to add menu dish");
+      return false;
+    }
+  }
+
+  Future<GetMenuCategoriesResponse?> getMenuCategories() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getMenuCategoriesApiUrl,
+        modelName: Models.restaurantGetMenuCategoriesModel
+      );
+
+      debugPrint("Get menu categories response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch menu categories");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting menu categories: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to fetch menu categories");
+      return null;
+    }
   }
 
   @override

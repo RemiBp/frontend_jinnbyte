@@ -243,7 +243,6 @@ class _ProfileState extends State<Profile> {
               maxLines: 3,
             ),
             SizedBox(height: getHeight() * .02),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -261,7 +260,7 @@ class _ProfileState extends State<Profile> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
-                      // context.push(Routes.editOperationHoursRoute);
+                      // context.push(Routes.restaurantAddCuisineRoute);
                       // return;
 
                       if (provider.profilePhoto != null) {
@@ -285,7 +284,7 @@ class _ProfileState extends State<Profile> {
                         );
                         // Only navigate to next screen if API call was successful
                         if (success && context.mounted) {
-                          context.push(Routes.editOperationHoursRoute);
+                          context.push(Routes.restaurantAddCuisineRoute);
                         }
                       } else {
                         Toasts.getErrorToast(text: al.selectProfileImage);

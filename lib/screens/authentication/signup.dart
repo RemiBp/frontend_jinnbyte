@@ -26,11 +26,9 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-
   TextEditingController businessNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
 
   @override
   void initState() {
@@ -126,8 +124,12 @@ class _SignupState extends State<Signup> {
                           onChanged: (value) {
                             state.toggleAgreement(value!);
                           },
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
                         );
                       },
                     ),
@@ -146,12 +148,20 @@ class _SignupState extends State<Signup> {
                         children: [
                           TextSpan(
                             text: al.termsOfService,
-                            style: TextStyle(color: AppColors.getPrimaryColorFromContext(context)),
+                            style: TextStyle(
+                              color: AppColors.getPrimaryColorFromContext(
+                                context,
+                              ),
+                            ),
                           ),
                           TextSpan(text: " ${al.andLabel} "),
                           TextSpan(
                             text: al.privacyPolicy,
-                            style: TextStyle(color: AppColors.getPrimaryColorFromContext(context)),
+                            style: TextStyle(
+                              color: AppColors.getPrimaryColorFromContext(
+                                context,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -162,10 +172,7 @@ class _SignupState extends State<Signup> {
               ],
             ),
             SizedBox(height: getHeight() * .02),
-            CustomButton(
-              buttonText: al.signupTitle,
-              onTap: onSignupTap,
-            ),
+            CustomButton(buttonText: al.signupTitle, onTap: onSignupTap),
             SizedBox(height: getHeight() * .02),
             Row(
               children: [
@@ -202,10 +209,14 @@ class _SignupState extends State<Signup> {
                   children: [
                     TextSpan(
                       text: al.loginButton,
-                      style: TextStyle(color: AppColors.getPrimaryColorFromContext(context),),
-                      recognizer: TapGestureRecognizer()..onTap=(){
-                        context.pushReplacement(Routes.loginRoute);
-                      }
+                      style: TextStyle(
+                        color: AppColors.getPrimaryColorFromContext(context),
+                      ),
+                      recognizer:
+                          TapGestureRecognizer()
+                            ..onTap = () {
+                              context.pushReplacement(Routes.loginRoute);
+                            },
                     ),
                   ],
                 ),
@@ -228,7 +239,7 @@ class _SignupState extends State<Signup> {
     if (businessName.isEmpty) {
       Toasts.getErrorToast(text: al.businessNameMissing);
     } else if (!nameRegex.hasMatch(businessName)) {
-    Toasts.getErrorToast(text: al.businessNameInvalidCharacters);
+      Toasts.getErrorToast(text: al.businessNameInvalidCharacters);
     } else if (email.isEmpty) {
     Toasts.getErrorToast(text: al.emailMissing);
     } else if (email.validateEmail() == false) {

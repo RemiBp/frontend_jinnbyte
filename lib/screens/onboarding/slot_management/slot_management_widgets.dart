@@ -79,13 +79,6 @@ class _ChipGroupMultiSelectState extends State<MultiSlotSelection> {
     selectedOptions = widget.initialSelection ?? [];
   }
 
-
-  @override
-  void didUpdateWidget(covariant MultiSlotSelection oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    selectedOptions = widget.initialSelection ?? [];
-  }
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
