@@ -7,9 +7,12 @@ import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class RestaurantHome extends StatelessWidget {
   const RestaurantHome({super.key});
@@ -67,7 +70,17 @@ class RestaurantHome extends StatelessWidget {
           ),
           backgroundColor: AppColors.getPrimaryColorFromContext(context),
           onPressed: (){
-            context.push(Routes.restaurantCreatePostRoute);
+            final role = context.read<RoleProvider>().role; //  get role
+            debugPrint("Current user role: $role");
+
+
+            if (role == UserRole.user) {
+              debugPrint("Navigating to Choice Selection");
+              context.push(Routes.createChoiceRoute);   //  navigate to choiceSelection
+            } else  {
+              debugPrint("Navigating to Restaurant Create Post");
+              context.push(Routes.restaurantCreatePostRoute); //  keep same as before
+            }
           }, label: Row(
         children: [
           Icon(Icons.add, color: Colors.white,),

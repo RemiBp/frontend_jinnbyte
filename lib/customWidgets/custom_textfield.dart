@@ -182,6 +182,111 @@ class CustomField extends StatelessWidget {
   }
 }
 
+class CustomDropdownField extends StatelessWidget {
+  final String? label;
+  final String? hint;
+  final List<String> items;
+  final String? value;
+  final ValueChanged<String?>? onChanged;
+  final Color? borderColor;
+  final double? height;
+  final double? borderRadius;
+
+  const CustomDropdownField({
+    super.key,
+    this.label,
+    this.hint,
+    required this.items,
+    this.value,
+    this.onChanged,
+    this.borderColor,
+    this.height,
+    this.borderRadius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (label != null) ...[
+          SizedBox(height: getHeight() * .006),
+          RichText(
+            text: TextSpan(
+              text: label!,
+              style: TextStyle(
+                fontSize: sizes!.fontSize14,
+                fontFamily: Assets.onsetMedium,
+                color: AppColors.blackColor,
+              ),
+              children: const [
+                TextSpan(
+                  text: " *",
+                  style: TextStyle(
+                    color: AppColors.redColor,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: getHeight() * .01),
+        ],
+
+        // Match TextFormField container style
+        Container(
+          height: height ?? getHeight() * .07,
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor ?? AppColors.inputHintColor),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12),
+            color: Colors.white,
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: getWidth() * .05,
+              right: getWidth() * .02,
+              top: getHeight() * .01,
+              bottom: getHeight() * .01,
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: value,
+                hint: Text(
+                  hint ?? "",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontSize: sizes!.fontSize15,
+                    color: AppColors.inputHintColor,
+                  ),
+                ),
+                icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+
+                // ✅ Force dropdown menu background to white
+                dropdownColor: Colors.white,
+
+                items: items.map((type) {
+                  return DropdownMenuItem<String>(
+                    value: type,
+                    child: Text(
+                      type,
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        fontSize: sizes!.fontSize15,
+                        color: AppColors.blackColor,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onChanged: onChanged,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 class CustomField2 extends StatelessWidget {
   const CustomField2({
     super.key,

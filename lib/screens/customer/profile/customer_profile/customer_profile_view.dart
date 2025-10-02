@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class CustomerProfileView extends StatefulWidget {
@@ -105,13 +106,13 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
               tabs: [
                 ProfileTabItem(
                   iconPath: Assets.postIcon,
-                  label: 'Choices',
+                  label: al.choices,
                   tabIndex: 0,
                   selectedTabIndex: _selectedTabIndex,
                 ),
                 ProfileTabItem(
                   iconPath: Assets.interestIcon,
-                  label: 'Interest',
+                  label: al.interest,
                   tabIndex: 1,
                   selectedTabIndex: _selectedTabIndex,
                 ),

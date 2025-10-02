@@ -2,6 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
 
+import '../l18n.dart';
+
 class Toasts {
   BuildContext? contex;
 
@@ -31,7 +33,7 @@ class Toasts {
 
   static getSuccessToast({@required String? text, Color? bgColor}) async {
     BotToast.showText(
-      text: text ?? "Success",
+      text: text ?? al.success,
       contentColor: bgColor ?? Colors.green,
       //  AppColors.yellowColor,
       align: const Alignment(0, .6),

@@ -242,6 +242,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unavailability => 'Unavailability';
 
   @override
+  String get modify => 'Modify';
+
+  @override
+  String get checkIn => 'Check-In';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get inProgress => 'In-Progress';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get noUpcomingBooking => 'No upcoming booking';
+
+  @override
+  String get noUpcomingBookingMessage => 'You have no upcoming booking';
+
+  @override
+  String get bookingInformation => 'Booking Information';
+
+  @override
+  String get internalNotes => 'Internal Notes';
+
+  @override
+  String get customerInformation => 'Customer Information';
+
+  @override
+  String get customerName => 'Customer Name:';
+
+  @override
+  String get emailLabel1 => 'Email:';
+
+  @override
+  String get bookings => 'Bookings';
+
+  @override
+  String get selectProfileImage => 'Select profile image';
+
+  @override
+  String get failedToGetImageUrl => 'Failed to get image url';
+
+  @override
+  String get phoneLabel => 'Phone:';
+
+  @override
+  String get bookingDetails => 'Booking Details';
+
+  @override
   String get language => 'Language';
 
   @override
@@ -345,6 +399,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get title => 'Title';
+
+  @override
+  String get passwordManager => 'Password Manager';
+
+  @override
+  String get currentPassword => 'Current password';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get eventTypeLabel => 'Event Type';
+
+  @override
+  String get eventTypePlaceholder => 'Select event type';
+
+  @override
+  String get passwordMissing => 'Password is missing';
+
+  @override
+  String get passwordInvalidCharacters =>
+      'Password contains invalid characters (no emojis allowed)';
+
+  @override
+  String get emailMissing => 'Email is missing';
+
+  @override
+  String get invalidEmail => 'Invalid Email';
+
+  @override
+  String get invalidPassword => 'Invalid Password';
+
+  @override
+  String get interest => 'Interest';
+
+  @override
+  String get choices => 'Choices';
+
+  @override
+  String get seeMore => 'See more';
+
+  @override
+  String get eventsNearYou => 'Events near you';
+
+  @override
+  String get surpriseMe => 'Surprise me';
+
+  @override
+  String get seeFullMenu => 'See Full Menu';
+
+  @override
+  String get organizer => 'Organizer';
+
+  @override
+  String get moreEventsLikeThis => 'More Events Like This';
+
+  @override
+  String get showAll => 'Show All';
+
+  @override
+  String get ticketPrice => 'Ticket Price';
+
+  @override
+  String get perPerson => '/per person';
+
+  @override
+  String get bookNow => 'Book Now';
+
+  @override
+  String get browseByCategory => 'Browse by Category';
+
+  @override
+  String get expiryDate1Placeholder => 'Please Select Expiry Date 1';
+
+  @override
+  String get businessRegistrationPlaceholder =>
+      'Please Select Business Registration Document';
+
+  @override
+  String get expiryDate2Placeholder => 'Please Select Expiry Date 2';
+
+  @override
+  String get utilityBillPlaceholder => 'Please Select Utility Bill or Invoice';
+
+  @override
+  String get businessNameMissing => 'Business Name is Missing';
+
+  @override
+  String get businessNameInvalidCharacters =>
+      'Business Name contains invalid characters (no emojis allowed)';
+
+  @override
+  String get noInternet => 'No internet';
+
+  @override
+  String get enterOtpPlaceholder => 'Please enter the otp';
+
+  @override
+  String get otpVerifiedSuccess => 'Otp Verified Successful';
+
+  @override
+  String get genericError => 'Something bad happened,Try again.';
+
+  @override
+  String get noInternetConnection => 'No Internet Connection';
+
+  @override
+  String get success => 'Success';
+
+  @override
+  String get registrationSuccessful => 'Registration Successful';
 
   @override
   String get eventDescriptionPlaceholder => 'Describe your event...';
@@ -482,9 +647,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get participants => 'Participants';
-
-  @override
-  String get showAll => 'Show All';
 
   @override
   String get aboutEvent => 'About Event';

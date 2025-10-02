@@ -40,7 +40,7 @@ class MenuGroupWidget extends StatelessWidget {
                   text: optionText??'Add Dish',
                   fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.restaurantPrimaryColor,
+                  color: AppColors.getPrimaryColorFromContext(context),
                 ),
               ),
             ],

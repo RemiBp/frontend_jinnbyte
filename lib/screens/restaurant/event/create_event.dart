@@ -17,6 +17,8 @@ import '../../../customWidgets/custom_textfield.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../res/toasts.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({super.key});
@@ -26,6 +28,7 @@ class CreateEvent extends StatefulWidget {
 }
 
 class _CreateEventState extends State<CreateEvent> {
+  String? _selectedEventType;
   final _formKey = GlobalKey<FormState>();
   NetworkProvider networkProvider = NetworkProvider();
 
@@ -96,26 +99,30 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: CustomText(
-        text: title,
-        fontSize: sizes?.fontSize16,
-        fontFamily: Assets.onsetSemiBold,
-      ),
+    return CustomText(
+      text: title,
+      fontSize: sizes?.fontSize16,
+      fontFamily: Assets.onsetSemiBold,
     );
   }
 
+
   Widget _buildCard({required Widget child}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+      padding: const EdgeInsets.all(16), // equal spacing on all sides
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
       ),
-      child: child,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          child,
+          const SizedBox(height: 4), // ensures bottom spacing matches top
+        ],
+      ),
     );
   }
 
@@ -138,6 +145,7 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
+    final role = context.read<RoleProvider>().role;
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
       appBar: AppBar(
@@ -177,6 +185,26 @@ class _CreateEventState extends State<CreateEvent> {
                       label: al.eventName,
                     ),
                     SizedBox(height: getHeight() * .02),
+
+                    // Event Type (Dropdown Field) – only for leisure role
+                    if (role == UserRole.leisure) ...[
+                      CustomDropdownField(
+                        label: al.eventTypeLabel,
+                        hint: al.eventTypePlaceholder,
+                        items: ["Conference", "Wedding", "Birthday", "Workshop"],
+                        value: _selectedEventType,
+                        borderColor: AppColors.inputHintColor,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedEventType = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: getHeight() * .02),
+                    ],
+
+
+
                     CustomField(
                       textEditingController: _descriptionController,
                       height: getHeight() * .1,
@@ -194,6 +222,7 @@ class _CreateEventState extends State<CreateEvent> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildSectionTitle("Event Gallery"),
+                    SizedBox(height: getHeight() * .02),
                     CustomText(
                       text: al.uploadEventImages,
                       fontSize: sizes?.fontSize14,
@@ -203,7 +232,7 @@ class _CreateEventState extends State<CreateEvent> {
                       text: al.uploadEventImages,
                       fontSize: sizes?.fontSize12,
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: getHeight() * .02),
                     InkWell(
 
                       onTap: _pickImages,
@@ -256,13 +285,15 @@ class _CreateEventState extends State<CreateEvent> {
                   children: [
                     _buildSectionTitle(al.location,),
                     SizedBox(height: getHeight() * .02),
-                    CustomField(
-                      textEditingController: _venueController,
-                      borderColor: AppColors.greyBordersColor,
-                      hint: al.restaurantOrVenue,
-                      label: al.venueName,
-                    ),
-                    SizedBox(height: getHeight() * .02),
+                    if (role == UserRole.restaurant) ...[
+                      CustomField(
+                        textEditingController: _venueController,
+                        borderColor: AppColors.greyBordersColor,
+                        hint: al.restaurantOrVenue,
+                        label: al.venueName,
+                      ),
+                      SizedBox(height: getHeight() * .02),
+                    ],
                     CustomField(
                       textEditingController: _addressController,
                       borderColor: AppColors.greyBordersColor,

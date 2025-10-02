@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import '../appAssets/app_assets.dart';
 import '../appColors/colors.dart';
+import '../l18n.dart';
 import '../res/res.dart';
 import 'custom_text.dart';
 
@@ -43,14 +44,14 @@ class NoItemFound extends StatelessWidget {
           ),
           SizedBox(height: getHeight() * 0.03),
           CustomText(
-            text: title??"No upcoming booking",
+            text: title??al.noUpcomingBooking,
             fontWeight: FontWeight.w600,
             fontSize: sizes?.fontSize18,
             lines: 3,
           ),
           SizedBox(height: getHeight() * 0.005),
           CustomText(
-            text: subTitle??"You have no upcoming booking",
+            text: subTitle??al.noUpcomingBookingMessage,
             fontWeight: FontWeight.w500,
             fontSize: sizes?.fontSize16,
             textAlign: TextAlign.center,
