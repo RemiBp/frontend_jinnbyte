@@ -1,5 +1,10 @@
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/res/toasts.dart';
+import 'package:choice_app/routes/routes.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -27,6 +32,20 @@ class _AddCuisineState extends State<AddCuisine> {
   int? selectedCuisineId;
   CuisineType? selectedCuisine;
 
+  @override
+  void initState() {
+    super.initState();
+
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+    profileProvider.init(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      profileProvider.getCuisineTypes();
+    });
+  }
+
   final List<CuisineType> dummyCuisineTypes = [
     CuisineType(id: 1, name: 'Italian'),
     CuisineType(id: 2, name: 'Chinese'),
@@ -36,16 +55,15 @@ class _AddCuisineState extends State<AddCuisine> {
 
   @override
   Widget build(BuildContext context) {
+    final profileProvider = Provider.of<ProfileProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(
-        title: "Cuisine",
-      ),
+      appBar: CommonAppBar(title: "Cuisine"),
       body: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: sizes!.pagePadding,
-            vertical: getHeight() * .02,
-          ),
+        padding: EdgeInsets.symmetric(
+          horizontal: sizes!.pagePadding,
+          vertical: getHeight() * .02,
+        ),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,40 +74,39 @@ class _AddCuisineState extends State<AddCuisine> {
               //   fontFamily: Assets.onsetSemiBold,
               // ),
               SizedBox(height: getHeight() * 0.01),
-              const TextFieldLabel(
-                label: "Cuisine Type",
-              ),
-              CustomDropdown(
-                items: [
-                  CuisineType(id: 1, name: 'Italian'),
-                  CuisineType(id: 2, name: 'Chinese'),
-                  CuisineType(id: 3, name: 'Mexican'),
-                ].map((c) {
-                  return DropdownMenuItem<int>(
-                    value: c.id,
-                    child: CustomText(
-                      text: c.name,
-                      fontWeight: FontWeight.w400,
-                      fontSize: sizes?.fontSize16,
-                      lines: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                selectedValue: selectedCuisineId,
-                hintText: 'Select cuisine type',
-                onChanged: (id) {
-                  setState(() {
-                    selectedCuisineId = id!;
-                    selectedCuisine = [
-                      CuisineType(id: 1, name: 'Italian'),
-                      CuisineType(id: 2, name: 'Chinese'),
-                      CuisineType(id: 3, name: 'Mexican'),
-                    ].firstWhere((c) => c.id == id);
-                  });
-                },
-                validator: (id) => id == null ? 'Please select cuisine type' : null,
-              ),
+              const TextFieldLabel(label: "Cuisine Type"),
+              if (profileProvider.getCuisineTypesResponse != null)
+                CustomDropdown(
+                  items:
+                      profileProvider.getCuisineTypesResponse!.cuisineTypes!
+                          .map((c) {
+                            return DropdownMenuItem<int>(
+                              value: c.id,
+                              child: CustomText(
+                                text: c.name ?? '',
+                                fontWeight: FontWeight.w400,
+                                fontSize: sizes?.fontSize16,
+                                lines: 1,
+                                textOverflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          })
+                          .toList(),
+                  selectedValue: selectedCuisineId,
+                  hintText: 'Select cuisine type',
+                  onChanged: (id) {
+                    setState(() {
+                      selectedCuisineId = id!;
+                      selectedCuisine = [
+                        CuisineType(id: 1, name: 'Italian'),
+                        CuisineType(id: 2, name: 'Chinese'),
+                        CuisineType(id: 3, name: 'Mexican'),
+                      ].firstWhere((c) => c.id == id);
+                    });
+                  },
+                  validator:
+                      (id) => id == null ? 'Please select cuisine type' : null,
+                ),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,17 +124,28 @@ class _AddCuisineState extends State<AddCuisine> {
                   ),
                   CustomButton(
                     buttonText: 'Save Changes',
-                    onTap: () {
+                    onTap: () async {
+                      if (selectedCuisineId != null) {
+                        final success = await profileProvider.setCuisineType(
+                          cuisineTypeId: selectedCuisineId!,
+                        );
+                        if(success) {
+                          context.push(Routes.editOperationHoursRoute);
+                        }
+                      } else {
+                        Toasts.getErrorToast(text: "Select a cuisine type");
+                      }
                     },
                     buttonWidth: getWidth() * .42,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                    backgroundColor: AppColors.getPrimaryColorFromContext(
+                      context,
+                    ),
                     borderColor: Colors.transparent,
                     textColor: Colors.white,
                     textFontWeight: FontWeight.w700,
                   ),
                 ],
-              )
-
+              ),
             ],
           ),
         ),

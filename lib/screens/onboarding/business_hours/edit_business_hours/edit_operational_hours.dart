@@ -1,5 +1,8 @@
+import 'package:choice_app/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/blurry_back_ground.dart';
@@ -7,6 +10,8 @@ import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
+import '../../../../res/toasts.dart';
+import '../../../../screens/restaurant/profile/profile_provider.dart';
 import '../widgets/setup_time_popup.dart';
 
 class EditOperationalHours extends StatefulWidget {
@@ -349,7 +354,26 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                 ),
                 CustomButton(
                   buttonText: 'Save Changes',
-                  onTap: () {
+                  onTap: () async {
+                    // Check if at least one day is selected
+                    bool hasAnyActiveDay = isActive.values.any((isDayActive) => isDayActive);
+                    
+                    if (!hasAnyActiveDay) {
+                      Toasts.getErrorToast(text: "Please select at least one day");
+                      return;
+                    }
+                    
+                    final provider = Provider.of<ProfileProvider>(context, listen: false);
+                    final success = await provider.setOperationalHours(
+                      days: days,
+                      isActive: isActive,
+                      startTimes: startTimes,
+                      endTimes: endTimes,
+                    );
+                    
+                    if (success && mounted) {
+                      context.push(Routes.galleryViewRoute);
+                    }
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

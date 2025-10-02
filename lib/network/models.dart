@@ -2,6 +2,8 @@ import 'package:choice_app/models/auth_ressponse.dart';
 import 'package:choice_app/models/customer_all_posts_response.dart';
 import 'package:choice_app/models/customer_profile_response.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
+import 'package:choice_app/models/get_cuisine_types_response.dart';
+import 'package:choice_app/models/get_menu_categories_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
 import '../models/error_model.dart';
@@ -12,6 +14,10 @@ class Models {
   static const String eventsModel = "Events_MODEL";
   static const String restaurantUpdateProfileModel =
       "RESTAURANT_UPDATE_PROFILE_MODEL";
+  static const String restaurantGetCuisineTypesModel =
+      "RESTAURANT_GET_CUISINE_TYPES_MODEL";
+  static const String restaurantGetMenuCategoriesModel =
+      "RESTAURANT_GET_MENU_CATEGORIES_MODEL";
   static const String customerProfileModel =
       "CUSTOMER_PROFILE_MODEL";
   static const String customerAllPostsModel =
@@ -34,6 +40,10 @@ class Models {
         return CustomerProfileResponse.fromJson(json);
       case customerAllPostsModel:
         return CustomerAllPostsResponse.fromJson(json);
+      case restaurantGetCuisineTypesModel:
+        return GetCuisineTypesResponse.fromJson(json);
+        case restaurantGetMenuCategoriesModel:
+        return GetMenuCategoriesResponse.fromJson(json);
     }
   }
 }
