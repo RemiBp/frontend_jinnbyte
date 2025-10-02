@@ -1,6 +1,12 @@
+import 'package:choice_app/network/network_provider.dart';
+import 'package:choice_app/res/toasts.dart';
+import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -17,10 +23,47 @@ class GalleryView extends StatefulWidget {
 
 class _GalleryViewState extends State<GalleryView> {
   final ImagePicker imgPicker = ImagePicker();
+  List<XFile> selectedImages = [];
 
   ScrollController scrollController = ScrollController();
+  NetworkProvider networkProvider = NetworkProvider();
 
+  @override
+  void initState() {
+    super.initState();
 
+    networkProvider = Provider.of<NetworkProvider>(context, listen: false);
+    networkProvider.context = context;
+  }
+
+  Future<void> pickImages() async {
+    try {
+      final List<XFile> images = await imgPicker.pickMultiImage();
+      if (images.isNotEmpty) {
+        setState(() {
+          selectedImages.addAll(images);
+        });
+      }
+    } catch (e) {
+      debugPrint('Error picking images: $e');
+    }
+  }
+
+  void removeImage(int index) {
+    setState(() {
+      selectedImages.removeAt(index);
+    });
+  }
+
+  void setMainImage(int index) {
+    if (index > 0) {
+      setState(() {
+        final XFile mainImage = selectedImages[index];
+        selectedImages.removeAt(index);
+        selectedImages.insert(0, mainImage);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +88,23 @@ class _GalleryViewState extends State<GalleryView> {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        ...List.generate(3, (index) {
-
+                        ...selectedImages.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final imageFile = entry.value;
                           return GalleryCard(
                             isMainImage: index == 0,
-                            imageFile: null,
+                            imageFile: imageFile.path,
                             onSetMainImage: () {
-                              // handle set as main image
+                              setMainImage(index);
                             },
                             onRemoveImage: () {
-                              // handle remove image
+                              removeImage(index);
                             },
                           );
                         }),
                         AddImageCard(
                           onAddImages: () {
-                            // handle add image
+                            pickImages();
                           },
                         ),
                       ],
@@ -110,8 +154,28 @@ class _GalleryViewState extends State<GalleryView> {
                 ),
                 CustomButton(
                   buttonText: 'Save Changes',
-                  onTap: () {
+                  onTap: () async {
+                    if(selectedImages.isEmpty) {
+                      Toasts.getErrorToast(text: 'Please pick an image');
+                      return;
+                    }
+                    List<String> urls = [];
+                    for(final image in selectedImages) {
+                      final bytes = await image.readAsBytes();
+                      final fileUrl = await networkProvider.getUrlForFileUpload(
+                        bytes,
+                      );
+                      debugPrint('Uploaded file URL: $fileUrl');
+                      if(fileUrl != null) {
+                        urls.add(fileUrl);
+                      }
+                    }
 
+                    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                    final success = await profileProvider.setGalleryImages(imageUrls: urls);
+                    if(success) {
+                      context.push(Routes.restaurantMenuViewRoute);
+                    }
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

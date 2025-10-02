@@ -202,23 +202,23 @@ class _LoginState extends State<Login> {
   }
 
   onLoginTap() {
-    context.push(Routes.restaurantBottomTabRoute);
-    // var email = emailController.text.toString().trim();
-    // var password = passwordController.text.toString().trim();
-    //
-    // final passwordRegex = RegExp(r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}|<>_\-]+$');
-    //
-    // if (email.isEmpty) {
-    //   Toasts.getErrorToast(text: al.emailMissing);
-    // } else if (email.validateEmail() == false) {
-    //   Toasts.getErrorToast(text: al.invalidEmail);
-    // }  else if (password.isEmpty) {
-    //   Toasts.getErrorToast(text: al.passwordMissing);
-    // } else if (!passwordRegex.hasMatch(password)) {
-    //   Toasts.getErrorToast(text: al.invalidPassword);
-    // }else {
-    //   context.read<AuthProvider>().loginUser(
-    //     email: email, password: password,);
-    // }
+    // context.push(Routes.restaurantBottomTabRoute);
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
+
+    final passwordRegex = RegExp(r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}|<>_\-]+$');
+
+    if (email.isEmpty) {
+      Toasts.getErrorToast(text: al.emailMissing);
+    } else if (email.validateEmail() == false) {
+      Toasts.getErrorToast(text: al.invalidEmail);
+    }  else if (password.isEmpty) {
+      Toasts.getErrorToast(text: al.passwordMissing);
+    } else if (!passwordRegex.hasMatch(password)) {
+      Toasts.getErrorToast(text: al.invalidPassword);
+    }else {
+      context.read<AuthProvider>().loginUser(
+        email: email, password: password,);
+    }
    }
 }

@@ -8,12 +8,26 @@ import '../../../res/res.dart';
 class MenuGroupWidget extends StatelessWidget {
   final MenuGroup menuGroup;
   final Function onAddDish;
+  final Function(int, Dish)? onEditDish;
+  final Function(int)? onDeleteDish;
+  final Function()? onDeleteCategory;
   final bool? showOption;
   final bool? hideBorder;
   final String? optionText;
   final String? header;
 
-  const MenuGroupWidget({super.key, required this.menuGroup, required this.onAddDish, this.hideBorder, this.showOption, this.optionText, this.header});
+  const MenuGroupWidget({
+    super.key, 
+    required this.menuGroup, 
+    required this.onAddDish, 
+    this.onEditDish,
+    this.onDeleteDish,
+    this.onDeleteCategory,
+    this.hideBorder, 
+    this.showOption, 
+    this.optionText, 
+    this.header
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,16 @@ class MenuGroupWidget extends StatelessWidget {
           ),
         ),
         // SizedBox(height: getHeight() * 0.02),
-        ...menuGroup.dishes.map((dish) => DishItemWidget(dish: dish, showOption: showOption,)),
+        ...menuGroup.dishes.asMap().entries.map((entry) {
+          final index = entry.key;
+          final dish = entry.value;
+          return DishItemWidget(
+            dish: dish, 
+            showOption: showOption,
+            onEdit: onEditDish != null ? () => onEditDish!(index, dish) : null,
+            onDelete: onDeleteDish != null ? () => onDeleteDish!(index) : null,
+          );
+        }),
         hideBorder??false?SizedBox():
         Divider(height: getHeight() * 0.03),
       ],
@@ -90,8 +113,16 @@ class MenuGroupWithoutOptionWidget extends StatelessWidget {
 class DishItemWidget extends StatelessWidget {
   final Dish dish;
   final bool? showOption;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
-  const DishItemWidget({super.key, required this.dish, this.showOption});
+  const DishItemWidget({
+    super.key, 
+    required this.dish, 
+    this.showOption,
+    this.onEdit,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -158,10 +189,10 @@ class DishItemWidget extends StatelessWidget {
               ),
             ],
             onSelected: (value) {
-              if (value == 'edit') {
-                // handle edit
-              } else if (value == 'delete') {
-                // handle delete
+              if (value == 'edit' && onEdit != null) {
+                onEdit!();
+              } else if (value == 'delete' && onDelete != null) {
+                onDelete!();
               }
             },
           ),
@@ -171,8 +202,17 @@ class DishItemWidget extends StatelessWidget {
   }
 }
 
-class CategoryBottomSheet extends StatelessWidget {
-  const CategoryBottomSheet({super.key});
+class CategoryBottomSheet extends StatefulWidget {
+  final Function(String) onAddCategory;
+  
+  const CategoryBottomSheet({super.key, required this.onAddCategory});
+  
+  @override
+  State<CategoryBottomSheet> createState() => _CategoryBottomSheetState();
+}
+
+class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
+  final TextEditingController titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -221,6 +261,7 @@ class CategoryBottomSheet extends StatelessWidget {
                 ),
                 SizedBox(height: getHeight() * 0.03),
                 CustomField(
+                  textEditingController: titleController,
                   borderColor: AppColors.greyBordersColor,
                   hint: "E.g: Eat Day, Main Menu, Specials...",
                   label: "Category Title",
@@ -240,7 +281,12 @@ class CategoryBottomSheet extends StatelessWidget {
                     ),
                     CustomButton(
                       buttonText: 'Save',
-                      onTap: () {},
+                      onTap: () {
+                        if (titleController.text.trim().isNotEmpty) {
+                          widget.onAddCategory(titleController.text.trim());
+                          Navigator.pop(context);
+                        }
+                      },
                       buttonWidth: getWidth() * .42,
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
                       borderColor: Colors.transparent,
@@ -256,10 +302,45 @@ class CategoryBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
 }
 
-class AddDishBottomSheet extends StatelessWidget {
-  const AddDishBottomSheet({super.key, required BuildContext context});
+class AddDishBottomSheet extends StatefulWidget {
+  final BuildContext context;
+  final Function(Dish) onAddDish;
+  final Dish? dish; // For editing existing dish
+  
+  const AddDishBottomSheet({
+    super.key, 
+    required this.context,
+    required this.onAddDish,
+    this.dish,
+  });
+  
+  @override
+  State<AddDishBottomSheet> createState() => _AddDishBottomSheetState();
+}
+
+class _AddDishBottomSheetState extends State<AddDishBottomSheet> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // If editing existing dish, populate fields
+    if (widget.dish != null) {
+      nameController.text = widget.dish!.name;
+      priceController.text = widget.dish!.price.toString();
+      descriptionController.text = widget.dish!.description;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -290,69 +371,93 @@ class AddDishBottomSheet extends StatelessWidget {
                 ),
               ),
               SizedBox(height: getHeight() * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: 'Add Dish',
-                    fontSize: sizes?.fontSize18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.blackColor,
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.close, color: AppColors.primarySlateColor),
-                  ),
-                ],
-              ),
-              SizedBox(height: getHeight() * 0.03),
-              CustomField(
-                borderColor: AppColors.greyBordersColor,
-                hint: "E.g: Brochette boeuf...",
-                label: "Dish Name",
-              ),
-              SizedBox(height: getHeight() * 0.02),
-              CustomField(
-                borderColor: AppColors.greyBordersColor,
-                hint: "E.g: \$0.00",
-                label: "Price",
-              ),
-              SizedBox(height: getHeight() * 0.02),
-              CustomField(
-                height: getHeight() * .1,
-                borderColor: AppColors.greyBordersColor,
-                hint: "Brief description of the dish...",
-                label: "Description (Optional)",
-              ),
-              SizedBox(height: getHeight() * 0.03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                    buttonText: 'Cancel',
-                    onTap: () => Navigator.pop(context),
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.blackColor,
-                    textColor: AppColors.blackColor,
-                    textFontWeight: FontWeight.w700,
-                  ),
-                  CustomButton(
-                    buttonText: 'Save',
-                    onTap: () {},
-                    buttonWidth: getWidth() * .42,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                    borderColor: Colors.transparent,
-                    textColor: Colors.white,
-                    textFontWeight: FontWeight.w700,
-                  ),
-                ],
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: widget.dish != null ? 'Edit Dish' : 'Add Dish',
+                      fontSize: sizes?.fontSize18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.blackColor,
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(Icons.close, color: AppColors.primarySlateColor),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getHeight() * 0.03),
+                CustomField(
+                  textEditingController: nameController,
+                  borderColor: AppColors.greyBordersColor,
+                  hint: "E.g: Brochette boeuf...",
+                  label: "Dish Name",
+                ),
+                SizedBox(height: getHeight() * 0.02),
+                CustomField(
+                  textEditingController: priceController,
+                  borderColor: AppColors.greyBordersColor,
+                  hint: "E.g: \$0.00",
+                  label: "Price",
+                  textInputType: TextInputType.number,
+                ),
+                SizedBox(height: getHeight() * 0.02),
+                CustomField(
+                  textEditingController: descriptionController,
+                  height: getHeight() * .1,
+                  borderColor: AppColors.greyBordersColor,
+                  hint: "Brief description of the dish...",
+                  label: "Description (Optional)",
+                ),
+                SizedBox(height: getHeight() * 0.03),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButton(
+                      buttonText: 'Cancel',
+                      onTap: () => Navigator.pop(context),
+                      buttonWidth: getWidth() * .42,
+                      backgroundColor: Colors.transparent,
+                      borderColor: AppColors.blackColor,
+                      textColor: AppColors.blackColor,
+                      textFontWeight: FontWeight.w700,
+                    ),
+                    CustomButton(
+                      buttonText: 'Save',
+                      onTap: () {
+                        if (nameController.text.trim().isNotEmpty && 
+                            priceController.text.trim().isNotEmpty) {
+                          final price = double.tryParse(priceController.text.trim()) ?? 0.0;
+                          final dish = Dish(
+                            name: nameController.text.trim(),
+                            description: descriptionController.text.trim(),
+                            price: price,
+                          );
+                          widget.onAddDish(dish);
+                          Navigator.pop(context);
+                        }
+                      },
+                      buttonWidth: getWidth() * .42,
+                      backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                      borderColor: Colors.transparent,
+                      textColor: Colors.white,
+                      textFontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    priceController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
 }
 

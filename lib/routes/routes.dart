@@ -8,7 +8,11 @@ import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
+import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
+import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
+import 'package:choice_app/screens/onboarding/menu/menu_view.dart';
+import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
 import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
@@ -41,6 +45,8 @@ class Routes {
   static const String forgotPasswordRoute = '/forgot_password';
   static const String resetPasswordRoute = '/reset_password';
   static const String editOperationHoursRoute = '/edit_operation_hours';
+  static const String galleryViewRoute = '/gallery_view';
+  static const String slotManagementViewRoute = '/slot_management_view';
 
   // restaurant
   static const String restaurantProfileRoute = '/restaurant_profile';
@@ -49,6 +55,8 @@ class Routes {
   static const String restaurantEventDetailsRoute = '/restaurant_event_details';
   static const String restaurantBottomTabRoute = '/restaurant_bottom_tab';
   static const String restaurantCreatePostRoute = '/restaurant_create_post';
+  static const String restaurantAddCuisineRoute = '/restaurant_add_cuisine';
+  static const String restaurantMenuViewRoute = '/restaurant_menu_view';
 
   //Customer
   static const String customerHomeRoute = '/customer_home';
@@ -101,6 +109,14 @@ final GoRouter router = GoRouter(
       path: Routes.editOperationHoursRoute,
       builder: (context, state) => const EditOperationalHours(),
     ),
+    GoRoute(
+      path: Routes.galleryViewRoute,
+      builder: (context, state) => const GalleryView(),
+    ),
+    GoRoute(
+      path: Routes.slotManagementViewRoute,
+      builder: (context, state) => const SlotManagementView(),
+    ),
 
     // restaurant
     GoRoute(
@@ -126,6 +142,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/restaurant_create_post',
       builder: (context, state) => const CreatePost(),
+    ),
+    GoRoute(
+      path: Routes.restaurantAddCuisineRoute,
+      builder: (context, state) => const AddCuisine(),
+    ),
+    GoRoute(
+      path: Routes.restaurantMenuViewRoute,
+      builder: (context, state) => const MenuView(),
     ),
 
     //Customer

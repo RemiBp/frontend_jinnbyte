@@ -22,14 +22,25 @@ class MyApi {
   }) async {
     try {
       var dio = Dio();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (!connectivityResult.contains( ConnectivityResult.none)) {
+      // Temporarily bypass connectivity check - set to true
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // debugPrint("Connectivity result: $connectivityResult");
+      // bool hasConnection = connectivityResult.any((result) => 
+      //   result == ConnectivityResult.mobile || result == ConnectivityResult.wifi);
+      if (true) { // Always allow API calls for now
         Map<String, dynamic> header = {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
         Response response = await dio.get(url!,
             options: Options(headers: header), queryParameters: parameters);
+        
+        debugPrint("=== API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("==================");
+        
         switch (response.statusCode) {
           case 200:
             debugPrint('Case 200 Come');
@@ -44,10 +55,12 @@ class MyApi {
             return getModelObj;
 
           default:
+            debugPrint("API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: Strings.badHappenedError);
             return null;
         }
       } else {
+        debugPrint("No internet connection detected");
         Toasts.getErrorToast(text: "No internet");
         return null;
       }
@@ -109,17 +122,29 @@ class MyApi {
       dynamic modelName}) async {
     try {
       var dio = Dio();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (!connectivityResult.contains( ConnectivityResult.none)) {
+      // Temporarily bypass connectivity check - set to true
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // debugPrint("Connectivity result: $connectivityResult");
+      // bool hasConnection = connectivityResult.any((result) => 
+      //   result == ConnectivityResult.mobile || result == ConnectivityResult.wifi);
+      if (true) { // Always allow API calls for now
         Map<String, dynamic> header = {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
         debugPrint("headers are : $header");
+        debugPrint("Request Body: $body");
         Response response = await dio.post(url!,
             options: Options(headers: header),
             data: body,
             queryParameters: parameters);
+        
+        debugPrint("=== POST API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("========================");
+        
         switch (response.statusCode) {
           case 200||201:
             if(modelName!=null){
@@ -130,6 +155,7 @@ class MyApi {
 
 
           default:
+            debugPrint("POST API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: Strings.badHappenedError);
             return null;
         }
@@ -138,7 +164,12 @@ class MyApi {
         return null;
       }
     } on DioException catch (ex) {
-      debugPrint("Error in post api is : $ex");
+      debugPrint("=== POST API ERROR ===");
+      debugPrint("Error: $ex");
+      debugPrint("Status Code: ${ex.response?.statusCode}");
+      debugPrint("Error Data: ${ex.response?.data}");
+      debugPrint("=====================");
+      
       if (ex.response != null) {
         ErrorResponse errorResponse =
             await Models.getModelObject(Models.errorModel, ex.response?.data);
@@ -202,10 +233,18 @@ class MyApi {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
+        debugPrint("PATCH Request Body: $body");
         Response response = await dio.patch(url!,
             options: Options(headers: header),
             data: body,
             queryParameters: parameters);
+        
+        debugPrint("=== PATCH API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("=========================");
+        
         switch (response.statusCode) {
           case 200:
             dynamic modelObj =
@@ -219,6 +258,7 @@ class MyApi {
             return modelObj;
 
           default:
+            debugPrint("PATCH API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: al.genericError);
             return null;
         }
@@ -281,16 +321,28 @@ class MyApi {
   }) async {
     try {
       var dio = Dio();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (!connectivityResult.contains(ConnectivityResult.none)) {
+      // Temporarily bypass connectivity check - set to true
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // debugPrint("Connectivity result: $connectivityResult");
+      // bool hasConnection = connectivityResult.any((result) => 
+      //   result == ConnectivityResult.mobile || result == ConnectivityResult.wifi);
+      if (true) { // Always allow API calls for now
         Map<String, dynamic> header = {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
+        debugPrint("GET Request Body: $body");
         Response response = await dio.get(url!,
             data: body,
             options: Options(headers: header),
             queryParameters: parameters);
+        
+        debugPrint("=== GET API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("=======================");
+        
         switch (response.statusCode) {
           case 200:
             dynamic getModelObj =
@@ -304,6 +356,7 @@ class MyApi {
             return getModelObj;
 
           default:
+            debugPrint("GET API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: al.genericError);
             return null;
         }
@@ -312,8 +365,11 @@ class MyApi {
         return null;
       }
     } on DioException catch (ex) {
-      debugPrint(
-          "error in get api is : ${ex.response?.data}, with status code : ${ex.response?.statusCode}");
+      debugPrint("=== GET API ERROR ===");
+      debugPrint("Error: $ex");
+      debugPrint("Status Code: ${ex.response?.statusCode}");
+      debugPrint("Error Data: ${ex.response?.data}");
+      debugPrint("====================");
 
       if (ex.response != null) {
         ErrorResponse errorResponse = ex.response?.data is! String
@@ -366,16 +422,28 @@ class MyApi {
       dynamic modelName}) async {
     try {
       var dio = Dio();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (!connectivityResult.contains( ConnectivityResult.none)) {
+      // Temporarily bypass connectivity check - set to true
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // debugPrint("Connectivity result: $connectivityResult");
+      // bool hasConnection = connectivityResult.any((result) => 
+      //   result == ConnectivityResult.mobile || result == ConnectivityResult.wifi);
+      if (true) { // Always allow API calls for now
         Map<String, dynamic> header = {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
+        debugPrint("PUT Request Body: $body");
         Response response = await dio.put(url!,
             options: Options(headers: header),
             data: body,
             queryParameters: parameters);
+        
+        debugPrint("=== PUT API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("======================");
+        
         switch (response.statusCode) {
           case 200:
             dynamic modelObj =
@@ -389,6 +457,7 @@ class MyApi {
             return modelObj;
 
           default:
+            debugPrint("PUT API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: Strings.badHappenedError);
             return null;
         }
@@ -450,16 +519,28 @@ class MyApi {
       dynamic modelName}) async {
     try {
       var dio = Dio();
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (!connectivityResult.contains( ConnectivityResult.none)) {
+      // Temporarily bypass connectivity check - set to true
+      // var connectivityResult = await (Connectivity().checkConnectivity());
+      // debugPrint("Connectivity result: $connectivityResult");
+      // bool hasConnection = connectivityResult.any((result) => 
+      //   result == ConnectivityResult.mobile || result == ConnectivityResult.wifi);
+      if (true) { // Always allow API calls for now
         Map<String, dynamic> header = {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ${PreferenceUtils.getString(Strings.token)}'
         };
+        debugPrint("DELETE Request Body: $body");
         Response response = await dio.delete(url!,
             options: Options(headers: header),
             data: body,
             queryParameters: parameters);
+        
+        debugPrint("=== DELETE API RESPONSE ===");
+        debugPrint("URL: $url");
+        debugPrint("Status Code: ${response.statusCode}");
+        debugPrint("Response Data: ${response.data}");
+        debugPrint("=========================");
+        
         switch (response.statusCode) {
           case 200:
             dynamic modelObj =
@@ -473,6 +554,7 @@ class MyApi {
             return modelObj;
 
           default:
+            debugPrint("DELETE API Error - Status Code: ${response.statusCode}");
             Toasts.getErrorToast(text: Strings.badHappenedError);
             return null;
         }

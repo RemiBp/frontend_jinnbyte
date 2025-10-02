@@ -1,5 +1,7 @@
 import 'package:choice_app/models/auth_ressponse.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
+import 'package:choice_app/models/get_cuisine_types_response.dart';
+import 'package:choice_app/models/get_menu_categories_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
 import '../models/error_model.dart';
@@ -10,6 +12,10 @@ class Models {
   static const String eventsModel = "Events_MODEL";
   static const String restaurantUpdateProfileModel =
       "RESTAURANT_UPDATE_PROFILE_MODEL";
+  static const String restaurantGetCuisineTypesModel =
+      "RESTAURANT_GET_CUISINE_TYPES_MODEL";
+  static const String restaurantGetMenuCategoriesModel =
+      "RESTAURANT_GET_MENU_CATEGORIES_MODEL";
 
   static Future<dynamic> getModelObject(
     String modelName,
@@ -24,6 +30,10 @@ class Models {
         return GetAllEventsResponse.fromJson(json);
       case restaurantUpdateProfileModel:
         return RestaurantUpdateProfileResponse.fromJson(json);
+      case restaurantGetCuisineTypesModel:
+        return GetCuisineTypesResponse.fromJson(json);
+        case restaurantGetMenuCategoriesModel:
+        return GetMenuCategoriesResponse.fromJson(json);
     }
   }
 }

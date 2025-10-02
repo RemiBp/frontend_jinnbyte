@@ -125,6 +125,7 @@ class AuthProvider extends ChangeNotifier{
           "email": email,
           "isResetPassFlow": false,
         });
+        globalBusinessName = businessName;
       }
       _loader.hideLoader(context!);
     } catch (err) {
@@ -199,7 +200,7 @@ class AuthProvider extends ChangeNotifier{
       if (response?["message"] != null) {
         Toasts.getSuccessToast(text: response?["message"]);
         _loader.hideLoader(context!);
-        context?.push(Routes.restaurantBottomTabRoute);
+        context?.push(Routes.restaurantProfileRoute);
         return;
       }
       _loader.hideLoader(context!);

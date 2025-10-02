@@ -1,5 +1,7 @@
+import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -31,74 +33,39 @@ class _SlotManagementViewState extends State<SlotManagementView> {
   bool sunday = false;
   bool isEdit = true;
 
-  final dummySlotsData = [
-    {
-      "day": "Monday",
-      "slots": [
-        Slots(id: 1, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 2, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 3, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 4, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Tuesday",
-      "slots": [
-        Slots(id: 5, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 6, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 7, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 8, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Wednesday",
-      "slots": [
-        Slots(id: 9, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 10, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 11, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 12, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Thursday",
-      "slots": [
-        Slots(id: 13, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 14, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 15, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 16, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Friday",
-      "slots": [
-        Slots(id: 17, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 18, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 19, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 20, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Saturday",
-      "slots": [
-        Slots(id: 21, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 22, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 23, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 24, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-    {
-      "day": "Sunday",
-      "slots": [
-        Slots(id: 25, startTime: "09:00", endTime: "10:00"),
-        Slots(id: 26, startTime: "10:00", endTime: "11:00"),
-        Slots(id: 27, startTime: "11:00", endTime: "12:00"),
-        Slots(id: 28, startTime: "12:00", endTime: "01:00"),
-      ]
-    },
-  ];
-
-
   Map<String, List<int>> selectedDayWiseSlots = {};
+  List<Map<String, dynamic>> slotsData = [];
+
+  List<Map<String, dynamic>> _generateSlotsForDuration(int duration) {
+    List<Map<String, dynamic>> generatedSlots = [];
+    List<String> days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    
+    for (String day in days) {
+      List<Slots> daySlots = [];
+      int slotId = 1;
+      
+      // Generate slots from 9:00 AM to 6:00 PM (9 hours)
+      for (int hour = 9; hour < 18; hour += duration) {
+        String startTime = "${hour.toString().padLeft(2, '0')}:00";
+        int endHour = hour + duration;
+        String endTime = "${endHour.toString().padLeft(2, '0')}:00";
+        
+        daySlots.add(Slots(
+          id: slotId,
+          startTime: startTime,
+          endTime: endTime,
+        ));
+        slotId++;
+      }
+      
+      generatedSlots.add({
+        "day": day,
+        "slots": daySlots,
+      });
+    }
+    
+    return generatedSlots;
+  }
 
 
 
@@ -112,8 +79,19 @@ class _SlotManagementViewState extends State<SlotManagementView> {
   @override
   void initState() {
     super.initState();
-    isEdit = widget.isEdit??false;
-    for (var item in dummySlotsData) {
+    isEdit = widget.isEdit ?? true;
+    _initializeSlotsData();
+  }
+
+  void _initializeSlotsData() {
+    // Initialize with default 1-hour slots
+    slotsData = _generateSlotsForDuration(1);
+    _initializeSelectedSlots();
+  }
+
+  void _initializeSelectedSlots() {
+    selectedDayWiseSlots.clear();
+    for (var item in slotsData) {
       final day = item['day'] as String;
       selectedDayWiseSlots[day] = []; // initialize empty selections
     }
@@ -170,18 +148,13 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                     selectedValue: selectedHour,
                     // selectedValue: provider.getDurationResponse.slotDuration != null ? double.parse(provider.getDurationResponse.slotDuration!).toInt() : selectedHour,
                     hintText: 'Select duration',
-                    onChanged: (id) async{
-                      // bool isSuccess = await provider.setDurationAPI(
-                      //     context: context,
-                      //     duration: id??0
-                      // );
-                      // if(isSuccess){
-                      //   setState(() {
-                      //     selectedHour = id!;
-                      //     provider.slotManagementFormKey.currentState?.validate();
-                      //   });
-                      //   slotManagementProvider.getSlotsEndPointAPI();
-                      // }
+                    onChanged: (id) async {
+                      setState(() {
+                        selectedHour = id!;
+                        // Regenerate slots based on selected duration
+                        slotsData = _generateSlotsForDuration(id!);
+                        _initializeSelectedSlots();
+                      });
                     },
                     validator: (id) => id == null ? 'Please select duration' : null,
                   ),
@@ -214,10 +187,10 @@ class _SlotManagementViewState extends State<SlotManagementView> {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
-                  itemCount: dummySlotsData.length,
+                  itemCount: slotsData.length,
                   itemBuilder: (context, index) {
-                    final currentDay = dummySlotsData[index]["day"] as String;
-                    final allSlotsOfDay = dummySlotsData[index]["slots"] as List<Slots>;
+                    final currentDay = slotsData[index]["day"] as String;
+                    final allSlotsOfDay = slotsData[index]["slots"] as List<Slots>;
                     final selectedIds = selectedDayWiseSlots[currentDay] ?? [];
 
                     final isChecked = selectedIds.length == allSlotsOfDay.length &&
@@ -246,21 +219,17 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                         ),
                         SizedBox(height: getHeightRatio() * 6),
                         MultiSlotSelection(
+                          key: ValueKey('${currentDay}_${selectedHour ?? 1}'),
                           options: allSlotsOfDay,
                           isEdit: isEdit,
-                          initialSelection: allSlotsOfDay
-                              .where((slot) => selectedIds.contains(slot.id))
-                              .toList(),
+                          initialSelection: selectedIds.isEmpty 
+                              ? <Slots>[]
+                              : allSlotsOfDay.where((slot) => selectedIds.contains(slot.id)).toList(),
                           onSelectionChanged: (selectedSlots) {
                             setState(() {
                               selectedDayWiseSlots[currentDay] =
                                   selectedSlots.map((slot) => slot.id).toList();
                             });
-                            // setState(() {
-                            //   // selectedSlots.cast<Slots>().map((slot) => slot.id).toList();
-                            //   selectedDayWiseSlots[currentDay] =
-                            //       selectedSlots.map((slot) => slot.id).toList();
-                            // });
                           },
                           chipPadding: const EdgeInsets.all(8),
                         ),
@@ -290,6 +259,8 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                     CustomButton(
                       buttonText: 'Save Changes',
                       onTap: () {
+                        _saveSlotSelections();
+                        context.go(Routes.restaurantBottomTabRoute);
                       },
                       buttonWidth: getWidth() * .42,
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
@@ -340,6 +311,35 @@ class _SlotManagementViewState extends State<SlotManagementView> {
     }
   }
 
+  void _saveSlotSelections() {
+    debugPrint('=== SLOT SELECTIONS SAVED ===');
+    debugPrint('Selected Duration: ${selectedHour ?? 'Not selected'} hours');
+    debugPrint('Selected Slots:');
+    
+    for (String day in selectedDayWiseSlots.keys) {
+      List<int> selectedSlots = selectedDayWiseSlots[day] ?? [];
+      if (selectedSlots.isNotEmpty) {
+        debugPrint('$day: ${selectedSlots.length} slots selected');
+        
+        // Get the actual slot details
+        var dayData = slotsData.firstWhere((item) => item['day'] == day);
+        List<Slots> allSlots = dayData['slots'] as List<Slots>;
+        
+        for (int slotId in selectedSlots) {
+          var slot = allSlots.firstWhere((s) => s.id == slotId);
+          debugPrint('  - ${slot.startTime} to ${slot.endTime}');
+        }
+      } else {
+        debugPrint('$day: No slots selected');
+      }
+    }
+    debugPrint('=============================');
+    
+    // TODO: Implement API call to save slot selections
+    // For now, just show success message and navigate back
+    Navigator.pop(context);
+  }
+
 
 }
 
@@ -351,4 +351,13 @@ class Slots {
   final String endTime;
 
   Slots({required this.id, required this.startTime, required this.endTime});
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Slots && other.id == id && other.startTime == startTime && other.endTime == endTime;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ startTime.hashCode ^ endTime.hashCode;
 }
