@@ -1,4 +1,6 @@
 import 'package:choice_app/models/auth_ressponse.dart';
+import 'package:choice_app/models/customer_all_posts_response.dart';
+import 'package:choice_app/models/customer_profile_response.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
@@ -10,6 +12,10 @@ class Models {
   static const String eventsModel = "Events_MODEL";
   static const String restaurantUpdateProfileModel =
       "RESTAURANT_UPDATE_PROFILE_MODEL";
+  static const String customerProfileModel =
+      "CUSTOMER_PROFILE_MODEL";
+  static const String customerAllPostsModel =
+      "CUSTOMER_ALL_POSTS_MODEL";
 
   static Future<dynamic> getModelObject(
     String modelName,
@@ -24,6 +30,10 @@ class Models {
         return GetAllEventsResponse.fromJson(json);
       case restaurantUpdateProfileModel:
         return RestaurantUpdateProfileResponse.fromJson(json);
+      case customerProfileModel:
+        return CustomerProfileResponse.fromJson(json);
+      case customerAllPostsModel:
+        return CustomerAllPostsResponse.fromJson(json);
     }
   }
 }

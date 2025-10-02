@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_widget.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile_tab_bar/customer_profile_tab_bar.dart';
 import 'package:choice_app/screens/leisure/leisure_profile_tab_bar/leisure_profile_tab_bar.dart';
 import 'package:choice_app/screens/wellness/wellness_profile_tab_bar/wellness_Profile_tab_bar.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../customer/home/home_widgets.dart';
+import '../../customer/profile/customer_profile/customer_profile_provider.dart';
 
 class RestaurantChoiceView extends StatefulWidget {
   final bool? enableOnTap;
@@ -56,4 +58,8 @@ class _RestaurantChoiceViewState extends State<RestaurantChoiceView> {
     );
   }
 }
+
+
+
+
 

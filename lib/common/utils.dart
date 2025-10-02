@@ -97,12 +97,13 @@ class PreferenceUtils {
     return _prefsInstance?.getString(Strings.subscriptionStatus) == "Paid";
   }
 
-  static Future<void>  setAuthResponse(AuthResponse registrationResponse)async{
-    await PreferenceUtils.setString(Strings.token, registrationResponse.accessToken??"nil");
-    await PreferenceUtils.setString(Strings.refreshToken, registrationResponse.refreshToken??"nil");
-    await PreferenceUtils.setString(Strings.email, registrationResponse.user?.email??"nil");
-    await PreferenceUtils.setString(Strings.role, registrationResponse.user?.role?.name??"nil");
+  static Future<void>  setAuthResponse(AuthResponse authResponse)async{
+    await PreferenceUtils.setString(Strings.token, authResponse.accessToken??"nil");
+    await PreferenceUtils.setString(Strings.refreshToken, authResponse.refreshToken??"nil");
+    await PreferenceUtils.setString(Strings.email, authResponse.user?.email??"nil");
+    await PreferenceUtils.setString(Strings.role, authResponse.user?.role?.name??"nil");
   }
+
 
   static clearPreferences() {
     _prefsInstance?.clear();

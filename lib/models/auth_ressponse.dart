@@ -35,9 +35,9 @@ class User {
     id = json['id'];
     email = json['email'];
     isActive = json['isActive'];
-    role = json['role'] != null ? new Role.fromJson(json['role']) : null;
+    role = json['role'] != null ?  Role.fromJson(json['role']) : null;
     businessProfile = json['businessProfile'] != null
-        ? new BusinessProfile.fromJson(json['businessProfile'])
+        ?  BusinessProfile.fromJson(json['businessProfile'])
         : null;
   }
 

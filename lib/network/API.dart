@@ -291,16 +291,18 @@ class MyApi {
             options: Options(headers: header),
             queryParameters: parameters);
         switch (response.statusCode) {
-          case 200:
-            dynamic getModelObj =
-                await Models.getModelObject(modelName, response.data);
+          case 200||201:
+            if(modelName!=null){
+              return await Models.getModelObject(modelName, response.data);
+            }else{
+              return response.data;
+            }
             // if (getModelObj.code == 1) {
             //   return getModelObj;
             // } else {
             //   Toasts.getErrorToast(text: getModelObj.message);
             // }
             // return null;
-            return getModelObj;
 
           default:
             Toasts.getErrorToast(text: Strings.badHappenedError);
