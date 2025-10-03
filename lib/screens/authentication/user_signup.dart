@@ -206,6 +206,7 @@ class _UserSignupState extends State<UserSignup> {
                           },
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          activeColor: AppColors.getPrimaryColorFromContext(context),
                         );
                       },
                     ),                  ),

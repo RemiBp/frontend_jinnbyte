@@ -15,7 +15,10 @@ import 'package:phone_form_field/phone_form_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../common/utils.dart';
 import '../../../l18n.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -34,6 +37,11 @@ class _ProfileState extends State<Profile> {
   late final TextEditingController facebookController;
   late final TextEditingController descriptionController;
 
+  // Extra controllers for user role
+  late final TextEditingController fullNameController;
+  late final TextEditingController usernameController;
+  late final TextEditingController emailController;
+
   NetworkProvider networkProvider = NetworkProvider();
 
   @override
@@ -47,6 +55,14 @@ class _ProfileState extends State<Profile> {
     twitterController = TextEditingController();
     facebookController = TextEditingController();
     descriptionController = TextEditingController();
+
+    fullNameController = TextEditingController();
+    usernameController = TextEditingController();
+    //emailController = TextEditingController();
+
+    // Pre-fill email from login
+    emailController = TextEditingController(text: PreferenceUtils.email);
+
 
     final provider = Provider.of<ProfileProvider>(context, listen: false);
     provider.init(context);
@@ -65,12 +81,18 @@ class _ProfileState extends State<Profile> {
     twitterController.dispose();
     facebookController.dispose();
     descriptionController.dispose();
+
+    fullNameController.dispose();
+    usernameController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProfileProvider>(context);
+    final roleProvider = context.read<RoleProvider>(); // get current role
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -80,6 +102,7 @@ class _ProfileState extends State<Profile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // --- Header ---
             Row(
               children: [
                 if (context.canPop()) ...[
@@ -103,6 +126,8 @@ class _ProfileState extends State<Profile> {
               giveLinesAsText: true,
             ),
             SizedBox(height: getHeight() * .02),
+
+            // --- Profile Image ---
             Stack(
               alignment: Alignment.bottomRight,
               clipBehavior: Clip.none, // allow overflow
@@ -110,30 +135,27 @@ class _ProfileState extends State<Profile> {
                 CircleAvatar(
                   radius: getHeight() * .07,
                   backgroundColor: AppColors.greyColor,
-                  backgroundImage:
-                      provider.profileImage != null
-                          ? FileImage(provider.profileImage!)
-                          : null,
-                  child:
-                      provider.profileImage == null
-                          ? SvgPicture.asset(
-                            Assets.userIcon,
-                            height: getHeight() * .05,
-                            colorFilter: ColorFilter.mode(
-                              Colors.grey.shade600,
-                              BlendMode.srcIn,
-                            ),
-                          )
-                          : null,
+                  backgroundImage: provider.profileImage != null
+                      ? FileImage(provider.profileImage!)
+                      : null,
+                  child: provider.profileImage == null
+                      ? SvgPicture.asset(
+                    Assets.userIcon,
+                    height: getHeight() * .05,
+                    colorFilter: ColorFilter.mode(
+                      Colors.grey.shade600,
+                      BlendMode.srcIn,
+                    ),
+                  )
+                      : null,
                 ),
                 Positioned(
-                  right: -getWidth() * .017,  // push outward horizontally
-                  bottom: -getHeight() * .017, // push outward vertically
+                  right: -getWidth() * .017,
+                  bottom: -getHeight() * .017,
                   child: IconButton.filled(
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.getPrimaryColorFromContext(
-                        context,
-                      ),
+                      backgroundColor:
+                      AppColors.getPrimaryColorFromContext(context),
                     ),
                     onPressed: () {
                       showModalBottomSheet(
@@ -152,97 +174,194 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
-            SizedBox(height: getHeight() * .03),
-            CustomField(
-              textEditingController: addressController,
-              borderColor: AppColors.greyBordersColor,
-              hint: al.address,
-              label: al.address,
-            ),
-            SizedBox(height: getHeight() * .02),
-            Row(
-              children: [
-                CustomText(
-                  text: al.phoneNumber,
-                  fontSize: sizes!.fontSize14,
-                  fontFamily: Assets.onsetMedium,
-                ),
-                CustomText(
-                  text: ' *',
-                  fontSize: sizes!.fontSize14,
-                  fontFamily: Assets.onsetMedium,
-                  color: AppColors.redColor,
-                ),
 
-              ],
-            ),
-            SizedBox(height: getHeight() * .01),
-            PhoneFormField(
-              initialValue: provider.phoneNumber ?? PhoneNumber.parse('+33'),
-              countrySelectorNavigator: const CountrySelectorNavigator.page(),
-              onChanged: (phoneNumber) => provider.setPhoneNumber(phoneNumber),
-              decoration: InputDecoration(
-                border: buildOutlineInputBorder(AppColors.greyBordersColor),
-                focusedBorder: buildOutlineInputBorder(
-                  AppColors.inputHintColor,
+            SizedBox(height: getHeight() * .03),
+
+            // --- Fields for USER role ---
+            if (roleProvider.role == UserRole.user) ...[
+              CustomField(
+                textEditingController: fullNameController,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.fullNamePlaceholder,
+                label: al.fullName,
+              ),
+              SizedBox(height: getHeight() * .02),
+              CustomField(
+                textEditingController: usernameController,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.userNamePlaceholder,
+                label: al.userName,
+              ),
+              SizedBox(height: getHeight() * .02),
+              CustomField(
+                textEditingController: emailController,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.emailPlaceholder,
+                label: al.emailLabel,
+                enabled: false,
+                bgColor: AppColors.greyColor.withValues(alpha: 0.9),
+              ),
+              SizedBox(height: getHeight() * .02),
+
+              // Phone
+              Row(
+                children: [
+                  CustomText(
+                    text: al.phoneNumber,
+                    fontSize: sizes!.fontSize14,
+                    fontFamily: Assets.onsetMedium,
+                  ),
+                  CustomText(
+                    text: ' *',
+                    fontSize: sizes!.fontSize14,
+                    fontFamily: Assets.onsetMedium,
+                    color: AppColors.redColor,
+                  ),
+                ],
+              ),
+              SizedBox(height: getHeight() * .01),
+              PhoneFormField(
+                initialValue:
+                provider.phoneNumber ?? PhoneNumber.parse('+33'),
+                countrySelectorNavigator:
+                const CountrySelectorNavigator.page(),
+                onChanged: (phoneNumber) =>
+                    provider.setPhoneNumber(phoneNumber),
+                decoration: InputDecoration(
+                  border:
+                  buildOutlineInputBorder(AppColors.greyBordersColor),
+                  focusedBorder: buildOutlineInputBorder(
+                    AppColors.inputHintColor,
+                  ),
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
                 ),
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
+                enabled: true,
+                isCountrySelectionEnabled: true,
+                isCountryButtonPersistent: true,
+                countryButtonStyle: const CountryButtonStyle(
+                  showDialCode: true,
+                  showIsoCode: true,
+                  showFlag: true,
+                  flagSize: 16,
+                ),
               ),
-              enabled: true,
-              isCountrySelectionEnabled: true,
-              isCountryButtonPersistent: true,
-              countryButtonStyle: const CountryButtonStyle(
-                showDialCode: true,
-                showIsoCode: true,
-                showFlag: true,
-                flagSize: 16,
+              SizedBox(height: getHeight() * .02),
+
+              // Brief Description
+              CustomField(
+                textEditingController: descriptionController,
+                height: getHeight() * .1,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.writeSomethingBrief,
+                label: al.briefDescription,
+                maxLines: 3,
               ),
-            ),
+            ]
+
+            // --- Fields for RESTAURANT/OTHERS ---
+            else ...[
+              CustomField(
+                textEditingController: addressController,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.address,
+                label: al.address,
+              ),
+              SizedBox(height: getHeight() * .02),
+
+              // phone
+              Row(
+                children: [
+                  CustomText(
+                    text: al.phoneNumber,
+                    fontSize: sizes!.fontSize14,
+                    fontFamily: Assets.onsetMedium,
+                  ),
+                  CustomText(
+                    text: ' *',
+                    fontSize: sizes!.fontSize14,
+                    fontFamily: Assets.onsetMedium,
+                    color: AppColors.redColor,
+                  ),
+                ],
+              ),
+              SizedBox(height: getHeight() * .01),
+              PhoneFormField(
+                initialValue:
+                provider.phoneNumber ?? PhoneNumber.parse('+33'),
+                countrySelectorNavigator:
+                const CountrySelectorNavigator.page(),
+                onChanged: (phoneNumber) =>
+                    provider.setPhoneNumber(phoneNumber),
+                decoration: InputDecoration(
+                  border:
+                  buildOutlineInputBorder(AppColors.greyBordersColor),
+                  focusedBorder: buildOutlineInputBorder(
+                    AppColors.inputHintColor,
+                  ),
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                ),
+                enabled: true,
+                isCountrySelectionEnabled: true,
+                isCountryButtonPersistent: true,
+                countryButtonStyle: const CountryButtonStyle(
+                  showDialCode: true,
+                  showIsoCode: true,
+                  showFlag: true,
+                  flagSize: 16,
+                ),
+              ),
+              SizedBox(height: getHeight() * .02),
+
+              CustomText(
+                text: al.links,
+                fontSize: sizes!.fontSize14,
+                fontFamily: Assets.onsetMedium,
+              ),
+              SizedBox(height: getHeight() * .01),
+              CustomField(
+                textEditingController: websiteController,
+                borderColor: AppColors.greyBordersColor,
+                hint: "yoursite.io",
+                prefixIconSvg: Assets.websiteIcon,
+              ),
+              SizedBox(height: getHeight() * .02),
+              CustomField(
+                textEditingController: instagramController,
+                borderColor: AppColors.greyBordersColor,
+                hint: "https://www.instagram.com/@yourhandle",
+                prefixIconSvg: Assets.instagramIcon,
+              ),
+              SizedBox(height: getHeight() * .02),
+              CustomField(
+                textEditingController: twitterController,
+                borderColor: AppColors.greyBordersColor,
+                hint: "https://www.twitter.com/@yourhandle",
+                prefixIconSvg: Assets.xIcon,
+              ),
+              SizedBox(height: getHeight() * .02),
+              CustomField(
+                textEditingController: facebookController,
+                borderColor: AppColors.greyBordersColor,
+                hint: "https://www.facebook.com/@yourhandle",
+                prefixIconSvg: Assets.facebookIcon,
+              ),
+              SizedBox(height: getHeight() * .02),
+
+              CustomField(
+                textEditingController: descriptionController,
+                height: getHeight() * .1,
+                borderColor: AppColors.greyBordersColor,
+                hint: al.writeSomethingBrief,
+                label: al.briefDescription,
+                maxLines: 3,
+              ),
+            ],
+
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.links,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
-            ),
-            SizedBox(height: getHeight() * .01),
-            CustomField(
-              textEditingController: websiteController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "yoursite.io",
-              prefixIconSvg: Assets.websiteIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: instagramController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.instagram.com/@yourhan...",
-              prefixIconSvg: Assets.instagramIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: twitterController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.twitter.com/@yourhandle...",
-              prefixIconSvg: Assets.xIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: facebookController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.facebook.com/@yourhan...",
-              prefixIconSvg: Assets.facebookIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: descriptionController,
-              height: getHeight() * .1,
-              borderColor: AppColors.greyBordersColor,
-              hint: al.writeSomethingBrief,
-              label: al.briefDescription,
-              maxLines: 3,
-            ),
-            SizedBox(height: getHeight() * .02),
+
+            // --- Buttons ---
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -260,39 +379,49 @@ class _ProfileState extends State<Profile> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
-                      // context.push(Routes.restaurantAddCuisineRoute);
-                      // return;
-
-                      if (provider.profilePhoto != null) {
-                        final bytes = await provider.profilePhoto!.readAsBytes();
-                        final fileUrl = await networkProvider.getUrlForFileUpload(
-                          bytes,
-                        );
-                        if(fileUrl == null) {
-                          Toasts.getErrorToast(text: al.failedToGetImageUrl);
-                          return;
-                        }
-                        final success = await provider.updateProfile(
-                          address: addressController.text,
-                          password: passwordController.text,
-                          website: websiteController.text,
-                          instagram: instagramController.text,
-                          twitter: twitterController.text,
-                          facebook: facebookController.text,
-                          description: descriptionController.text,
-                          profileImageUrl: fileUrl,
-                        );
-                        // Only navigate to next screen if API call was successful
-                        if (success && context.mounted) {
-                          context.push(Routes.restaurantAddCuisineRoute);
-                        }
-                      } else {
-                        Toasts.getErrorToast(text: al.selectProfileImage);
+                    if (provider.profilePhoto != null) {
+                      final bytes =
+                      await provider.profilePhoto!.readAsBytes();
+                      final fileUrl =
+                      await networkProvider.getUrlForFileUpload(bytes);
+                      if (fileUrl == null) {
+                        Toasts.getErrorToast(
+                            text: al.failedToGetImageUrl);
+                        return;
                       }
+                      final success = await provider.updateProfile(
+                        address: roleProvider.role == UserRole.user
+                            ? ""
+                            : addressController.text,
+                        password: passwordController.text,
+                        website: roleProvider.role == UserRole.user
+                            ? ""
+                            : websiteController.text,
+                        instagram: roleProvider.role == UserRole.user
+                            ? ""
+                            : instagramController.text,
+                        twitter: roleProvider.role == UserRole.user
+                            ? ""
+                            : twitterController.text,
+                        facebook: roleProvider.role == UserRole.user
+                            ? ""
+                            : facebookController.text,
+                        description: descriptionController.text,
+                        profileImageUrl: fileUrl,
+                      );
+                      if (success && context.mounted) {
+                        context.push(Routes.restaurantAddCuisineRoute);
+                      }
+                    } else {
+                      Toasts.getErrorToast(
+                          text: al.selectProfileImage);
+                    }
                   },
                   buttonWidth: getWidth() * .42,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                  borderColor: AppColors.getPrimaryColorFromContext(context),
+                  backgroundColor:
+                  AppColors.getPrimaryColorFromContext(context),
+                  borderColor:
+                  AppColors.getPrimaryColorFromContext(context),
                   textColor: AppColors.whiteColor,
                   textFontWeight: FontWeight.w700,
                 ),

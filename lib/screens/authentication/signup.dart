@@ -130,6 +130,7 @@ class _SignupState extends State<Signup> {
                             horizontal: -4,
                             vertical: -4,
                           ),
+                          activeColor: AppColors.getPrimaryColorFromContext(context),
                         );
                       },
                     ),

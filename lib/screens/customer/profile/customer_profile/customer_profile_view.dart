@@ -98,7 +98,8 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: CustomText(
-              text: "${_profileProvider.user?.bio}",
+             // text: "${_profileProvider.user?.bio}",
+              text:  "Lorem ipsum dolor sit amet consectetur.",
               textOverflow: TextOverflow.ellipsis,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,

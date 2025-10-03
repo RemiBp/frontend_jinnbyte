@@ -70,8 +70,13 @@ class OtpProvider extends ChangeNotifier {
           context?.push(Routes.resetPasswordRoute, extra: {"email": email});
           return;
         }
-        context?.push(Routes.uploadDocsRoute);
-        return;
+        //final roleProvider = context?.read<RoleProvider>();
+        if (roleProvider?.role == UserRole.user) {
+          context?.push(Routes.loginRoute); // go to login if role is user
+        } else {
+          context?.push(Routes.uploadDocsRoute); // otherwise go to upload docs
+        }
+        return;        return;
       }
       _loader.hideLoader(context!);
     } catch (err) {

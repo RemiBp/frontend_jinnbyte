@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
 import '../../res/toasts.dart';
+import '../../userRole/role_provider.dart';
+import '../../userRole/user_role.dart';
 import '../../utilities/validators.dart';
 
 class Login extends StatefulWidget {
@@ -117,6 +119,8 @@ class _LoginState extends State<Login> {
                           },
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          activeColor: AppColors.getPrimaryColorFromContext(context),
+
                         );
                       },
                     ),
@@ -188,7 +192,18 @@ class _LoginState extends State<Login> {
                       recognizer:
                           TapGestureRecognizer()
                             ..onTap = () {
-                              context.pushReplacement(Routes.signupRoute);
+
+                              final roleProvider = context.read<RoleProvider>();
+
+                              if (roleProvider.role == UserRole.user) {
+                                // Navigate to user signup
+                                context.pushReplacement(Routes.userSignupRoute);
+                              } else {
+                                // Navigate to normal signup
+                                context.pushReplacement(Routes.signupRoute);
+                              }
+
+
                             },
                     ),
                   ],
@@ -203,19 +218,19 @@ class _LoginState extends State<Login> {
 
   onLoginTap() {
     // context.push(Routes.restaurantProfileRoute);
-    // //context.push(Routes.restaurantBottomTabRoute);
-    // return;
-    var email = emailController.text.toString().trim();
-    var password = passwordController.text.toString().trim();
-    if (email.isEmpty) {
-      Toasts.getErrorToast(text: "Email is Missing");
-    } else if (email.validateEmail() == false) {
-      Toasts.getErrorToast(text: "Invalid Email");
-    } else if (password.isEmpty) {
-      Toasts.getErrorToast(text: "Password is missing");
-    } else {
-      context.read<AuthProvider>().loginUser(
-        email: email, password: password,);
-    }
+    context.push(Routes.restaurantBottomTabRoute);
+    //return;
+    // var email = emailController.text.toString().trim();
+    // var password = passwordController.text.toString().trim();
+    // if (email.isEmpty) {
+    //   Toasts.getErrorToast(text: al.emailMissing);
+    // } else if (email.validateEmail() == false) {
+    //   Toasts.getErrorToast(text: al.invalidEmail);
+    // } else if (password.isEmpty) {
+    //   Toasts.getErrorToast(text: al.passwordMissing);
+    // } else {
+    //   context.read<AuthProvider>().loginUser(
+    //     email: email, password: password,);
+    // }
   }
 }

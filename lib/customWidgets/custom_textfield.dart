@@ -35,6 +35,7 @@ class CustomField extends StatelessWidget {
     this.borderRadius,
     this.suffixIcon,
     this.prefixIconSvg, this.suffixIconSvg,
+
   });
 
   final TextEditingController? textEditingController;
@@ -115,7 +116,8 @@ class CustomField extends StatelessWidget {
             decoration: InputDecoration(
               constraints:
                   width != null ? BoxConstraints(maxWidth: width!) : null,
-              filled: false,
+              filled: true,
+              fillColor: bgColor ?? Colors.transparent,
               border:
                   borderColor != null
                       ? buildOutlineInputBorder(borderColor)
