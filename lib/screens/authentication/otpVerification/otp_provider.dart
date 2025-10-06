@@ -73,8 +73,10 @@ class OtpProvider extends ChangeNotifier {
         //final roleProvider = context?.read<RoleProvider>();
         if (roleProvider?.role == UserRole.user) {
           context?.push(Routes.loginRoute); // go to login if role is user
+        } else if (roleProvider?.role == UserRole.leisure || roleProvider?.role == UserRole.wellness ) {
+          context?.push(Routes.uploadReclaimDocsRoute); // Leisure and wellness -> upload reclaim docs
         } else {
-          context?.push(Routes.uploadDocsRoute); // otherwise go to upload docs
+          context?.push(Routes.uploadDocsRoute); // restaurant -> upload docs
         }
         return;        return;
       }

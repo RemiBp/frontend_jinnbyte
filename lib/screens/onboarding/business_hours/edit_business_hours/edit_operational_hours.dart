@@ -27,7 +27,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
   // late OperationalHoursProvider operationalHoursProvider;
   // late ProfileProvider profileProvider;
   bool isSelectAll = false;
-  bool isInfoOpened = false;
+  bool isInfoOpened = true;
 
   @override
   void initState() {
@@ -78,6 +78,17 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
       initialTime: initialTime,
     );
     if (picked != null) {
+      // Define 11:59 PM as the maximum allowed end time
+      const maxEndTime = TimeOfDay(hour: 23, minute: 59);
+
+      // Convert both times to minutes since midnight for easy comparison
+      int pickedMinutes = picked.hour * 60 + picked.minute;
+      int maxMinutes = maxEndTime.hour * 60 + maxEndTime.minute;
+
+      if (!isStart && pickedMinutes > maxMinutes) {
+        Toasts.getErrorToast(text: "End time cannot be later than 11:59 PM");
+        return;
+      }
       setState(() {
         if (isStart) {
           startTimes[day] = picked;
@@ -110,7 +121,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
             GestureDetector(
               onTap: (){
                 setState(() {
-                  isInfoOpened = true;
+                  isInfoOpened = !isInfoOpened; // toggle
                 });
               },
               child: Row(
@@ -131,21 +142,27 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
               ),
             ),
             SizedBox(height: getHeight() * 0.01),
-            if(isInfoOpened)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.02),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppColors.getPrimaryColorFromContext(context)
+            AnimatedCrossFade(
+              duration: const Duration(milliseconds: 300),
+              crossFadeState: isInfoOpened ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              firstChild: Container(
+                padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.02),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.getPrimaryColorFromContext(context),
+                ),
+                child: CustomText(
+                  text: "Select the days and times your business operates. This schedule will repeat weekly for the entire year. To mark specific days off, use the unavailability tab.",
+                  fontSize: sizes?.fontSize12,
+                  color: AppColors.whiteColor,
+                  fontWeight: FontWeight.w400,
+                  giveLinesAsText: true,
+                  textAlign: TextAlign.justify,
+                ),
               ),
-              child: CustomText(
-                text: "Select the days and times your business operates. This schedule will repeat weekly for the entire year. To mark specific days off, use the unavailability tab.",
-                fontSize: sizes?.fontSize12,
-                color: AppColors.whiteColor,
-                fontWeight: FontWeight.w400,
-                giveLinesAsText: true,
-              ),
+              secondChild: const SizedBox.shrink(), // when hidden, collapse space
             ),
+
             SizedBox(height: getHeightRatio() * 16),
             Row(
               children: [
@@ -182,7 +199,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                           });
                         }
                       },
-                      activeColor: AppColors.whiteColor,
+                      activeThumbColor: AppColors.whiteColor,
                       activeTrackColor: AppColors.getPrimaryColorFromContext(context),
                       inactiveThumbColor: AppColors.whiteColor,
                       inactiveTrackColor: AppColors.greyColor,
@@ -256,7 +273,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                     isActive[day] = val;
                                   });
                                 },
-                                activeColor: AppColors.whiteColor,
+                                activeThumbColor: AppColors.whiteColor,
                                 activeTrackColor: AppColors.getPrimaryColorFromContext(context),
                                 inactiveThumbColor: AppColors.whiteColor,
                                 inactiveTrackColor: AppColors.greyColor,

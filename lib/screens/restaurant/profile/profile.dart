@@ -236,6 +236,7 @@ class _ProfileState extends State<Profile> {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder: InputBorder.none,
                 ),
+                validator: PhoneValidator.valid(context), // Automatic validation per country
                 enabled: true,
                 isCountrySelectionEnabled: true,
                 isCountryButtonPersistent: true,
@@ -302,6 +303,7 @@ class _ProfileState extends State<Profile> {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder: InputBorder.none,
                 ),
+                validator: PhoneValidator.valid(context), // Automatic validation per country
                 enabled: true,
                 isCountrySelectionEnabled: true,
                 isCountryButtonPersistent: true,
@@ -379,6 +381,34 @@ class _ProfileState extends State<Profile> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
+
+                    final role = context.read<RoleProvider>().role;
+
+                    //  Only check links for restaurant / leisure / wellness
+                    if (role != UserRole.user) {
+                      final website = websiteController.text.trim();
+                      final instagram = instagramController.text.trim();
+                      final twitter = twitterController.text.trim();
+                      final facebook = facebookController.text.trim();
+
+                      if (website.isNotEmpty && !isValidWebsite(website)) {
+                        Toasts.getErrorToast(text: al.validWebsiteLink + " (e.g., www.example.com)");
+                        return;
+                      }
+                      if (instagram.isNotEmpty && !isValidInstagram(instagram)) {
+                        Toasts.getErrorToast(text: al.validInstagramLink + " (e.g., www.instagram.com/username)");
+                        return;
+                      }
+                      if (twitter.isNotEmpty && !isValidTwitter(twitter)) {
+                        Toasts.getErrorToast(text: al.validTwitterLink + "(e.g., www.twitter.com/username)");
+                        return;
+                      }
+                      if (facebook.isNotEmpty && !isValidFacebook(facebook)) {
+                        Toasts.getErrorToast(text: al.validFacebookLink + " (e.g., www.facebook.com/username)");
+                        return;
+                      }
+                    }
+
                     if (provider.profilePhoto != null) {
                       final bytes =
                       await provider.profilePhoto!.readAsBytes();
@@ -410,7 +440,11 @@ class _ProfileState extends State<Profile> {
                         profileImageUrl: fileUrl,
                       );
                       if (success && context.mounted) {
-                        context.push(Routes.restaurantAddCuisineRoute);
+                        if (role == UserRole.leisure) {
+                          context.push(Routes.restaurantBottomTabRoute);
+                        } else {
+                          context.push(Routes.restaurantAddCuisineRoute);
+                        }
                       }
                     } else {
                       Toasts.getErrorToast(
@@ -432,4 +466,27 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+
+
+  bool isValidWebsite(String url) {
+    final pattern = RegExp(r'^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\S*)?$');
+    return pattern.hasMatch(url);
+  }
+
+  bool isValidInstagram(String url) {
+    final pattern = RegExp(r'^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9._%-]+\/?$');
+    return pattern.hasMatch(url);
+  }
+
+  bool isValidTwitter(String url) {
+    final pattern = RegExp(r'^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9._%-]+\/?$');
+    return pattern.hasMatch(url);
+  }
+
+  bool isValidFacebook(String url) {
+    final pattern = RegExp(r'^(https?:\/\/)?(www\.)?facebook\.com\/[A-Za-z0-9._%-]+\/?$');
+    return pattern.hasMatch(url);
+  }
+
 }

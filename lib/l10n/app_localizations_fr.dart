@@ -304,6 +304,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Language';
 
   @override
+  String get validFacebookLink => 'Veuillez entrer un lien Facebook valide';
+
+  @override
+  String get validInstagramLink => 'Veuillez entrer un lien Instagram valide';
+
+  @override
+  String get validWebsiteLink => 'Veuillez entrer un lien de site Web valide';
+
+  @override
+  String get validTwitterLink => 'Veuillez entrer un lien Twitter/X valide';
+
+  @override
   String get logout => 'Logout';
 
   @override
