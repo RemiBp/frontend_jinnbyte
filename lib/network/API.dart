@@ -448,15 +448,11 @@ class MyApi {
         
         switch (response.statusCode) {
           case 200:
-            dynamic modelObj =
-                await Models.getModelObject(modelName, response.data);
-            // if (modelObj.code == 1) {
-            //   return modelObj;
-            // } else {
-            //   Toasts.getErrorToast(text: modelObj.message);
-            // }
-            // return null;
-            return modelObj;
+            if(modelName!=null){
+              return await Models.getModelObject(modelName, response.data);
+            }else{
+              return response.data;
+            }
 
           default:
             debugPrint("PUT API Error - Status Code: ${response.statusCode}");

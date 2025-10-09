@@ -31,4 +31,5 @@ const String addMenuCategoryApiUrl = "$baseUrl/api/producer/profile/addMenuCateg
 const String addMenuDishApiUrl = "$baseUrl/api/producer/profile/addMenuDish";
 const String getMenuCategoriesApiUrl = "$baseUrl/api/producer/profile/getMenuCategories";
 const String userProfileApiUrl = "$baseUrl/api/app/profile/getProfile";
+const String userUpdateProfileApiUrl = "$baseUrl/api/app/profile/updateProfile";
 const String userPostsApiUrl = "$baseUrl/api/producer/post/getMyPosts";

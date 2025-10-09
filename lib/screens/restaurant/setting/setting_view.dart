@@ -1,5 +1,6 @@
 import 'package:choice_app/l18n.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/change_password.dart';
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_edit_profile.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
@@ -8,11 +9,11 @@ import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/blocked_users/blocked_users_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/bookmarked/bookmarked_view.dart';
-import 'package:choice_app/screens/restaurant/profile_menu/chat_view.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_widgets.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
@@ -23,7 +24,6 @@ import '../../onboarding/business_hours/edit_business_hours/edit_operational_hou
 import '../../onboarding/menu/menu_view.dart';
 import '../profile/profile.dart';
 import '../profile_menu/badges/badges_view.dart';
-import '../profile_menu/profile_menu_widgets.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -57,7 +57,13 @@ class _SettingViewState extends State<SettingView> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Profile()),
+
+                      MaterialPageRoute(builder: (context) =>
+                      context
+                          .read<RoleProvider>()
+                          .role == UserRole.user
+                          ? CustomerEditProfile()
+                          : Profile(),),
                     );
                   },
                 ),
