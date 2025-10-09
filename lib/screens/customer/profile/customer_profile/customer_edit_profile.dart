@@ -5,34 +5,30 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/res/toasts.dart';
-import 'package:choice_app/routes/routes.dart';
-import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
-import 'package:choice_app/screens/restaurant/profile/profile_widgets.dart';
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:provider/provider.dart';
 
-import '../../../appAssets/app_assets.dart';
-import '../../../l18n.dart';
+import '../../../../appAssets/app_assets.dart';
+import '../../../../l18n.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class CustomerEditProfile extends StatefulWidget {
+  const CustomerEditProfile({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<CustomerEditProfile> createState() => _CustomerEditProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _CustomerEditProfileState extends State<CustomerEditProfile> {
   // Form controllers
-  late final TextEditingController addressController;
-  late final TextEditingController passwordController;
-  late final TextEditingController websiteController;
-  late final TextEditingController instagramController;
-  late final TextEditingController twitterController;
-  late final TextEditingController facebookController;
-  late final TextEditingController descriptionController;
+  late final TextEditingController nameController;
+  late final TextEditingController userNameController;
+  late final TextEditingController bioController;
+  late final TextEditingController emailController;
+  late final TextEditingController phoneController;
 
   NetworkProvider networkProvider = NetworkProvider();
 
@@ -40,16 +36,17 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     // Initialize controllers
-    addressController = TextEditingController();
-    passwordController = TextEditingController();
-    websiteController = TextEditingController();
-    instagramController = TextEditingController();
-    twitterController = TextEditingController();
-    facebookController = TextEditingController();
-    descriptionController = TextEditingController();
-
-    final provider = Provider.of<ProfileProvider>(context, listen: false);
-    provider.init(context);
+    final provider = Provider.of<CustomerProfileProvider>(
+      context,
+      listen: false,
+    );
+    provider.reset();
+    provider.profileImageUrl = provider.user?.profileImageUrl;
+    nameController = TextEditingController(text: provider.user?.fullName);
+    userNameController = TextEditingController(text: provider.user?.userName);
+    bioController = TextEditingController(text: provider.user?.bio);
+    emailController = TextEditingController(text: provider.user?.email);
+    phoneController = TextEditingController(text: provider.user?.phoneNumber);
 
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
@@ -58,19 +55,17 @@ class _ProfileState extends State<Profile> {
   @override
   void dispose() {
     // Dispose controllers
-    addressController.dispose();
-    passwordController.dispose();
-    websiteController.dispose();
-    instagramController.dispose();
-    twitterController.dispose();
-    facebookController.dispose();
-    descriptionController.dispose();
+    nameController.dispose();
+    userNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    bioController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileProvider>(context);
+    final provider = Provider.of<CustomerProfileProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -88,19 +83,12 @@ class _ProfileState extends State<Profile> {
                 ],
                 Expanded(
                   child: CustomText(
-                    text: al.profileSetup,
+                    text: al.editProfile,
                     fontSize: sizes?.fontSize28,
                     fontFamily: Assets.onsetSemiBold,
                   ),
                 ),
               ],
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: "Lorem ipsum dolor sit amet consectetur.",
-              fontSize: sizes?.fontSize16,
-              color: AppColors.primarySlateColor,
-              giveLinesAsText: true,
             ),
             SizedBox(height: getHeight() * .02),
             Stack(
@@ -113,9 +101,12 @@ class _ProfileState extends State<Profile> {
                   backgroundImage:
                       provider.profileImage != null
                           ? FileImage(provider.profileImage!)
+                          : provider.profileImageUrl != null
+                          ? NetworkImage(provider.profileImageUrl!)
                           : null,
                   child:
-                      provider.profileImage == null
+                      provider.profileImage == null &&
+                              provider.profileImageUrl == null
                           ? SvgPicture.asset(
                             Assets.userIcon,
                             height: getHeight() * .05,
@@ -127,7 +118,7 @@ class _ProfileState extends State<Profile> {
                           : null,
                 ),
                 Positioned(
-                  right: -getWidth() * .017,  // push outward horizontally
+                  right: -getWidth() * .017, // push outward horizontally
                   bottom: -getHeight() * .017, // push outward vertically
                   child: IconButton.filled(
                     style: IconButton.styleFrom(
@@ -135,14 +126,8 @@ class _ProfileState extends State<Profile> {
                         context,
                       ),
                     ),
-                    onPressed: () {
-                      bottomSheet(context);
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return
-                      //   },
-                      // );
+                    onPressed: () async {
+                      provider.pickProfileImage();
                     },
                     icon: Icon(
                       Icons.camera_alt,
@@ -155,10 +140,24 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: getHeight() * .03),
             CustomField(
-              textEditingController: addressController,
+              textEditingController: nameController,
               borderColor: AppColors.greyBordersColor,
-              hint: al.address,
-              label: al.address,
+              hint: al.fullName,
+              label: al.fullName,
+            ),
+            SizedBox(height: getHeight() * .03),
+            CustomField(
+              textEditingController: userNameController,
+              borderColor: AppColors.greyBordersColor,
+              hint: al.userName,
+              label: al.userName,
+            ),
+            SizedBox(height: getHeight() * .03),
+            CustomField(
+              textEditingController: emailController,
+              borderColor: AppColors.greyBordersColor,
+              hint: al.emailLabel,
+              label: al.emailLabel,
             ),
             SizedBox(height: getHeight() * .02),
             Row(
@@ -174,14 +173,18 @@ class _ProfileState extends State<Profile> {
                   fontFamily: Assets.onsetMedium,
                   color: AppColors.redColor,
                 ),
-
               ],
             ),
             SizedBox(height: getHeight() * .01),
             PhoneFormField(
-              initialValue: provider.phoneNumber ?? PhoneNumber.parse('+33'),
+              initialValue:
+                  PhoneNumber(
+                    isoCode: IsoCode.AC,
+                    nsn: phoneController.text.trim(),
+                  ) ??
+                  PhoneNumber.parse('+33'),
               countrySelectorNavigator: const CountrySelectorNavigator.page(),
-              onChanged: (phoneNumber) => provider.setPhoneNumber(phoneNumber),
+              onChanged: (phoneNumber) => () {},
               decoration: InputDecoration(
                 border: buildOutlineInputBorder(AppColors.greyBordersColor),
                 focusedBorder: buildOutlineInputBorder(
@@ -201,46 +204,13 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: al.links,
-              fontSize: sizes!.fontSize14,
-              fontFamily: Assets.onsetMedium,
-            ),
-            SizedBox(height: getHeight() * .01),
+
             CustomField(
-              textEditingController: websiteController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "yoursite.io",
-              prefixIconSvg: Assets.websiteIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: instagramController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.instagram.com/@yourhan...",
-              prefixIconSvg: Assets.instagramIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: twitterController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.twitter.com/@yourhandle...",
-              prefixIconSvg: Assets.xIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: facebookController,
-              borderColor: AppColors.greyBordersColor,
-              hint: "https://www.facebook.com/@yourhan...",
-              prefixIconSvg: Assets.facebookIcon,
-            ),
-            SizedBox(height: getHeight() * .02),
-            CustomField(
-              textEditingController: descriptionController,
+              textEditingController: bioController,
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
-              hint: al.writeSomethingBrief,
-              label: al.briefDescription,
+              hint: "Write something about yourself...",
+              label: "Bio",
               maxLines: 3,
             ),
             SizedBox(height: getHeight() * .02),
@@ -261,38 +231,28 @@ class _ProfileState extends State<Profile> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
-                      // context.push(Routes.restaurantAddCuisineRoute);
-                      // return;
+                    // context.push(Routes.restaurantAddCuisineRoute);
+                    // return;
 
-                      if (provider.profilePhoto != null) {
-                        final bytes = await provider.profilePhoto!.readAsBytes();
-                        final fileUrl = await networkProvider.getUrlForFileUpload(
-                          bytes,
-                        );
-                        if(fileUrl == null) {
-                          Toasts.getErrorToast(text: al.failedToGetImageUrl);
-                          return;
-                        }
-                        final success = await provider.updateProfile(
-                          address: addressController.text,
-                          password: passwordController.text,
-                          website: websiteController.text,
-                          instagram: instagramController.text,
-                          twitter: twitterController.text,
-                          facebook: facebookController.text,
-                          description: descriptionController.text,
-                          profileImageUrl: fileUrl,
-                        );
-                        // Only navigate to next screen if API call was successful
-                        if (success && context.mounted) {
-                          context.push(Routes.restaurantAddCuisineRoute);
-                        }
-                      } else {
-                        Toasts.getErrorToast(text: al.selectProfileImage);
+                    if (provider.profileImage != null) {
+                      final bytes = await provider.profileImage!.readAsBytes();
+                      provider.profileImageUrl = await networkProvider
+                          .getUrlForFileUpload(bytes);
+                      if (provider.profileImageUrl == null) {
+                        Toasts.getErrorToast(text: al.failedToGetImageUrl);
+                        return;
                       }
+                    }
+                    await provider.updateCustomerProfile(
+                      name: nameController.text.trim(),
+                      username: userNameController.text.trim(),
+                      bio: bioController.text.trim(),
+                    );
                   },
                   buttonWidth: getWidth() * .42,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  backgroundColor: AppColors.getPrimaryColorFromContext(
+                    context,
+                  ),
                   borderColor: AppColors.getPrimaryColorFromContext(context),
                   textColor: AppColors.whiteColor,
                   textFontWeight: FontWeight.w700,

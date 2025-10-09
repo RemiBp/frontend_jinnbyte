@@ -1,19 +1,31 @@
+import 'dart:io';
+
 import 'package:choice_app/models/customer_all_posts_response.dart';
 import 'package:choice_app/models/customer_profile_response.dart';
 import 'package:choice_app/network/API.dart';
 import 'package:choice_app/network/api_url.dart';
 import 'package:choice_app/network/models.dart';
 import 'package:choice_app/res/loader.dart';
+import 'package:choice_app/res/toasts.dart';
 import 'package:flutter/material.dart';
+
+import '../../../restaurant/profile/profile_widgets.dart';
 
 class CustomerProfileProvider extends ChangeNotifier{
   CustomerProfileResponse customerProfileResponse = CustomerProfileResponse();
   CustomerAllPostsResponse postsResponse = CustomerAllPostsResponse();
   BuildContext? context;
   final Loader _loader = Loader();
+  File? profileImage;
+  String? profileImageUrl;
 
   init(context){
     this.context = context;
+  }
+
+  reset() {
+    profileImageUrl = null;
+    profileImage = null;
   }
 
   User? get user=>{
@@ -23,6 +35,12 @@ class CustomerProfileProvider extends ChangeNotifier{
   List<Data>? get  userPosts=>{
     postsResponse.data
   }.firstOrNull;
+
+
+  pickProfileImage() async {
+    profileImage = await bottomSheet(context!);
+    notifyListeners();
+  }
 
   Future<void> getProfile()async{
     try{
@@ -59,4 +77,36 @@ class CustomerProfileProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
+
+  Future<void> updateCustomerProfile({
+    required String name,
+    required String username,
+    required String bio,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+      final body = {
+        "fullName": name,
+        "userName": username,
+        "bio": bio,
+        "profileImageUrl": profileImageUrl,
+        "latitude": 24.8607,
+        "longitude": 67.0011
+      };
+      final response = await MyApi.callPutApi(
+        url: userUpdateProfileApiUrl,
+        body: body,
+      );
+      debugPrint("updating profile response : $response");
+      Toasts.getSuccessToast(text: response?["message"]);
+      await getProfile();
+      _loader.hideLoader(context!);
+      Navigator.pop(context!);
+    } catch (err) {
+      debugPrint("error while updating profile is : $err");
+      _loader.hideLoader(context!);
+    }
+    notifyListeners();
+  }
+
 }

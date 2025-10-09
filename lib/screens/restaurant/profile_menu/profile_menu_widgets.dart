@@ -6,10 +6,10 @@ import 'package:choice_app/screens/restaurant/profile_menu/following/following_v
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+
 import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
-import '../../../customWidgets/custom_textfield.dart';
 import '../../../customWidgets/icon_svg.dart';
 import '../../../res/res.dart';
 import '../../customer/profile/customer_profile/customer_profile_provider.dart';
@@ -208,7 +208,10 @@ class CustomerProfileHeader extends StatelessWidget {
         children: [
            CircleAvatar(
             radius: 30,
-            backgroundImage:NetworkImage("https://naushkinskoe-r81.gosweb.gosuslugi.ru/netcat_files/154/1671/image_3_0.jpg"),
+             backgroundImage: NetworkImage(
+                 provider.user?.profileImageUrl != null
+                     ? provider.user!.profileImageUrl!
+                     : "https://naushkinskoe-r81.gosweb.gosuslugi.ru/netcat_files/154/1671/image_3_0.jpg"),
           ),
           SizedBox(width: getWidth() * 0.02),
           Expanded( // Ensures the right side takes remaining space
