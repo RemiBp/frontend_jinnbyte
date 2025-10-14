@@ -7,6 +7,8 @@ import 'package:choice_app/screens/authentication/upload_docs.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
+import 'package:choice_app/screens/customer/interested/select_friends.dart';
+import 'package:choice_app/screens/customer/interested/suggest_timeslot.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
@@ -57,6 +59,10 @@ class Routes {
   static const String restaurantCreatePostRoute = '/restaurant_create_post';
   static const String restaurantAddCuisineRoute = '/restaurant_add_cuisine';
   static const String restaurantMenuViewRoute = '/restaurant_menu_view';
+  static const String selectFriendsRoute = '/select_friends';
+  static const String suggestTimeSlotRoute = '/suggest_timeslot';
+
+
 
   //Customer
   static const String customerHomeRoute = '/customer_home';
@@ -151,7 +157,14 @@ final GoRouter router = GoRouter(
       path: Routes.restaurantMenuViewRoute,
       builder: (context, state) => const MenuView(),
     ),
-
+    GoRoute(
+      path: Routes.selectFriendsRoute,
+      builder: (context, state) => const SelectFriendsScreen(),
+    ),
+    GoRoute(
+      path: Routes.suggestTimeSlotRoute,
+      builder: (context, state) => const SuggestTimeSlotScreen(),
+    ),
     //Customer
     GoRoute(
       path: '/customer_home',

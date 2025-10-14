@@ -83,6 +83,7 @@ class Assets {
   static const String blockUserIcon = "assets/icons/block_user_icon.svg";
   static const String bookmarkIcon = "assets/icons/bookmark_icon.svg";
   static const String calender = "assets/icons/calender_svg.svg";
+  static const String calendarIcon = "assets/icons/calendar_icon.svg";
   static const String phoneIcon = "assets/icons/phone_icon.svg";
   static const String ticketIcon = "assets/icons/ticket_icon.svg";
   static const String locationIcon = "assets/icons/location_icon.svg";

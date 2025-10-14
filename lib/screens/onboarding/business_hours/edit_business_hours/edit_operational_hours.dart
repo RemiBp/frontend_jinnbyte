@@ -78,16 +78,27 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
       initialTime: initialTime,
     );
     if (picked != null) {
-      // Define 11:59 PM as the maximum allowed end time
+      // Convert picked time to 24-hour formatted string for easy comparison
+      final now = DateTime.now();
+      final pickedDateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      final pickedFormatted = DateFormat('HH:mm').format(pickedDateTime); // 12:00 AM = 00:00 in 24-hour format
+      if (!isStart && pickedFormatted == "00:00") {
+        Toasts.getErrorToast(text: "Closing time cannot be 12:00 AM");
+        return;
+      } // Define 11:59 PM as the latest possible time
       const maxEndTime = TimeOfDay(hour: 23, minute: 59);
-
-      // Convert both times to minutes since midnight for easy comparison
       int pickedMinutes = picked.hour * 60 + picked.minute;
       int maxMinutes = maxEndTime.hour * 60 + maxEndTime.minute;
-
       if (!isStart && pickedMinutes > maxMinutes) {
-        Toasts.getErrorToast(text: "End time cannot be later than 11:59 PM");
+        Toasts.getErrorToast(text: "Closing time cannot be later than 11:59 PM");
         return;
+      } // Disallow closing time before or equal to opening time
+      if (!isStart) {
+        int startMinutes = startTimes[day]!.hour * 60 + startTimes[day]!.minute;
+        if (pickedMinutes <= startMinutes) {
+          Toasts.getErrorToast(text: "Closing time must be after opening time");
+          return;
+        }
       }
       setState(() {
         if (isStart) {
@@ -98,6 +109,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
       });
     }
   }
+
 
 
   String formatTime(TimeOfDay time) {
@@ -180,6 +192,29 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                               return BlurryBackground(
                                 child: SetupTimePopup(
                                   onConfirm: (TimeOfDay start, TimeOfDay end) {
+                                    // Convert times for comparison
+                                    int startMinutes = start.hour * 60 + start.minute;
+                                    int endMinutes = end.hour * 60 + end.minute;
+
+                                    // 1️⃣ Validate closing time not 12:00 AM
+                                    if (end.hour == 0 && end.minute == 0) {
+                                      Toasts.getErrorToast(text: "Closing time cannot be 12:00 AM");
+                                      return;
+                                    }
+
+                                    // 2️⃣ Validate closing time after opening time
+                                    if (endMinutes <= startMinutes) {
+                                      Toasts.getErrorToast(text: "Closing time must be after opening time");
+                                      return;
+                                    }
+
+                                    // 3️⃣ (Optional) Validate max end time 11:59 PM
+                                    if (endMinutes > (23 * 60 + 59)) {
+                                      Toasts.getErrorToast(text: "Closing time cannot be later than 11:59 PM");
+                                      return;
+                                    }
+
+                                    // ✅ Apply times only if valid
                                     setState(() {
                                       isSelectAll = true;
                                       for (final day in days) {
@@ -188,8 +223,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                         endTimes[day] = end;
                                       }
                                     });
-                                  },
-                                ),
+                                  },                                ),
                               );
                             },
                           );
@@ -374,12 +408,12 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                   onTap: () async {
                     // Check if at least one day is selected
                     bool hasAnyActiveDay = isActive.values.any((isDayActive) => isDayActive);
-                    
+
                     if (!hasAnyActiveDay) {
                       Toasts.getErrorToast(text: "Please select at least one day");
                       return;
                     }
-                    
+
                     final provider = Provider.of<ProfileProvider>(context, listen: false);
                     final success = await provider.setOperationalHours(
                       days: days,
@@ -387,7 +421,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                       startTimes: startTimes,
                       endTimes: endTimes,
                     );
-                    
+
                     if (success && mounted) {
                       context.push(Routes.galleryViewRoute);
                     }

@@ -4,9 +4,11 @@ import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../routes/routes.dart';
 import '../profile/customer_profile/customer_profile_provider.dart';
 
 class PostCard extends StatelessWidget {
@@ -119,7 +121,7 @@ class PostCard extends StatelessWidget {
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
               _buildIconText(Assets.shareIcon, '1.2k'),
-              _buildInterestedTag("Interested (0)"),
+              _buildInterestedTag("Interested (0)",context),
             ],
           ),
         ),
@@ -177,36 +179,44 @@ class PostCard extends StatelessWidget {
 
 
   // Interested Tag (wider now)
-  Widget _buildInterestedTag(String label) {
-    return Container(
-      height: getHeight() * 0.035, // ~28px
-      width: getWidth() * 0.28,    // (~105px)
-      margin: EdgeInsets.only(left: getWidth() * 0.017), // control spacing
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF964DFF),
-            Color(0xFFFC5D4A),
+  Widget _buildInterestedTag(String label, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // 👉 Navigate wherever you want
+        context.push(Routes.suggestTimeSlotRoute);
+        // or
+        // Navigator.pushNamed(context, Routes.suggestTimeSlotRoute);
+      },
+      child: Container(
+        height: getHeight() * 0.035,
+        width: getWidth() * 0.28,
+        margin: EdgeInsets.only(left: getWidth() * 0.017),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF964DFF),
+              Color(0xFFFC5D4A),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.star, color: Colors.white, size: getHeight() * 0.016),
+            SizedBox(width: getWidth() * 0.01),
+            Flexible(
+              child: CustomText(
+                text: label,
+                fontSize: sizes?.fontSize10,
+                fontFamily: Assets.onsetMedium,
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
-        borderRadius: BorderRadius.circular(40),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.star, color: Colors.white, size: getHeight() * 0.016),
-          SizedBox(width: getWidth() * 0.01),
-          Flexible(
-            child: CustomText(
-              text: label,
-              fontSize: sizes?.fontSize10,
-              fontFamily: Assets.onsetMedium,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
     );
   }
