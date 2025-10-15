@@ -7,7 +7,11 @@ import 'package:choice_app/screens/authentication/upload_docs.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
+import 'package:choice_app/screens/customer/interested/customer_event_invite.dart';
+import 'package:choice_app/screens/customer/interested/customer_nonevent_invite.dart';
+import 'package:choice_app/screens/customer/interested/interested_details.dart';
 import 'package:choice_app/screens/customer/interested/select_friends.dart';
+import 'package:choice_app/screens/customer/interested/suggest_event.dart';
 import 'package:choice_app/screens/customer/interested/suggest_timeslot.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
@@ -61,6 +65,14 @@ class Routes {
   static const String restaurantMenuViewRoute = '/restaurant_menu_view';
   static const String selectFriendsRoute = '/select_friends';
   static const String suggestTimeSlotRoute = '/suggest_timeslot';
+  static const String suggestEventRoute = '/suggest_event';
+  static const String customerNonEventInviteRoute = '/customer_nonevent_invite';
+  static const String customerEventInviteRoute = '/customer_event_invite';
+  static const String interestedDetailsRoute = '/interested_details';
+
+
+
+
 
 
 
@@ -163,7 +175,27 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: Routes.suggestTimeSlotRoute,
-      builder: (context, state) => const SuggestTimeSlotScreen(),
+      builder: (context, state) {
+        final mode = state.extra as TimeSlotMode? ?? TimeSlotMode.suggest; // default to suggest
+        return SuggestTimeSlotScreen(mode: mode);
+      },
+    ),
+    GoRoute(
+      path: Routes.suggestEventRoute,
+      builder: (context, state) => const SuggestEventScreen(),
+    ),
+
+    GoRoute(
+      path: Routes.customerNonEventInviteRoute,
+      builder: (context, state) => const CustomerNonEventInvite(),
+    ),
+    GoRoute(
+      path: Routes.customerEventInviteRoute,
+      builder: (context, state) => const CustomerEventInvite(),
+    ),
+    GoRoute(
+      path: Routes.interestedDetailsRoute,
+      builder: (context, state) => const InterestDetailsScreen(),
     ),
     //Customer
     GoRoute(

@@ -1,8 +1,10 @@
+import 'package:choice_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_button.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectFriendsScreen extends StatefulWidget {
   const SelectFriendsScreen({super.key});
@@ -259,7 +261,9 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
             SizedBox(height: getHeight() * 0.012), // small space after divider
             CustomButton(
               buttonText: "Send Invite",
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.suggestEventRoute);
+              },
               buttonWidth: double.infinity,
               backgroundColor: AppColors.getPrimaryColorFromContext(context),
               borderColor: Colors.transparent,

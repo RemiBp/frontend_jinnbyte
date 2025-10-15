@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/customer/interested/interestedWidgets/interested_widgets.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
@@ -140,9 +141,10 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
+              children:  [
                CustomerChoice()
-,                RestaurantPostsView(),
+,                //CustomerInterestView(),
+                 UserInterestView()
                 // RestaurantAboutView(),
               ],
             ),
