@@ -1,12 +1,13 @@
-
-
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../userRole/role_provider.dart';
+import '../../../../userRole/user_role.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
 import 'filters_bottom_sheet.dart';
 
@@ -18,6 +19,7 @@ class CustomerMapsView extends StatefulWidget {
 }
 
 class _CustomerMapsViewState extends State<CustomerMapsView> {
+  bool showHeatmap = false;
   final List<Map<String, dynamic>> filters = [
     {"title": "All", "icon": Assets.leisureIcon},
     {"title": "Friends", "icon": Assets.profileIcon},
@@ -30,6 +32,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
 
   @override
   Widget build(BuildContext context) {
+    final roleProvider = context.read<RoleProvider>();
     return Scaffold(
       appBar: CommonAppBar(title: "Map & Location"),
       body: Container(
@@ -37,13 +40,34 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
         width: double.infinity,
         child: Stack(
           children: [
-            /// Map image placeholder
+            // Map image placeholder + optional heatmap overlay
             Positioned.fill(
-              child: Image.asset(
-                Assets.mapImage2, // replace with your map screenshot
-                fit: BoxFit.cover,
+              child: Stack(
+                fit: StackFit.expand, // 👈 ensures full area fill
+                children: [
+                  // Base map
+                  Image.asset(
+                    Assets.mapImage2,
+                    fit: BoxFit.cover,
+                  ),
+
+                  //if role is not user then show heatmap.
+
+                  if (roleProvider.role != UserRole.user && showHeatmap)
+                    AnimatedOpacity(
+                      opacity: showHeatmap ? 1 : 0,
+                      duration: const Duration(milliseconds: 400),
+                      child: Image.asset(
+                        Assets.heatmapImage, // your heatmap image asset
+                        fit: BoxFit.cover,
+                        color: Colors.white.withValues(alpha: 0.7),
+                        colorBlendMode: BlendMode.modulate,
+                      ),
+                    ),
+                ],
               ),
             ),
+
 
             /// Top filter chips (horizontal)
             SafeArea(
@@ -62,9 +86,9 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                         filter["icon"],
                         width: getWidthRatio() * 18,
                         height: getHeightRatio() * 18,
-                        color: index == selectedFilterIndex
+                        colorFilter: ColorFilter.mode(index == selectedFilterIndex
                             ? AppColors.whiteColor
-                            : AppColors.primarySlateColor,
+                            : AppColors.primarySlateColor,BlendMode.srcIn),
                       ),
                       label: CustomText(
                         text: filter["title"],
@@ -112,11 +136,12 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
 
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.public, () {
-                    // change map type
-                  }),
+                    setState(() {
+                      showHeatmap = !showHeatmap; // toggle heat map overlay
+                    });                  }),
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.add, () {
-                    // zoom in
+
                   }),
                   const SizedBox(height: 8),
                   _buildSideButton(Icons.remove, () {

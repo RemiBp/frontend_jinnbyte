@@ -262,7 +262,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
             CustomButton(
               buttonText: "Send Invite",
               onTap: () {
-                context.push(Routes.suggestEventRoute);
+                context.push(Routes.chatbotHomeRoute);
               },
               buttonWidth: double.infinity,
               backgroundColor: AppColors.getPrimaryColorFromContext(context),

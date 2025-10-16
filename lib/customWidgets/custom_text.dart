@@ -87,3 +87,76 @@ class CustomText extends StatelessWidget {
     }
   }
 }
+
+
+class ChatBotCustomText extends StatelessWidget {
+  final String text;
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  final Color? color;
+  final TextAlign textAlign;
+  final TextDecoration textDecoration;
+  final Color? decorationColor;
+  final String? fontFamily;
+
+  const ChatBotCustomText({
+    super.key,
+    required this.text,
+    this.fontSize,
+    this.fontWeight,
+    this.color,
+    this.textAlign = TextAlign.start,
+    this.textDecoration = TextDecoration.none,
+    this.decorationColor,
+    this.fontFamily,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      softWrap: true,
+      textAlign: textAlign,
+      overflow: TextOverflow.visible, // ✅ never cuts text
+      maxLines: null, // ✅ unlimited lines
+      style: TextStyle(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: color ?? Colors.black,
+        fontFamily: fontFamily ?? _resolveFontFamily(),
+        decoration: textDecoration,
+        decorationColor:
+        decorationColor ?? AppColors.getPrimaryColorFromContext(context),
+      ),
+    );
+  }
+
+  String _resolveFontFamily() {
+    if (fontFamily != null) return fontFamily!;
+
+    switch (fontWeight) {
+      case FontWeight.w100:
+        return Assets.onestThin;
+      case FontWeight.w200:
+        return Assets.onestExtraLight;
+      case FontWeight.w300:
+        return Assets.onestLight;
+      case FontWeight.w400:
+        return Assets.onsetRegular;
+      case FontWeight.w500:
+        return Assets.onsetMedium;
+      case FontWeight.w600:
+        return Assets.onsetSemiBold;
+      case FontWeight.w700:
+        return Assets.onsetBold;
+      case FontWeight.w800:
+        return Assets.onestExtraBold;
+      case FontWeight.w900:
+        return Assets.onestBlack;
+      default:
+        return Assets.onsetRegular;
+    }
+  }
+}
+
+

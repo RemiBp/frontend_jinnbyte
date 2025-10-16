@@ -4,6 +4,7 @@ import 'package:choice_app/screens/authentication/otpVerification/otp_verificati
 import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account.dart';
 import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/screens/authentication/upload_docs.dart';
+import 'package:choice_app/screens/chatbot/chatbot_home.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
@@ -22,6 +23,7 @@ import 'package:choice_app/screens/onboarding/slot_management/slot_management_vi
 import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
+import 'package:choice_app/screens/subscription/subscribe_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/authentication/accountReclaim/upload_reclaim_docs.dart';
@@ -69,6 +71,10 @@ class Routes {
   static const String customerNonEventInviteRoute = '/customer_nonevent_invite';
   static const String customerEventInviteRoute = '/customer_event_invite';
   static const String interestedDetailsRoute = '/interested_details';
+  static const String chatbotHomeRoute = '/chatbot_home';
+  static const String subscribeRoute = '/subscribe_screen';
+
+
 
 
 
@@ -196,6 +202,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: Routes.interestedDetailsRoute,
       builder: (context, state) => const InterestDetailsScreen(),
+    ),
+    GoRoute(
+      path: Routes.chatbotHomeRoute,
+      builder: (context, state) => const ChatBotHome(),
+    ),
+    GoRoute(
+      path: Routes.subscribeRoute,
+      builder: (context, state) => const SubscribeScreen(),
     ),
     //Customer
     GoRoute(
