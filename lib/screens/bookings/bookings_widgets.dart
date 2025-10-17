@@ -156,7 +156,7 @@ class BookingCard extends StatelessWidget {
               ],
             ),
 
-            /// 🔹 Buttons (Cancel + Check-In / Modify)
+            ///  Buttons (Cancel + Check-In / Modify)
             if (onCheckIn != null && onCancel != null) ...[
               SizedBox(height: getHeight() * 0.02),
               Row(

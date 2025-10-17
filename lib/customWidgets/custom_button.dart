@@ -86,6 +86,82 @@ class CustomButton extends StatelessWidget {
   }
 }
 
+class SecondaryCustomIconButton extends StatelessWidget {
+  const SecondaryCustomIconButton({
+    super.key,
+    required this.buttonText,
+    this.onTap,
+    this.height,
+    this.buttonWidth,
+    this.borderColor,
+    this.backgroundColor,
+    this.textFontSize,
+    this.textFontWeight,
+    this.textFontFamily,
+    this.textColor,
+    this.prefixIcon, // 👈 SVG / Icon / Image widget
+    this.iconSize,
+    this.iconSpacing,
+  });
+
+  final String buttonText;
+  final Function()? onTap;
+  final double? height;
+  final double? buttonWidth;
+  final Color? borderColor;
+  final Color? backgroundColor;
+  final double? textFontSize;
+  final FontWeight? textFontWeight;
+  final String? textFontFamily;
+  final Color? textColor;
+  final Widget? prefixIcon;
+  final double? iconSize;
+  final double? iconSpacing;
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double iconSz = iconSize ?? getWidth() * 0.05;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: height ?? getHeightRatio() * 44,
+        width: buttonWidth ?? width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: borderColor ?? Colors.transparent),
+          color: backgroundColor ?? AppColors.getPrimaryColorFromContext(context),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (prefixIcon != null) ...[
+              SizedBox(
+                width: iconSz,
+                height: iconSz,
+                child: prefixIcon,
+              ),
+              SizedBox(width: iconSpacing ?? getWidth() * 0.02),
+            ],
+            Flexible(
+              child: CustomText(
+                text: buttonText,
+                fontSize: textFontSize ?? sizes?.fontSize16,
+                fontFamily: textFontFamily ?? Assets.onsetSemiBold,
+                color: textColor ?? Colors.white,
+                fontWeight: textFontWeight ?? FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
 class CardButton extends StatelessWidget {
   const CardButton({
     super.key,

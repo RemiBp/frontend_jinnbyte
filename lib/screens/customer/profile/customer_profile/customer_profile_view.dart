@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/customer/interested/interestedWidgets/interested_widgets.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/profile_menu_widgets.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/restaurant_choice_view.dart';
@@ -98,7 +99,8 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: CustomText(
-              text: "${_profileProvider.user?.bio}",
+             // text: "${_profileProvider.user?.bio}",
+              text:  "Lorem ipsum dolor sit amet consectetur.",
               textOverflow: TextOverflow.ellipsis,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
@@ -139,9 +141,10 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: const [
+              children:  [
                CustomerChoice()
-,                RestaurantPostsView(),
+,                //CustomerInterestView(),
+                 UserInterestView()
                 // RestaurantAboutView(),
               ],
             ),

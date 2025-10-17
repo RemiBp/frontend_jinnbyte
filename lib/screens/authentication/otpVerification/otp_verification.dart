@@ -115,7 +115,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                 children: [
                   TextSpan(
                     text: al.resendCode,
-                    style: TextStyle(color: AppColors.restaurantPrimaryColor),
+                    style: TextStyle(color: AppColors.getPrimaryColorFromContext(context)),
                       recognizer: TapGestureRecognizer
                         ()
                         ..onTap = () {

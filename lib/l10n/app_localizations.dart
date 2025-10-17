@@ -656,6 +656,30 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// No description provided for @validFacebookLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid Facebook link'**
+  String get validFacebookLink;
+
+  /// No description provided for @validInstagramLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid Instagram link'**
+  String get validInstagramLink;
+
+  /// No description provided for @validWebsiteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid website link'**
+  String get validWebsiteLink;
+
+  /// No description provided for @validTwitterLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid Twitter/X link'**
+  String get validTwitterLink;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:

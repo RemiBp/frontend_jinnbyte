@@ -299,6 +299,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
+  String get validFacebookLink => 'Please enter a valid Facebook link';
+
+  @override
+  String get validInstagramLink => 'Please enter a valid Instagram link';
+
+  @override
+  String get validWebsiteLink => 'Please enter a valid website link';
+
+  @override
+  String get validTwitterLink => 'Please enter a valid Twitter/X link';
+
+  @override
   String get logout => 'Logout';
 
   @override

@@ -22,8 +22,27 @@ class ReclaimAccount extends StatefulWidget {
 }
 
 class _ReclaimAccountState extends State<ReclaimAccount> {
-  int _selected = 1; // 0: Restaurant, 1: Leisure (preselected), 2: Wellness
+  int _selected = -1; // 0: Restaurant, 1: Leisure (preselected), 2: Wellness
   final TextEditingController _searchCtrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final roleProvider = context.read<RoleProvider>();
+    switch (roleProvider.role) {
+      case UserRole.restaurant:
+        _selected = 0;
+        break;
+      case UserRole.leisure:
+        _selected = 1;
+        break;
+      case UserRole.wellness:
+        _selected = 2;
+        break;
+      default:
+        _selected = -1;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

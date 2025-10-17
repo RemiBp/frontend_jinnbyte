@@ -4,9 +4,16 @@ import 'package:choice_app/screens/authentication/otpVerification/otp_verificati
 import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account.dart';
 import 'package:choice_app/screens/authentication/signup.dart';
 import 'package:choice_app/screens/authentication/upload_docs.dart';
+import 'package:choice_app/screens/chatbot/chatbot_home.dart';
 import 'package:choice_app/screens/customer/home/choiceWidgets/choice_selection.dart';
 import 'package:choice_app/screens/customer/home/create_choice.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
+import 'package:choice_app/screens/customer/interested/customer_event_invite.dart';
+import 'package:choice_app/screens/customer/interested/customer_nonevent_invite.dart';
+import 'package:choice_app/screens/customer/interested/interested_details.dart';
+import 'package:choice_app/screens/customer/interested/select_friends.dart';
+import 'package:choice_app/screens/customer/interested/suggest_event.dart';
+import 'package:choice_app/screens/customer/interested/suggest_timeslot.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
@@ -16,6 +23,7 @@ import 'package:choice_app/screens/onboarding/slot_management/slot_management_vi
 import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
+import 'package:choice_app/screens/subscription/subscribe_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/authentication/accountReclaim/upload_reclaim_docs.dart';
@@ -57,6 +65,22 @@ class Routes {
   static const String restaurantCreatePostRoute = '/restaurant_create_post';
   static const String restaurantAddCuisineRoute = '/restaurant_add_cuisine';
   static const String restaurantMenuViewRoute = '/restaurant_menu_view';
+  static const String selectFriendsRoute = '/select_friends';
+  static const String suggestTimeSlotRoute = '/suggest_timeslot';
+  static const String suggestEventRoute = '/suggest_event';
+  static const String customerNonEventInviteRoute = '/customer_nonevent_invite';
+  static const String customerEventInviteRoute = '/customer_event_invite';
+  static const String interestedDetailsRoute = '/interested_details';
+  static const String chatbotHomeRoute = '/chatbot_home';
+  static const String subscribeRoute = '/subscribe_screen';
+
+
+
+
+
+
+
+
 
   //Customer
   static const String customerHomeRoute = '/customer_home';
@@ -151,7 +175,42 @@ final GoRouter router = GoRouter(
       path: Routes.restaurantMenuViewRoute,
       builder: (context, state) => const MenuView(),
     ),
+    GoRoute(
+      path: Routes.selectFriendsRoute,
+      builder: (context, state) => const SelectFriendsScreen(),
+    ),
+    GoRoute(
+      path: Routes.suggestTimeSlotRoute,
+      builder: (context, state) {
+        final mode = state.extra as TimeSlotMode? ?? TimeSlotMode.suggest; // default to suggest
+        return SuggestTimeSlotScreen(mode: mode);
+      },
+    ),
+    GoRoute(
+      path: Routes.suggestEventRoute,
+      builder: (context, state) => const SuggestEventScreen(),
+    ),
 
+    GoRoute(
+      path: Routes.customerNonEventInviteRoute,
+      builder: (context, state) => const CustomerNonEventInvite(),
+    ),
+    GoRoute(
+      path: Routes.customerEventInviteRoute,
+      builder: (context, state) => const CustomerEventInvite(),
+    ),
+    GoRoute(
+      path: Routes.interestedDetailsRoute,
+      builder: (context, state) => const InterestDetailsScreen(),
+    ),
+    GoRoute(
+      path: Routes.chatbotHomeRoute,
+      builder: (context, state) => const ChatBotHome(),
+    ),
+    GoRoute(
+      path: Routes.subscribeRoute,
+      builder: (context, state) => const SubscribeScreen(),
+    ),
     //Customer
     GoRoute(
       path: '/customer_home',

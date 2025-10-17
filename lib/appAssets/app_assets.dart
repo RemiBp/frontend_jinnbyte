@@ -83,10 +83,15 @@ class Assets {
   static const String blockUserIcon = "assets/icons/block_user_icon.svg";
   static const String bookmarkIcon = "assets/icons/bookmark_icon.svg";
   static const String calender = "assets/icons/calender_svg.svg";
+  static const String calendarIcon = "assets/icons/calendar_icon.svg";
   static const String phoneIcon = "assets/icons/phone_icon.svg";
   static const String ticketIcon = "assets/icons/ticket_icon.svg";
   static const String locationIcon = "assets/icons/location_icon.svg";
   static const String shareIcon = "assets/icons/share.svg";
+  static const String crownIcon = "assets/icons/crown_icon.svg";
+  static const String paymentIcon = "assets/icons/payment_icon.svg";
+
+
 
 
 
@@ -101,6 +106,8 @@ class Assets {
   static const String interestIcon = "assets/icons/interest_icon.png";
   static const String postIcon = "assets/icons/post_icon.png";
   static const String eventPngIcon = "assets/icons/event_png_icon.png";
+  static const String copilotIcon = "assets/icons/copilot.png";
+
 
   static const String galleryImage = "assets/images/gallery_image.png";
   static const String originMapImage = "assets/images/origin_map_image.png";
@@ -112,6 +119,8 @@ class Assets {
   static const String leisureImage = "assets/images/leisure.png";
   static const String restaurantImage = "assets/images/restaurant.png";
   static const String wellnessImage = "assets/images/wellness.png";
+  static const String heatmapImage = "assets/images/heatmap.png";
+
 
   static const String badge1 = "assets/images/badge1.png";
   static const String badge2 = "assets/images/badge2.png";
