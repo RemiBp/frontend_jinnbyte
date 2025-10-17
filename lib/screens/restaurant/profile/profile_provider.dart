@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/network/models.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -28,6 +30,8 @@ class ProfileProvider extends ChangeNotifier {
   final Loader _loader = Loader();
 
   GetCuisineTypesResponse? getCuisineTypesResponse;
+  GetProducerSlotsResponse? getProducerSlotsResponse;
+  GetAllServiceTypesResponse? getAllServiceTypesResponse;
 
   init(context) {
     this.context = context;
@@ -72,6 +76,17 @@ class ProfileProvider extends ChangeNotifier {
 
   void setPhoneNumber(PhoneNumber? phone) {
     phoneNumber = phone;
+    notifyListeners();
+  }
+
+  void setProfileImage(File? image) {
+    if (image != null) {
+      profilePhoto = XFile(image.path);
+      profileImage = image;
+    } else {
+      profilePhoto = null;
+      profileImage = null;
+    }
     notifyListeners();
   }
 
@@ -596,6 +611,132 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
       Toasts.getErrorToast(text: "Failed to fetch menu categories");
       return null;
+    }
+  }
+
+  Future<bool> setSlotDuration({required int slotDuration}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "slotDuration": slotDuration,
+      };
+
+      debugPrint("Set slot duration body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: setSlotDurationApiUrl,
+        body: body,
+      );
+
+      debugPrint("Set slot duration response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: "Slot duration set successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to set slot duration");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error setting slot duration: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to set slot duration");
+      return false;
+    }
+  }
+
+  Future<GetProducerSlotsResponse?> getProducerSlots() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getProducerSlotsApiUrl,
+        modelName: Models.getProducerSlotsModel,
+      );
+
+      debugPrint("Get producer slots response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        getProducerSlotsResponse = response;
+        notifyListeners();
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch producer slots");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting producer slots: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to fetch producer slots");
+      return null;
+    }
+  }
+
+  Future<GetAllServiceTypesResponse?> getAllServiceTypes() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getAllServiceTypesApiUrl,
+        modelName: Models.getAllServiceTypesModel,
+      );
+
+      debugPrint("Get all service types response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        getAllServiceTypesResponse = response;
+        notifyListeners();
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch all service types");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting all service types: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to all service types");
+      return null;
+    }
+  }
+
+  Future<bool> setServiceTypes({required List<int> serviceTypeIds}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "serviceTypeIds": serviceTypeIds,
+      };
+
+      debugPrint("Set service type body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: setServiceTypesApiUrl,
+        body: body,
+      );
+
+      debugPrint("Set service type response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: "service type set successfully");
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to set service type");
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error setting service type: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to set service type");
+      return false;
     }
   }
 
