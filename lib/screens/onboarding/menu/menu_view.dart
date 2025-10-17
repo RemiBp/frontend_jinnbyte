@@ -117,7 +117,7 @@ class _MenuViewState extends State<MenuView> {
       Toasts.getSuccessToast(text: 'All dishes added successfully');
 
       if (mounted) {
-        context.push(Routes.slotManagementViewRoute);
+        context.push(Routes.slotManagementViewRoute, extra: false);
       }
     } catch (e) {
       debugPrint('Error saving menu data: $e');

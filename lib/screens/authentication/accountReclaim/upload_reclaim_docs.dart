@@ -159,7 +159,8 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                       buttonText:al.continueText,
                       onTap: () {
                         if (provider.step == provider.docs.length-1) {
-                          context.push(Routes.reviewRoute);
+                          context.push(Routes.restaurantProfileRoute);
+                          // context.push(Routes.reviewRoute);
                           return;
                         }
                         provider.updatedStep = provider.step + 1;
