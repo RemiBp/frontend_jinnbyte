@@ -346,7 +346,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
                   buttonText: "Upgrade",
                   onTap: () {
                     context.push(Routes.subscribeRoute);
-                    // TODO: handle upgrade action here
+                    //  handle upgrade action here
                   },
                   backgroundColor: themeColor,
                   textColor: AppColors.whiteColor,
