@@ -33,3 +33,6 @@ const String getMenuCategoriesApiUrl = "$baseUrl/api/producer/profile/getMenuCat
 const String userProfileApiUrl = "$baseUrl/api/app/profile/getProfile";
 const String userUpdateProfileApiUrl = "$baseUrl/api/app/profile/updateProfile";
 const String userPostsApiUrl = "$baseUrl/api/producer/post/getMyPosts";
+const String getProducerPlacesApiUrl = "$baseUrl/api/producer/post/getProducerPlaces";
+const String saveResRatingApiUrl = "$baseUrl/api/producer/post/saveRatings";
+const String createProducerChoiceApiUrl = "$baseUrl/api/producer/post/createProducerPost";

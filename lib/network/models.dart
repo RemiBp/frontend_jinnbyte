@@ -4,6 +4,7 @@ import 'package:choice_app/models/customer_profile_response.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_producer_places.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
 import '../models/error_model.dart';
@@ -22,6 +23,8 @@ class Models {
       "CUSTOMER_PROFILE_MODEL";
   static const String customerAllPostsModel =
       "CUSTOMER_ALL_POSTS_MODEL";
+  static const String producerPlacesModel =
+      "PRODUCER_PLACES_MODEL";
 
   static Future<dynamic> getModelObject(
     String modelName,
@@ -42,8 +45,10 @@ class Models {
         return CustomerAllPostsResponse.fromJson(json);
       case restaurantGetCuisineTypesModel:
         return GetCuisineTypesResponse.fromJson(json);
-        case restaurantGetMenuCategoriesModel:
+      case restaurantGetMenuCategoriesModel:
         return GetMenuCategoriesResponse.fromJson(json);
+      case producerPlacesModel:
+        return ProducerPlacesResponse.fromJson(json);
     }
   }
 }
