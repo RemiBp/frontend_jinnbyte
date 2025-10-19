@@ -73,13 +73,14 @@ class RestaurantHome extends StatelessWidget {
             final role = context.read<RoleProvider>().role; //  get role
             debugPrint("Current user role: $role");
 
-
             if (role == UserRole.user) {
               debugPrint("Navigating to Choice Selection");
-              context.push(Routes.createChoiceRoute);   //  navigate to choiceSelection
+                //  navigate to choiceSelection
+              context.push(Routes.choiceSelectionRoute);
             } else  {
               debugPrint("Navigating to Restaurant Create Post");
-              context.push(Routes.restaurantCreatePostRoute); //  keep same as before
+              //  keep same as before
+              context.push(Routes.createChoiceRoute);
             }
           }, label: Row(
         children: [

@@ -2,12 +2,14 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
 import '../../../../res/res.dart';
 import '../../../../routes/routes.dart';
+import '../choice_provider.dart';
 
 class SubChoiceSelection extends StatefulWidget {
   final String selectedChoice;
@@ -21,25 +23,24 @@ class SubChoiceSelection extends StatefulWidget {
 class _SubChoiceSelectionState extends State<SubChoiceSelection> {
   String searchText = 'Olivia';
   String selectedRestaurant = 'Olivia';
+  int selectedIndex = 0;
 
-  final restaurants = [
-    {
-      'name': 'Olivia',
-      'address': '58 Rue de Tilloy, Beauvais, Oise, France',
-    },
-    {
-      'name': 'Ortolan',
-      'address': '58 Rue de Tilloy, Beauvais, Oise, France',
-    },
-    {
-      'name': 'Olivier Chef',
-      'address': '58 Rue de Tilloy, Beauvais, Oise, France',
-    },
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<CustomerChoiceProvider>(
+        context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.getProducerPlaces();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final data = GoRouterState.of(context).extra as Map<String, dynamic>?;
+    final provider = Provider.of<CustomerChoiceProvider>(
+        context);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,26 +75,29 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
             Expanded(
               child: ListView.separated(
                 // itemCount: filtered.length,
-                itemCount: restaurants.length,
+                itemCount:provider.placesResponse. data?.length??0,
                 separatorBuilder: (_, __) => Divider(),
                 itemBuilder: (context, index) {
-                  final r = restaurants[index];
+                  final r = provider.placesResponse. data?[index];
                   // final r = filtered[index];
-                  final isSelected = selectedRestaurant == r['name'];
+                  final isSelected = selectedRestaurant == r?.name;
                   return ListTile(
                     title:CustomText(
-                      text:  r['name']!,
+                      text:  r?.name??"nil",
                       fontSize: sizes?.fontSize14,
                     ),
                     subtitle: CustomText(
-                      text: r['address']!,
+                      text:r?.address??"nil",
                       fontSize: sizes?.fontSize12,
                     ),
                     trailing: Icon(
                       isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
                       color: isSelected ? Colors.blue : Colors.grey,
                     ),
-                    onTap: () => setState(() => selectedRestaurant = r['name']!),
+                    onTap: (){
+                      setState(() => selectedRestaurant = r?.name??"nil",);
+                      selectedIndex = index;
+                    }
                   );
                 },
               ),
@@ -125,6 +129,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
                         "title": data?["title"],
                         "icon": data?["icon"],
                         "description": data?["description"],
+                        "placeId":provider.placesResponse.data?[selectedIndex].id,
                       });
                     },
                     style: ElevatedButton.styleFrom(

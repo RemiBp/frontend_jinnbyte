@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:choice_app/appColors/colors.dart';
-import 'package:choice_app/screens/customer/home/choiceWidgets/share_experience.dart';
+import 'package:choice_app/network/network_provider.dart';
+import 'package:choice_app/screens/customer/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -10,6 +15,7 @@ import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../../res/toasts.dart';
 import '../../../utilities/extensions.dart';
 
 class CreateChoice extends StatefulWidget {
@@ -23,97 +29,36 @@ class _CreateChoiceState extends State<CreateChoice> {
   String selectedDish = '';
   String visibility = 'Public';
   String? selectedEvent; // <-- NEW for Wellness/Leisure dropdown
+  Map<String, double> ratings = {};
 
-  Widget buildRatingRow(
-      String title,
-      double rating, {
-        String? review,
-        bool isLast = false,
-      }) {
-    final bool isZero = rating == 0;
-    final Color activeColor =
-    isZero ? AppColors.inputHintColor : Colors.orange;
+  List<XFile> images = [];
+  List<String> imageUrls = [];
+  final ImagePicker _picker = ImagePicker();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (review != null) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                text: title,
-                fontSize: sizes?.fontSize16,
-                fontFamily: Assets.onsetMedium,
-              ),
-              InkWell(
-                onTap: () {},
-                child: CustomText(
-                  text: al.remove,
-                  fontSize: sizes?.fontSize14,
-                  fontFamily: Assets.onsetMedium,
-                  color: Colors.red,
-                  decorationColor: Colors.red,
-                  textDecoration: TextDecoration.underline,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: getHeight() * .005),
-          CustomText(
-            text: review,
-            fontSize: sizes?.fontSize12,
-          ),
-        ] else ...[
-          CustomText(
-            text: title,
-            fontSize: sizes?.fontSize16,
-            fontFamily: Assets.onsetMedium,
-          ),
-        ],
-        SizedBox(height: getHeight() * .01),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: List.generate(
-                5,
-                    (index) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(
-                    Icons.star,
-                    size: 28,
-                    color: index < rating ? Colors.amber : AppColors.greyColor,
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              width: getWidth() * 0.12,
-              height: getHeight() * 0.045,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: activeColor, width: 1.5),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: CustomText(
-                text: rating.toStringAsFixed(1),
-                fontSize: sizes?.fontSize14,
-                fontFamily: Assets.onsetMedium,
-                color: activeColor,
-              ),
-            ),
-          ],
-        ),
-        if (!isLast) ...[
-          SizedBox(height: getHeight() * .015),
-          Divider(height: 1, color: AppColors.greyBordersColor),
-          SizedBox(height: getHeight() * .015),
-        ],
-      ],
-    );
+  // Function to pick images
+  Future<void> _pickImages() async {
+    if (images.length >= 5) return;
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        images.add(pickedFile);
+      });
+    }
+
   }
+
+  // Remove image
+  void _removeImage(int index) {
+    setState(() {
+      images.removeAt(index);
+    });
+  }
+
+
+
+
+
+
 
   /// Returns the appropriate rating categories based on `title`
   List<Map<String, dynamic>> getRatingCategories(String? title) {
@@ -136,10 +81,10 @@ class _CreateChoiceState extends State<CreateChoice> {
     } else {
       // Restaurant
       return [
-        {"label": al.service, "rating": 2.0},
-        {"label": al.price, "rating": 3.0},
-        {"label": al.portions, "rating": 4.0},
-        {"label": al.ambiance, "rating": 5.0},
+        {"label": al.service, "rating": 1.0},
+        {"label": al.place, "rating": 1.0},
+        {"label": al.portions, "rating": 1.0},
+        {"label": al.ambiance, "rating": 1.0},
       ];
     }
   }
@@ -175,7 +120,12 @@ class _CreateChoiceState extends State<CreateChoice> {
   Widget build(BuildContext context) {
     final data = GoRouterState.of(context).extra as Map<String, dynamic>?;
     final categoryTitle = data?["title"];
+    final placeId = data?["placeId"];
     final ratingCategories = getRatingCategories(categoryTitle);
+    for (var item in ratingCategories) {
+      ratings.putIfAbsent(item["label"], () => item["rating"]);
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -453,10 +403,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                 ),
               ),
               SizedBox(height: 16),
-            ],
-
-            // --- Photos ---
-            Container(
+            ], Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -483,35 +430,74 @@ class _CreateChoiceState extends State<CreateChoice> {
                     fontSize: sizes?.fontSize12,
                   ),
                   SizedBox(height: getHeight() * .01),
-                  Container(
-                    height: getHeight() * 0.237,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.greyBordersColor),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomText(
-                            text: al.chooseAFile,
-                            fontFamily: Assets.onsetMedium,
-                            fontSize: sizes?.fontSize14,
-                          ),
-                          SizedBox(height: getHeight() * .005),
-                          CustomText(
-                            text: al.upTo5Images,
-                            fontSize: sizes?.fontSize12,
-                            color: HexColor.fromHex("#686A82"),
-                          ),
-                        ],
+                  GestureDetector(
+                    onTap: _pickImages,
+                    child: Container(
+                      height: getHeight() * 0.237,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.greyBordersColor),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomText(
+                              text: al.chooseAFile,
+                              fontFamily: Assets.onsetMedium,
+                              fontSize: sizes?.fontSize14,
+                            ),
+                            SizedBox(height: getHeight() * .005),
+                            CustomText(
+                              text: al.upTo5Images,
+                              fontSize: sizes?.fontSize12,
+                              color: HexColor.fromHex("#686A82"),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(height: 10),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: List.generate(images.length, (index) {
+                return Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(images[index].path),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: InkWell(
+                        onTap: () => _removeImage(index),
+                        child: CircleAvatar(
+                          radius: getHeight() * .018,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.close,
+                            size: getHeight() * .022,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
 
             SizedBox(height: getHeight() * .02),
@@ -532,6 +518,7 @@ class _CreateChoiceState extends State<CreateChoice> {
               ),
               padding: EdgeInsets.all(15),
               child: CustomField(
+                textEditingController: tagsController,
                 borderColor: AppColors.greyBordersColor,
                 hint: "e.g: #cozy, #outdoor_seating",
                 label: al.tags,
@@ -539,7 +526,45 @@ class _CreateChoiceState extends State<CreateChoice> {
             ),
 
             SizedBox(height: getHeight() * .02),
-            ShareExperienceWidget(),
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: "Share Your Experience",
+                    fontFamily: Assets.onsetMedium,
+                    fontSize: sizes?.fontSize16,
+                  ),
+                  SizedBox(height: 12),
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextField(
+                      controller: shareExpController,
+                      maxLines: 4,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Share your experience...',
+                        hintStyle: TextStyle(color: Color(0xFF6B6C90)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  buildRadio('Public', 'Anyone can see the feed', 'Public'),
+                  buildRadio(
+                      'Friends Only', 'Your friends on Choice', 'Friends'),
+                  buildRadio('Private', 'Only Me', 'Private'),
+                ],
+              ),
+            ),
 
             SizedBox(height: getHeight() * .02),
 
@@ -567,12 +592,15 @@ class _CreateChoiceState extends State<CreateChoice> {
                     child: CustomButton(
                       buttonWidth: getWidth() * 0.43,
                       height: getHeight() * 0.055,
-                      borderColor:
-                      AppColors.getPrimaryColorFromContext(context),
+                      borderColor: AppColors.getPrimaryColorFromContext(
+                          context),
                       backgroundColor: AppColors.userPrimaryColor,
-                      buttonText: al.next,
+                      buttonText: al.publish,
                       textColor: AppColors.whiteColor,
-                      onTap: () {},
+                      onTap: () {
+                        debugPrint("rating is : $ratings, place id : $placeId, date time : ${DateTime.now().toUtc().toIso8601String()}");
+                        onPublishTap(placeId);
+                      },
                     ),
                   ),
                 ],
@@ -584,11 +612,77 @@ class _CreateChoiceState extends State<CreateChoice> {
     );
   }
 
+  String _selectedOption = 'Public';
+  final TextEditingController shareExpController = TextEditingController();
+  final TextEditingController tagsController = TextEditingController();
+
+
+  Future<void> onPublishTap(int placeId) async {
+    final provider = context.read<NetworkProvider>();
+    final choiceProvider = context.read<CustomerChoiceProvider>();
+    provider.context = context;
+    final description = shareExpController.text.trim();
+    final tags = tagsController.text.trim();
+    if (images.isEmpty) {
+      Toasts.getErrorToast(
+        text: al.errorSelectImage,);
+    } else if (description.isEmpty) {
+      Toasts.getErrorToast(
+        text: al.errorEnterDescription,);
+    } else if (tags.isEmpty) {
+      Toasts.getErrorToast(
+        text: al.errorEnterTags,);
+    } else {
+
+      for (var i in images) {
+        final bytes = await i.readAsBytes();
+        final fileUrl = await provider.getUrlForFileUpload(bytes);
+        debugPrint("file url is : $fileUrl");
+        if (fileUrl != null) {
+          imageUrls.add(fileUrl);
+        }
+      }
+      debugPrint("selected images are : $imageUrls");
+    }
+    if (imageUrls.isNotEmpty) {
+      await choiceProvider.createChoice(
+        placeId: placeId,
+        status: _selectedOption.toLowerCase(),
+        description: description,
+        tags: tags.split(","),
+        imageUrls: imageUrls,
+        rating: ratings,
+      );
+    }
+  }
+
+  Widget buildRadio(String title, String subtitle, String value) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: CustomText(
+        text: title,
+        fontSize: sizes?.fontSize14,
+      ),
+      subtitle: CustomText(
+        text: subtitle,
+        fontSize: sizes?.fontSize12,
+      ),
+      trailing: Radio(
+        value: value,
+        groupValue: _selectedOption,
+        activeColor: AppColors.getPrimaryColorFromContext(context), // Blue ring
+        onChanged: (val) {
+          setState(() {
+            _selectedOption = val!;
+          });
+        },
+      ),
+    );
+  }
+
   // --- Dish Radio Helper ---
   Widget dishRadio(String title, String price,
-      {required String menuName,
-        required String dishDetails,
-        bool isLast = false}) {
+      {required String menuName, required String dishDetails, bool isLast = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -659,6 +753,110 @@ class _CreateChoiceState extends State<CreateChoice> {
           },
         ),
         if (!isLast) Divider(height: 1, color: AppColors.greyBordersColor),
+      ],
+    );
+  }
+
+  Widget buildRatingRow(String title,
+      double rating, {
+        String? review,
+        bool isLast = false,
+      }) {
+    final bool isZero = rating == 0;
+    final Color activeColor =
+    isZero ? AppColors.inputHintColor : Colors.orange;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (review != null) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                text: title,
+                fontSize: sizes?.fontSize16,
+                fontFamily: Assets.onsetMedium,
+              ),
+              InkWell(
+                onTap: () {},
+                child: CustomText(
+                  text: al.remove,
+                  fontSize: sizes?.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: Colors.red,
+                  decorationColor: Colors.red,
+                  textDecoration: TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: getHeight() * .005),
+          CustomText(
+            text: review,
+            fontSize: sizes?.fontSize12,
+          ),
+        ] else
+          ...[
+            CustomText(
+              text: title,
+              fontSize: sizes?.fontSize16,
+              fontFamily: Assets.onsetMedium,
+            ),
+          ],
+        SizedBox(height: getHeight() * .01),
+
+        // 🔥 MODIFIED PART – clickable stars
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: List.generate(
+                5,
+                    (index) =>
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          ratings[title] = (index + 1).toDouble();
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.star,
+                          size: 28,
+                          color: index < (ratings[title] ?? rating)
+                              ? Colors.amber
+                              : AppColors.greyColor,
+                        ),
+                      ),
+                    ),
+              ),
+            ),
+            Container(
+              width: getWidth() * 0.12,
+              height: getHeight() * 0.045,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: activeColor, width: 1.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: CustomText(
+                text: (ratings[title] ?? rating).toStringAsFixed(1),
+                fontSize: sizes?.fontSize14,
+                fontFamily: Assets.onsetMedium,
+                color: activeColor,
+              ),
+            ),
+          ],
+        ),
+
+        if (!isLast) ...[
+          SizedBox(height: getHeight() * .015),
+          Divider(height: 1, color: AppColors.greyBordersColor),
+          SizedBox(height: getHeight() * .015),
+        ],
       ],
     );
   }

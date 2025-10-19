@@ -5,6 +5,8 @@ import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_producer_places.dart';
+
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
@@ -20,6 +22,12 @@ class Models {
       "RESTAURANT_GET_CUISINE_TYPES_MODEL";
   static const String restaurantGetMenuCategoriesModel =
       "RESTAURANT_GET_MENU_CATEGORIES_MODEL";
+  static const String customerProfileModel =
+      "CUSTOMER_PROFILE_MODEL";
+  static const String customerAllPostsModel =
+      "CUSTOMER_ALL_POSTS_MODEL";
+  static const String producerPlacesModel =
+      "PRODUCER_PLACES_MODEL";
   static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
   static const String customerAllPostsModel = "CUSTOMER_ALL_POSTS_MODEL";
   static const String getProducerSlotsModel = "GET_PRODUCER_SLOTS_MODEL";
@@ -46,6 +54,8 @@ class Models {
         return GetCuisineTypesResponse.fromJson(json);
       case restaurantGetMenuCategoriesModel:
         return GetMenuCategoriesResponse.fromJson(json);
+      case producerPlacesModel:
+        return ProducerPlacesResponse.fromJson(json);
       case getProducerSlotsModel:
         return GetProducerSlotsResponse.fromJson(json);
       case getAllServiceTypesModel:
