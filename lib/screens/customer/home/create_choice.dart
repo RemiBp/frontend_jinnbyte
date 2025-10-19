@@ -558,10 +558,10 @@ class _CreateChoiceState extends State<CreateChoice> {
                     ),
                   ),
                   SizedBox(height: 24),
-                  buildRadio('Public', 'Anyone can see the feed', 'Public'),
+                  buildRadio('Public', 'Anyone can see the feed', 'public'),
                   buildRadio(
-                      'Friends Only', 'Your friends on Choice', 'Friends'),
-                  buildRadio('Private', 'Only Me', 'Private'),
+                      'Friends Only', 'Your friends on Choice', 'friends_only'),
+                  buildRadio('Private', 'Only Me', 'private'),
                 ],
               ),
             ),
@@ -612,7 +612,7 @@ class _CreateChoiceState extends State<CreateChoice> {
     );
   }
 
-  String _selectedOption = 'Public';
+  String _selectedOption = 'public';
   final TextEditingController shareExpController = TextEditingController();
   final TextEditingController tagsController = TextEditingController();
 
@@ -672,6 +672,7 @@ class _CreateChoiceState extends State<CreateChoice> {
         groupValue: _selectedOption,
         activeColor: AppColors.getPrimaryColorFromContext(context), // Blue ring
         onChanged: (val) {
+          debugPrint("value : $val");
           setState(() {
             _selectedOption = val!;
           });
