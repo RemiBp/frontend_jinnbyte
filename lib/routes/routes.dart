@@ -16,6 +16,7 @@ import 'package:choice_app/screens/customer/interested/suggest_event.dart';
 import 'package:choice_app/screens/customer/interested/suggest_timeslot.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
+import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
 import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/menu/menu_view.dart';
@@ -90,6 +91,7 @@ class Routes {
 
   //wellness
   static const String wellnessHomeRoute = '/wellness_home';
+  static const String wellnessAddServicesRoute = '/wellness_add_services';
 
 }
 
@@ -139,7 +141,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: Routes.slotManagementViewRoute,
-      builder: (context, state) => const SlotManagementView(),
+      builder: (context, state) {
+        final isEditable = state.extra as bool? ?? false;
+        return SlotManagementView(isEdit: isEditable);
+      },
     ),
 
     // restaurant
@@ -241,6 +246,9 @@ final GoRouter router = GoRouter(
       path: '/wellness_home',
       builder: (context, state) => const WellnessHome(),
     ),
-
+    GoRoute(
+      path: Routes.wellnessAddServicesRoute,
+      builder: (context, state) => const AddServices(),
+    ),
   ],
 );
