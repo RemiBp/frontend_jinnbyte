@@ -23,6 +23,7 @@ class User {
   String? fullName;
   String? userName;
   String? phoneNumber;
+  String? profileImageUrl;
   bool? isActive;
   bool? isDeleted;
   bool? isSocialLogin;
@@ -42,6 +43,7 @@ class User {
         this.fullName,
         this.userName,
         this.phoneNumber,
+        this.profileImageUrl,
         this.isActive,
         this.isDeleted,
         this.isSocialLogin,
@@ -61,6 +63,7 @@ class User {
     fullName = json['fullName'];
     userName = json['userName'];
     phoneNumber = json['phoneNumber'];
+    profileImageUrl = json['profileImageUrl'];
     isActive = json['isActive'];
     isDeleted = json['isDeleted'];
     isSocialLogin = json['isSocialLogin'];
@@ -82,6 +85,7 @@ class User {
     data['fullName'] = fullName;
     data['userName'] = userName;
     data['phoneNumber'] = phoneNumber;
+    data['profileImageUrl'] = profileImageUrl;
     data['isActive'] = isActive;
     data['isDeleted'] = isDeleted;
     data['isSocialLogin'] = isSocialLogin;

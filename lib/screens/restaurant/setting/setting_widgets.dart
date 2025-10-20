@@ -1,5 +1,10 @@
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
+import 'package:choice_app/userRole/role_provider.dart';
+import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
@@ -89,6 +94,7 @@ class SettingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CustomerProfileProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.02),
       decoration: BoxDecoration(
@@ -104,6 +110,64 @@ class SettingHeader extends StatelessWidget {
       ),
       child: Column(
         children: [
+          context
+              .read<RoleProvider>()
+              .role == UserRole.user ?
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(
+                    provider.user?.profileImageUrl != null
+                        ? provider.user!.profileImageUrl!
+                        : "https://naushkinskoe-r81.gosweb.gosuslugi.ru/netcat_files/154/1671/image_3_0.jpg"),
+              ),
+              SizedBox(width: getWidth() * 0.02),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: provider.user?.fullName??"",
+                      fontSize: sizes?.fontSize14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blackColor,
+                    ),
+                    CustomText(
+                      text: provider.user?.email??"",
+                      fontSize: sizes?.fontSize12,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.inputHintColor,
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(width: getWidth() * 0.02),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return SwitchAccountBottomSheet(context: context);
+                    },
+                  );
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: AppColors.greyColor,
+                      shape: BoxShape.circle
+                  ),
+                  child: Center(
+                    child: Icon(Icons.keyboard_arrow_down_sharp,
+                      color: AppColors.primarySlateColor,),
+                  ),
+                ),
+              )
+            ],
+          ) :
           Row(
             children: [
               CircleAvatar(

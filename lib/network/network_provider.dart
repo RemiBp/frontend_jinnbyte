@@ -4,6 +4,7 @@ import 'package:choice_app/network/API.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import '../res/loader.dart';
 import 'api_url.dart';
 
@@ -17,7 +18,22 @@ class  NetworkProvider extends ChangeNotifier{
   String? imageUrl;
 
   final Loader _loader = Loader();
-  List<String> selectedKidsNames = [];
+
+
+  Future<File?> getImage({required bool isCamera}) async {
+    final photo = await ImagePicker().pickImage(
+      source: isCamera ? ImageSource.camera : ImageSource.gallery,
+      maxHeight: 480,
+      maxWidth: 640,
+      imageQuality: 50,
+    );
+    if (photo != null) {
+      final image  = File(photo.path);
+      notifyListeners();
+      return image;
+    }
+    return null;
+  }
 
 
   Future<String?> getUrlForFileUpload(Uint8List? imageBytes,{

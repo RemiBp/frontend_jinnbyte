@@ -1,7 +1,10 @@
+import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_widgets.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -80,13 +83,55 @@ class _SlotManagementViewState extends State<SlotManagementView> {
   void initState() {
     super.initState();
     isEdit = widget.isEdit ?? true;
-    _initializeSlotsData();
+  }
+
+  void _loadProducerSlots() async {
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+    provider.init(context);
+    await provider.getProducerSlots();
+    _initializeSlotsDataFromApi(provider);
   }
 
   void _initializeSlotsData() {
     // Initialize with default 1-hour slots
     slotsData = _generateSlotsForDuration(1);
     _initializeSelectedSlots();
+  }
+
+  void _initializeSlotsDataFromApi(ProfileProvider provider) {
+    if (provider.getProducerSlotsResponse != null) {
+      slotsData = _convertApiDataToSlotsData(provider.getProducerSlotsResponse!);
+    } else {
+      // Fallback to default data if API data is not available
+      slotsData = _generateSlotsForDuration(1);
+    }
+    _initializeSelectedSlots();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  List<Map<String, dynamic>> _convertApiDataToSlotsData(GetProducerSlotsResponse apiResponse) {
+    List<Map<String, dynamic>> convertedData = [];
+    
+    for (var daySlot in apiResponse.data) {
+      List<Slots> convertedSlots = [];
+      
+      for (var apiSlot in daySlot.slots) {
+        convertedSlots.add(Slots(
+          id: apiSlot.id,
+          startTime: apiSlot.startTime,
+          endTime: apiSlot.endTime,
+        ));
+      }
+      
+      convertedData.add({
+        "day": daySlot.day,
+        "slots": convertedSlots,
+      });
+    }
+    
+    return convertedData;
   }
 
   void _initializeSelectedSlots() {
@@ -155,6 +200,15 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                         slotsData = _generateSlotsForDuration(id!);
                         _initializeSelectedSlots();
                       });
+                      
+                      // Call API to set slot duration
+                      final provider = Provider.of<ProfileProvider>(context, listen: false);
+                      provider.init(context);
+                      await provider.setSlotDuration(slotDuration: id!);
+                      await provider.getProducerSlots();
+                      
+                      // Update slots data with fresh API data
+                      _initializeSlotsDataFromApi(provider);
                     },
                     validator: (id) => id == null ? 'Please select duration' : null,
                   ),

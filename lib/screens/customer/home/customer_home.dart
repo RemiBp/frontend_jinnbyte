@@ -90,9 +90,11 @@ class _CustomerHomeState extends State<CustomerHome> {
             if (role == UserRole.user) {
               debugPrint("Navigating to Choice Selection");
               context.push(Routes.choiceSelectionRoute);
+
             } else {
               debugPrint("Navigating to Restaurant Create Post");
-              context.push(Routes.restaurantCreatePostRoute);
+              context.push(Routes.choiceSelectionRoute);
+
             }
           },
           label: Row(

@@ -233,7 +233,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                           });
                         }
                       },
-                      activeThumbColor: AppColors.whiteColor,
+                      // activeThumbColor: AppColors.whiteColor,
                       activeTrackColor: AppColors.getPrimaryColorFromContext(context),
                       inactiveThumbColor: AppColors.whiteColor,
                       inactiveTrackColor: AppColors.greyColor,
@@ -307,7 +307,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                     isActive[day] = val;
                                   });
                                 },
-                                activeThumbColor: AppColors.whiteColor,
+                                // activeThumbColor: AppColors.whiteColor,
                                 activeTrackColor: AppColors.getPrimaryColorFromContext(context),
                                 inactiveThumbColor: AppColors.whiteColor,
                                 inactiveTrackColor: AppColors.greyColor,

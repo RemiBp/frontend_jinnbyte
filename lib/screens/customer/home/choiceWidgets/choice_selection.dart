@@ -1,6 +1,8 @@
+import 'package:choice_app/screens/customer/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
@@ -37,6 +39,13 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
       'color': Colors.green,
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<CustomerChoiceProvider>(context, listen: false);
+    provider.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {

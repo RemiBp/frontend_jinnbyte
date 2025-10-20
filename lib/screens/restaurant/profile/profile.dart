@@ -157,13 +157,11 @@ class _ProfileState extends State<Profile> {
                       backgroundColor:
                       AppColors.getPrimaryColorFromContext(context),
                     ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return bottomSheet(context);
-                        },
-                      );
+                    onPressed: () async {
+                      final selectedImage = await bottomSheet(context);
+                      if (selectedImage != null) {
+                        provider.setProfileImage(selectedImage);
+                      }
                     },
                     icon: Icon(
                       Icons.camera_alt,
@@ -442,8 +440,12 @@ class _ProfileState extends State<Profile> {
                       if (success && context.mounted) {
                         if (role == UserRole.leisure) {
                           context.push(Routes.restaurantBottomTabRoute);
-                        } else {
+                        } else if(role == UserRole.restaurant) {
                           context.push(Routes.restaurantAddCuisineRoute);
+                        } else if(role == UserRole.wellness) {
+                          context.push(Routes.wellnessAddServicesRoute);
+                        } else {
+                          context.push(Routes.customerHomeRoute);
                         }
                       }
                     } else {

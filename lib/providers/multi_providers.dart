@@ -10,6 +10,7 @@ import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/customer/home/choice_provider.dart';
 import '../userRole/role_provider.dart';
 
 final multiProviders = [
@@ -54,6 +55,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<CustomerProfileProvider>(
     create: (_) => CustomerProfileProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<CustomerChoiceProvider>(
+    create: (_) => CustomerChoiceProvider(),
     lazy: true,
   ),
 ];
