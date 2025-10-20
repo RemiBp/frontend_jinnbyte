@@ -35,7 +35,12 @@ class RestaurantHome extends StatelessWidget {
                 fontFamily: Assets.onsetSemiBold,
               ),
               Spacer(),
-              CustomIconButton(svgString: Assets.mapIcon),
+              CustomIconButton(
+                  svgString: Assets.mapIcon,
+                onPress: (){
+                  context.push(Routes.heatmapRoute);
+                },
+              ),
               SizedBox(width: getWidth() * .02),
               CustomIconButton(svgString: Assets.chatIcon),
               SizedBox(width: getWidth() * .02),
@@ -80,7 +85,7 @@ class RestaurantHome extends StatelessWidget {
             } else  {
               debugPrint("Navigating to Restaurant Create Post");
               //  keep same as before
-              context.push(Routes.createChoiceRoute);
+              context.push(Routes.restaurantCreatePostRoute);
             }
           }, label: Row(
         children: [

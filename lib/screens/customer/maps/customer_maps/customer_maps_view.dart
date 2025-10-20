@@ -55,7 +55,8 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
 
                   //if role is not user then show heatmap.
 
-                  if (roleProvider.role != UserRole.user && showHeatmap)
+                  //if (roleProvider.role != UserRole.user && showHeatmap)
+                  if (showHeatmap)
                     AnimatedOpacity(
                       opacity: showHeatmap ? 1 : 0,
                       duration: const Duration(milliseconds: 400),
@@ -143,7 +144,6 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                     });                  }),
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.add, () {
-                    context.push(Routes.heatmapRoute);
 
                   }),
                   const SizedBox(height: 8),

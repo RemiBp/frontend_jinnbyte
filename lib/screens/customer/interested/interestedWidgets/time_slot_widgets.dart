@@ -8,7 +8,6 @@ import '../../../../customWidgets/custom_text.dart';
 import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
-/// 🗓 Calendar Button (Month Selector)
 class CalendarButton extends StatelessWidget {
   final String month;
   final VoidCallback? onTap;
@@ -134,7 +133,6 @@ class _DeclineReasonDialogState extends State<DeclineReasonDialog> {
 }
 
 
-/// 📅 Date Chip
 class DateChip extends StatelessWidget {
   final String day;
   final String date;
@@ -184,7 +182,6 @@ class DateChip extends StatelessWidget {
   }
 }
 
-/// ⏰ Time Chip
 class TimeChip extends StatelessWidget {
   final String label;
   final bool isSelected;
@@ -223,24 +220,27 @@ class TimeChip extends StatelessWidget {
   }
 }
 
-/// 💬 Message Field
 class MessageField extends StatelessWidget {
   final String hintText;
   final TextEditingController? controller;
+  final Color? backgroundColor;
+  final Color? borderColor;
 
   const MessageField({
     super.key,
     this.controller,
     this.hintText = "e.g. Let’s try this Friday night...?",
+    this.backgroundColor,
+    this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.greyColor.withValues(alpha: 0.2),
+        color: backgroundColor ?? AppColors.greyColor.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.greyBordersColor),
+        border: Border.all(color: borderColor ?? AppColors.greyBordersColor),
       ),
       child: TextField(
         controller: controller,

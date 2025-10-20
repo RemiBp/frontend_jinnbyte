@@ -4,6 +4,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
+import 'offer_widgets.dart';
 
 class HeatmapScreen extends StatefulWidget {
   const HeatmapScreen({super.key});
@@ -41,11 +42,14 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
       backgroundColor: AppColors.whiteColor,
 
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(getHeight() * 0.13),
+        preferredSize: Size.fromHeight(getHeight() * 0.15),
         child: SafeArea(
           child: Container(
             color: AppColors.whiteColor,
-            padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
+            padding: EdgeInsets.symmetric(
+              horizontal: getWidth() * 0.05,
+              vertical: getHeight() * 0.015,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -66,7 +70,8 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
                   ],
                 ),
 
-                SizedBox(height: getHeight() * 0.015),
+                // More spacing between Heatmap and dropdowns
+                SizedBox(height: getHeight() * 0.025),
 
                 // Filters Row (All day / Everyday)
                 Row(
@@ -88,52 +93,54 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
                     ),
                   ],
                 ),
-
-                SizedBox(height: getHeight() * 0.015),
-
-                // Divider at bottom of AppBar
-                const Divider(
-                  color: Color(0xFFE0E0E0),
-                  thickness: 1,
-                  height: 1,
-                ),
               ],
             ),
           ),
         ),
       ),
 
-      /// Main Body (heatmap background)
-      body: Stack(
+      // Divider below the entire AppBar (outside it)
+      body: Column(
         children: [
-          // Heatmap image
-          Positioned.fill(
-            child: Image.asset(
-              Assets.heatmapImage,
-              fit: BoxFit.cover,
-            ),
+          const Divider(
+            color: Color(0xFFE0E0E0),
+            thickness: 1,
+            height: 1,
           ),
-
-          // Side + / - buttons at TOP RIGHT
-          Positioned(
-            top: getHeight() * 0.13,
-            right: getWidth() * 0.04,
-            child: Column(
+          Expanded(
+            child: Stack(
               children: [
-                _buildSideButton(Icons.add, () {
-                  // zoom in
-                }),
-                SizedBox(height: getHeight() * 0.01),
-                _buildSideButton(Icons.remove, () {
-                  // zoom out
-                }),
+                // Heatmap background
+                Positioned.fill(
+                  child: Image.asset(
+                    Assets.heatmapImage,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+
+                // + / - buttons at top-right of map
+                Positioned(
+                  top: getHeight() * 0.03,
+                  right: getWidth() * 0.04,
+                  child: Column(
+                    children: [
+                      _buildSideButton(Icons.add, () {
+                        // zoom in
+                      }),
+                      SizedBox(height: getHeight() * 0.01),
+                      _buildSideButton(Icons.remove, () {
+                        // zoom out
+                      }),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
 
-      // Floating create offer button
+      // Floating Create Offer button
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.getPrimaryColorFromContext(context),
         elevation: 4,
@@ -144,7 +151,16 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
           fontWeight: FontWeight.w600,
           fontSize: getWidth() * 0.035,
         ),
-        onPressed: () {},
+        onPressed: () {
+
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (_) => const OfferTemplateBottomSheet(),
+          );
+
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

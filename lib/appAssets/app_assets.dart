@@ -90,6 +90,11 @@ class Assets {
   static const String shareIcon = "assets/icons/share.svg";
   static const String crownIcon = "assets/icons/crown_icon.svg";
   static const String paymentIcon = "assets/icons/payment_icon.svg";
+  static const String folderIcon = "assets/icons/folder_icon.svg";
+  static const String groupIcon = "assets/icons/group_icon.svg";
+  static const String offerIcon = "assets/icons/offer_icon.svg";
+
+
 
 
 

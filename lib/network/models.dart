@@ -28,8 +28,8 @@ class Models {
       "CUSTOMER_ALL_POSTS_MODEL";
   static const String producerPlacesModel =
       "PRODUCER_PLACES_MODEL";
-  static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
-  static const String customerAllPostsModel = "CUSTOMER_ALL_POSTS_MODEL";
+  // static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
+  // static const String customerAllPostsModel = "CUSTOMER_ALL_POSTS_MODEL";
   static const String getProducerSlotsModel = "GET_PRODUCER_SLOTS_MODEL";
   static const String getAllServiceTypesModel = "GET_ALL_SERVICE_TYPES_MODEL";
 

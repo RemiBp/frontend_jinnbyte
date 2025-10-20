@@ -93,7 +93,7 @@ class _CustomerHomeState extends State<CustomerHome> {
 
             } else {
               debugPrint("Navigating to Restaurant Create Post");
-              context.push(Routes.choiceSelectionRoute);
+              context.push(Routes.restaurantCreatePostRoute);
 
             }
           },
