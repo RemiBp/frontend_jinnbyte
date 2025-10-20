@@ -20,6 +20,7 @@ import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours
 import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/menu/menu_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
+import 'package:choice_app/screens/producer_maps/heatmap.dart';
 import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
@@ -73,6 +74,8 @@ class Routes {
   static const String interestedDetailsRoute = '/interested_details';
   static const String chatbotHomeRoute = '/chatbot_home';
   static const String subscribeRoute = '/subscribe_screen';
+  static const String heatmapRoute = '/heatmap';
+
 
 
 
@@ -210,6 +213,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: Routes.subscribeRoute,
       builder: (context, state) => const SubscribeScreen(),
+    ),
+    GoRoute(
+      path: Routes.heatmapRoute,
+      builder: (context, state) => const HeatmapScreen(),
     ),
     //Customer
     GoRoute(

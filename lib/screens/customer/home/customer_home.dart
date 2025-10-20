@@ -34,6 +34,7 @@ class _CustomerHomeState extends State<CustomerHome> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,

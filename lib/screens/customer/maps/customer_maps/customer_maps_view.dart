@@ -1,7 +1,9 @@
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/res/res.dart';
+import 'package:choice_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/common_app_bar.dart';
@@ -141,6 +143,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                     });                  }),
                   const SizedBox(height: 16),
                   _buildSideButton(Icons.add, () {
+                    context.push(Routes.heatmapRoute);
 
                   }),
                   const SizedBox(height: 8),
