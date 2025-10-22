@@ -32,7 +32,9 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
     final provider = Provider.of<CustomerChoiceProvider>(
         context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.getProducerPlaces();
+      final data = GoRouterState.of(context).extra as Map<String, dynamic>?;
+      final producerType = data?["title"].toLowerCase();
+      provider.getProducerPlaces(producerType);
     });
   }
 
