@@ -18,14 +18,14 @@ class CustomerChoiceProvider extends ChangeNotifier {
     this.context = context;
   }
 
-  Future<void> getProducerPlaces() async {
+  Future<void> getProducerPlaces(String producerType) async {
     try {
       _loader.showLoader(context: context);
 
       placesResponse = await MyApi.callGetApi(
         url: getProducerPlacesApiUrl,
         modelName: Models.producerPlacesModel,
-        parameters: {"query": " ", "type": "restaurant"},
+        parameters: {"query": " ", "type": producerType},
       );
 
       debugPrint("Get cuisine types response: ${placesResponse.status}");
@@ -44,6 +44,7 @@ class CustomerChoiceProvider extends ChangeNotifier {
   }
 
   Future<void> createChoice({
+    required String producerType,
     required int placeId,
     required String status,
     required String description,
@@ -56,7 +57,7 @@ class CustomerChoiceProvider extends ChangeNotifier {
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {
         "placeId": placeId,
-        "type": "restaurant",
+        "type": producerType,
         "status": status,
         "title": "Sample",
         "description": description,
@@ -78,7 +79,9 @@ class CustomerChoiceProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
       if (response != null) {
         Toasts.getSuccessToast(text: response?["message"]);
-        await saveRating(choiceId: response["data"]["id"], rating: rating);
+        await saveRating(choiceId: response["data"]["id"],
+          userRating: rating,
+          producerType: producerType,);
       }
     } catch (err) {
       debugPrint("error during saving  rating : $err");
@@ -88,19 +91,35 @@ class CustomerChoiceProvider extends ChangeNotifier {
 
   Future<void> saveRating({
     required int choiceId,
-    required Map<String, dynamic> rating,
+    required String producerType,
+    required Map<String, dynamic> userRating,
   }) async {
     try {
       _loader.showLoader(context: context);
+      final generalRating = userRating["general"];
+      final rating = producerType == "restaurant" ? {
+        "service": generalRating["Service"],
+        "place": generalRating["Place"],
+        "portions": generalRating["Portions"],
+        "ambiance": generalRating["Ambiance"],
+      } : producerType == "leisure" ? {
+        "stageDirection": generalRating["Stage Direction"],
+        "actorPerformance": generalRating["Actor Performance"],
+        "textQuality": generalRating["Text Quality"],
+        "scenography": generalRating["Scenography"],
+      }
+          : {
+        "careQuality": generalRating["Care Quality"],
+        "cleanliness": generalRating["Cleanliness"],
+        "welcome": generalRating["Welcome"],
+        "valueForMoney": generalRating["Value For Money"],
+        "atmosphere": generalRating["Atmosphere"],
+        "staffExperience": generalRating["Staff Experience"]
+      };
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {
-        "producerType": "restaurant",
-        "ratings": {
-          "service": rating["Service"],
-          "place": rating["Place"],
-          "portions": rating["Portions"],
-          "ambiance": rating["Ambiance"],
-        },
+        "producerType": producerType,
+        "ratings": rating,
         "comment": "test sample comment",
       };
       debugPrint("body is : ---------->$body");
