@@ -131,24 +131,24 @@ class _OtpVerificationState extends State<OtpVerification> {
               buttonText: al.verifyButton,
               onTap: () {
 
-                context.push(Routes.uploadReclaimDocsRoute);
-                // if (otp.length < 6) {
-                //   Toasts.getErrorToast(text: al.enterOtpPlaceholder);
-                //   return;
-                // }
-                // if(isResetPassFlow){
-                //   provider.verifyFgOtp(
-                //     email: email,
-                //     otp: otp,
-                //     isResetPassFlow: isResetPassFlow,
-                //   );
-                //   return;
-                // }
-                // provider.verifyOtp(
-                //   email: email,
-                //   otp: otp,
-                //   isResetPassFlow: isResetPassFlow,
-                // );
+                //context.push(Routes.uploadReclaimDocsRoute);
+                if (otp.length < 6) {
+                  Toasts.getErrorToast(text: al.enterOtpPlaceholder);
+                  return;
+                }
+                if(isResetPassFlow){
+                  provider.verifyFgOtp(
+                    email: email,
+                    otp: otp,
+                    isResetPassFlow: isResetPassFlow,
+                  );
+                  return;
+                }
+                provider.verifyOtp(
+                  email: email,
+                  otp: otp,
+                  isResetPassFlow: isResetPassFlow,
+                );
               },
             ),
           ],
