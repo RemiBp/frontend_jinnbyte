@@ -1,9 +1,9 @@
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/res/res.dart';
-import 'package:choice_app/routes/routes.dart';
+import 'package:choice_app/screens/leisure/leisure_profile_tab_bar/leisure_profile_tab_bar.dart';
+import 'package:choice_app/screens/wellness/wellness_profile_tab_bar/wellness_Profile_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/common_app_bar.dart';
@@ -11,6 +11,7 @@ import '../../../../customWidgets/custom_text.dart';
 import '../../../../userRole/role_provider.dart';
 import '../../../../userRole/user_role.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
+import '../../profile/customer_profile_tab_bar/customer_profile_tab_bar.dart';
 import 'filters_bottom_sheet.dart';
 
 class CustomerMapsView extends StatefulWidget {
@@ -32,6 +33,33 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
 
   int selectedFilterIndex = 0;
 
+  final List<Map<String, dynamic>> markers = [
+    {
+      "icon": Assets.userMarker,
+      "dx": 0.35,
+      "dy": 0.3,
+      "type": UserRole.user,
+    },
+    {
+      "icon": Assets.restaurantMarker,
+      "dx": 0.55,
+      "dy": 0.25,
+      "type": UserRole.restaurant,
+    },
+    {
+      "icon": Assets.wellnessMarker,
+      "dx": 0.7,
+      "dy": 0.2,
+      "type": UserRole.wellness,
+    },
+    {
+      "icon": Assets.leisureMarker,
+      "dx": 0.65,
+      "dy": 0.4,
+      "type": UserRole.leisure,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     final roleProvider = context.read<RoleProvider>();
@@ -45,7 +73,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
             // Map image placeholder + optional heatmap overlay
             Positioned.fill(
               child: Stack(
-                fit: StackFit.expand, // 👈 ensures full area fill
+                fit: StackFit.expand, //  ensures full area fill
                 children: [
                   // Base map
                   Image.asset(
@@ -53,9 +81,24 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
                     fit: BoxFit.cover,
                   ),
 
-                  //if role is not user then show heatmap.
+                  ...markers.map((marker) {
+                    return Positioned(
+                      left: MediaQuery.of(context).size.width * marker["dx"],
+                      top: MediaQuery.of(context).size.height * marker["dy"],
+                      child: GestureDetector(
+                        onTap: () => _openProfileSheet(context, marker["type"]),
+                        child: SvgPicture.asset(
+                          marker["icon"],
+                          width: getWidth() * 0.11,  // ~42px
+                          height: getHeight() * 0.065, // ~58px
+                        ),
+                      ),
+                    );
+                  }).toList(),
 
-                  //if (roleProvider.role != UserRole.user && showHeatmap)
+
+
+
                   if (showHeatmap)
                     AnimatedOpacity(
                       opacity: showHeatmap ? 1 : 0,
@@ -72,7 +115,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
             ),
 
 
-            /// Top filter chips (horizontal)
+            // Top filter chips (horizontal)
             SafeArea(
               child: Container(
                 height: 50,
@@ -122,7 +165,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
             ),
 
 
-            /// Side control buttons (rectangular with rounded corners)
+            //Side control buttons (rectangular with rounded corners)
             Positioned(
               top: MediaQuery.of(context).size.height * 0.12,
               right: 10,
@@ -230,5 +273,60 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
     );
   }
 }
+
+void _openProfileSheet(BuildContext context, UserRole type) {
+  // decide which widget to show
+  late final Widget profileView;
+  if (type == UserRole.user) {
+    profileView = CustomerProfileTabBar();
+  } else if (type == UserRole.restaurant || type == UserRole.leisure) {
+    profileView = LeisureProfileTabBar(); // or your restaurant tab bar
+  } else {
+    profileView = WellnessProfileTabBar();
+  }
+
+  // show the draggable modal
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.black.withValues(alpha: 0.8), // dims the background
+    barrierColor: Colors.black.withValues(alpha: 0.8), // dim effect
+    builder: (context) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.4,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // drag handle
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                // profile content
+                Expanded(child: profileView),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
 
 

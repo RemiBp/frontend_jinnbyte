@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/authentication/accountReclaim/account_registration.dart';
 import 'package:choice_app/screens/authentication/accountReclaim/review.dart';
 import 'package:choice_app/screens/authentication/authentication.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_verification.dart';
@@ -76,6 +77,7 @@ class Routes {
   static const String chatbotHomeRoute = '/chatbot_home';
   static const String subscribeRoute = '/subscribe_screen';
   static const String heatmapRoute = '/heatmap';
+  static const String registrationRoute = '/account_registration';
 
 
 
@@ -137,6 +139,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: Routes.editOperationHoursRoute,
       builder: (context, state) => const EditOperationalHours(),
+    ),
+    GoRoute(
+      path: Routes.registrationRoute,
+      builder: (context, state) => const RegistrationScreen(),
     ),
     GoRoute(
       path: Routes.galleryViewRoute,

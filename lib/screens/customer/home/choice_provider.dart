@@ -24,7 +24,7 @@ class CustomerChoiceProvider extends ChangeNotifier {
 
       placesResponse = await MyApi.callGetApi(
         url: getProducerPlacesApiUrl,
-        modelName: Models.producerPlacesModel,
+        modelName: Models.  producerPlacesModel,
         parameters: {"query": " ", "type": "restaurant"},
       );
 
