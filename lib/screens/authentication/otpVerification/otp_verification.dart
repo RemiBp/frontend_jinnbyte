@@ -1,4 +1,5 @@
 import 'package:choice_app/res/toasts.dart';
+import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -129,6 +130,8 @@ class _OtpVerificationState extends State<OtpVerification> {
             CustomButton(
               buttonText: al.verifyButton,
               onTap: () {
+
+                //context.push(Routes.uploadReclaimDocsRoute);
                 if (otp.length < 6) {
                   Toasts.getErrorToast(text: al.enterOtpPlaceholder);
                   return;

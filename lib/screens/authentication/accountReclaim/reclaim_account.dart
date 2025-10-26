@@ -133,7 +133,7 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
                   ? AppColors.leisurePrimaryColor
                   : AppColors.wellnessPrimaryColor,
               onTap: () {
-                context.push(Routes.uploadReclaimDocsRoute);
+                context.push(Routes.registrationRoute);
               },
             ),
 

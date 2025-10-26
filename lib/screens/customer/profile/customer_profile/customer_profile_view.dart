@@ -144,7 +144,7 @@ class _CustomerProfileViewState extends State<CustomerProfileView> with SingleTi
               children:  [
                CustomerChoice()
 ,                //CustomerInterestView(),
-                 UserInterestView()
+                 CustomerInterestView()
                 // RestaurantAboutView(),
               ],
             ),

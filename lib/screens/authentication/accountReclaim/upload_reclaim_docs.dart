@@ -12,6 +12,8 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../../res/loader.dart';
+import '../../../res/toasts.dart';
 import '../../../utilities/extensions.dart';
 import '../auth_provider.dart';
 
@@ -23,202 +25,225 @@ class UploadReclaimDocs extends StatefulWidget {
 }
 
 class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
-  int selected = 1;
+  String? selectedDocTitle;
+  final Loader _loader = Loader();
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ReclaimAccountProvider>(context, listen: false).init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ReclaimAccountProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: AppBar(backgroundColor: AppColors.whiteColor),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: getWidth() * .05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(
+        backgroundColor: AppColors.whiteColor,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
               text: al.uploadDocumentsTitle,
               fontSize: sizes?.fontSize26,
               fontFamily: Assets.onsetSemiBold,
             ),
-
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getWidth() * .05),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             CustomText(
-              text:al.uploadDocumentsDescription,
+              text: al.uploadDocumentsDescription,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
               giveLinesAsText: true,
             ),
-            SizedBox(height: getHeight() * .02),
+            SizedBox(height: getHeight() * .03),
+
+            // Document * label
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: "Document",
+                  fontSize: sizes?.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.blackColor,
+                ),
+                CustomText(
+                  text: " *",
+                  fontSize: sizes?.fontSize14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.redColor,
+                ),
+              ],
+            ),
+            SizedBox(height: getHeight() * .008),
+
+            // Dropdown Field
             SizedBox(
-              height: getHeight() * .03,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: provider.docs.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: getWidth() * .02),
-                        width: getWidth() * .1,
-                        child: Divider(
-                          color: AppColors.getPrimaryColorFromContext(context),
-                          thickness:
-                          provider.step > index ? getHeight() * .0038 : null,
-                        ),
-                      )
-                    ],
+              height: 56,
+              child: DropdownButtonFormField<String>(
+                initialValue: selectedDocTitle,
+                hint: CustomText(
+                  text: "Select Document",
+                  fontSize: 14,
+                  fontFamily: Assets.onsetMedium,
+                  color: AppColors.primarySlateColor,
+                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: AppColors.whiteColor,
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide:
+                    BorderSide(color: AppColors.greyBordersColor, width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide:
+                    BorderSide(color: AppColors.greyBordersColor, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                        color: AppColors.primarySlateColor, width: 1.2),
+                  ),
+                ),
+                dropdownColor: AppColors.whiteColor,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  color: AppColors.blackColor,
+                  fontFamily: Assets.onsetMedium,
+                ),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                items: provider.docs.map((doc) {
+                  return DropdownMenuItem<String>(
+                    value: doc,
+                    child: CustomText(
+                      text: doc,
+                      fontSize: 13.5,
+                      fontFamily: Assets.onsetMedium,
+                      color: AppColors.blackColor,
+                    ),
                   );
+                }).toList(),
+                onChanged: (value) async {
+                  _loader.showLoader(context: context);
+                  await Future.delayed(const Duration(seconds: 1));
+                  _loader.hideLoader(context);
+                  setState(() {
+                    selectedDocTitle = value;
+                  });
                 },
               ),
             ),
-            SizedBox(height: getHeight() * .02),
-            CustomText(
-              text: provider.docs[provider.step],
-              fontSize: sizes?.fontSize18,
-              fontFamily: Assets.onsetSemiBold,
-            ),
 
-            SizedBox(height: getHeight() * .01),
-            CustomText(
-              text: al.uploadDocuments,
-              fontSize: sizes?.fontSize14,
-              fontFamily: Assets.onsetMedium,
-            ),
-            SizedBox(height: getHeight() * .02),
-            InkWell(
-              onTap: () {
-                authProvider.pickFile(1);
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                child: DottedBorder(
-                  options: RectDottedBorderOptions(
-                    padding: EdgeInsets.all(22),
-                    dashPattern: [10, 10],
-                    color: AppColors.inputHintColor,
-                  ),
-                  child: SizedBox(
-                    width: getWidth(),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: HexColor.fromHex("#FEF5E7"),
-                          child: SvgPicture.asset(Assets.pdfIcon),
-                        ),
-                        SizedBox(height: getHeight() * .01),
-                        if (authProvider.selectedDoc1 != null) ...[
-                          CustomText(
-                            text: authProvider.selectedDoc1?.name ?? "",
-                            fontSize: sizes!.fontSize12,
-                            color: AppColors.primarySlateColor,
+            SizedBox(height: getHeight() * .03),
+
+            // Upload section only after selecting document
+            if (selectedDocTitle != null) ...[
+              CustomText(
+                text: selectedDocTitle ?? "",
+                fontSize: sizes?.fontSize18,
+                fontFamily: Assets.onsetSemiBold,
+              ),
+              SizedBox(height: getHeight() * .015),
+              CustomText(
+                text: al.uploadDocuments,
+                fontSize: sizes?.fontSize14,
+                fontFamily: Assets.onsetMedium,
+              ),
+              SizedBox(height: getHeight() * .02),
+
+              InkWell(
+                onTap: () async {
+                  await provider.uploadDocument(() async {
+                    await authProvider.pickFile(1);
+                  });
+                },
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: DottedBorder(
+                    options: RectDottedBorderOptions(
+                      padding: const EdgeInsets.all(22),
+                      dashPattern: [10, 10],
+                      color: AppColors.inputHintColor,
+                    ),
+                    child: SizedBox(
+                      width: getWidth(),
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: HexColor.fromHex("#FEF5E7"),
+                            child: SvgPicture.asset(Assets.pdfIcon),
                           ),
-                        ] else ...[
-                          CustomText(
-                            text: al.chooseFile,
-                            fontSize: sizes!.fontSize14,
-                            fontFamily: Assets.onsetMedium,
-                          ),
-                          // SizedBox(height: getHeight() * .01),
-                          CustomText(
-                            text: al.maxFileSizeNote,
-                            fontSize: sizes!.fontSize12,
-                            color: AppColors.primarySlateColor,
-                          ),
+                          SizedBox(height: getHeight() * .01),
+                          if (authProvider.selectedDoc1 != null) ...[
+                            CustomText(
+                              text: authProvider.selectedDoc1?.name ?? "",
+                              fontSize: sizes!.fontSize12,
+                              color: AppColors.primarySlateColor,
+                            ),
+                          ] else ...[
+                            CustomText(
+                              text: al.chooseFile,
+                              fontSize: sizes!.fontSize14,
+                              fontFamily: Assets.onsetMedium,
+                            ),
+                            CustomText(
+                              text: al.maxFileSizeNote,
+                              fontSize: sizes!.fontSize12,
+                              color: AppColors.primarySlateColor,
+                            ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
 
-            Spacer(),
-            provider.step == 0
-                ? CustomButton(
-                  buttonText: al.continueText,
-                  onTap: () {
-                    provider.updatedStep = 1;
-                  },
-                )
-                : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomButton(
-                      backgroundColor: Colors.transparent,
-                      buttonText: al.backButton,
-                      textColor: AppColors.blackColor,
-                      borderColor: AppColors.blackColor,
-                      onTap: () {
-                        provider.updatedStep = provider.step - 1;
-                      },
-                      buttonWidth: getWidth() * .43,
-                    ),
-                    CustomButton(
-                      buttonText:al.continueText,
-                      onTap: () {
-                        if (provider.step == provider.docs.length-1) {
-                          context.push(Routes.restaurantProfileRoute);
-                          // context.push(Routes.reviewRoute);
-                          return;
-                        }
-                        provider.updatedStep = provider.step + 1;
-                      },
-                      buttonWidth: getWidth() * .43,
-                    ),
-                  ],
-                ),
+            const Spacer(),
+
+            // Continue button
+            CustomButton(
+              buttonText: al.continueText,
+              onTap: () async {
+                if (selectedDocTitle == null) {
+                  Toasts.getErrorToast(text: "Please select a document first.");
+                  return;
+                }
+
+                if (authProvider.selectedDoc1 == null) {
+                  Toasts.getErrorToast(text: "Please upload the document first.");
+                  return;
+                }
+
+                _loader.showLoader(context: context);
+                await Future.delayed(const Duration(seconds: 1));
+                _loader.hideLoader(context);
+
+                Toasts.getSuccessToast(text: "Document uploaded successfully");
+                context.push(Routes.restaurantProfileRoute);
+              },
+            ),
 
             SizedBox(height: getHeight() * .05),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CategoryChip extends StatelessWidget {
-  final String label;
-  final String svgString;
-  final bool selected;
-  final Color selectedColor;
-  final VoidCallback onTap;
-
-  const CategoryChip({
-    super.key,
-    required this.label,
-    required this.selectedColor,
-    required this.svgString,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: selected ? selectedColor : AppColors.greyBordersColor,
-                width: 2.0,
-              ),
-            ),
-            padding: EdgeInsets.all(getHeight() * .02),
-            child: SvgPicture.asset(svgString, height: getHeight() * .035),
-          ),
-          const SizedBox(height: 8),
-          CustomText(
-            text: label,
-            fontSize: sizes?.fontSize12,
-            fontFamily: Assets.onsetMedium,
-            color: AppColors.primarySlateColor,
-          ),
-        ],
       ),
     );
   }

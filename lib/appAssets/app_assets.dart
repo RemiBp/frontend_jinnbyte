@@ -90,6 +90,19 @@ class Assets {
   static const String shareIcon = "assets/icons/share.svg";
   static const String crownIcon = "assets/icons/crown_icon.svg";
   static const String paymentIcon = "assets/icons/payment_icon.svg";
+  static const String folderIcon = "assets/icons/folder_icon.svg";
+  static const String groupIcon = "assets/icons/group_icon.svg";
+  static const String offerIcon = "assets/icons/offer_icon.svg";
+  static const String restaurantMarker = "assets/icons/restaurant_marker.svg";
+  static const String wellnessMarker = "assets/icons/wellness_marker.svg";
+  static const String userMarker = "assets/icons/user_marker.svg";
+  static const String leisureMarker = "assets/icons/leisure_marker.svg";
+
+
+
+
+
+
 
 
 

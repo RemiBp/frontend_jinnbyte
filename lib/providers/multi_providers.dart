@@ -5,6 +5,7 @@ import 'package:choice_app/screens/authentication/otpVerification/otp_provider.d
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
+import 'package:choice_app/screens/producer_maps/offer_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_provider.dart';
 import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
@@ -35,6 +36,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<OtpProvider>(
     create: (_) => OtpProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<TemplateProvider>(
+    create: (_) => TemplateProvider(),
     lazy: true,
   ),
   ChangeNotifierProvider<ReclaimAccountProvider>(
