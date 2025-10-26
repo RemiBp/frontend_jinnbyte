@@ -2,12 +2,14 @@ import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_button.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/customWidgets/custom_textfield.dart';
+import 'package:choice_app/models/get_producer_profile_response.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/res/toasts.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +23,9 @@ import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({super.key, this.isFromSettings = false});
+
+  final bool isFromSettings;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -69,6 +73,108 @@ class _ProfileState extends State<Profile> {
 
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(widget.isFromSettings) {
+        provider.getProducerProfile().then((_) {
+          if(provider.getProducerProfileResponse != null) {
+            _populateFormFields(provider.getProducerProfileResponse!);
+          }
+        });
+      }
+    });
+  }
+
+  void _populateFormFields(GetProducerProfileResponse response) {
+    final producer = response.producer;
+    final businessProfile = response.businessProfile;
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+    
+    if (producer != null) {
+      // Populate producer fields
+      addressController.text = producer.address ?? '';
+      
+      // Set phone number if available
+      if (producer.phoneNumber != null) {
+        try {
+          provider.setPhoneNumber(PhoneNumber.parse(producer.phoneNumber!));
+        } catch (e) {
+          debugPrint('Error parsing phone number: $e');
+        }
+      }
+    }
+    
+    if (businessProfile != null) {
+      // Populate business profile fields
+      websiteController.text = businessProfile.website ?? '';
+      instagramController.text = businessProfile.instagram ?? '';
+      twitterController.text = businessProfile.twitter ?? '';
+      facebookController.text = businessProfile.facebook ?? '';
+      descriptionController.text = businessProfile.description ?? '';
+      
+      // Set profile image if available
+      if (businessProfile.profileImageUrl != null && businessProfile.profileImageUrl!.isNotEmpty) {
+        provider.setProfileImageUrl(businessProfile.profileImageUrl);
+        debugPrint('Profile image URL: ${businessProfile.profileImageUrl}');
+      }
+    }
+  }
+
+  Widget _buildProfileImage(ProfileProvider provider) {
+    if (provider.profileImage != null) {
+      return CircleAvatar(
+        radius: getHeight() * .07,
+        backgroundColor: AppColors.greyColor,
+        backgroundImage: FileImage(provider.profileImage!),
+      );
+    }
+    if (widget.isFromSettings && provider.profileImageUrl != null && provider.profileImageUrl!.isNotEmpty) {
+      return CircleAvatar(
+        radius: getHeight() * .07,
+        backgroundColor: AppColors.greyColor,
+        child: ClipOval(
+          child: Image.network(
+            provider.profileImageUrl!,
+            width: getHeight() * .14, // 2 * radius
+            height: getHeight() * .14, // 2 * radius
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('Network image error: $error');
+              return SvgPicture.asset(
+                Assets.userIcon,
+                height: getHeight() * .05,
+                colorFilter: ColorFilter.mode(
+                  Colors.grey.shade600,
+                  BlendMode.srcIn,
+                ),
+              );
+            },
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    }
+    return CircleAvatar(
+      radius: getHeight() * .07,
+      backgroundColor: AppColors.greyColor,
+      child: SvgPicture.asset(
+        Assets.userIcon,
+        height: getHeight() * .05,
+        colorFilter: ColorFilter.mode(
+          Colors.grey.shade600,
+          BlendMode.srcIn,
+        ),
+      ),
+    );
   }
 
   @override
@@ -90,7 +196,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileProvider>(context);
+    final provider = Provider.of<ProfileProvider>(context, listen: true);
     final roleProvider = context.read<RoleProvider>(); // get current role
 
     return Scaffold(
@@ -132,23 +238,7 @@ class _ProfileState extends State<Profile> {
               alignment: Alignment.bottomRight,
               clipBehavior: Clip.none, // allow overflow
               children: [
-                CircleAvatar(
-                  radius: getHeight() * .07,
-                  backgroundColor: AppColors.greyColor,
-                  backgroundImage: provider.profileImage != null
-                      ? FileImage(provider.profileImage!)
-                      : null,
-                  child: provider.profileImage == null
-                      ? SvgPicture.asset(
-                    Assets.userIcon,
-                    height: getHeight() * .05,
-                    colorFilter: ColorFilter.mode(
-                      Colors.grey.shade600,
-                      BlendMode.srcIn,
-                    ),
-                  )
-                      : null,
-                ),
+                _buildProfileImage(provider),
                 Positioned(
                   right: -getWidth() * .017,
                   bottom: -getHeight() * .017,
@@ -389,68 +479,74 @@ class _ProfileState extends State<Profile> {
                       final twitter = twitterController.text.trim();
                       final facebook = facebookController.text.trim();
 
-                      if (website.isNotEmpty && !isValidWebsite(website)) {
-                        Toasts.getErrorToast(text: al.validWebsiteLink + " (e.g., www.example.com)");
-                        return;
-                      }
-                      if (instagram.isNotEmpty && !isValidInstagram(instagram)) {
-                        Toasts.getErrorToast(text: al.validInstagramLink + " (e.g., www.instagram.com/username)");
-                        return;
-                      }
-                      if (twitter.isNotEmpty && !isValidTwitter(twitter)) {
-                        Toasts.getErrorToast(text: al.validTwitterLink + "(e.g., www.twitter.com/username)");
-                        return;
-                      }
-                      if (facebook.isNotEmpty && !isValidFacebook(facebook)) {
-                        Toasts.getErrorToast(text: al.validFacebookLink + " (e.g., www.facebook.com/username)");
-                        return;
-                      }
+                      // if (website.isNotEmpty && !isValidWebsite(website)) {
+                      //   Toasts.getErrorToast(text: al.validWebsiteLink + " (e.g., www.example.com)");
+                      //   return;
+                      // }
+                      // if (instagram.isNotEmpty && !isValidInstagram(instagram)) {
+                      //   Toasts.getErrorToast(text: al.validInstagramLink + " (e.g., www.instagram.com/username)");
+                      //   return;
+                      // }
+                      // if (twitter.isNotEmpty && !isValidTwitter(twitter)) {
+                      //   Toasts.getErrorToast(text: al.validTwitterLink + "(e.g., www.twitter.com/username)");
+                      //   return;
+                      // }
+                      // if (facebook.isNotEmpty && !isValidFacebook(facebook)) {
+                      //   Toasts.getErrorToast(text: al.validFacebookLink + " (e.g., www.facebook.com/username)");
+                      //   return;
+                      // }
                     }
 
+                    String? profileImageUrl;
+                    
                     if (provider.profilePhoto != null) {
-                      final bytes =
-                      await provider.profilePhoto!.readAsBytes();
-                      final fileUrl =
-                      await networkProvider.getUrlForFileUpload(bytes);
-                      if (fileUrl == null) {
-                        Toasts.getErrorToast(
-                            text: al.failedToGetImageUrl);
+                      // User selected a new image - upload it
+                      final bytes = await provider.profilePhoto!.readAsBytes();
+                      profileImageUrl = await networkProvider.getUrlForFileUpload(bytes);
+                      if (profileImageUrl == null) {
+                        Toasts.getErrorToast(text: al.failedToGetImageUrl);
                         return;
                       }
-                      final success = await provider.updateProfile(
-                        address: roleProvider.role == UserRole.user
-                            ? ""
-                            : addressController.text,
-                        password: passwordController.text,
-                        website: roleProvider.role == UserRole.user
-                            ? ""
-                            : websiteController.text,
-                        instagram: roleProvider.role == UserRole.user
-                            ? ""
-                            : instagramController.text,
-                        twitter: roleProvider.role == UserRole.user
-                            ? ""
-                            : twitterController.text,
-                        facebook: roleProvider.role == UserRole.user
-                            ? ""
-                            : facebookController.text,
-                        description: descriptionController.text,
-                        profileImageUrl: fileUrl,
-                      );
-                      if (success && context.mounted) {
-                        if (role == UserRole.leisure) {
-                          context.push(Routes.restaurantBottomTabRoute);
-                        } else if(role == UserRole.restaurant) {
-                          context.push(Routes.restaurantAddCuisineRoute);
-                        } else if(role == UserRole.wellness) {
-                          context.push(Routes.wellnessAddServicesRoute);
-                        } else {
-                          context.push(Routes.customerHomeRoute);
-                        }
-                      }
+                    } else if (widget.isFromSettings && provider.profileImageUrl != null) {
+                      // From settings and no new image selected - use existing URL
+                      profileImageUrl = provider.profileImageUrl;
                     } else {
-                      Toasts.getErrorToast(
-                          text: al.selectProfileImage);
+                      // No image available
+                      Toasts.getErrorToast(text: al.selectProfileImage);
+                      return;
+                    }
+
+                    final success = await provider.updateProfile(
+                      address: roleProvider.role == UserRole.user
+                          ? ""
+                          : addressController.text,
+                      password: passwordController.text,
+                      website: roleProvider.role == UserRole.user
+                          ? ""
+                          : websiteController.text,
+                      instagram: roleProvider.role == UserRole.user
+                          ? ""
+                          : instagramController.text,
+                      twitter: roleProvider.role == UserRole.user
+                          ? ""
+                          : twitterController.text,
+                      facebook: roleProvider.role == UserRole.user
+                          ? ""
+                          : facebookController.text,
+                      description: descriptionController.text,
+                      profileImageUrl: profileImageUrl!,
+                    );
+                    
+                    if (success && context.mounted) {
+                      if (role == UserRole.leisure) {
+                        context.push(Routes.restaurantBottomTabRoute);
+                      } else if(role == UserRole.restaurant) {
+                        context.push(Routes.restaurantAddCuisineRoute);
+                      } else if(role == UserRole.wellness) {
+                        context.push(Routes.wellnessAddServicesRoute);
+                      } else {
+                        context.push(Routes.customerHomeRoute);
+                      }
                     }
                   },
                   buttonWidth: getWidth() * .42,

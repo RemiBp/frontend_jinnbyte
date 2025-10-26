@@ -159,7 +159,10 @@ final GoRouter router = GoRouter(
     // restaurant
     GoRoute(
       path: Routes.restaurantProfileRoute,
-      builder: (context, state) => const Profile(),
+      builder: (context, state) {
+        final isFromSettings = state.extra as bool? ?? false;
+        return Profile(isFromSettings: isFromSettings);
+      },
     ),
     GoRoute(
       path: '/restaurant_events',

@@ -1,4 +1,5 @@
 import 'package:choice_app/l18n.dart';
+import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/change_password.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_edit_profile.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
@@ -12,6 +13,7 @@ import 'package:choice_app/screens/restaurant/profile_menu/bookmarked/bookmarked
 import 'package:choice_app/screens/restaurant/setting/setting_widgets.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
@@ -55,16 +57,15 @@ class _SettingViewState extends State<SettingView> {
                   title: al.editProfile,
                   leadingAssetPath: Assets.editProfileIcon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-
-                      MaterialPageRoute(builder: (context) =>
-                      context
-                          .read<RoleProvider>()
-                          .role == UserRole.user
-                          ? CustomerEditProfile()
-                          : Profile(),),
-                    );
+                    if(role == UserRole.user) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>
+                            CustomerEditProfile(),),
+                      );
+                    } else {
+                      context.push(Routes.restaurantProfileRoute, extra: true);
+                    }
                   },
                 ),
                 ProfileOptionButton(
