@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_producer_profile_response.dart';
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/network/models.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class ProfileProvider extends ChangeNotifier {
 
   PhoneNumber? phoneNumber;
   XFile? profilePhoto;
+  String? profileImageUrl; // Store profile image URL from API
   // String businessName = "";
 
   final Loader _loader = Loader();
@@ -32,6 +34,7 @@ class ProfileProvider extends ChangeNotifier {
   GetCuisineTypesResponse? getCuisineTypesResponse;
   GetProducerSlotsResponse? getProducerSlotsResponse;
   GetAllServiceTypesResponse? getAllServiceTypesResponse;
+  GetProducerProfileResponse? getProducerProfileResponse;
 
   init(context) {
     this.context = context;
@@ -83,10 +86,16 @@ class ProfileProvider extends ChangeNotifier {
     if (image != null) {
       profilePhoto = XFile(image.path);
       profileImage = image;
+      profileImageUrl = null; // Clear URL when user selects new image
     } else {
       profilePhoto = null;
       profileImage = null;
     }
+    notifyListeners();
+  }
+
+  void setProfileImageUrl(String? url) {
+    profileImageUrl = url;
     notifyListeners();
   }
 
@@ -737,6 +746,35 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
       Toasts.getErrorToast(text: "Failed to set service type");
       return false;
+    }
+  }
+
+  Future<GetProducerProfileResponse?> getProducerProfile() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getProducerProfileApiUrl,
+        modelName: Models.getProducerProfileModel,
+      );
+
+      debugPrint("Get producer profile response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        getProducerProfileResponse = response;
+        notifyListeners();
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch producer profile");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting producer profile: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to producer profile");
+      return null;
     }
   }
 
