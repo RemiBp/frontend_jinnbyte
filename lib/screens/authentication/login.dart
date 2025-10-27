@@ -217,19 +217,19 @@ class _LoginState extends State<Login> {
 
   onLoginTap() {
     // context.push(Routes.restaurantProfileRoute);
-    context.push(Routes.restaurantBottomTabRoute);
+    // context.push(Routes.restaurantBottomTabRoute);
     //return;
-    // var email = emailController.text.toString().trim();
-    // var password = passwordController.text.toString().trim();
-    // if (email.isEmpty) {
-    //   Toasts.getErrorToast(text: al.emailMissing);
-    // } else if (email.validateEmail() == false) {
-    //   Toasts.getErrorToast(text: al.invalidEmail);
-    // } else if (password.isEmpty) {
-    //   Toasts.getErrorToast(text: al.passwordMissing);
-    // } else {
-    //   context.read<AuthProvider>().loginUser(
-    //     email: email, password: password,);
-    // }
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
+    if (email.isEmpty) {
+      Toasts.getErrorToast(text: al.emailMissing);
+    } else if (email.validateEmail() == false) {
+      Toasts.getErrorToast(text: al.invalidEmail);
+    } else if (password.isEmpty) {
+      Toasts.getErrorToast(text: al.passwordMissing);
+    } else {
+      context.read<AuthProvider>().loginUser(
+        email: email, password: password,);
+    }
   }
 }
