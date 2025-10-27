@@ -134,6 +134,50 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
+
+  Future<void> reclaimRegister({
+    required String email,
+    required String password,
+    required int claimProducerId,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> headers = {"Content-Type": "application/json"};
+      Map<String, dynamic> body = {
+        "email": email,
+        "password": password,
+        "claimProducerId": claimProducerId,
+      };
+
+      debugPrint("🟢 Reclaim Register Request Body: $body");
+
+      final signupResponse = await MyApi.callPostApi(
+        url: signUpApiUrl,
+        myHeaders: headers,
+        body: body,
+      );
+
+      debugPrint("🟢 Reclaim Register Response: $signupResponse");
+
+      if (signupResponse?["message"] != null) {
+        Toasts.getSuccessToast(text: al.registrationSuccessful);
+
+        context?.push(Routes.otpVerificationRoute, extra: {
+          "email": email,
+          "isResetPassFlow": false,
+        });
+      }
+
+      _loader.hideLoader(context!);
+    } catch (err) {
+      debugPrint("❌ Error during reclaim registration: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to register account");
+    }
+  }
+
+
   Future<void> registerUser({
     required String fullName,
     required String userName,

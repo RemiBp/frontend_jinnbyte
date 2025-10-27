@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../res/loader.dart';
+import '../res/toasts.dart';
 import 'api_url.dart';
+import 'package:path/path.dart';
 
 class  NetworkProvider extends ChangeNotifier{
 
@@ -143,5 +145,57 @@ class  NetworkProvider extends ChangeNotifier{
 
     return null; // Unknown format
   }
+
+
+  Future<String?> getUrlForDocumentUpload(File file,BuildContext context) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final Uint8List fileBytes = await file.readAsBytes();
+      final String fileName = basename(file.path);
+
+      Map<String, dynamic> header = {"Content-Type": "application/json"};
+      Map<String, dynamic> body = {
+        "fileName": fileName,
+        "contentType": "application/pdf", // only pdfs allowed
+        "folderName": "BusinessDocuments"
+      };
+
+      debugPrint("📄 PreSigned Document Upload Body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: preSignedFileUploadApiUrl,
+        myHeaders: header,
+        body: body,
+      );
+
+      if (response?["url"] != null) {
+        debugPrint("✅ PreSigned Document URL: ${response?["url"]}");
+
+        // upload file to the S3 pre-signed URL
+        final success = await uploadImageByUrl(response?["url"], fileBytes);
+
+        _loader.hideLoader(context!);
+
+        if (success) {
+          debugPrint("📦 Document uploaded successfully to S3");
+          return response?["keyName"]; // this is your permanent S3 file URL
+        } else {
+          Toasts.getErrorToast(text: "Failed to upload document");
+          return null;
+        }
+      } else {
+        _loader.hideLoader(context!);
+        Toasts.getErrorToast(text: "Failed to get upload URL");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("❌ Error in getUrlForDocumentUpload: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Document upload failed");
+      return null;
+    }
+  }
+
 
 }

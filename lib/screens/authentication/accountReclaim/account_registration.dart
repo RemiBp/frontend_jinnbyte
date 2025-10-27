@@ -16,7 +16,9 @@ import '../../../userRole/role_provider.dart';
 import '../auth_provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+  final int? claimProducerId;
+
+  const RegistrationScreen({super.key, this.claimProducerId});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -99,7 +101,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             CustomButton(
               buttonText: al.continueText,
               onTap: () {
-                context.push(Routes.otpVerificationRoute);
+                onContinueTap();
               },
               backgroundColor: AppColors.getPrimaryColorFromContext(context),
               borderColor: AppColors.getPrimaryColorFromContext(context),
@@ -114,6 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     var email = emailController.text.trim();
     var password = passwordController.text.trim();
 
+
     if (email.isEmpty) {
       Toasts.getErrorToast(text: "Please enter your email");
     } else if (email.validateEmail() == false) {
@@ -122,11 +125,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Toasts.getErrorToast(text: "Please enter your password");
     } else {
       // Call your provider method here
-      context.read<AuthProvider>().register(
+      context.read<AuthProvider>().reclaimRegister(
         email: email,
         password: password,
-        businessName: '',
-        role: context.read<RoleProvider>().role.name,
+        claimProducerId: widget.claimProducerId!,
 
       );
     }

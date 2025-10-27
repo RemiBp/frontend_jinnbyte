@@ -76,7 +76,7 @@ class OtpProvider extends ChangeNotifier {
         } else if (roleProvider?.role == UserRole.leisure || roleProvider?.role == UserRole.wellness ) {
           context?.push(Routes.uploadReclaimDocsRoute); // Leisure and wellness -> upload reclaim docs
         } else {
-          context?.push(Routes.uploadDocsRoute); // restaurant -> upload docs
+          context?.push(Routes.uploadReclaimDocsRoute); // restaurant -> upload docs
         }
         return;        return;
       }

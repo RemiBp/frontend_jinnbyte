@@ -256,7 +256,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
     );
   }
 
-  /// Rectangular side buttons (like in screenshot)
+  // Rectangular side buttons (like in screenshot)
   Widget _buildSideButton(IconData icon, VoidCallback onTap) {
     return Material(
       color: Colors.white,

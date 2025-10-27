@@ -37,7 +37,6 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ReclaimAccountProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -169,9 +168,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
 
               InkWell(
                 onTap: () async {
-                  await provider.uploadDocument(() async {
-                    await authProvider.pickFile(1);
-                  });
+                  await provider.uploadBusinessDocument();
                 },
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -190,9 +187,9 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                             child: SvgPicture.asset(Assets.pdfIcon),
                           ),
                           SizedBox(height: getHeight() * .01),
-                          if (authProvider.selectedDoc1 != null) ...[
+                          if (provider.selectedDoc != null) ...[
                             CustomText(
-                              text: authProvider.selectedDoc1?.name ?? "",
+                              text: provider.selectedDoc?.name ?? "",
                               fontSize: sizes!.fontSize12,
                               color: AppColors.primarySlateColor,
                             ),
@@ -227,7 +224,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                   return;
                 }
 
-                if (authProvider.selectedDoc1 == null) {
+                if (provider.selectedDoc == null) {
                   Toasts.getErrorToast(text: "Please upload the document first.");
                   return;
                 }
