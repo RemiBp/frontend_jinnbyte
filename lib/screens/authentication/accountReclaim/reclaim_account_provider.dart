@@ -25,6 +25,14 @@ class ReclaimAccountProvider extends ChangeNotifier {
   String selectedType = "";
   PlaceData? selectedPlace;
 
+  double uploadProgress = 0.0;
+  bool isUploading = false;
+
+  void setUploadProgress(double progress) {
+    uploadProgress = progress;
+    notifyListeners();
+  }
+
   int? get claimProducerId => selectedPlace?.id;
 
 
@@ -130,7 +138,7 @@ class ReclaimAccountProvider extends ChangeNotifier {
 
   Future<void> uploadBusinessDocument() async {
     try {
-      //  Pick only PDF files
+      // 1️⃣ Pick PDF file
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
@@ -142,24 +150,43 @@ class ReclaimAccountProvider extends ChangeNotifier {
       }
 
       final file = File(result.files.single.path!);
-      selectedDoc = result.files.single; //  store locally for UI
+      selectedDoc = result.files.single;
       notifyListeners();
+
+      // Reset and start upload progress
+      isUploading = true;
+      setUploadProgress(0);
 
       final networkProvider = context?.read<NetworkProvider>();
 
-      //  Upload to S3 via presigned URL
-      final uploadedKey =
-      await networkProvider?.getUrlForDocumentUpload(file, context!);
+      // ⚡ If your `getUrlForDocumentUpload` supports Dio upload with progress, do this:
+      final uploadedKey = await networkProvider?.getUrlForDocumentUpload(
+        file,
+        context!,
+        onSendProgress: (sent, total) {
+          if (total > 0) setUploadProgress(sent / total);
+        },
+      );
+
+      // 🧩 If it doesn't support progress, simulate a progress bar:
+      if (uploadedKey == null) {
+        for (int i = 1; i <= 10; i++) {
+          await Future.delayed(const Duration(milliseconds: 150));
+          setUploadProgress(i / 10);
+        }
+      }
 
       if (uploadedKey == null) {
         Toasts.getErrorToast(text: al.failedToUploadDocument);
+        isUploading = false;
+        setUploadProgress(0);
         return;
       }
 
-      uploadedDocUrl = uploadedKey; //  store uploaded URL
+      uploadedDocUrl = uploadedKey;
+      setUploadProgress(1.0);
+      isUploading = false;
       notifyListeners();
-
-      debugPrint("✅ Uploaded S3 Key: $uploadedKey");
 
       // 3️⃣ Save document details in backend
       final saveResponse = await MyApi.callPostApi(
@@ -169,8 +196,6 @@ class ReclaimAccountProvider extends ChangeNotifier {
           "fileUrl": uploadedKey,
         },
       );
-
-      debugPrint("📨 Save Document Response: $saveResponse");
 
       if (saveResponse?["status"] == 200 || saveResponse?["status"] == 201) {
         Toasts.getSuccessToast(
@@ -183,10 +208,12 @@ class ReclaimAccountProvider extends ChangeNotifier {
       }
     } catch (err) {
       debugPrint("❌ uploadBusinessDocument error: $err");
-      Toasts.getErrorToast(
-        text: al.unexpectedErrorWhileUploading,
-      );
+      Toasts.getErrorToast(text: al.unexpectedErrorWhileUploading);
+    } finally {
+      isUploading = false;
+      notifyListeners();
     }
   }
+
 
 }

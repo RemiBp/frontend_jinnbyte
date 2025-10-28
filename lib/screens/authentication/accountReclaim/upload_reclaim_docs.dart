@@ -15,7 +15,6 @@ import '../../../res/res.dart';
 import '../../../res/loader.dart';
 import '../../../res/toasts.dart';
 import '../../../utilities/extensions.dart';
-import '../auth_provider.dart';
 
 class UploadReclaimDocs extends StatefulWidget {
   const UploadReclaimDocs({super.key});
@@ -178,7 +177,9 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                       dashPattern: [10, 10],
                       color: AppColors.inputHintColor,
                     ),
-                    child: SizedBox(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
                       width: getWidth(),
                       child: Column(
                         children: [
@@ -187,11 +188,35 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                             child: SvgPicture.asset(Assets.pdfIcon),
                           ),
                           SizedBox(height: getHeight() * .01),
-                          if (provider.selectedDoc != null) ...[
+
+                          if (provider.isUploading) ...[
+                            LinearProgressIndicator(
+                              value: provider.uploadProgress,
+                              backgroundColor: AppColors.greyBordersColor,
+                              color: AppColors.primarySlateColor,
+                              minHeight: 6,
+                            ),
+                            SizedBox(height: getHeight() * .01),
                             CustomText(
-                              text: provider.selectedDoc?.name ?? "",
+                              text:
+                              "${(provider.uploadProgress * 100).toStringAsFixed(0)}% uploaded",
                               fontSize: sizes!.fontSize12,
                               color: AppColors.primarySlateColor,
+                            ),
+                          ] else if (provider.selectedDoc != null) ...[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: CustomText(
+                                    text: provider.selectedDoc?.name ?? "",
+                                    fontSize: sizes!.fontSize12,
+                                    color: AppColors.primarySlateColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           ] else ...[
                             CustomText(

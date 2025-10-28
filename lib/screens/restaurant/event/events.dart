@@ -52,6 +52,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
           fontSize: sizes?.fontSize18,
           fontFamily: Assets.onsetSemiBold,
         ),
+        titleSpacing: 0,
       ),
       body: Column(
         children: [
@@ -135,7 +136,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
             // Icon
             Container(
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               padding: EdgeInsets.all(20),

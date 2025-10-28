@@ -1,7 +1,6 @@
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/res/toasts.dart';
 import 'package:choice_app/routes/routes.dart';
-import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/userRole/role_provider.dart';
 import 'package:choice_app/userRole/user_role.dart';
@@ -175,7 +174,7 @@ class _GalleryViewState extends State<GalleryView> {
                     }
 
                     final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-                    final success = await profileProvider.setGalleryImages(imageUrls: urls);
+                    final success = await profileProvider.setGalleryImages(imageUrls: urls,context: context);
                     if(success) {
                       final role = context.read<RoleProvider>().role;
                       if(role == UserRole.restaurant) {

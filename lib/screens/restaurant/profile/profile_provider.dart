@@ -452,7 +452,8 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> setGalleryImages({required List<String> imageUrls}) async {
+  Future<bool> setGalleryImages({required List<String> imageUrls, required BuildContext context})
+  async {
     try {
       _loader.showLoader(context: context);
 
