@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_producer_operational_hours_response.dart';
 import 'package:choice_app/models/get_producer_profile_response.dart';
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/network/models.dart';
@@ -36,6 +37,7 @@ class ProfileProvider extends ChangeNotifier {
   GetProducerSlotsResponse? getProducerSlotsResponse;
   GetAllServiceTypesResponse? getAllServiceTypesResponse;
   GetProducerProfileResponse? getProducerProfileResponse;
+  GetProducerOperationalHoursResponse? getProducerOperationalHoursResponse;
 
   init(context) {
     this.context = context;
@@ -502,18 +504,18 @@ class ProfileProvider extends ChangeNotifier {
       // Extract the S3 key from the full URL
       // Example: https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/GalleryImage/1759439487730image1759439487403.jpeg
       // Should return: GalleryImage/1759439487730image1759439487403.jpeg
-      
+
       final uri = Uri.parse(fullUrl);
       String path = uri.path;
-      
+
       // Remove leading slash if present
       if (path.startsWith('/')) {
         path = path.substring(1);
       }
-      
+
       debugPrint("Original URL: $fullUrl");
       debugPrint("Extracted S3 Key: $path");
-      
+
       return path;
     } catch (e) {
       debugPrint("Error extracting S3 key from URL: $fullUrl, Error: $e");
@@ -776,6 +778,35 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint("Error getting producer profile: $err");
       _loader.hideLoader(context!);
       Toasts.getErrorToast(text: al.failedToFetchProducerProfile);
+      return null;
+    }
+  }
+
+  Future<GetProducerOperationalHoursResponse?> getProducerOperationalHours() async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getProducerOperationalHoursApiUrl,
+        modelName: Models.getProducerOperationalHoursModel,
+      );
+
+      debugPrint("Get producer operational hours response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        getProducerOperationalHoursResponse = response;
+        notifyListeners();
+        return response;
+      } else {
+        Toasts.getErrorToast(text: 'Failed to fetch producer operational hours');
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting producer operational hours: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: 'Failed to fetch producer operational hours');
       return null;
     }
   }

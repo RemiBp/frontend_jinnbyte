@@ -44,4 +44,5 @@ const String getProducerSlotsApiUrl = "$baseUrl/api/producer/profile/getProducer
 const String getAllServiceTypesApiUrl = "$baseUrl/api/producer/profile/getAllServiceType";
 const String setServiceTypesApiUrl = "$baseUrl/api/producer/profile/setServiceType";
 const String getProducerProfileApiUrl = "$baseUrl/api/producer/profile/getProfile";
+const String getProducerOperationalHoursApiUrl = "$baseUrl/api/producer/profile/getOperationalHours";
 

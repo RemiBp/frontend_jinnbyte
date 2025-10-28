@@ -133,12 +133,7 @@ class _SettingViewState extends State<SettingView> {
                   title: al.businessHours,
                   leadingAssetPath: Assets.businessHourIcon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EditOperationalHours(
-                        operationalHoursList: [],
-                      )),
-                    );
+                    context.push(Routes.editOperationHoursRoute, extra: true);
                   },
                 ),
                 if(role == UserRole.restaurant || role == UserRole.wellness)
