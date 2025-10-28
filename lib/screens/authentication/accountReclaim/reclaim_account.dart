@@ -169,13 +169,13 @@ class _ReclaimAccountState extends State<ReclaimAccount> {
                       onTap: () {
                         //  Validation checks
                         if (_selected == -1) {
-                          Toasts.getErrorToast(text: "Select type");
+                          Toasts.getErrorToast(text: al.selectType);
                           return;
                         }
 
                         if (_searchCtrl.text.trim().isEmpty ||
                             provider.selectedPlace == null) {
-                          Toasts.getErrorToast(text: "Search a place");
+                          Toasts.getErrorToast(text: al.searchAPlace);
                           return;
                         }
 

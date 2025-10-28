@@ -5,6 +5,7 @@ import 'package:readmore/readmore.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../customer/explore/customer_gallery/customer_gallery_screen.dart';
 import '../../../customer/explore/full_menu/full_menu_view.dart';
@@ -48,7 +49,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
           children: [
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "About",
+              text: al.about,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -59,8 +60,8 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
               trimMode: TrimMode.Line,
               trimLines: 2,
               colorClickableText: Colors.pink,
-              trimCollapsedText: 'Read More',
-              trimExpandedText: 'See Less',
+              trimCollapsedText: al.readMore,
+              trimExpandedText: al.seeLess,
               style: TextStyle(
                 fontSize: sizes?.fontSize16,
                 color: AppColors.blackColor,
@@ -75,8 +76,8 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
 
             MenuGroupWidget(
               menuGroup: menuGroups[0],
-              header: "Menu",
-              optionText: "See Full Menu",
+              header: al.menu,
+              optionText: al.seeFullMenu,
               onAddDish: (){
                 Navigator.push(
                   context,
@@ -88,7 +89,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Gallery",
+                  text: al.gallery,
                   fontSize: sizes?.fontSize16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackColor,
@@ -101,7 +102,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
                     );
                   },
                   child: CustomText(
-                    text: "See Full Gallery",
+                    text: al.seeFullGallery,
                     fontSize: sizes?.fontSize14,
                     fontWeight: FontWeight.w500,
                     color: AppColors.getPrimaryColorFromContext(context),
@@ -141,7 +142,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
 
             Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
             CustomText(
-              text: "Location",
+              text: al.location,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -156,7 +157,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             Divider(color: AppColors.greyColor),
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "Business Hour",
+              text: al.businessHours,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -175,7 +176,7 @@ class _RestaurantAboutViewState extends State<RestaurantAboutView> {
             ),
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "Socia Links",
+              text: al.socialLinks,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,

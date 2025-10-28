@@ -11,6 +11,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/icon_svg.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../customer/profile/customer_profile/customer_profile_provider.dart';
 
@@ -238,7 +239,7 @@ class CustomerProfileHeader extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => FollowerView()),
                         );
                       },
-                      child: _buildStatItem("${provider.user?.followersCount}", "Followers"),
+                      child: _buildStatItem("${provider.user?.followersCount}", al.follower),
                     ),
                     Image.asset(Assets.verticalLine, height: getHeight() * 0.03),
                     GestureDetector(
@@ -248,7 +249,7 @@ class CustomerProfileHeader extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => FollowingView()),
                         );
                       },
-                      child: _buildStatItem("${provider.user?.followersCount}", "Following"),
+                      child: _buildStatItem("${provider.user?.followersCount}", al.following),
                     ),
                   ],
                 ),
@@ -338,7 +339,7 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
           color: AppColors.whiteColor,
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
             PopupMenuItem<String>(
-              value: 'Report',
+              value: al.report,
               onTap: ()=> onReport(),
               child: Row(
                 children: [
@@ -348,7 +349,7 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
                   ),
                   SizedBox(width: getWidth() * 0.015),
                   CustomText(
-                    text: 'Report',
+                    text: al.report,
                     fontSize: sizes?.fontSize14,
                     fontWeight: FontWeight.w500,
                     color: AppColors.redColor,
@@ -357,7 +358,7 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
               ),
             ),
             PopupMenuItem<String>(
-              value: 'Block',
+              value: al.block,
               onTap: ()=> onBlock(),
               child: Row(
                 children: [
@@ -367,7 +368,7 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
                   ),
                   SizedBox(width: getWidth() * 0.015),
                   CustomText(
-                    text: 'Block',
+                    text: al.block,
                     fontSize: sizes?.fontSize14,
                     fontWeight: FontWeight.w500,
                     color: AppColors.redColor,
@@ -377,9 +378,9 @@ class ProfileMenuDetailAppBar extends StatelessWidget implements PreferredSizeWi
             ),
           ],
           onSelected: (value) {
-            if (value == 'edit') {
+            if (value == al.edit) {
               // handle edit
-            } else if (value == 'delete') {
+            } else if (value == al.delete) {
               // handle delete
             }
           },
@@ -434,7 +435,7 @@ class SwitchAccountBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: 'Switch Account',
+                    text: al.switchAccount,
                     fontSize: sizes?.fontSize18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
@@ -533,13 +534,13 @@ class SwitchAccountBottomSheet extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Create New Profile",
+                        text: al.createNewProfile,
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blackColor,
                       ),
                       CustomText(
-                        text: "Switch between profile with one login",
+                        text: al.switchBetweenProfiles,
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.inputHintColor,
@@ -598,7 +599,7 @@ class BlockUserBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: 'Block User',
+                    text: al.blockUser,
                     fontSize: sizes?.fontSize18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
@@ -611,7 +612,7 @@ class BlockUserBottomSheet extends StatelessWidget {
               ),
               SizedBox(height: getHeight() * 0.03),
               CustomText(
-                text: 'Blocking this user will prevent them from interacting with you. You can unblock them anytime from your Account Settings.',
+                text: al.blockUserDescription,
                 fontSize: sizes?.fontSize16,
                 fontWeight: FontWeight.w400,
                 color: AppColors.primarySlateColor,
@@ -623,7 +624,7 @@ class BlockUserBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () => Navigator.pop(context),
                       backgroundColor: Colors.transparent,
                       borderColor: AppColors.blackColor,
@@ -634,7 +635,7 @@ class BlockUserBottomSheet extends StatelessWidget {
                   SizedBox(width: getWidth() * 0.03),
                   Expanded(
                     child: CustomButton(
-                      buttonText: 'Block',
+                      buttonText: al.block,
                       onTap: () {},
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
                       borderColor: Colors.transparent,
@@ -660,7 +661,7 @@ class ReportBottomSheet extends StatefulWidget {
 }
 
 class _ReportBottomSheetState extends State<ReportBottomSheet> {
-  String _selectedOption = 'Public';
+  String _selectedOption = al.public;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -694,7 +695,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: 'Report User',
+                    text: al.reportUser,
                     fontSize: sizes?.fontSize18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
@@ -707,7 +708,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
               ),
               SizedBox(height: getHeight() * 0.03),
               CustomText(
-                text: 'Why do you want to report?',
+                text: al.whyReport,
                 fontSize: sizes?.fontSize18,
                 fontWeight: FontWeight.w600,
                 color: AppColors.blackColor,
@@ -715,25 +716,25 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
               ),
               SizedBox(height: getHeight() * 0.01),
               CustomText(
-                text: 'Blocking this user will prevent them from interacting with you. You can unblock them anytime from your Account Settings.',
+                text: al.blockUserDescription,
                 fontSize: sizes?.fontSize16,
                 fontWeight: FontWeight.w400,
                 color: AppColors.primarySlateColor,
                 giveLinesAsText: true,
               ),
               SizedBox(height: getHeight() * 0.03),
-              buildRadio('Spam or Fake Account', 'Spam or Fake Account'),
-              buildRadio('Inappropriate Content', 'Inappropriate Content'),
-              buildRadio('Harassment or Bullying', 'Harassment or Bullying'),
-              buildRadio('Hate Speech', 'Hate Speech'),
-              buildRadio('Scam or Fraud', 'Scam or Fraud'),
+              buildRadio(al.spamOrFakeAccount, al.spamOrFakeAccount),
+              buildRadio(al.inappropriateContent, al.inappropriateContent),
+              buildRadio(al.harassmentOrBullying, al.harassmentOrBullying),
+              buildRadio(al.hateSpeech, al.hateSpeech),
+              buildRadio(al.scamOrFraud, al.scamOrFraud),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () => Navigator.pop(context),
                       backgroundColor: Colors.transparent,
                       borderColor: AppColors.blackColor,
@@ -744,7 +745,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                   SizedBox(width: getWidth() * 0.03),
                   Expanded(
                     child: CustomButton(
-                      buttonText: 'Submit',
+                      buttonText: al.submit,
                       onTap: () {},
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
                       borderColor: Colors.transparent,
@@ -969,7 +970,7 @@ class _FollowUnFollowTileState extends State<FollowUnFollowTile> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: CustomText(
-              text: isFollowing ? "Unfollow" : "Follow",
+              text: isFollowing ? al.unfollow : al.follow,
               fontWeight: FontWeight.w400,
               fontSize: sizes?.fontSize12,
               color: isFollowing ?  AppColors.blackColor: AppColors.whiteColor,
@@ -1214,7 +1215,7 @@ class FavouriteRestaurantCard extends StatelessWidget {
                         // shape: BoxShape.circle,
                       ),
                       child: CustomText(
-                        text: "Wellness",
+                        text: al.categoryWellness,
                         color: AppColors.whiteColor,
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w500

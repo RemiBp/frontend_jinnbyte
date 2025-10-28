@@ -173,7 +173,7 @@ class AuthProvider extends ChangeNotifier{
     } catch (err) {
       debugPrint("❌ Error during reclaim registration: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to register account");
+      Toasts.getErrorToast(text: al.failedToRegisterAccount);
     }
   }
 
@@ -206,7 +206,7 @@ class AuthProvider extends ChangeNotifier{
       debugPrint("register response : $signupResponse");
       if (signupResponse?["message"] != null) {
         debugPrint("register response : ${signupResponse?["message"]}");
-        Toasts.getSuccessToast(text: "Registration Successful");
+        Toasts.getSuccessToast(text: al.registrationSuccessful);
         context?.push(Routes.otpVerificationRoute, extra: {
           "email": email,
           "isResetPassFlow": false,

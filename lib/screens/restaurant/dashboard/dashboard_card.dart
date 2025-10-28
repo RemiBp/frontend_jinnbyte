@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
@@ -38,7 +39,7 @@ class DashboardCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: header??'Profile Views',
+            text: header??al.profileViews,
             fontSize: sizes?.fontSize14,
             fontWeight: FontWeight.w500,
             color: AppColors.primarySlateColor,
@@ -64,7 +65,7 @@ class DashboardCard extends StatelessWidget {
               ),
               SizedBox(width: getWidth() * 0.02),
               CustomText(
-                text: 'vs ${duration??"Last Week"}',
+                text: 'vs ${duration??al.lastWeek}',
                 fontSize: sizes?.fontSize12,
                 fontWeight: FontWeight.w400,
                 color: AppColors.primarySlateColor,
@@ -114,7 +115,7 @@ class MostChosenDishCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: header ?? 'Profile Views',
+                text: header ?? al.profileViews,
                 fontSize: sizes?.fontSize14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primarySlateColor,
@@ -140,8 +141,8 @@ class MostChosenDishCard extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     children: [
-                      const TextSpan(
-                        text: 'Chosen ',
+                      TextSpan(
+                        text: al.chosen+ " ",
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -158,8 +159,8 @@ class MostChosenDishCard extends StatelessWidget {
                           fontFamily: Assets.onsetRegular,
                         ),
                       ),
-                      const TextSpan(
-                        text: 'times this week',
+                       TextSpan(
+                        text: al.timesThisWeek,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

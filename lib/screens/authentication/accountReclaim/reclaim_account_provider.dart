@@ -75,12 +75,12 @@ class ReclaimAccountProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
 
-      Toasts.getSuccessToast(text: "Document selected successfully");
+      Toasts.getSuccessToast(text: al.documentSelectedSuccessfully);
     } catch (e) {
       _loader.hideLoader(context!);
       isLoading = false;
       notifyListeners();
-      Toasts.getErrorToast(text: "Failed to upload document");
+      Toasts.getErrorToast(text: al.failedToUploadDocument);
       debugPrint("Error in uploadDocument: $e");
     }
   }
@@ -115,11 +115,11 @@ class ReclaimAccountProvider extends ChangeNotifier {
         debugPrint("✅ Parsed ${searchedPlaces.length} places");
       } else {
         searchedPlaces = [];
-        Toasts.getErrorToast(text: "No places found");
+        Toasts.getErrorToast(text: al.noPlacesFound);
       }
     } catch (e) {
       debugPrint("❌ Error fetching producer places: $e");
-      Toasts.getErrorToast(text: "Failed to fetch places");
+      Toasts.getErrorToast(text: al.failedToFetchPlaces);
       searchedPlaces = [];
     } finally {
       isSearching = false;
@@ -130,33 +130,33 @@ class ReclaimAccountProvider extends ChangeNotifier {
 
   Future<void> uploadBusinessDocument() async {
     try {
-      // 1️⃣ Pick only PDF files
+      //  Pick only PDF files
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
       if (result == null) {
-        Toasts.getErrorToast(text: "No file selected");
+        Toasts.getErrorToast(text: al.noFileSelected);
         return;
       }
 
       final file = File(result.files.single.path!);
-      selectedDoc = result.files.single; // ✅ store locally for UI
+      selectedDoc = result.files.single; //  store locally for UI
       notifyListeners();
 
       final networkProvider = context?.read<NetworkProvider>();
 
-      // 2️⃣ Upload to S3 via presigned URL
+      //  Upload to S3 via presigned URL
       final uploadedKey =
       await networkProvider?.getUrlForDocumentUpload(file, context!);
 
       if (uploadedKey == null) {
-        Toasts.getErrorToast(text: "Failed to upload document");
+        Toasts.getErrorToast(text: al.failedToUploadDocument);
         return;
       }
 
-      uploadedDocUrl = uploadedKey; // ✅ store uploaded URL
+      uploadedDocUrl = uploadedKey; //  store uploaded URL
       notifyListeners();
 
       debugPrint("✅ Uploaded S3 Key: $uploadedKey");
@@ -174,17 +174,17 @@ class ReclaimAccountProvider extends ChangeNotifier {
 
       if (saveResponse?["status"] == 200 || saveResponse?["status"] == 201) {
         Toasts.getSuccessToast(
-          text: saveResponse?["message"] ?? "Document saved successfully",
+          text: saveResponse?["message"] ?? al.documentSavedSuccessfully,
         );
       } else {
         Toasts.getErrorToast(
-          text: saveResponse?["message"] ?? "Failed to save document",
+          text: saveResponse?["message"] ?? al.failedToSaveDocument,
         );
       }
     } catch (err) {
       debugPrint("❌ uploadBusinessDocument error: $err");
       Toasts.getErrorToast(
-        text: "Unexpected error occurred while uploading",
+        text: al.unexpectedErrorWhileUploading,
       );
     }
   }

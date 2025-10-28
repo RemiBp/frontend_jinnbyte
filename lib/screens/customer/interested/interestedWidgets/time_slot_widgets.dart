@@ -74,7 +74,7 @@ class _DeclineReasonDialogState extends State<DeclineReasonDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Reason of decline",
+              text: al.reasonOfDecline,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w700,
               color: AppColors.blackColor,
@@ -112,7 +112,7 @@ class _DeclineReasonDialogState extends State<DeclineReasonDialog> {
                 SizedBox(width: getWidth() * 0.04),
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Submit",
+                    buttonText: al.submit,
                     onTap: () {
                       widget.onSubmit(_controller.text.trim());
                       Navigator.pop(context);

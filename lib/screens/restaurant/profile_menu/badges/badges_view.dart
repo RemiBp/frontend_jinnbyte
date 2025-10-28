@@ -5,6 +5,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class BadgesView extends StatelessWidget {
@@ -14,28 +15,28 @@ class BadgesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Badge & XP"),
+      appBar: CommonAppBar(title: al.badgeAndXP),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: getHeight() * 0.02,),
           XPCard(
-            title: "First Booking Master",
-            subtitle: "Complete your very first booking of any kind",
+            title: al.firstBookingMaster,
+            subtitle: al.firstBookingMasterDesc,
             xp: "+50XP",
             xpColor: Colors.green,
           ),
 
           XPCard(
-            title: "Choice Creator",
-            subtitle: "Create your first choice and start exploring options",
+            title: al.choiceCreator,
+            subtitle: al.choiceCreatorDesc,
             xp: "+20XP",
             xpColor: Colors.blue,
           ),
 
           XPCard(
-            title: "Review Contributor",
-            subtitle: "Share your experience by posting a new review",
+            title: al.reviewContributor,
+            subtitle: al.reviewContributorDesc,
             xp: "+10XP",
             xpColor: Colors.blue,
             progress: 3,
@@ -49,14 +50,14 @@ class BadgesView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Achievement Badges",
+                  text: al.achievementBadges,
                   fontSize: sizes?.fontSize16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackColor,
                   giveLinesAsText: true,
                 ),
                 CustomText(
-                  text: "View More",
+                  text: al.viewMore,
                   fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.userPrimaryColor,

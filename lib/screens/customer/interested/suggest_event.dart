@@ -23,12 +23,12 @@ class _SuggestEventScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Suggest a Time Slot"),
+      appBar: CommonAppBar(title: al.suggestATimeSlot),
 
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.all(sizes!.pagePadding),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // 👈 so it wraps content tightly
+          mainAxisSize: MainAxisSize.min, // so it wraps content tightly
           children: [
             Divider(
               color: AppColors.greyBordersColor,
@@ -79,7 +79,7 @@ class _SuggestEventScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Event Name:",
+                    text: "${al.eventName}:",
                     fontSize: sizes!.fontSize12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.blackColor.withOpacity(0.6),
@@ -94,14 +94,14 @@ class _SuggestEventScreenState
                   SizedBox(height: getHeight() * 0.018),
 
                   CustomText(
-                    text: "Date:",
+                    text: "${al.date}:",
                     fontSize: sizes!.fontSize12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.blackColor.withOpacity(0.6),
                   ),
                   SizedBox(height: getHeight() * 0.004),
                   CustomText(
-                    text: "June 28, 2025",
+                    text: "${al.june} 28, 2025",
                     fontSize: sizes!.fontSize14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
@@ -109,7 +109,7 @@ class _SuggestEventScreenState
                   SizedBox(height: getHeight() * 0.018),
 
                   CustomText(
-                    text: "Time:",
+                    text: "${al.time}:",
                     fontSize: sizes!.fontSize12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.blackColor.withOpacity(0.6),
@@ -124,7 +124,7 @@ class _SuggestEventScreenState
                   SizedBox(height: getHeight() * 0.018),
 
                   CustomText(
-                    text: "Location:",
+                    text: "${al.location}:",
                     fontSize: sizes!.fontSize12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.blackColor.withOpacity(0.6),
@@ -164,7 +164,7 @@ class _SuggestEventScreenState
                   Row(
                     children: [
                       CustomText(
-                        text: "Message",
+                        text: al.message,
                         fontSize: sizes!.fontSize14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.blackColor,

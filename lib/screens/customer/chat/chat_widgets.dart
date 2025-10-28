@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class DateDivider extends StatelessWidget {
@@ -111,7 +112,7 @@ class MessageBubble extends StatelessWidget {
                     ),
                     if (isSentByMe && isRead) ...[
                       const SizedBox(width: 4),
-                      const CustomText(
+                       CustomText(
                         text: "· Read",
                         color: AppColors.whiteColor,
                         fontSize: 10,
@@ -151,7 +152,7 @@ class ChatInputField extends StatelessWidget {
                 height: fieldHeight,
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: "Type a message...",
+                    hintText: al.typeMessage,
                     filled: true,
                     fillColor: AppColors.getPrimaryColorFromContext(context).withAlpha(40),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -252,7 +253,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             TextButton(
               onPressed: onNext,
               child: CustomText(
-                text: "Next",
+                text: al.next,
                 fontWeight: FontWeight.w600,
                 fontSize: sizes?.fontSize14,
                 color: AppColors.getPrimaryColorFromContext(context),
@@ -408,7 +409,7 @@ class SelectedMembersRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: "Members: ${selectedUsers.length} out of 50",
+            text: "${al.members}: ${selectedUsers.length} out of 50",
             fontWeight: FontWeight.w500,
             fontSize: sizes?.fontSize14,
             color: AppColors.blackColor,

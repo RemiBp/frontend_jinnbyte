@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../appAssets/app_assets.dart';
 import '../appColors/colors.dart';
+import '../l18n.dart';
 import '../res/res.dart';
 import 'custom_text.dart';
 
@@ -65,7 +66,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: AppColors.getPrimaryColorFromContext(context), // optional: tint if needed
           ),
           label: CustomText(
-            text: 'Edit',
+            text: al.edit,
             fontWeight: FontWeight.w500,
             fontSize: sizes?.fontSize16,
             color: AppColors.getPrimaryColorFromContext(context),

@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../customer/explore/customer_explore/explore_view.dart';
 import '../../customer/profile/customer_profile/customer_profile_view.dart';
@@ -58,11 +59,11 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     final roleProvider = Provider.of<RoleProvider>(context, listen: false);
     role = roleProvider.role;
     labels = [
-      "Home",
-      role == UserRole.user ?"Map":"Dashboard",
-      role == UserRole.user ? "Explore" : "Events",
-      "Bookings",
-      "Profile"
+      al.home,
+      role == UserRole.user ?al.map:al.dashboard,
+      role == UserRole.user ? al.explore : al.events,
+      al.bookings,
+      al.profile
     ];
     iconList = [
       Assets.homeIcon,

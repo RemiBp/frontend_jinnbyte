@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../l18n.dart';
 
 class ImageGalleryScreen extends StatefulWidget {
   final String restaurantId;
@@ -14,7 +15,7 @@ class ImageGalleryScreen extends StatefulWidget {
 }
 
 class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
-  // ✅ Dummy image list
+  //  Dummy image list
   final List<String> dummyImages = [
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
     "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
@@ -30,7 +31,7 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Gallery"),
+      appBar: CommonAppBar(title: al.gallery),
       body: dummyImages.isNotEmpty
           ? GridView.builder(
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -43,7 +44,7 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // 🔍 On tap you can open a full screen lightbox (dummy for now)
+              //  On tap you can open a full screen lightbox (dummy for now)
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -64,14 +65,14 @@ class _ImageGalleryScreenState extends State<ImageGalleryScreen> {
           );
         },
       )
-          : const Center(
-        child: Text("Nothing to show"),
+          :  Center(
+        child: Text(al.nothingToShow),
       ),
     );
   }
 }
 
-/// Simple fullscreen preview
+// Simple fullscreen preview
 class FullscreenImageViewer extends StatefulWidget {
   final List<String> images;
   final int initialIndex;

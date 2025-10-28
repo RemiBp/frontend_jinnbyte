@@ -81,9 +81,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               onTap: () {
                 var email = emailController.text.toString().trim();
                 if (email.isEmpty) {
-                  Toasts.getErrorToast(text: "Email is Missing");
+                  Toasts.getErrorToast(text: al.emailMissing);
                 } else if (email.validateEmail() == false) {
-                  Toasts.getErrorToast(text: "Invalid Email");
+                  Toasts.getErrorToast(text: al.invalidEmail);
                 } else {
                   context.read<PasswordProvider>().forgotPasswordApi(
                     email: email,

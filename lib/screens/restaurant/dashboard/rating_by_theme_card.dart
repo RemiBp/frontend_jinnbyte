@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class RatingsByThemeCard extends StatelessWidget {
-  const RatingsByThemeCard({super.key});
+   RatingsByThemeCard({super.key});
 
-  final List<Map<String, dynamic>> data = const [
-    {'label': 'Service', 'value': 4.2},
-    {'label': 'Place', 'value': 3.5},
-    {'label': 'Ambiance', 'value': 3.8},
+  final List<Map<String, dynamic>> data =  [
+    {al.label: al.service, al.value: 4.2},
+    {al.label: al.place, al.value: 3.5},
+    {al.label: al.ambiance, al.value: 3.8},
   ];
 
   @override
@@ -34,7 +35,7 @@ class RatingsByThemeCard extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: CustomText(
-              text: 'Ratings by Experience Theme',
+              text: al.ratingsByExperienceTheme,
               fontSize: sizes?.fontSize14,
               fontWeight: FontWeight.w500,
               color: AppColors.primarySlateColor,
@@ -50,7 +51,7 @@ class RatingsByThemeCard extends StatelessWidget {
                     width: getWidthRatio() * 80,
                     // child: Text(item['label'],),
                     child: CustomText(
-                      text: item['label'],
+                      text: item[al.label],
                       fontWeight: FontWeight.w500,
                       fontSize: sizes?.fontSize12,
                       color: AppColors.blackColor,
@@ -67,7 +68,7 @@ class RatingsByThemeCard extends StatelessWidget {
                           ),
                         ),
                         FractionallySizedBox(
-                          widthFactor: item['value'] / 5.0,
+                          widthFactor: item[al.label] / 5.0,
                           child: Container(
                             height: getHeight() * 0.02,
                             decoration: BoxDecoration(
@@ -81,7 +82,7 @@ class RatingsByThemeCard extends StatelessWidget {
                   ),
                   SizedBox(width: getWidthRatio() * 12),
                   CustomText(
-                    text: item['value'].toString(),
+                    text: item[al.value].toString(),
                     fontWeight: FontWeight.w500,
                     fontSize: sizes?.fontSize12,
                     color: AppColors.blackColor,

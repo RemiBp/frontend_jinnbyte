@@ -53,7 +53,7 @@ class EventInfoSection extends StatelessWidget {
           IconTextRow(
             text: "\$30.00/per person",
             svgString: Assets.ticketCircleSvg,
-            subText: "Ticket price",
+            subText: al.ticketPrice,
           ),
 
         ],

@@ -7,6 +7,7 @@ import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
 import '../../customWidgets/custom_textfield.dart';
+import '../../l18n.dart';
 import '../customer/interested/interestedWidgets/time_slot_widgets.dart';
 import 'offer_provider.dart';
 
@@ -59,7 +60,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Offer Template",
+                  text: al.offerTemplate,
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                   fontFamily: Assets.onsetSemiBold,
@@ -83,7 +84,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
                                 color: AppColors.getPrimaryColorFromContext(context)),
                             SizedBox(width: getWidth() * 0.01),
                             CustomText(
-                              text: "Create Offer",
+                              text: al.createOffer,
                               fontSize: 13,
                               color: AppColors.getPrimaryColorFromContext(context),
                               fontWeight: FontWeight.w600,
@@ -111,7 +112,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
                     Expanded(child: _buildTemplateList(context, templates)),
                     SizedBox(height: getHeight() * 0.015),
                     CustomButton(
-                      buttonText: "Continue",
+                      buttonText: al.continueText,
                       onTap: selectedIndex != null
                           ? () {
                         Navigator.pop(context);
@@ -157,7 +158,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
                     ),
                     SizedBox(height: getHeight() * 0.02),
                     CustomText(
-                      text: "No Template Yet",
+                      text: al.noTemplateYet,
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                       fontFamily: Assets.onsetSemiBold,
@@ -165,7 +166,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
                     SizedBox(height: getHeight() * 0.005),
                     CustomText(
                       text:
-                      "Once a template has been published by you, it will be listed here.",
+                      al.templateInfo,
                       fontSize: 14,
                       textAlign: TextAlign.center,
                       fontWeight: FontWeight.w500,
@@ -174,7 +175,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
                     ),
                     SizedBox(height: getHeight() * 0.03),
                     CustomButton(
-                      buttonText: "Create Offer",
+                      buttonText: al.createOffer,
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
                       borderColor: AppColors.getPrimaryColorFromContext(context),
                       onTap: () {
@@ -223,7 +224,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
           ),
           SizedBox(height: getHeight() * 0.02),
           CustomText(
-            text: "No Template Yet",
+            text: al.noTemplateYet,
             fontWeight: FontWeight.w600,
             fontSize: 18,
             fontFamily: Assets.onsetSemiBold,
@@ -231,7 +232,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
           SizedBox(height: getHeight() * 0.005),
           CustomText(
             text:
-            "Once a template has been published by you, it will be listed here.",
+            al.templateInfo,
             fontSize: 14,
             textAlign: TextAlign.center,
             fontWeight: FontWeight.w500,
@@ -240,7 +241,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
           ),
           const Spacer(),
           CustomButton(
-            buttonText: "Create Offer",
+            buttonText: al.createOffer,
             backgroundColor: AppColors.getPrimaryColorFromContext(context),
             borderColor: AppColors.getPrimaryColorFromContext(context),
             onTap: () {
@@ -435,7 +436,7 @@ class TargetedNotificationBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: "Targeted Notification",
+                    text: al.targetedNotification,
                     fontWeight: FontWeight.w600,
                     fontFamily: Assets.onsetSemiBold,
                     fontSize: 16,
@@ -447,19 +448,19 @@ class TargetedNotificationBottomSheet extends StatelessWidget {
                 ],
               ),
               CustomText(
-                text: "Step 1: Write your offer",
+                text: al.step1WriteOffer,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
               SizedBox(height: getHeight() * 0.025),
 
-              /// Fields
-              field("Title", title, "e.g: Flash Offer"),
-              field("Message", msg, "e.g: Come now and enjoy 15% off", isMsg: true),
-              field("Reduction %", reduction, "e.g: 15"),
-              field("Validate (minutes)", validate, "e.g: 45"),
-              field("Number of Users", users, "e.g: 20"),
-              field("Distance", distance, "e.g: 300m"),
+              // Fields
+              field(al.title, title, "e.g: Flash Offer"),
+              field(al.message, msg, al.exampleOffer, isMsg: true),
+              field(al.reductionPercent, reduction, "e.g: 15"),
+              field(al.validateMinutes, validate, "e.g: 45"),
+              field(al.numberOfUsers, users, "e.g: 20"),
+              field(al.distance, distance, "e.g: 300m"),
 
               SizedBox(height: getHeight() * 0.03),
 
@@ -468,7 +469,7 @@ class TargetedNotificationBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      buttonText: "Cancel",
+                      buttonText: al.cancel,
                       onTap: () => Navigator.pop(context),
                       backgroundColor: Colors.transparent,
                       borderColor: AppColors.blackColor,
@@ -478,7 +479,7 @@ class TargetedNotificationBottomSheet extends StatelessWidget {
                   SizedBox(width: getWidth() * 0.04),
                   Expanded(
                     child: CustomButton(
-                        buttonText: "Next",
+                        buttonText: al.next,
                         onTap: () {
                           Navigator.pop(context); // close step 1
                           showModalBottomSheet(
@@ -566,7 +567,7 @@ class _TargetedNotificationPreviewSheetState
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Targeted Notification",
+                  text: al.targetedNotification,
                   fontWeight: FontWeight.w600,
                   fontFamily: Assets.onsetSemiBold,
                   fontSize: 16,
@@ -579,7 +580,7 @@ class _TargetedNotificationPreviewSheetState
             ),
             SizedBox(height: getHeight() * 0.006),
             CustomText(
-              text: "Step 2: Choose your target",
+              text: al.step2ChooseTarget,
               fontSize: 12,
               fontWeight: FontWeight.w400,
               fontFamily: Assets.onsetRegular,
@@ -610,13 +611,13 @@ class _TargetedNotificationPreviewSheetState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "All nearby users",
+                          text: al.allNearbyUsers,
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                           fontFamily: Assets.onsetMedium,
                         ),
                         CustomText(
-                          text: "All active users (2km radius)",
+                          text: al.allActiveUsers,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontFamily: Assets.onsetRegular,
@@ -645,7 +646,7 @@ class _TargetedNotificationPreviewSheetState
                     ),
                     SizedBox(width: getWidth() * 0.015),
                     CustomText(
-                      text: "Estimated:",
+                      text: al.estimated,
                       fontWeight: FontWeight.w400,
                       fontFamily: Assets.onsetRegular,
                       fontSize: 12,
@@ -653,7 +654,7 @@ class _TargetedNotificationPreviewSheetState
                   ],
                 ),
                 CustomText(
-                  text: "0 Online Users",
+                  text: "0" + al.onlineUsers,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   fontFamily: Assets.onsetRegular,
@@ -663,7 +664,7 @@ class _TargetedNotificationPreviewSheetState
             SizedBox(height: getHeight() * 0.025),
 
             CustomText(
-              text: "Appearance of the Notification",
+              text: al.notificationAppearance,
               fontSize: 14,
               fontWeight: FontWeight.w500,
               fontFamily: Assets.onsetMedium,
@@ -735,7 +736,7 @@ class _TargetedNotificationPreviewSheetState
                   activeColor: AppColors.getPrimaryColorFromContext(context),
                 ),
                 CustomText(
-                  text: "Save as Template",
+                  text: al.saveAsTemplate,
                   fontSize: 14,
                 ),
               ],
@@ -747,7 +748,7 @@ class _TargetedNotificationPreviewSheetState
               children: [
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Back",
+                    buttonText: al.backButton,
                     onTap: () => Navigator.pop(context),
                     backgroundColor: Colors.transparent,
                     borderColor: AppColors.blackColor,
@@ -757,7 +758,7 @@ class _TargetedNotificationPreviewSheetState
                 SizedBox(width: getWidth() * 0.04),
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Send Now",
+                    buttonText: al.sendNow,
                     onTap: () {
 
                       if (saveTemplate) {

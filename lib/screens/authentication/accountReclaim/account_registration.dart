@@ -1,6 +1,4 @@
-import 'package:choice_app/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_button.dart';
@@ -12,7 +10,6 @@ import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/toasts.dart';
 
 import '../../../appAssets/app_assets.dart';
-import '../../../userRole/role_provider.dart';
 import '../auth_provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -60,14 +57,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Complete Your Registration",
+              text: al.completeYourRegistration,
               fontSize: sizes?.fontSize28,
               fontWeight: FontWeight.w600,
               fontFamily: Assets.onsetSemiBold,
               giveLinesAsText: true,
             ),
             CustomText(
-                text: "Secure your account by adding your email and password",
+                text: al.secureYourAccount,
                 fontWeight: FontWeight.w400,
                 fontSize: sizes?.fontSize16,
                 fontFamily: Assets.onsetRegular,
@@ -113,17 +110,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void onContinueTap() {
-    var email = emailController.text.trim();
-    var password = passwordController.text.trim();
 
+    var email = emailController.text.toString().trim();
+    var password = passwordController.text.toString().trim();
 
     if (email.isEmpty) {
-      Toasts.getErrorToast(text: "Please enter your email");
+      Toasts.getErrorToast(text: al.emailMissing);
     } else if (email.validateEmail() == false) {
-      Toasts.getErrorToast(text: "Invalid email format");
+      Toasts.getErrorToast(text: al.invalidEmail);
     } else if (password.isEmpty) {
-      Toasts.getErrorToast(text: "Please enter your password");
-    } else {
+      Toasts.getErrorToast(text: al.passwordMissing);
+    }  else {
       // Call your provider method here
       context.read<AuthProvider>().reclaimRegister(
         email: email,

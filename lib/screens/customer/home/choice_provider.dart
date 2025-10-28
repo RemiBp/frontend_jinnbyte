@@ -2,6 +2,7 @@ import 'package:choice_app/models/get_producer_places.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l18n.dart';
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
 import '../../../network/models.dart';
@@ -33,13 +34,13 @@ class CustomerChoiceProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (placesResponse.data == null) {
-        Toasts.getErrorToast(text: "Failed to fetch places");
+        Toasts.getErrorToast(text: al.failedToFetchPlaces);
       }
       notifyListeners();
     } catch (err) {
       debugPrint("Error getting cuisine types: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to fetch places");
+      Toasts.getErrorToast(text: al.failedToFetchPlaces);
     }
   }
 

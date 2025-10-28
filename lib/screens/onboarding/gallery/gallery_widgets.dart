@@ -6,6 +6,7 @@ import 'package:dotted_border/dotted_border.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class GalleryCard extends StatelessWidget {
@@ -71,7 +72,7 @@ class GalleryCard extends StatelessWidget {
                   ),
                   padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.02, vertical: getHeight() * 0.01),
                   child: CustomText(
-                    text: "Main Image",
+                    text: al.mainImage,
                     fontWeight: FontWeight.w600,
                     fontSize: sizes?.fontSize8,
                   ),
@@ -125,7 +126,7 @@ class AddImageCard extends StatelessWidget {
                 ),
                 // SizedBox(height: getHeight() * 0.005),
                 CustomText(
-                  text: "Add Images",
+                  text: al.addImages,
                   fontWeight: FontWeight.w500,
                   fontSize: sizes?.fontSize12,
                   color: AppColors.greyBordersColor,

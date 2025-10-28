@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../l18n.dart';
 import '../res/loader.dart';
 import '../res/toasts.dart';
 import 'api_url.dart';
@@ -181,18 +182,18 @@ class  NetworkProvider extends ChangeNotifier{
           debugPrint("📦 Document uploaded successfully to S3");
           return response?["keyName"]; // this is your permanent S3 file URL
         } else {
-          Toasts.getErrorToast(text: "Failed to upload document");
+          Toasts.getErrorToast(text: al.failedToUploadDocument);
           return null;
         }
       } else {
         _loader.hideLoader(context!);
-        Toasts.getErrorToast(text: "Failed to get upload URL");
+        Toasts.getErrorToast(text: al.failedToGetUploadUrl);
         return null;
       }
     } catch (err) {
       debugPrint("❌ Error in getUrlForDocumentUpload: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Document upload failed");
+      Toasts.getErrorToast(text: al.failedToUploadDocument);
       return null;
     }
   }

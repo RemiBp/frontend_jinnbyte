@@ -6,6 +6,7 @@ import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
 import '../../../customWidgets/common_app_bar.dart';
+import '../../../l18n.dart';
 import 'interestedWidgets/time_slot_widgets.dart';
 
 class CustomerEventInvite extends StatefulWidget {
@@ -32,10 +33,10 @@ class _CustomerEventInviteState extends State<CustomerEventInvite> {
         ),
         child: Row(
           children: [
-            /// Decline Button
+            // Decline Button
             Expanded(
               child: CustomButton(
-                buttonText: "Decline",
+                buttonText: al.decline,
                 onTap: () {
                   showDialog(
                     context: context,
@@ -55,12 +56,12 @@ class _CustomerEventInviteState extends State<CustomerEventInvite> {
             ),
             SizedBox(width: getWidth() * 0.04),
 
-            /// Confirm Button
+            // Confirm Button
             Expanded(
               child: CustomButton(
-                buttonText: "Confirm",
+                buttonText: al.confirm,
                 onTap: () {
-                  // TODO: handle confirm action
+                  // handle confirm action
                 },
                 height: getHeight() * 0.06,
                 backgroundColor: AppColors.getPrimaryColorFromContext(context),
@@ -82,7 +83,7 @@ class _CustomerEventInviteState extends State<CustomerEventInvite> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Event title
+            // Event title
             CustomText(
               text: "Flavors of the Season",
               fontSize: sizes?.fontSize18,
@@ -91,7 +92,7 @@ class _CustomerEventInviteState extends State<CustomerEventInvite> {
             ),
             SizedBox(height: getHeight() * 0.015),
 
-            /// 🗓 Calendar Row
+            // Calendar Row
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -102,7 +103,7 @@ class _CustomerEventInviteState extends State<CustomerEventInvite> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Monday, June 28, 2025",
+                        text: "${al.monday}, ${al.june} 28, 2025",
                         fontFamily: Assets.onsetMedium,
                         fontSize: sizes?.fontSize15,
                         fontWeight: FontWeight.w500,

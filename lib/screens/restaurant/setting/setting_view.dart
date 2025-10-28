@@ -102,7 +102,7 @@ class _SettingViewState extends State<SettingView> {
                   ),
                 if(role == UserRole.user)
                   ProfileOptionButton(
-                    title: "Bookmarked",
+                    title: al.bookmarked,
                     leadingAssetPath: Assets.bookmarkIcon,
                     onTap: () {
                       Navigator.push(
@@ -113,7 +113,7 @@ class _SettingViewState extends State<SettingView> {
                   ),
                 if(role == UserRole.user)
                   ProfileOptionButton(
-                    title: "Blocked List",
+                    title: al.blockedList,
                     leadingAssetPath: Assets.blockUserIcon,
                     onTap: () {
                       Navigator.push(
@@ -179,7 +179,7 @@ class _SettingViewState extends State<SettingView> {
                 ),
                 if(role == UserRole.restaurant || role == UserRole.wellness)
                 ProfileOptionButton(
-                  title: "Gallery",
+                  title: al.gallery,
                   leadingAssetPath: Assets.galleryIcon,
                   onTap: () {
                     Navigator.push(

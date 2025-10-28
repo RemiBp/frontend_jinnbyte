@@ -22,7 +22,7 @@ class _FollowerViewState extends State<FollowerView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Follower"),
+      appBar: CommonAppBar(title: al.follower),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(

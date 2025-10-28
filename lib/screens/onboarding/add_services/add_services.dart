@@ -11,6 +11,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/multiple_selection_dropdown.dart';
 import '../../../customWidgets/text_field_label.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../add_cuisine/add_cuisine.dart';
 
@@ -38,21 +39,21 @@ class _AddServicesState extends State<AddServices> {
 
     // Fallback to hardcoded data if API data is not available
     return [
-      CuisineType(id: 1, name: 'Aesthetic Care & Well-Being'),
-      CuisineType(id: 2, name: 'Hair Care & Hair Services'),
-      CuisineType(id: 3, name: 'Nail Care & Body Modifications'),
-      CuisineType(id: 4, name: 'Massage & Relaxation'),
-      CuisineType(id: 5, name: 'Skin Treatments & Facials'),
-      CuisineType(id: 6, name: 'Makeup & Beauty Services'),
-      CuisineType(id: 7, name: 'Waxing & Hair Removal'),
-      CuisineType(id: 8, name: 'Spa & Wellness Packages'),
-      CuisineType(id: 9, name: 'Laser Treatments'),
-      CuisineType(id: 10, name: 'Tattoo & Piercing Services'),
-      CuisineType(id: 11, name: 'Eyebrow & Eyelash Treatments'),
-      CuisineType(id: 12, name: 'Bridal & Event Packages'),
-      CuisineType(id: 13, name: 'Dermatology & Skin Care Consultation'),
-      CuisineType(id: 14, name: 'Foot & Hand Care'),
-      CuisineType(id: 15, name: 'Hair Transplant & Scalp Services'),
+      CuisineType(id: 1, name: al.aestheticCareAndWellBeing),
+      CuisineType(id: 2, name: al.hairCareAndHairServices),
+      CuisineType(id: 3, name: al.nailCareAndBodyModifications),
+      CuisineType(id: 4, name: al.massageRelaxation),
+      CuisineType(id: 5, name: al.skinTreatmentsFacials),
+      CuisineType(id: 6, name: al.makeupBeautyServices),
+      CuisineType(id: 7, name: al.waxingHairRemoval),
+      CuisineType(id: 8, name: al.spaWellnessPackages),
+      CuisineType(id: 9, name: al.laserTreatments),
+      CuisineType(id: 10, name: al.tattooPiercingServices),
+      CuisineType(id: 11, name: al.eyebrowEyelashTreatments),
+      CuisineType(id: 12, name: al.bridalEventPackages),
+      CuisineType(id: 13, name: al.dermatologyConsultation),
+      CuisineType(id: 14, name: al.footHandCare),
+      CuisineType(id: 15, name: al.hairTransplantScalpServices),
     ];
   }
 
@@ -93,7 +94,7 @@ class _AddServicesState extends State<AddServices> {
 
         return Scaffold(
           backgroundColor: AppColors.whiteColor,
-          appBar: CommonAppBar(title: "Services"),
+          appBar: CommonAppBar(title: al.services),
           body: Container(
             padding: EdgeInsets.symmetric(
               horizontal: sizes!.pagePadding,
@@ -103,11 +104,11 @@ class _AddServicesState extends State<AddServices> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: getHeight() * 0.01),
-                const TextFieldLabel(label: "Services Type"),
+                 TextFieldLabel(label: al.servicesType),
                 MultiSelectDropdown(
                   options: serviceOptions,
                   selectedItems: selectedServices,
-                  hintText: 'Select services type',
+                  hintText: al.selectServicesType,
                   onSelectionChanged: (updatedList) {
                     setState(() {
                       selectedServices = updatedList;
@@ -150,7 +151,7 @@ class _AddServicesState extends State<AddServices> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -161,11 +162,11 @@ class _AddServicesState extends State<AddServices> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Save Changes',
+                      buttonText: al.saveChanges,
                       onTap: () async {
                         if (selectedServices.isEmpty) {
                           Toasts.getErrorToast(
-                            text: 'Please select at least one service type.',
+                            text: al.selectAtLeastOneServiceType,
                           );
                           return;
                         }

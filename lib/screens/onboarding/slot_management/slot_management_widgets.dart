@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/terms_and_conditions_check_box.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class EditDaysTile extends StatelessWidget {
@@ -27,7 +28,7 @@ class EditDaysTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CustomText(
-          text: label??"Monday",
+          text: label??al.monday,
           fontSize: sizes?.fontSize14,
           fontWeight: FontWeight.w500,
           lines: 1,
@@ -37,7 +38,7 @@ class EditDaysTile extends StatelessWidget {
         // if(isEdit??false)
           RememberMeCheckBox(
             isChecked: isChecked??false,
-            text: "Select All",
+            text: al.selectAll,
             fontSize: sizes?.fontSize16,
             activeColor: AppColors.getPrimaryColorFromContext(context),
             onChanged: (bool? value) {

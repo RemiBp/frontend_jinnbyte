@@ -7,6 +7,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../res/res.dart';
 import '../../customWidgets/custom_text.dart';
+import '../../l18n.dart';
 
 class ChatBotHome extends StatefulWidget {
   const ChatBotHome({super.key});
@@ -148,7 +149,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
             ),
           ),
 
-          /// Divider + Input Field
+          // Divider + Input Field
           SafeArea(
             top: false,
             child: Column(
@@ -176,7 +177,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: themeColor.withValues(alpha: 0.08),
-                            hintText: "Type a message...",
+                            hintText: al.typeMessage,
                             hintStyle: TextStyle(
                               color: AppColors.inputHintColor,
                               fontSize: sizes?.fontSize14,
@@ -289,8 +290,8 @@ class _ChatBotHomeState extends State<ChatBotHome> {
             horizontal: getWidth() * 0.08, //  horizontal margin
           ),
           child: Container(
-            width: getWidth() * 0.85, // ~342px on typical phone
-            height: getHeight() * 0.35, // ~304px
+            width: getWidth() * 0.85, // 342px on typical phone
+            height: getHeight() * 0.35, // 304px
             padding: EdgeInsets.all(getWidth() * 0.06),
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
@@ -320,7 +321,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
 
                 // Title
                 CustomText(
-                  text: "Unlock more with Plus",
+                  text: al.unlockMoreWithPlus,
                   textAlign: TextAlign.center,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -331,7 +332,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
 
                 // Subtitle
                 CustomText(
-                  text: "Get our more capable models and features",
+                  text: al.getMoreCapableModels,
                   textAlign: TextAlign.center,
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -343,7 +344,7 @@ class _ChatBotHomeState extends State<ChatBotHome> {
 
                 // Upgrade Button
                 CustomButton(
-                  buttonText: "Upgrade",
+                  buttonText: al.upgrade,
                   onTap: () {
                     context.push(Routes.subscribeRoute);
                     //  handle upgrade action here

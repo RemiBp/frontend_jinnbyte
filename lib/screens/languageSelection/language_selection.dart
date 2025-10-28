@@ -21,7 +21,7 @@ class LanguageSelection extends StatefulWidget {
 }
 
 class _LanguageSelectionState extends State<LanguageSelection> {
-  String selectedLanguage = 'English';
+  String selectedLanguage = al.english;
 
   void selectLanguage(String language) {
     setState(() {
@@ -36,7 +36,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
       context,
       listen: false,
     );
-    selectedLanguage = provider.selectedLocal == "en" ? "English" : "French";
+    selectedLanguage = provider.selectedLocal == "en" ? al.english : al.french;
   }
 
   @override
@@ -67,11 +67,11 @@ class _LanguageSelectionState extends State<LanguageSelection> {
 
             SizedBox(height: getHeight() * .03),
 
-            languageOption(label: 'English', flagPath: Assets.ukFlagIcon),
+            languageOption(label: al.english, flagPath: Assets.ukFlagIcon),
 
             const SizedBox(height: 12),
 
-            languageOption(label: 'French', flagPath: Assets.franceFlagIcon),
+            languageOption(label: al.french, flagPath: Assets.franceFlagIcon),
             ],
         ),
       ),
@@ -87,7 +87,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -98,7 +98,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Save Changes',
+                  buttonText: al.saveChanges,
                   onTap: () {
 
                   },
@@ -114,7 +114,7 @@ class _LanguageSelectionState extends State<LanguageSelection> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  final locale = selectedLanguage == "English" ? "en" : "fr";
+                  final locale = selectedLanguage == al.english ? "en" : "fr";
                   provider.changeLocale(locale);
                   context.push(Routes.authRoute).then((_) =>
                       setState(() {}));

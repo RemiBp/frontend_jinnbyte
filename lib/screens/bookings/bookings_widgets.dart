@@ -66,23 +66,23 @@ class BookingCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            /// Top Row (Booking ID + Chips)
+            // Top Row (Booking ID + Chips)
             Row(
               children: [
                 CustomText(
-                  text: "Booking ID: 3956839",
+                  text: "${al.bookingId}: 3956839",
                   fontSize: sizes?.fontSize12,
                   fontWeight: FontWeight.w500,
                   color: AppColors.blackColor,
                 ),
                 const Spacer(),
 
-                ///  Event Chip
-                _buildChip("Event", AppColors.redColor),
+                //  Event Chip
+                _buildChip(al.event, AppColors.redColor),
 
                 SizedBox(width: 4),
 
-                ///  Restaurant / Wellness Chip
+                //  Restaurant / Wellness Chip
                 _buildChip(
                   bookingType,
                   AppColors.restaurantPrimaryColor,
@@ -94,7 +94,7 @@ class BookingCard extends StatelessWidget {
                     child: Icon(
                       Icons.check_circle,
                       color: AppColors.wellnessPrimaryColor,
-                      size: 18, // 👈 reduced icon size
+                      size: 18, // reduced icon size
                     ),
                   ),
               ],
@@ -105,7 +105,7 @@ class BookingCard extends StatelessWidget {
               height: getHeight() * 0.03,
             ),
 
-            ///  Booking Info Content
+            //  Booking Info Content
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -123,12 +123,12 @@ class BookingCard extends StatelessWidget {
                       ),
                       SizedBox(height: getHeightRatio() * 8),
 
-                      /// Guests
-                      _infoRow(Assets.guestsIcon, "$guests Guests", context),
+                      // Guests
+                      _infoRow(Assets.guestsIcon, "$guests ${al.guests}", context),
 
                       SizedBox(height: getHeightRatio() * 8),
 
-                      /// Date & Time
+                      // Date & Time
                       _infoRow(
                         Assets.calenderIcon,
                         formatDateTime(
@@ -138,10 +138,10 @@ class BookingCard extends StatelessWidget {
 
                       SizedBox(height: getHeightRatio() * 8),
 
-                      ///  Price or Address
+                      //  Price or Address
                       role == UserRole.user
                           ? _locationRow(
-                        Assets.locationIcon, // 👈 svg asset
+                        Assets.locationIcon, //  svg asset
                         address ?? "123 Main St, Paris",
                         context,
                       )
@@ -156,7 +156,7 @@ class BookingCard extends StatelessWidget {
               ],
             ),
 
-            ///  Buttons (Cancel + Check-In / Modify)
+            //  Buttons (Cancel + Check-In / Modify)
             if (onCheckIn != null && onCancel != null) ...[
               SizedBox(height: getHeight() * 0.02),
               Row(
@@ -173,7 +173,7 @@ class BookingCard extends StatelessWidget {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: role == UserRole.user ? 'Modify' : 'Check-In',
+                    buttonText: role == UserRole.user ? al.modify : al.checkIn,
                     onTap: () => onCheckIn!(),
                     buttonWidth: getWidth() * .38,
                     height: getHeight() * 0.06,
@@ -192,11 +192,11 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  /// Build Chips
+  // Build Chips
   Widget _buildChip(String label, Color color) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: getWidth() * 0.025, // 👈 reduced padding
+        horizontal: getWidth() * 0.025, //  reduced padding
         vertical: getHeight() * 0.006,),
       decoration: BoxDecoration(
         color: color.withAlpha(40),
@@ -211,7 +211,7 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  ///  Booking Image
+  //  Booking Image
   Widget _buildImage(BuildContext context) {
     if (imageUrl == "") {
       return Container(
@@ -240,7 +240,7 @@ class BookingCard extends StatelessWidget {
     }
   }
 
-  ///  Info Row (png assets)
+  //  Info Row (png assets)
   Widget _infoRow(String icon, String text, BuildContext context) {
     return Row(
       children: [
@@ -264,7 +264,7 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  ///  Location Row (SVG asset)
+  //  Location Row (SVG asset)
   Widget _locationRow(String icon, String text, BuildContext context) {
     return Row(
       children: [
@@ -288,7 +288,7 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  ///  Date Formatter
+  // Date Formatter
   String formatDateTime({String? date, String? startTime, String? endTime}) {
     if (date == null || startTime == null || endTime == null) return '';
     try {
@@ -361,7 +361,7 @@ class CancelConfirmationAlert extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Cancel Booking',
+                  text: al.cancelBooking,
                   fontWeight: FontWeight.w600,
                   fontSize: sizes?.fontSize16,
                   color: AppColors.blackColor,
@@ -379,7 +379,7 @@ class CancelConfirmationAlert extends StatelessWidget {
               height: getHeightRatio() * 16,
             ),
             CustomText(
-              text: 'Are you sure you would like to cancel your booking?',
+              text: al.cancelBookingConfirmation,
               fontWeight: FontWeight.w400,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
@@ -389,8 +389,8 @@ class CancelConfirmationAlert extends StatelessWidget {
             CustomField(
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
-              hint: "Share your reason here...",
-              label: "Reason",
+              hint: al.shareReason,
+              label: al.reason,
             ),
             SizedBox(
               height: getHeightRatio() * 24,
@@ -399,7 +399,7 @@ class CancelConfirmationAlert extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'No',
+                  buttonText: al.no,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -411,7 +411,7 @@ class CancelConfirmationAlert extends StatelessWidget {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Yes',
+                  buttonText: al.yes,
                   onTap: () {
 
                   },

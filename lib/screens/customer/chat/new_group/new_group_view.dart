@@ -1,6 +1,7 @@
 import 'package:choice_app/appColors/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../chat_widgets.dart';
 
@@ -53,7 +54,7 @@ class _NewGroupViewState extends State<NewGroupView> {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: ChatAppBar(
-        title: 'New Group',
+        title: al.newGroup,
         onNext: () {
           // handle next
         },
@@ -69,7 +70,7 @@ class _NewGroupViewState extends State<NewGroupView> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
             child: CustomText(
-              text: "Suggested",
+              text: al.suggested,
               fontWeight: FontWeight.w600,
               fontSize: sizes?.fontSize16,
             ),

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../userRole/role_provider.dart';
 import '../../../../userRole/user_role.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
@@ -26,9 +27,9 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
   final List<Map<String, dynamic>> filters = [
     {"title": "All", "icon": Assets.leisureIcon},
     {"title": "Friends", "icon": Assets.profileIcon},
-    {"title": "Restaurant", "icon": Assets.knifeForkIcon},
-    {"title": "Wellness", "icon": Assets.wellnessIcon},
-    {"title": "Leisure", "icon": Assets.leisureIcon},
+    {"title": al.categoryRestaurant, "icon": Assets.knifeForkIcon},
+    {"title": al.categoryWellness, "icon": Assets.wellnessIcon},
+    {"title": al.categoryLeisure, "icon": Assets.leisureIcon},
   ];
 
   int selectedFilterIndex = 0;
@@ -64,7 +65,7 @@ class _CustomerMapsViewState extends State<CustomerMapsView> {
   Widget build(BuildContext context) {
     final roleProvider = context.read<RoleProvider>();
     return Scaffold(
-      appBar: CommonAppBar(title: "Map & Location"),
+      appBar: CommonAppBar(title: al.mapLocation),
       body: Container(
         height: double.infinity,
         width: double.infinity,

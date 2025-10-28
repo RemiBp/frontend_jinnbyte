@@ -4,6 +4,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/shadow_icon.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 
@@ -81,7 +82,7 @@ class EventTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
       ),
       child: CustomText(
-        text: text??"Event",
+        text: text??al.event,
         fontSize: sizes?.fontSize12,
         fontWeight: FontWeight.w500,
         color: color??AppColors.redColor,

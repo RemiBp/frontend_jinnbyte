@@ -31,14 +31,14 @@ class _BookingDetailsState extends State<BookingDetails> {
               child: ListView(
                 children: [
                   CustomText(
-                    text: "Reason",
+                    text: al.reason,
                     fontSize: sizes?.fontSize16,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: getHeight() * 0.02),
                   CustomText(
-                    text: "Your reservation has been canceled due to a delay in arrival or an unforeseen circumstance. We apologize for the inconvenience and appreciate your understanding.",
+                    text: al.reservationCanceledMessage,
                     fontSize: sizes?.fontSize14,
                     color: AppColors.primarySlateColor,
                     fontWeight: FontWeight.w500,
@@ -57,15 +57,15 @@ class _BookingDetailsState extends State<BookingDetails> {
                     fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: getHeight() * 0.02),
-                  BookingInfoRow(label: "Booking ID", value: "A123456"),
+                  BookingInfoRow(label: al.bookingId, value: "A123456"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "No. of Persons", value: "2 person"),
+                  BookingInfoRow(label: al.numberOfPersons, value: "2 ${al.person}(s)"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "Date", value: "Aug 28, 2025"),
+                  BookingInfoRow(label: al.date, value: "Aug 28, 2025"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "Time", value: "10:00 AM - 11:00 AM"),
+                  BookingInfoRow(label: al.time, value: "10:00 AM - 11:00 AM"),
                   SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: "Amount", value: "\$90"),
+                  BookingInfoRow(label: al.amount, value: "\$90"),
                   Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
               
                   CustomText(
@@ -90,7 +90,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                   ),
                   SizedBox(height: getHeight() * 0.02),
                   CustomText(
-                    text: "\"Allergic to peanuts. Request outdoor seating.\"",
+                    text: "\"${al.allergyNote}\"",
                     fontSize: sizes?.fontSize14,
                     color: AppColors.primarySlateColor,
                     fontWeight: FontWeight.w500,

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import 'gallery_widgets.dart';
 
@@ -71,7 +72,7 @@ class _GalleryViewState extends State<GalleryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Gallery"),
+      appBar: CommonAppBar(title: al.gallery),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child:Column(
@@ -144,7 +145,7 @@ class _GalleryViewState extends State<GalleryView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -155,10 +156,10 @@ class _GalleryViewState extends State<GalleryView> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Save Changes',
+                  buttonText: al.saveChanges,
                   onTap: () async {
                     if(selectedImages.isEmpty) {
-                      Toasts.getErrorToast(text: 'Please pick an image');
+                      Toasts.getErrorToast(text: al.pleasePickImage);
                       return;
                     }
                     List<String> urls = [];

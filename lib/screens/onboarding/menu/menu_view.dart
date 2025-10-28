@@ -9,6 +9,7 @@ import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../screens/restaurant/profile/profile_provider.dart';
 import 'menu_widgets.dart';
 
@@ -114,7 +115,7 @@ class _MenuViewState extends State<MenuView> {
         }
       }
       debugPrint('All dishes added successfully');
-      Toasts.getSuccessToast(text: 'All dishes added successfully');
+      Toasts.getSuccessToast(text: al.allDishesAddedSuccessfully);
 
       if (mounted) {
         context.push(Routes.slotManagementViewRoute, extra: false);
@@ -138,7 +139,7 @@ class _MenuViewState extends State<MenuView> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Menu", showEditButton: true,),
+      appBar: CommonAppBar(title: al.menu, showEditButton: true,),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: getHeight() * 0.015),
         child: Column(
@@ -158,7 +159,7 @@ class _MenuViewState extends State<MenuView> {
               child: menuGroups.isEmpty
                   ? Center(
                       child: CustomText(
-                        text: "No categories added yet.\nTap '+ Add Category Title' to get started.",
+                        text: "${al.noCategoriesAddedYet}\n${al.tapAddCategoryTitle}",
                         fontSize: sizes?.fontSize16,
                         color: AppColors.primarySlateColor,
                         textAlign: TextAlign.center,
@@ -212,7 +213,7 @@ class _MenuViewState extends State<MenuView> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05,vertical: getHeight() * 0.02),
               child: CustomButton(
-                buttonText: '+ Add Category Title',
+                buttonText: "+ ${al.addCategoryTitle}",
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
@@ -238,7 +239,7 @@ class _MenuViewState extends State<MenuView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    buttonText: 'Cancel',
+                    buttonText: al.cancel,
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -249,7 +250,7 @@ class _MenuViewState extends State<MenuView> {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Save Changes',
+                    buttonText: al.saveChanges,
                     onTap: () async {
                       await _saveMenuData();
                     },

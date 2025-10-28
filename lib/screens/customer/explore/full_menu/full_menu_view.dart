@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../onboarding/menu/menu_widgets.dart';
 
@@ -30,7 +31,7 @@ class _FullMenuViewState extends State<FullMenuView> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Menu"),
+      appBar: CommonAppBar(title: al.menu),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: getHeight() * 0.015),
         child: Column(

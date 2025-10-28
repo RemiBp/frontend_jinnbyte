@@ -7,6 +7,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../restaurant/profile_menu/chat_view.dart';
 
@@ -107,7 +108,7 @@ class _CustomerProfileTabBarState extends State<CustomerProfileTabBar> with Sing
               children: [
                 Expanded(
                   child: CardButton(
-                    buttonText: 'Follow',
+                    buttonText: al.follow,
                     onTap: () {
 
                     },
@@ -118,7 +119,7 @@ class _CustomerProfileTabBarState extends State<CustomerProfileTabBar> with Sing
                 SizedBox(width: getWidth() * 0.03),
                 Expanded(
                   child: CardButton(
-                    buttonText: 'Message',
+                    buttonText: al.message,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -149,13 +150,13 @@ class _CustomerProfileTabBarState extends State<CustomerProfileTabBar> with Sing
               tabs: [
                 ProfileTabItem(
                   iconPath: Assets.calenderIcon,
-                  label: 'Choices',
+                  label: al.choices,
                   tabIndex: 0,
                   selectedTabIndex: _selectedTabIndex,
                 ),
                 ProfileTabItem(
                   iconPath: Assets.priceIcon,
-                  label: 'Interest',
+                  label: al.interest,
                   tabIndex: 1,
                   selectedTabIndex: _selectedTabIndex,
                 ),

@@ -33,7 +33,7 @@ class WellnessHome extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "Welcome",
+                      text: al.welcome,
                       fontSize: sizes?.fontSize14,
                       fontFamily: Assets.onsetMedium,
                     ),
@@ -54,7 +54,7 @@ class WellnessHome extends StatelessWidget {
             SizedBox(height: getHeight() * .02),
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by username or name...",
+              hint: al.searchUserPlaceholder,
               prefixIconSvg: Assets.searchIcon,
             ),
             Expanded(

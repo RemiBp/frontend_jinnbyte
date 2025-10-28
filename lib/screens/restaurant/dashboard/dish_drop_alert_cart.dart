@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class DishDropAlertsCard extends StatelessWidget {
@@ -28,7 +29,7 @@ class DishDropAlertsCard extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: CustomText(
-              text: 'Dish Drop Alerts',
+              text: al.dishDropAlerts,
               fontSize: sizes?.fontSize14,
               fontWeight: FontWeight.w500,
               color: AppColors.primarySlateColor,
@@ -64,7 +65,7 @@ class DishDropAlertsCard extends StatelessWidget {
                       showTitles: true,
                       interval: 1,
                       getTitlesWidget: (value, _) {
-                        final days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'];
+                        final days = [al.day1, al.day2, al.day3, al.day4, al.day5, al.day6];
                         if (value.toInt() < 0 || value.toInt() >= days.length) {
                           return const SizedBox.shrink();
                         }
@@ -106,7 +107,8 @@ class DishDropAlertsCard extends StatelessWidget {
                     getTooltipItems: (touchedSpots) {
                       return touchedSpots.map((touched) {
                         return LineTooltipItem(
-                          '4 days ago\nRating: ⭐ ${touched.y.toStringAsFixed(1)}',
+                          al.fourDaysAgo + '\n' + al.rating + ': ⭐ ${touched.y.toStringAsFixed(1)}',
+                          //'4 days ago\nRating: ⭐ ${touched.y.toStringAsFixed(1)}',
                           const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,

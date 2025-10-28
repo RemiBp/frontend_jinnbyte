@@ -322,19 +322,19 @@ class _UserSignupState extends State<UserSignup> {
 
     // debugPrint("phone is : ${phone?.nsn}");
     if (fullName.isEmpty) {
-      Toasts.getErrorToast(text: " Name is Missing");
+      Toasts.getErrorToast(text: al.nameMissing);
     } else if (userName.isEmpty) {
-      Toasts.getErrorToast(text: "Username is Missing");
+      Toasts.getErrorToast(text: al.usernameMissing);
     }
     else if (phone?.isEmpty??false) {
-      Toasts.getErrorToast(text: "Phone number is Missing");
+      Toasts.getErrorToast(text:al.phoneNumberMissing);
     }
     else if (email.isEmpty) {
-      Toasts.getErrorToast(text: "Email is Missing");
+      Toasts.getErrorToast(text: al.emailMissing);
     } else if (email.validateEmail() == false) {
-      Toasts.getErrorToast(text: "Invalid Email");
+      Toasts.getErrorToast(text: al.invalidEmail);
     } else if (password.isEmpty) {
-      Toasts.getErrorToast(text: "Password is missing");
+      Toasts.getErrorToast(text: al.passwordMissing);
     } else {
       context.read<AuthProvider>().registerUser(
         fullName: fullName,

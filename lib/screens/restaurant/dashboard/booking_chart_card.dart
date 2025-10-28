@@ -9,6 +9,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/filter_drop_down.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 
@@ -170,7 +171,7 @@ class BookingChartCard extends StatefulWidget {
 }
 
 class _BookingChartCardState extends State<BookingChartCard> {
-  String selectedRange = 'Category';
+  String selectedRange = al.category;
 
   List<double> barData = [];
   List<String> xLabels = [];
@@ -182,12 +183,12 @@ class _BookingChartCardState extends State<BookingChartCard> {
   }
 
   void fetchChartData(String range) {
-    if (range == 'Category') {
+    if (range == al.category) {
       xLabels = ['Bowl', 'Lasagna', 'Sushi', 'Burger', 'Ramen'];
       // Ratings (1.0–5.0)
       barData = [3.2, 3.5, 3.0, 3.3, 5.0];
-    } else if (range == 'Last Month') {
-      xLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    } else if (range == al.lastMonth) {
+      xLabels = [al.week1, al.week2, al.week3, al.week4];
       barData = [2.5, 3.8, 4.1, 3.6];
     }
     setState(() {});
@@ -222,7 +223,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                text: "Dish Ratings",
+                text: al.dishRating,
                 fontSize: sizes?.fontSize14,
                 fontFamily: Assets.onsetMedium,
                 fontWeight: FontWeight.w500,
@@ -245,7 +246,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
                       child: DropdownButton<String>(
                         value: selectedRange,
                         icon: const SizedBox.shrink(), // remove default icon
-                        items: ['Category', 'Last Month']
+                        items: [al.category, al.lastMonth]
                             .map((e) => DropdownMenuItem(
                           value: e,
                           child: CustomText(

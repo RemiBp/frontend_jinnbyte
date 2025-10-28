@@ -11,6 +11,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_drop_down.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/text_field_label.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../business_hours/edit_business_hours/edit_operational_hours.dart';
 
@@ -47,10 +48,10 @@ class _AddCuisineState extends State<AddCuisine> {
   }
 
   final List<CuisineType> dummyCuisineTypes = [
-    CuisineType(id: 1, name: 'Italian'),
-    CuisineType(id: 2, name: 'Chinese'),
-    CuisineType(id: 3, name: 'Mexican'),
-    CuisineType(id: 4, name: 'Indian'),
+    CuisineType(id: 1, name: al.italian),
+    CuisineType(id: 2, name: al.chinese),
+    CuisineType(id: 3, name: al.mexican),
+    CuisineType(id: 4, name: al.indian),
   ];
 
   @override
@@ -58,7 +59,7 @@ class _AddCuisineState extends State<AddCuisine> {
     final profileProvider = Provider.of<ProfileProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Cuisine"),
+      appBar: CommonAppBar(title: al.cuisine),
       body: Container(
         padding: EdgeInsets.symmetric(
           horizontal: sizes!.pagePadding,
@@ -74,7 +75,7 @@ class _AddCuisineState extends State<AddCuisine> {
               //   fontFamily: Assets.onsetSemiBold,
               // ),
               SizedBox(height: getHeight() * 0.01),
-              const TextFieldLabel(label: "Cuisine Type"),
+               TextFieldLabel(label: al.cuisineType),
               if (profileProvider.getCuisineTypesResponse != null)
                 CustomDropdown(
                   items:
@@ -93,26 +94,26 @@ class _AddCuisineState extends State<AddCuisine> {
                           })
                           .toList(),
                   selectedValue: selectedCuisineId,
-                  hintText: 'Select cuisine type',
+                  hintText: al.selectCuisineType,
                   onChanged: (id) {
                     setState(() {
                       selectedCuisineId = id!;
                       selectedCuisine = [
-                        CuisineType(id: 1, name: 'Italian'),
-                        CuisineType(id: 2, name: 'Chinese'),
-                        CuisineType(id: 3, name: 'Mexican'),
+                        CuisineType(id: 1, name: al.italian),
+                        CuisineType(id: 2, name: al.chinese),
+                        CuisineType(id: 3, name: al.mexican),
                       ].firstWhere((c) => c.id == id);
                     });
                   },
                   validator:
-                      (id) => id == null ? 'Please select cuisine type' : null,
+                      (id) => id == null ? al.selectCuisineType : null,
                 ),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    buttonText: 'Cancel',
+                    buttonText: al.cancel,
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -123,7 +124,7 @@ class _AddCuisineState extends State<AddCuisine> {
                     textFontWeight: FontWeight.w700,
                   ),
                   CustomButton(
-                    buttonText: 'Save Changes',
+                    buttonText: al.saveChanges,
                     onTap: () async {
                       if (selectedCuisineId != null) {
                         final success = await profileProvider.setCuisineType(
@@ -133,7 +134,7 @@ class _AddCuisineState extends State<AddCuisine> {
                           context.push(Routes.editOperationHoursRoute);
                         }
                       } else {
-                        Toasts.getErrorToast(text: "Select a cuisine type");
+                        Toasts.getErrorToast(text: al.selectCuisineType);
                       }
                     },
                     buttonWidth: getWidth() * .42,

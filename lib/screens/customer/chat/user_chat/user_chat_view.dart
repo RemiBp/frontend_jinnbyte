@@ -5,6 +5,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
 import '../custom_category_tabs.dart';
@@ -44,7 +45,7 @@ class _UserChatViewState extends State<UserChatView> {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: "Chat",
+        title: al.chat,
         showBackArrow: false,
         hideBottomBorder: true,
       ),
@@ -62,7 +63,7 @@ class _UserChatViewState extends State<UserChatView> {
                 padding:  EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
                 child: CustomField(
                   borderColor: AppColors.greyBordersColor,
-                  hint: "Search by name...",
+                  hint: al.searchByName,
                   label: "",
                   prefixIconSvg: Assets.searchIcon,
                 ),
@@ -101,7 +102,7 @@ class _UserChatViewState extends State<UserChatView> {
         children: [
           Icon(Icons.add, color: Colors.white,),
           CustomText(
-            text: "New Chat",
+            text: al.newChat,
             fontSize: sizes?.fontSize12,
             fontFamily: Assets.onsetMedium,
             color: Colors.white,

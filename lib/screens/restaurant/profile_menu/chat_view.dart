@@ -4,6 +4,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class ChatView extends StatefulWidget {
@@ -18,14 +19,14 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Chat"),
+      appBar: CommonAppBar(title: al.chat),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
           children: [
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by name...",
+              hint: al.searchByName,
               label: "",
               prefixIconSvg: Assets.searchIcon,
               // obscure: true,

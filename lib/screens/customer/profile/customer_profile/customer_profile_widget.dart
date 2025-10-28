@@ -7,6 +7,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import 'customer_profile_provider.dart';
 
@@ -141,7 +142,7 @@ class CustomerPostCard extends StatelessWidget {
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
               _buildIconText(Assets.shareIcon, '1.2k'),
-              _buildInterestedTag("Interested (0)"),
+              _buildInterestedTag("${al.interested} (0)"),
             ],
           ),
         ),

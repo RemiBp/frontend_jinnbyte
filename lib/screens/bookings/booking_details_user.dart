@@ -72,28 +72,28 @@ class _UserBookingDetailsState extends State<UserBookingDetails> {
             SizedBox(height: getHeight() * 0.02),
 
             //  Booking Details
-            BookingInfoRow(label: "Booking ID", value: "#3956839"),
+            BookingInfoRow(label: al.bookingId, value: "#3956839"),
             SizedBox(height: getHeight() * 0.01),
-            BookingInfoRow(label: "No. of Persons", value: "2 Person"),
+            BookingInfoRow(label: al.numberOfPersons, value: "2 ${al.person}(s)"),
             SizedBox(height: getHeight() * 0.01),
-            BookingInfoRow(label: "Date", value: "Aug 28, 2025"),
+            BookingInfoRow(label: al.date, value: "Aug 28, 2025"),
             SizedBox(height: getHeight() * 0.01),
-            BookingInfoRow(label: "Time", value: "10:00 AM - 11:00 AM"),
+            BookingInfoRow(label: al.time, value: "10:00 AM - 11:00 AM"),
             SizedBox(height: getHeight() * 0.01),
             isWellness
                 ? BookingInfoRow(
-              label: "Services",
+              label: al.services,
               value:
-              "Hair Care & Hair Services, Aesthetic Care & Well-Being",
+              "${al.hairCareAndHairServices},${al.aestheticCareAndWellBeing}",
             )
-                : BookingInfoRow(label: "Amount", value: "\$90"),
+                : BookingInfoRow(label: al.amount, value: "\$90"),
 
             Divider(
               color: AppColors.greyBordersColor,
               height: getHeight() * 0.03,
             ),
 
-            // 🔹 Internal Notes
+            //  Internal Notes
             CustomText(
               text: al.internalNotes,
               fontSize: sizes?.fontSize16,
@@ -104,7 +104,7 @@ class _UserBookingDetailsState extends State<UserBookingDetails> {
             CustomText(
               text: isWellness
                   ? "Lorem ipsum dolor sit amet consectetur."
-                  : "Allergic to peanuts. Request outdoor seating.",
+                  : al.allergyNote,
               fontSize: sizes?.fontSize14,
               color: AppColors.primarySlateColor,
               fontWeight: FontWeight.w500,

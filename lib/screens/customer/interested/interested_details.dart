@@ -9,6 +9,7 @@ import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../../res/res.dart';
+import '../../../l18n.dart';
 
 class InterestDetailsScreen extends StatefulWidget {
   const InterestDetailsScreen({super.key});
@@ -24,7 +25,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
       backgroundColor: AppColors.whiteColor,
 
       // AppBar
-      appBar: CommonAppBar(title: "Interest Details"),
+      appBar: CommonAppBar(title: al.interestDetails),
 
       // Bottom Buttons
       bottomNavigationBar: SafeArea(
@@ -43,7 +44,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
               children: [
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Edit Time",
+                    buttonText: al.editTime,
                     onTap: () {
                       context.push(
                         Routes.suggestTimeSlotRoute,
@@ -59,7 +60,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
                 SizedBox(width: getWidth() * 0.03),
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Reserve Now",
+                    buttonText: al.reserveNow,
                     onTap: () {
 
                     },
@@ -84,11 +85,11 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// --- EVENT INFO ---
+            // EVENT INFO
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Event Image — increased size for better balance
+                // Event Image increased size for better balance
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
@@ -106,14 +107,14 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Event Name",
+                        text: al.eventName,
                         fontSize: sizes?.fontSize16,
                         fontWeight: FontWeight.w500,
                         color: AppColors.blackColor,
                       ),
                       SizedBox(height: getHeight() * 0.008),
 
-                      /// Date Row
+                      //Date Row
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -138,7 +139,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
 
                       SizedBox(height: getHeight() * 0.008),
 
-                      /// Location Row
+                      // Location Row
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -171,7 +172,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
 
             // INVITEES SECTION
             CustomText(
-              text: "Invitees",
+              text: al.invitees,
               fontSize: sizes?.fontSize15,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -181,7 +182,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
             // Invitee List with Divider
             _InviteeTile(
               name: "Emelie",
-              statusText: "Joined",
+              statusText: al.joined,
               statusColor: Colors.green,
               imageAsset: Assets.peopleIcon,
             ),
@@ -189,7 +190,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
 
             _InviteeTile(
               name: "Abigail",
-              statusText: "Declined",
+              statusText: al.declined,
               statusColor: Colors.red,
               imageAsset: Assets.profileIcon,
               showSuggestion: true,
@@ -198,7 +199,7 @@ class _InterestDetailsScreenState extends State<InterestDetailsScreen> {
 
             _InviteeTile(
               name: "Penelope",
-              statusText: "Joined",
+              statusText: al.joined,
               statusColor: Colors.green,
               imageAsset: Assets.peopleIcon,
             ),
@@ -230,7 +231,7 @@ class _InviteeTile extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// Name + Status Row
+        // Name + Status Row
         Row(
           children: [
             CircleAvatar(
@@ -264,7 +265,7 @@ class _InviteeTile extends StatelessWidget {
           ],
         ),
 
-        /// Suggested Time Box (if any)
+        // Suggested Time Box (if any)
         if (showSuggestion) ...[
           SizedBox(height: getHeight() * 0.012),
           Container(
@@ -281,9 +282,9 @@ class _InviteeTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Suggested Date & Time Section
+                // Suggested Date & Time Section
                 CustomText(
-                  text: "Suggested Date & Time",
+                  text: al.suggestedDateTime,
                   fontSize: sizes?.fontSize10,
                   fontFamily: Assets.onsetMedium,
                   fontWeight: FontWeight.w500,
@@ -298,7 +299,7 @@ class _InviteeTile extends StatelessWidget {
                   color: AppColors.blackColor,
                 ),
 
-                /// Divider line
+                // Divider line
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: getHeight() * 0.012),
                   child: Divider(
@@ -308,9 +309,9 @@ class _InviteeTile extends StatelessWidget {
                   ),
                 ),
 
-                /// Reason Section
+                // Reason Section
                 CustomText(
-                  text: "Reason",
+                  text: al.reason,
                   fontFamily: Assets.onsetMedium,
                   fontSize: sizes?.fontSize10,
                   fontWeight: FontWeight.w500,

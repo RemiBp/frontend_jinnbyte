@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class ShareExperienceWidget extends StatefulWidget {
@@ -53,7 +54,7 @@ class _ShareExperienceWidgetState extends State<ShareExperienceWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: "Share Your Experience",
+            text: al.shareYourExperience,
             fontFamily: Assets.onsetMedium,
             fontSize: sizes?.fontSize16,
           ),
@@ -68,15 +69,15 @@ class _ShareExperienceWidgetState extends State<ShareExperienceWidget> {
               controller: _controller,
               maxLines: 4,
               decoration: InputDecoration.collapsed(
-                hintText: 'Share your experience...',
+                hintText: '${al.shareYourExperience}...',
                 hintStyle: TextStyle(color: Color(0xFF6B6C90)),
               ),
             ),
           ),
           SizedBox(height: 24),
-          buildRadio('Public', 'Anyone can see the feed', 'Public'),
-          buildRadio('Friends Only', 'Your friends on Choice', 'Friends'),
-          buildRadio('Private', 'Only Me', 'Private'),
+          buildRadio(al.public, al.anyoneCanSeeFeed, al.publicLower),
+          buildRadio(al.friendsOnly, al.yourFriendsOnChoice, al.friendsOnlyLower),
+          buildRadio(al.private, al.onlyMe, al.private),
         ],
       ),
     );

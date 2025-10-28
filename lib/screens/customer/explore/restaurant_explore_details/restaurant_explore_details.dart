@@ -89,7 +89,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             ),
             SizedBox(height: getHeight() * 0.02),
             IconTextWidget(
-              text: "Monday, June 28, 2025 ",
+              text: "${al.monday}, ${al.june} 28, 2025 ",
               icon: Assets.calender,
               subText: "08:00 PM - 11:00 PM",
               color: AppColors.getPrimaryColorFromContext(context),
@@ -284,7 +284,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: CustomText(
-                text: "Socia Links",
+                text: al.socialLinks,
                 fontSize: sizes?.fontSize16,
                 fontFamily: Assets.onsetSemiBold,
               ),
@@ -324,7 +324,7 @@ class _RestaurantExploreDetailsState extends State<RestaurantExploreDetails> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.06),
               child: CustomText(
-                text: "Organizer",
+                text: al.organizer,
                 fontSize: sizes?.fontSize16,
                 fontFamily: Assets.onsetSemiBold,
               ),

@@ -102,9 +102,9 @@ class _ExploreViewState extends State<ExploreView> {
                         Assets.leisureImage,
                       ],
                       labels: [
-                        "Restaurants",
-                        "Wellness",
-                        "Leisure",
+                        al.categoryRestaurant,
+                        al.categoryWellness,
+                        al.categoryLeisure,
                       ],
                     ),
                   ),
@@ -200,7 +200,7 @@ class _ExploreViewState extends State<ExploreView> {
   final List<Event> dummyEvents = [
     Event(
       title: "Wine & Dine Evening",
-      tag: "Restaurant",
+      tag: al.categoryRestaurant,
       location: "Lyon, France",
       dateTime: "June 20, 10:00 PM – 12:00 PM",
       price: "\$30.00",
@@ -209,7 +209,7 @@ class _ExploreViewState extends State<ExploreView> {
     ),
     Event(
       title: "Beach Leisure Party",
-      tag: "Leisure",
+      tag: al.categoryLeisure,
       location: "Nice, France",
       dateTime: "July 15, 6:00 PM – 11:00 PM",
       price: "\$45.00",
@@ -218,7 +218,7 @@ class _ExploreViewState extends State<ExploreView> {
     ),
     Event(
       title: "Romantic Dinner Night",
-      tag: "Restaurant",
+      tag: al.categoryRestaurant,
       location: "Paris, France",
       dateTime: "Aug 5, 8:00 PM – 11:00 PM",
       price: "\$55.00",
@@ -227,7 +227,7 @@ class _ExploreViewState extends State<ExploreView> {
     ),
     Event(
       title: "Wellness Yoga Camp",
-      tag: "Wellness",
+      tag: al.categoryWellness,
       location: "Bali, Indonesia",
       dateTime: "Sep 1, 7:00 AM – 6:00 PM",
       price: "\$90.00",

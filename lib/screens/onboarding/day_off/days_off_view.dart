@@ -6,6 +6,7 @@ import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/text_field_label.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../slot_management/slot_management_view.dart';
 import '../slot_management/slot_management_widgets.dart';
@@ -60,7 +61,7 @@ class _DaysOffViewState extends State<DaysOffView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Unavailability"),
+      appBar: CommonAppBar(title: al.unavailability),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
         child: Column(
@@ -70,8 +71,8 @@ class _DaysOffViewState extends State<DaysOffView> {
               child: ListView(
                 children: [
                   SizedBox(height: getHeightRatio() * 16),
-                  const TextFieldLabel(
-                    label: "Date",
+                   TextFieldLabel(
+                    label: al.date,
                   ),
                   GestureDetector(
                     onTap: (){
@@ -82,7 +83,7 @@ class _DaysOffViewState extends State<DaysOffView> {
                     },
                     child: AbsorbPointer(
                       child: DatePickerTile(
-                        hintText:  "Select Dates",
+                        hintText:  al.selectDates,
                         controller: leaveDateController,
                         // validator: (value) => CustomValidator.validationEmptyText("Date", value)
                       ),
@@ -90,7 +91,7 @@ class _DaysOffViewState extends State<DaysOffView> {
                   ),
                   SizedBox(height: getHeight() * 0.02),
                   EditDaysTile(
-                    label: "Select Time Slots",
+                    label: al.selectTimeSlots,
                     isChecked: isSelectAllChecked,
                     isEdit: true,
                     onSelectAll: () {
@@ -126,11 +127,11 @@ class _DaysOffViewState extends State<DaysOffView> {
                     },
                     chipPadding: const EdgeInsets.all(8),
                   )
-                      : const Center(
+                      : Center(
                     child: Padding(
-                      padding: EdgeInsets.only(top: 18.0),
+                      padding: const EdgeInsets.only(top: 18.0),
                       child: CustomText(
-                        text: "No Time Slots found",
+                        text: al.noTimeSlotsFound,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -151,7 +152,7 @@ class _DaysOffViewState extends State<DaysOffView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -162,7 +163,7 @@ class _DaysOffViewState extends State<DaysOffView> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Save Changes',
+                  buttonText: al.saveChanges,
                   onTap: () {
                   },
                   buttonWidth: getWidth() * .42,

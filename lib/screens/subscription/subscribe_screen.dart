@@ -6,6 +6,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
+import '../../l18n.dart';
 
 class SubscribeScreen extends StatefulWidget {
   const SubscribeScreen({super.key});
@@ -54,7 +55,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
         // Base scaffold
         Scaffold(
           backgroundColor: AppColors.whiteColor,
-          appBar: CommonAppBar(title: 'Subscription'),
+          appBar: CommonAppBar(title: al.subscription),
 
           body: Padding(
             padding: EdgeInsets.symmetric(
@@ -65,14 +66,14 @@ class _SubscribeScreenState extends State<SubscribeScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "Unlock more with Plus",
+                  text: al.unlockMoreWithPlus,
                   fontSize: getWidth() * 0.05,
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackColor,
                 ),
                 SizedBox(height: getHeight() * 0.005),
                 CustomText(
-                  text: "Get our more capable models and features",
+                  text: al.getMoreCapableModels,
                   fontSize: getWidth() * 0.035,
                   fontWeight: FontWeight.w400,
                   color: AppColors.inputHintColor,
@@ -92,7 +93,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomButton(
-                    buttonText: "Subscribe",
+                    buttonText: al.subscribe,
                     onTap: onSubscribeTap,
                     buttonWidth: double.infinity,
                     backgroundColor: themeColor,
@@ -175,7 +176,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                           ),
                           SizedBox(height: getHeight() * 0.02),
                           CustomText(
-                            text: "Start by adding a payment method",
+                            text: al.startByAddingPaymentMethod,
                             fontSize: 16,
                             fontFamily: Assets.onsetSemiBold,
                             fontWeight: FontWeight.w600,
@@ -190,7 +191,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                           SizedBox(height: getHeight() * 0.02),
                           CustomText(
                             text:
-                            "Add a payment method to your Google Account to complete your purchase. Your payment information is only visible to Google.",
+                            al.addPaymentMethodInfo,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             fontFamily: Assets.onsetRegular,
@@ -198,7 +199,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                           ),
                           SizedBox(height: getHeight() * 0.05),
                           SecondaryCustomIconButton(
-                            buttonText: "Add credit or debit card",
+                            buttonText: al.addCreditOrDebitCard,
                             onTap: () {
                               setState(() {
                                 showBottomDialog = false;
@@ -257,7 +258,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
               borderRadius: BorderRadius.circular(getWidth() * 0.02),
             ),
             child: CustomText(
-              text: "Current Plan",
+              text: al.currentPlan,
               fontSize: getWidth() * 0.028,
               fontWeight: FontWeight.w500,
               color: AppColors.blackColor,
@@ -265,7 +266,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
           ),
           SizedBox(height: getHeight() * 0.008),
           CustomText(
-            text: "Free",
+            text: al.free,
             fontSize: getWidth() * 0.04,
             fontWeight: FontWeight.w600,
             color: AppColors.blackColor,
@@ -282,7 +283,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
               Icon(Icons.check, color: Colors.green, size: getWidth() * 0.04),
               SizedBox(width: getWidth() * 0.02),
               CustomText(
-                text: "Limited AI Copilot Queries",
+                text: al.limitedAICopilotQueries,
                 fontSize: getWidth() * 0.03,
                 fontWeight: FontWeight.w400,
                 color: AppColors.inputHintColor,
@@ -349,7 +350,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                     Icon(Icons.check, color: Colors.green, size: getWidth() * 0.04),
                     SizedBox(width: getWidth() * 0.02),
                     CustomText(
-                      text: "Unlimited AI Copilot Queries",
+                      text: al.unlimitedAICopilotQueries,
                       fontSize: getWidth() * 0.03,
                       fontWeight: FontWeight.w400,
                       color: AppColors.inputHintColor,

@@ -73,7 +73,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "Document",
+                  text: al.document,
                   fontSize: sizes?.fontSize14,
                   fontFamily: Assets.onsetMedium,
                   color: AppColors.blackColor,
@@ -94,7 +94,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
               child: DropdownButtonFormField<String>(
                 initialValue: selectedDocTitle,
                 hint: CustomText(
-                  text: "Select Document",
+                  text: al.selectDocument,
                   fontSize: 14,
                   fontFamily: Assets.onsetMedium,
                   color: AppColors.primarySlateColor,
@@ -220,12 +220,12 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
               buttonText: al.continueText,
               onTap: () async {
                 if (selectedDocTitle == null) {
-                  Toasts.getErrorToast(text: "Please select a document first.");
+                  Toasts.getErrorToast(text: al.pleaseSelectDocumentFirst);
                   return;
                 }
 
                 if (provider.selectedDoc == null) {
-                  Toasts.getErrorToast(text: "Please upload the document first.");
+                  Toasts.getErrorToast(text: al.pleaseUploadDocumentFirst);
                   return;
                 }
 
@@ -233,7 +233,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                 await Future.delayed(const Duration(seconds: 1));
                 _loader.hideLoader(context);
 
-                Toasts.getSuccessToast(text: "Document uploaded successfully");
+                Toasts.getSuccessToast(text: al.documentUploadedSuccessfully);
                 context.push(Routes.restaurantProfileRoute);
               },
             ),

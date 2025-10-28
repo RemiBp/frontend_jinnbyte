@@ -7,6 +7,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../restaurant/event/event_widgets.dart';
@@ -113,7 +114,7 @@ class _LeisureProfileTabBarState extends State<LeisureProfileTabBar> with Single
               children: [
                 Expanded(
                   child: CardButton(
-                    buttonText: 'Follow',
+                    buttonText: al.follow,
                     onTap: () {
 
                     },
@@ -124,7 +125,7 @@ class _LeisureProfileTabBarState extends State<LeisureProfileTabBar> with Single
                 SizedBox(width: getWidth() * 0.03),
                 Expanded(
                   child: CardButton(
-                    buttonText: 'Message',
+                    buttonText: al.message,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -169,7 +170,7 @@ class _LeisureProfileTabBarState extends State<LeisureProfileTabBar> with Single
                   width: getWidth() * 0.2,
                   child: ProfileTabItem(
                     iconPath: Assets.postIcon,
-                    label: 'Posts',
+                    label: al.posts,
                     tabIndex: 1,
                     selectedTabIndex: _selectedTabIndex,
                   ),
@@ -178,7 +179,7 @@ class _LeisureProfileTabBarState extends State<LeisureProfileTabBar> with Single
                   width: getWidth() * 0.2,
                   child: ProfileTabItem(
                     iconPath: Assets.eventPngIcon,
-                    label: 'Event',
+                    label: al.event,
                     tabIndex: 2,
                     selectedTabIndex: _selectedTabIndex,
                   ),
@@ -187,7 +188,7 @@ class _LeisureProfileTabBarState extends State<LeisureProfileTabBar> with Single
                   width: getWidth() * 0.2,
                   child: ProfileTabItem(
                     iconPath: Assets.aboutIcon,
-                    label: 'About',
+                    label: al.about,
                     tabIndex: 3,
                     selectedTabIndex: _selectedTabIndex,
                   ),

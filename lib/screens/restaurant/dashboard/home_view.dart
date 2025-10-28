@@ -6,6 +6,7 @@ import 'package:choice_app/screens/restaurant/notifications/notifications_view.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
@@ -75,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   DashboardCard(
                     width: getWidth() * 0.42,
-                    header: "Bookmark",
+                    header: al.bookmark,
                     price: "348",
                   ),
                 ],
@@ -86,12 +87,12 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   DashboardCard(
                     width: getWidth() * 0.42,
-                    header: "Choices Made",
+                    header: al.choicesMade,
                     price: "348",
                   ),
                   DashboardCard(
                     width: getWidth() * 0.42,
-                    header: "Conversion Rate",
+                    header: al.conversionRate,
                     price: "348",
                   ),
                 ],
@@ -99,15 +100,15 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(height: getHeightRatio() * 16),
               DashboardCard(
                 width: getWidth() * 0.9,
-                header: "Post Conversion Rate",
+                header: al.postConversionRate,
                 price: "18%",
               ),
               SizedBox(height: getHeightRatio() * 16),
               DashboardCard(
                 width: getWidth() * 0.9,
-                header: "Favorite choice of the month",
+                header: al.favoriteChoiceOfMonth,
                 price: "18%",
-                duration: "This Week",
+                duration: al.thisWeek,
               ),
               SizedBox(height: getHeightRatio() * 16),
               UserOriginMapCard(),
@@ -125,20 +126,20 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(height: getHeightRatio() * 16),
               if (role == UserRole.restaurant) ...[
                 MostChosenDishCard(
-                  header: "Most Chosen Dish",
+                  header: al.mostChosenDish,
                   price: "Crème Brûlée",
                 ),
               ] else if (role == UserRole.wellness) ...[
                 MostChosenDishCard(
-                  header: "Waiting Time Complaints",
+                  header: al.waitingTimeComplaints,
                   price: "23%",
-                  bottomText: "choices flagged long wait times",
+                  bottomText: al.choicesFlaggedLongWait,
                 ),
               ] else if (role == UserRole.leisure) ...[
                 MostChosenDishCard(
-                  header: "Top Performing Event Type",
+                  header: al.topPerformingEventType,
                   price: "Drag Show",
-                  bottomText: "2x more than live music",
+                  bottomText: al.twoXMoreThanLiveMusic,
                 ),
               ],
 
@@ -151,7 +152,7 @@ class _HomeViewState extends State<HomeView> {
                 WeeklyRatingsChartCard(), // weekly 0–5 chart
               ],
               SizedBox(height: getHeightRatio() * 16),
-              const RatingsByThemeCard(),
+               RatingsByThemeCard(),
               SizedBox(height: getHeight() * 0.025),
             ],
           ),

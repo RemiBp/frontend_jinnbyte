@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/appColors/colors.dart';
@@ -55,7 +54,7 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: isEdit ? "Edit Time Slot" : "Suggest Time Slot",
+        title: isEdit ? al.editTimeSlot : al.suggestTimeSlot,
       ),
 
       bottomNavigationBar: SafeArea(
@@ -71,14 +70,14 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
             SizedBox(height: getHeight() * 0.012),
 
             CustomButton(
-              buttonText: isEdit ? "Confirm" : al.continueText,
+              buttonText: isEdit ? al.confirm : al.continueText,
               onTap: () {
                 if (selectedDateIndex == -1 && selectedDate == null) {
-                  Toasts.getErrorToast(text: "Please select a date");
+                  Toasts.getErrorToast(text: al.pleaseSelectDate);
                   return;
                 }
                 if (selectedTimeIndex == -1) {
-                  Toasts.getErrorToast(text: "Please select a time");
+                  Toasts.getErrorToast(text: al.pleaseSelectTime);
                   return;
                 }
                 context.push(Routes.selectFriendsRoute);
@@ -101,12 +100,12 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Header with right-aligned month chip
+            // Header with right-aligned month chip
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Select Date",
+                  text: al.selectDate,
                   fontSize: sizes!.fontSize16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.blackColor,
@@ -126,7 +125,7 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
                       setState(() => selectedDate = picked);
                       Toasts.getSuccessToast(
                         text:
-                        "Selected: ${picked.day}/${picked.month}/${picked.year}",
+                        "${al.selected}: ${picked.day}/${picked.month}/${picked.year}",
                       );
                     }
                   },
@@ -158,16 +157,16 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
 
             SizedBox(height: getHeight() * 0.04),
 
-            /// Select Time
+            // Select Time
             CustomText(
-              text: "Select Time",
+              text: al.selectTime,
               fontSize: sizes!.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
             ),
             SizedBox(height: getHeight() * 0.02),
 
-            /// Time Chips
+            // Time Chips
             Wrap(
               spacing: 10,
               runSpacing: 12,
@@ -183,9 +182,9 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
 
             SizedBox(height: getHeight() * 0.04),
 
-            /// Message field
+            // Message field
             CustomText(
-              text: "Message",
+              text: al.message,
               fontSize: sizes!.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,

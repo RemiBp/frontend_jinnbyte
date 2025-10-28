@@ -4,6 +4,7 @@ import '../../../appColors/colors.dart';
 import '../../../common/formatter.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/no_item_found.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import 'notifications_widgets.dart';
 
@@ -48,8 +49,8 @@ class _NotificationsViewState extends State<NotificationsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: const CommonAppBar(
-        title: "Notifications",
+      appBar: CommonAppBar(
+        title: al.notifications,
       ),
       body:
       // Consumer<NotificationProvider>(
@@ -63,7 +64,7 @@ class _NotificationsViewState extends State<NotificationsView> {
               itemCount: 10,
               itemBuilder: (context, index) {
                 return  NotificationsCard(
-                  title: "Share your experience by leaving a review at The Wholesome Fork.",
+                  title: al.shareExperienceReview + " The Wholesome Fork.",
                   time: Formatter.formatDateFromString(
                       "2025-01-10T16:41:00.799Z",
                   ),
@@ -90,8 +91,8 @@ class _NotificationsViewState extends State<NotificationsView> {
               },
               child: NoItemFound(
                 image: Assets.noNotificationIcon,
-                title: "You don’t have any notifications yet",
-                subTitle: "You will receive notifications regarding reservations, reviews etc.",
+                title: al.noNotificationsYet,
+                subTitle: al.notificationsDescription,
                 margin: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
               ),
             )
