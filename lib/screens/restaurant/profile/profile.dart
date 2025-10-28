@@ -538,6 +538,11 @@ class _ProfileState extends State<Profile> {
                     );
                     
                     if (success && context.mounted) {
+                      if(widget.isFromSettings) {
+                        context.pop();
+                        return;
+                      }
+
                       if (role == UserRole.leisure) {
                         context.push(Routes.restaurantBottomTabRoute);
                       } else if(role == UserRole.restaurant) {

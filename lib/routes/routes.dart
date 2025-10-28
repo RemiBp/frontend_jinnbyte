@@ -138,7 +138,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: Routes.editOperationHoursRoute,
-      builder: (context, state) => const EditOperationalHours(),
+      builder: (context, state) {
+        final fromSettings = state.extra as bool? ?? false;
+        return EditOperationalHours(fromSettings: fromSettings);
+      },
     ),
     GoRoute(
       path: Routes.registrationRoute,
