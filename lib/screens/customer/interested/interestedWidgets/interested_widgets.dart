@@ -6,6 +6,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class CustomerInterestView extends StatelessWidget {
@@ -83,7 +84,7 @@ class _InterestCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Top row: image + event details
+            // Top row: image + event details
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,12 +138,12 @@ class _InterestCard extends StatelessWidget {
 
                       SizedBox(height: getHeight() * 0.008),
 
-                      /// Location row (fixed alignment)
+                      // Location row (fixed alignment)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start, // fixes vertical misalignment
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: getHeight() * 0.005), // 👈 small top padding
+                            padding: EdgeInsets.only(top: getHeight() * 0.005), //  small top padding
                             child: SvgPicture.asset(
                               Assets.locationIcon,
                               height: getHeight() * 0.019,
@@ -192,13 +193,13 @@ class _InterestCard extends StatelessWidget {
 
             SizedBox(height: getHeight() * 0.025),
 
-            /// Buttons row at the bottom
+            // Buttons row at the bottom
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: CustomButton(
-                    buttonText: "Decline",
+                    buttonText: al.decline,
                     onTap: () {},
                     height: getHeight() * 0.055,
                     backgroundColor: Colors.transparent,
@@ -210,7 +211,7 @@ class _InterestCard extends StatelessWidget {
                 SizedBox(width: getWidth() * 0.04),
                 Expanded(
                   child: CustomButton(
-                    buttonText: "View Details",
+                    buttonText: al.viewDetails,
                     onTap: () {
                       context.push(Routes.customerNonEventInviteRoute);
                     },
@@ -422,7 +423,7 @@ class _InterestCard2 extends StatelessWidget {
 
             // Single Full-Width Button
             CustomButton(
-              buttonText: "View Details",
+              buttonText: al.viewDetails,
               onTap: () {
                 context.push(Routes.interestedDetailsRoute);
               },

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
@@ -31,7 +32,7 @@ class UserOriginMapCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: 'User Origin Map',
+            text: al.userOriginMap,
             fontSize: sizes?.fontSize14,
             fontWeight: FontWeight.w500,
             color: AppColors.primarySlateColor,

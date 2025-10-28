@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class RepeatCustomersCard extends StatefulWidget {
@@ -74,7 +75,7 @@ class _RepeatCustomersCardState extends State<RepeatCustomersCard> {
                       SizedBox(width: getWidth() * 0.03),
                       CustomText(
                         // text: "New Visitors  (${provider.repeatCustomersResponse.newVisitors})",
-                        text: "Rated  (12)",
+                        text: al.rated + " (12)",
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
                         textAlign: TextAlign.start,
@@ -94,7 +95,7 @@ class _RepeatCustomersCardState extends State<RepeatCustomersCard> {
                       ),
                       SizedBox(width: getWidth() * 0.03),
                       CustomText(
-                        text: "Not Rated  (4)",
+                        text: al.notRated + " (4)",
                         // text: "Repeat  (${provider.repeatCustomersResponse.repeatCustomers})",
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,

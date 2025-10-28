@@ -4,6 +4,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -22,7 +23,7 @@ class HomeAppBar extends StatelessWidget {
           children: [
             Expanded(
               child: CustomText(
-                text: "Dashboard",
+                text: al.dashboard,
                 fontSize: sizes?.fontSize18,
                 color: AppColors.blackColor,
                 fontWeight: FontWeight.w600,

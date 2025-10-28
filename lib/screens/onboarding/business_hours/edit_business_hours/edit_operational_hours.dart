@@ -9,6 +9,7 @@ import '../../../../customWidgets/blurry_back_ground.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../../res/toasts.dart';
 import '../../../../screens/restaurant/profile/profile_provider.dart';
@@ -58,13 +59,13 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
   }
 
   final List<String> days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+    al.monday,
+    al.tuesday,
+    al.wednesday,
+    al.thursday,
+    al.friday,
+    al.saturday,
+    al.sunday,
   ];
 
   final Map<String, bool> isActive = {};
@@ -83,20 +84,20 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
       final pickedDateTime = DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
       final pickedFormatted = DateFormat('HH:mm').format(pickedDateTime); // 12:00 AM = 00:00 in 24-hour format
       if (!isStart && pickedFormatted == "00:00") {
-        Toasts.getErrorToast(text: "Closing time cannot be 12:00 AM");
+        Toasts.getErrorToast(text: al.closingTimeCannotBeMidnight);
         return;
       } // Define 11:59 PM as the latest possible time
       const maxEndTime = TimeOfDay(hour: 23, minute: 59);
       int pickedMinutes = picked.hour * 60 + picked.minute;
       int maxMinutes = maxEndTime.hour * 60 + maxEndTime.minute;
       if (!isStart && pickedMinutes > maxMinutes) {
-        Toasts.getErrorToast(text: "Closing time cannot be later than 11:59 PM");
+        Toasts.getErrorToast(text: al.closingTimeCannotBeAfter1159);
         return;
       } // Disallow closing time before or equal to opening time
       if (!isStart) {
         int startMinutes = startTimes[day]!.hour * 60 + startTimes[day]!.minute;
         if (pickedMinutes <= startMinutes) {
-          Toasts.getErrorToast(text: "Closing time must be after opening time");
+          Toasts.getErrorToast(text: al.closingTimeMustBeAfterOpening);
           return;
         }
       }
@@ -123,7 +124,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: const CommonAppBar(title: "Business hours"),
+      appBar: CommonAppBar(title: al.businessHours),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
         child: Column(
@@ -139,7 +140,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
               child: Row(
                 children: [
                   CustomText(
-                    text: "Set weekly Availability",
+                    text: al.setWeeklyAvailability,
                     fontSize: sizes?.fontSize18,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,
@@ -164,7 +165,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                   color: AppColors.getPrimaryColorFromContext(context),
                 ),
                 child: CustomText(
-                  text: "Select the days and times your business operates. This schedule will repeat weekly for the entire year. To mark specific days off, use the unavailability tab.",
+                  text: al.weeklyAvailabilityDescription,
                   fontSize: sizes?.fontSize12,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w400,
@@ -196,25 +197,25 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                     int startMinutes = start.hour * 60 + start.minute;
                                     int endMinutes = end.hour * 60 + end.minute;
 
-                                    // 1️⃣ Validate closing time not 12:00 AM
+                                    //  Validate closing time not 12:00 AM
                                     if (end.hour == 0 && end.minute == 0) {
-                                      Toasts.getErrorToast(text: "Closing time cannot be 12:00 AM");
+                                      Toasts.getErrorToast(text: al.closingTimeCannotBeMidnight);
                                       return;
                                     }
 
-                                    // 2️⃣ Validate closing time after opening time
+                                    //  Validate closing time after opening time
                                     if (endMinutes <= startMinutes) {
-                                      Toasts.getErrorToast(text: "Closing time must be after opening time");
+                                      Toasts.getErrorToast(text: al.closingTimeMustBeAfterOpening);
                                       return;
                                     }
 
-                                    // 3️⃣ (Optional) Validate max end time 11:59 PM
+                                    //  (Optional) Validate max end time 11:59 PM
                                     if (endMinutes > (23 * 60 + 59)) {
-                                      Toasts.getErrorToast(text: "Closing time cannot be later than 11:59 PM");
+                                      Toasts.getErrorToast(text: al.closingTimeCannotBeAfter1159);
                                       return;
                                     }
 
-                                    // ✅ Apply times only if valid
+                                    // Apply times only if valid
                                     setState(() {
                                       isSelectAll = true;
                                       for (final day in days) {
@@ -223,7 +224,8 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                         endTimes[day] = end;
                                       }
                                     });
-                                  },                                ),
+                                  },
+                                ),
                               );
                             },
                           );
@@ -242,7 +244,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                   ),
                 ),
                 CustomText(
-                  text: "Select for All day",
+                  text: al.selectForAllDay,
                   fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
                 )
@@ -253,7 +255,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
               children: [
                 Expanded(
                   child: CustomText(
-                    text: "Day On/Off",
+                    text: al.dayOnOff,
                     fontSize: sizes?.fontSize12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.blackColor,
@@ -266,7 +268,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                       SizedBox(
                         width: getWidth() * 0.22,
                         child: CustomText(
-                          text: "Start Time",
+                          text: al.startTime,
                           fontSize: sizes?.fontSize12,
                           fontWeight: FontWeight.w500,
                           color:AppColors.blackColor,
@@ -276,7 +278,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                       SizedBox(
                         width: getWidth() * 0.22,
                         child: CustomText(
-                          text: "End Time",
+                          text: al.endTime,
                           fontSize: sizes?.fontSize12,
                           fontWeight: FontWeight.w500,
                           color:AppColors.blackColor,
@@ -374,7 +376,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: CustomText(
-                                text: "Closed",
+                                text: al.closed,
                                 fontSize: sizes?.fontSize14,
                                 fontWeight: FontWeight.w500,
                                 color:AppColors.primarySlateColor,
@@ -393,7 +395,7 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -404,13 +406,13 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Save Changes',
+                  buttonText: al.saveChanges,
                   onTap: () async {
                     // Check if at least one day is selected
                     bool hasAnyActiveDay = isActive.values.any((isDayActive) => isDayActive);
 
                     if (!hasAnyActiveDay) {
-                      Toasts.getErrorToast(text: "Please select at least one day");
+                      Toasts.getErrorToast(text: al.pleaseSelectAtLeastOneDay);
                       return;
                     }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class BookmarkedView extends StatefulWidget {
@@ -18,7 +19,7 @@ class _BookmarkedViewState extends State<BookmarkedView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Bookmarked"),
+      appBar: CommonAppBar(title: al.bookmarked),
       body: Column(
         children: [
           SizedBox(height: getHeight() * 0.02),

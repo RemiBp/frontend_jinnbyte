@@ -52,6 +52,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
           fontSize: sizes?.fontSize18,
           fontFamily: Assets.onsetSemiBold,
         ),
+        titleSpacing: 0,
       ),
       body: Column(
         children: [
@@ -114,7 +115,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
           children: [
             Icon(Icons.add, color: Colors.white),
             CustomText(
-              text: "Create Event",
+              text: al.createEvent,
               fontSize: sizes?.fontSize12,
               fontFamily: Assets.onsetMedium,
               color: Colors.white,
@@ -135,7 +136,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
             // Icon
             Container(
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               padding: EdgeInsets.all(20),
@@ -149,7 +150,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
 
             // Title
             Text(
-              "No Events Yet",
+              al.noEvents,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -160,7 +161,7 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
 
             // Subtitle
             Text(
-              "You haven’t created any events yet. Start by adding your first one — it only takes a minute!",
+              al.noEventsMessage,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[700],

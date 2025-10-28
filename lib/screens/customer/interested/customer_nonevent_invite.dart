@@ -65,7 +65,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
             SizedBox(height: getHeight() * 0.012),
 
             CustomButton(
-              buttonText: 'Confirm',
+              buttonText: al.confirm,
               onTap: () {
 
               },
@@ -92,7 +92,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Event info
+            // Event info
             CustomText(
               text: "Flavors of the Season",
               fontSize: sizes?.fontSize18,
@@ -101,7 +101,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
             ),
             SizedBox(height: getHeight() * 0.012),
 
-            /// Calendar Row
+            // Calendar Row
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,7 +112,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Monday, June 28, 2025",
+                        text: "${al.monday}, ${al.june} 28, 2025",
                         fontFamily: Assets.onsetMedium,
                         fontSize: sizes?.fontSize14,
                         fontWeight: FontWeight.w500,
@@ -130,9 +130,9 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
             ),
             SizedBox(height: getHeight() * 0.012),
 
-            /// Location Row
+            // Location Row
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center, // 👈 centers with both text lines
+              crossAxisAlignment: CrossAxisAlignment.center, //  centers with both text lines
               children: [
                 _BlueIconContainer(svgPath: Assets.locationIcon),
                 SizedBox(width: getWidth() * 0.03),
@@ -160,9 +160,9 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
             ),
             SizedBox(height: getHeight() * 0.03),
 
-            /// Suggested Time
+            // Suggested Time
             CustomText(
-              text: "Suggested Time",
+              text: al.suggestedTime,
               fontSize: sizes?.fontSize15,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -179,12 +179,12 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                 SizedBox(height: getHeight() * 0.015),
                 _buildRadioCard(
                   value: 1,
-                  label: "Suggest New Time",
+                  label: al.suggestNewTime,
                 ),
               ],
             ),
 
-            /// Expansion
+            // Expansion
             AnimatedCrossFade(
               crossFadeState: selectedRadio == 1
                   ? CrossFadeState.showSecond
@@ -196,12 +196,12 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                 children: [
                   SizedBox(height: getHeight() * 0.03),
 
-                  /// Select Date
+                  // Select Date
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Select Date",
+                        text: al.selectDate,
                         fontSize: sizes?.fontSize15,
                         fontWeight: FontWeight.w600,
                         color: AppColors.blackColor,
@@ -211,7 +211,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                   ),
                   SizedBox(height: getHeight() * 0.02),
 
-                  /// Date Chips
+                  // Date Chips
                   SizedBox(
                     height: getHeight() * 0.07,
                     child: ListView.separated(
@@ -232,16 +232,16 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                   ),
                   SizedBox(height: getHeight() * 0.03),
 
-                  /// Select Time
+                  // Select Time
                   CustomText(
-                    text: "Select Time",
+                    text: al.selectTime,
                     fontSize: sizes?.fontSize15,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
                   ),
                   SizedBox(height: getHeight() * 0.015),
 
-                  /// Time Chips
+                  // Time Chips
                   Wrap(
                     spacing: getWidth() * 0.03,
                     runSpacing: getHeight() * 0.012,
@@ -255,9 +255,9 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
                   ),
                   SizedBox(height: getHeight() * 0.03),
 
-                  /// Message field
+                  // Message field
                   CustomText(
-                    text: "Message",
+                    text: al.message,
                     fontSize: sizes?.fontSize15,
                     fontWeight: FontWeight.w600,
                     color: AppColors.blackColor,
@@ -299,7 +299,7 @@ class _CustomerNonEventInviteState extends State<CustomerNonEventInvite> {
     final bool isSelected = selectedRadio == value;
 
     return Padding(
-      padding: EdgeInsets.symmetric( // ✅ keeps alignment consistent
+      padding: EdgeInsets.symmetric( //  keeps alignment consistent
         horizontal: 0,
       ),
       child: InkWell(

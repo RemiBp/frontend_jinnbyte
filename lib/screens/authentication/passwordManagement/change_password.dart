@@ -98,7 +98,7 @@ class _ChangePassword extends State<ChangePassword> {
         ),
       ),
 
-      /// 👇 Stick the buttons at bottom
+      // Stick the buttons at bottom
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(getWidth() * 0.05),
         child: Row(

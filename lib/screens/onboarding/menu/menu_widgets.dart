@@ -3,6 +3,7 @@ import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/custom_textfield.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class MenuGroupWidget extends StatelessWidget {
@@ -51,7 +52,7 @@ class MenuGroupWidget extends StatelessWidget {
               GestureDetector(
                 onTap: ()=> onAddDish(),
                 child: CustomText(
-                  text: optionText??'Add Dish',
+                  text: optionText??al.addDish,
                   fontSize: sizes?.fontSize14,
                   fontWeight: FontWeight.w500,
                   color: AppColors.getPrimaryColorFromContext(context),
@@ -158,13 +159,13 @@ class DishItemWidget extends StatelessWidget {
             color: AppColors.whiteColor,
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
-                value: 'edit',
+                value: al.edit,
                 child: Row(
                   children: [
                     const Icon(Icons.edit, size: 18),
                     SizedBox(width: 8),
                     CustomText(
-                      text: 'Edit',
+                      text: al.edit,
                       fontSize: sizes?.fontSize14,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blackColor,
@@ -173,13 +174,13 @@ class DishItemWidget extends StatelessWidget {
                 ),
               ),
               PopupMenuItem<String>(
-                value: 'delete',
+                value: al.delete,
                 child: Row(
                   children: [
                     const Icon(Icons.delete, size: 18, color: Colors.red),
                     const SizedBox(width: 8),
                     CustomText(
-                      text: 'Delete',
+                      text: al.delete,
                       fontSize: sizes?.fontSize14,
                       fontWeight: FontWeight.w500,
                       color: AppColors.redColor,
@@ -189,9 +190,9 @@ class DishItemWidget extends StatelessWidget {
               ),
             ],
             onSelected: (value) {
-              if (value == 'edit' && onEdit != null) {
+              if (value == al.edit && onEdit != null) {
                 onEdit!();
-              } else if (value == 'delete' && onDelete != null) {
+              } else if (value == al.delete && onDelete != null) {
                 onDelete!();
               }
             },
@@ -248,7 +249,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: 'Add Category Title',
+                      text: al.addCategoryTitle,
                       fontSize: sizes?.fontSize18,
                       fontWeight: FontWeight.w600,
                       color: AppColors.blackColor,
@@ -264,14 +265,14 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                   textEditingController: titleController,
                   borderColor: AppColors.greyBordersColor,
                   hint: "E.g: Eat Day, Main Menu, Specials...",
-                  label: "Category Title",
+                  label: al.categoryTitle,
                 ),
                 SizedBox(height: getHeight() * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () => Navigator.pop(context),
                       buttonWidth: getWidth() * .42,
                       backgroundColor: Colors.transparent,
@@ -280,7 +281,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Save',
+                      buttonText: al.save,
                       onTap: () {
                         if (titleController.text.trim().isNotEmpty) {
                           widget.onAddCategory(titleController.text.trim());
@@ -375,7 +376,7 @@ class _AddDishBottomSheetState extends State<AddDishBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: widget.dish != null ? 'Edit Dish' : 'Add Dish',
+                      text: widget.dish != null ? al.editDish: al.addDish,
                       fontSize: sizes?.fontSize18,
                       fontWeight: FontWeight.w600,
                       color: AppColors.blackColor,
@@ -391,14 +392,14 @@ class _AddDishBottomSheetState extends State<AddDishBottomSheet> {
                   textEditingController: nameController,
                   borderColor: AppColors.greyBordersColor,
                   hint: "E.g: Brochette boeuf...",
-                  label: "Dish Name",
+                  label: al.dishName,
                 ),
                 SizedBox(height: getHeight() * 0.02),
                 CustomField(
                   textEditingController: priceController,
                   borderColor: AppColors.greyBordersColor,
                   hint: "E.g: \$0.00",
-                  label: "Price",
+                  label: al.price,
                   textInputType: TextInputType.number,
                 ),
                 SizedBox(height: getHeight() * 0.02),
@@ -406,15 +407,15 @@ class _AddDishBottomSheetState extends State<AddDishBottomSheet> {
                   textEditingController: descriptionController,
                   height: getHeight() * .1,
                   borderColor: AppColors.greyBordersColor,
-                  hint: "Brief description of the dish...",
-                  label: "Description (Optional)",
+                  hint: al.briefDescriptionDish,
+                  label: al.descriptionOptional,
                 ),
                 SizedBox(height: getHeight() * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () => Navigator.pop(context),
                       buttonWidth: getWidth() * .42,
                       backgroundColor: Colors.transparent,
@@ -423,7 +424,7 @@ class _AddDishBottomSheetState extends State<AddDishBottomSheet> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Save',
+                      buttonText: al.save,
                       onTap: () {
                         if (nameController.text.trim().isNotEmpty && 
                             priceController.text.trim().isNotEmpty) {

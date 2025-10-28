@@ -112,7 +112,7 @@ class _CreateChoiceState extends State<CreateChoice> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Choice'),
+        title:  Text(al.createChoice),
         leading: const BackButton(),
         elevation: 0,
       ),
@@ -121,7 +121,7 @@ class _CreateChoiceState extends State<CreateChoice> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // --- Overall Rating (General)
+            //  Overall Rating (General)
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -134,9 +134,9 @@ class _CreateChoiceState extends State<CreateChoice> {
                 children: [
                   CustomText(
                     text: categoryTitle == "Wellness"
-                        ? "Overall Wellness Rating"
+                        ? al.overallWellnessRating
                         : categoryTitle == "Leisure"
-                        ? "Overall Leisure Rating"
+                        ? al.overallLeisureRating
                         : al.overallRestaurantRating,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
@@ -157,7 +157,7 @@ class _CreateChoiceState extends State<CreateChoice> {
               ),
             ),
 
-            // --- Event Dropdown for Wellness/Leisure
+            //  Event Dropdown for Wellness/Leisure
             if (categoryTitle == "Wellness" || categoryTitle == "Leisure") ...[
               SizedBox(height: getHeight() * .02),
               Container(
@@ -171,7 +171,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "Select ${categoryTitle == "Leisure" ? "Leisure Event" : "Service Type"}",
+                      text: "${al.select} ${categoryTitle == "Leisure" ? "Leisure Event" : "Service Type"}",
                       fontFamily: Assets.onsetMedium,
                       fontSize: sizes?.fontSize16,
                     ),
@@ -187,7 +187,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                         ),
                       ),
                       hint: CustomText(
-                        text: "Tap to select",
+                        text: al.tapToSelect,
                         fontSize: sizes?.fontSize14,
                         color: AppColors.inputHintColor,
                       ),
@@ -264,7 +264,7 @@ class _CreateChoiceState extends State<CreateChoice> {
 
             SizedBox(height: getHeight() * .02),
 
-            // --- Photos Picker
+            // Photos Picker
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -276,7 +276,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Photos",
+                    text: al.photos,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
@@ -363,7 +363,7 @@ class _CreateChoiceState extends State<CreateChoice> {
 
             SizedBox(height: getHeight() * .02),
 
-            // --- Share Experience
+            // Share Experience
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -375,7 +375,7 @@ class _CreateChoiceState extends State<CreateChoice> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Share Your Experience",
+                    text: al.shareYourExperience,
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
@@ -384,14 +384,14 @@ class _CreateChoiceState extends State<CreateChoice> {
                     controller: shareExpController,
                     maxLines: 4,
                     decoration: InputDecoration.collapsed(
-                      hintText: 'Share your experience...',
+                      hintText: '${al.shareYourExperience}...',
                       hintStyle: TextStyle(color: Color(0xFF6B6C90)),
                     ),
                   ),
                   SizedBox(height: 24),
-                  buildRadio('Public', 'Anyone can see the feed', 'public'),
-                  buildRadio('Friends Only', 'Your friends on Choice', 'friends_only'),
-                  buildRadio('Private', 'Only Me', 'private'),
+                  buildRadio(al.public, al.anyoneCanSeeFeed, al.publicLower),
+                  buildRadio(al.friendsOnly, al.yourFriendsOnChoice, al.friendsOnlyLower),
+                  buildRadio(al.private, al.onlyMe, al.privateLower),
                 ],
               ),
             ),
@@ -460,11 +460,11 @@ class _CreateChoiceState extends State<CreateChoice> {
     }
 
     if (imageUrls.isEmpty) {
-      Toasts.getErrorToast(text: "Image upload failed");
+      Toasts.getErrorToast(text: al.imageUploadFailed);
       return;
     }
 
-    // 🔹 Separate general & event ratings before sending
+    //  Separate general & event ratings before sending
     final Map<String, double> generalRatings = {};
     final Map<String, double> eventRatings = {};
 
@@ -494,7 +494,7 @@ class _CreateChoiceState extends State<CreateChoice> {
       rating: payloadRatings,
     );
 
-    Toasts.getSuccessToast(text: "Choice created successfully!");
+    Toasts.getSuccessToast(text: al.choiceCreatedSuccessfully);
     Navigator.pop(context);
   }
 

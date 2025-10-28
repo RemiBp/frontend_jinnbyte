@@ -5,8 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../l18n.dart';
 import '../res/loader.dart';
+import '../res/toasts.dart';
 import 'api_url.dart';
+import 'package:path/path.dart';
 
 class  NetworkProvider extends ChangeNotifier{
 
@@ -78,23 +81,35 @@ class  NetworkProvider extends ChangeNotifier{
     }
   }
 
-  Future<bool> uploadImageByUrl(String apiUrl, Uint8List imageBytes) async {
+  Future<bool> uploadImageByUrl(
+      String apiUrl,
+      Uint8List imageBytes, {
+        Function(int sent, int total)? onSendProgress,
+      }) async {
     try {
       final Dio dio = Dio();
-      final response = await dio.put(apiUrl,
-          data: imageBytes,
-          options: Options(contentType: Headers.formUrlEncodedContentType));
+
+      final response = await dio.put(
+        apiUrl,
+        data: Stream.fromIterable(imageBytes.map((e) => [e])), // stream upload
+        options: Options(
+          headers: {
+            'Content-Length': imageBytes.length.toString(),
+            'Content-Type': 'application/pdf',
+          },
+        ),
+        onSendProgress: onSendProgress, // ✅ progress callback
+      );
+
       if (response.statusCode == 200) {
-        debugPrint(
-            "--------------------------it is success--------------------------");
+        debugPrint("✅ Upload successful!");
         return true;
       } else {
-        debugPrint(
-            "--------------------------it is failure with status code : ${response.statusCode}--------------------------");
+        debugPrint("❌ Upload failed: ${response.statusCode}");
         return false;
       }
     } catch (err) {
-      debugPrint("error while uploading file : $err");
+      debugPrint("⚠️ Error while uploading file: $err");
       return false;
     }
   }
@@ -143,5 +158,64 @@ class  NetworkProvider extends ChangeNotifier{
 
     return null; // Unknown format
   }
+
+
+  Future<String?> getUrlForDocumentUpload(
+      File file,
+      BuildContext context, {
+        Function(int sent, int total)? onSendProgress, // ✅ new param
+      }) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final Uint8List fileBytes = await file.readAsBytes();
+      final String fileName = basename(file.path);
+
+      Map<String, dynamic> header = {"Content-Type": "application/json"};
+      Map<String, dynamic> body = {
+        "fileName": fileName,
+        "contentType": "application/pdf",
+        "folderName": "BusinessDocuments"
+      };
+
+      debugPrint("📄 PreSigned Document Upload Body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: preSignedFileUploadApiUrl,
+        myHeaders: header,
+        body: body,
+      );
+
+      if (response?["url"] != null) {
+        debugPrint("✅ PreSigned Document URL: ${response?["url"]}");
+
+        final success = await uploadImageByUrl(
+          response?["url"],
+          fileBytes,
+          onSendProgress: onSendProgress, // ✅ pass it here
+        );
+
+        _loader.hideLoader(context);
+
+        if (success) {
+          debugPrint("📦 Document uploaded successfully to S3");
+          return response?["keyName"];
+        } else {
+          Toasts.getErrorToast(text: al.failedToUploadDocument);
+          return null;
+        }
+      } else {
+        _loader.hideLoader(context);
+        Toasts.getErrorToast(text: al.failedToGetUploadUrl);
+        return null;
+      }
+    } catch (err) {
+      debugPrint("❌ Error in getUrlForDocumentUpload: $err");
+      _loader.hideLoader(context);
+      Toasts.getErrorToast(text: al.failedToUploadDocument);
+      return null;
+    }
+  }
+
 
 }

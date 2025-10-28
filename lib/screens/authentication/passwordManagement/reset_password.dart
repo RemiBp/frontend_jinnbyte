@@ -110,13 +110,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                 var confirmPassword =
                 confirmPasswordController.text.toString().trim();
                 if (password.isEmpty) {
-                  Toasts.getErrorToast(text: "Password is missing");
+                  Toasts.getErrorToast(text: al.passwordMissing);
                 } else if (confirmPassword.isEmpty) {
-                  Toasts.getErrorToast(text: "Confirm Password is missing");
+                  Toasts.getErrorToast(text: al.confirmPasswordMissing);
                 }
                 else if (password != confirmPassword) {
                   Toasts.getErrorToast(
-                      text: "new and confirm password not matched");
+                      text: al.newAndConfirmPasswordNotMatched);
                 } else {
                   context.read<PasswordProvider>().resetPasswordApi(
                     email: email,

@@ -5,6 +5,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
 
@@ -20,7 +21,7 @@ class _UserNewChatViewState extends State<UserNewChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "New Chat"),
+      appBar: CommonAppBar(title: al.newChat),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
@@ -57,13 +58,13 @@ class _UserNewChatViewState extends State<UserNewChatView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Group Chat",
+                          text: al.groupChat,
                           fontSize: sizes?.fontSize16,
                           fontWeight: FontWeight.w600,
                           color: AppColors.blackColor,
                         ),
                         CustomText(
-                          text: "Chat with up to 50 friends",
+                          text: al.chatWithUpTo50Friends,
                           fontSize: sizes?.fontSize12,
                           fontWeight: FontWeight.w400,
                           color: AppColors.inputHintColor,
@@ -77,7 +78,7 @@ class _UserNewChatViewState extends State<UserNewChatView> {
             ),
             SizedBox(height: getHeight() * 0.02),
             CustomText(
-              text: "Suggested",
+              text: al.suggested,
               fontWeight: FontWeight.w500,
               fontSize: sizes?.fontSize16,
               color: AppColors.blackColor,

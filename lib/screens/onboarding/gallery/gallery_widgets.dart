@@ -6,6 +6,14 @@ import 'package:dotted_border/dotted_border.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
+import '../../../res/res.dart';
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import '../../../appColors/colors.dart';
+import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class GalleryCard extends StatelessWidget {
@@ -13,8 +21,10 @@ class GalleryCard extends StatelessWidget {
   final String? imageFile;
   final Function onRemoveImage;
   final Function onSetMainImage;
+
   const GalleryCard({
-    super.key, this.isMainImage,
+    super.key,
+    this.isMainImage,
     required this.imageFile,
     required this.onRemoveImage,
     required this.onSetMainImage,
@@ -22,56 +32,62 @@ class GalleryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imagePath = imageFile ?? Assets.galleryImage;
+
+    // detect source
+    final bool isNetworkImage = imagePath.startsWith('http');
+    final bool isLocalFile = File(imagePath).existsSync();
+
+    ImageProvider imageProvider;
+    if (isNetworkImage) {
+      imageProvider = NetworkImage(imagePath);
+    } else if (isLocalFile) {
+      imageProvider = FileImage(File(imagePath));
+    } else {
+      imageProvider = AssetImage(Assets.galleryImage);
+    }
+
     return GestureDetector(
-      onTap: ()=> onSetMainImage(),
+      onTap: () => onSetMainImage(),
       child: Padding(
-        padding:  EdgeInsets.only(right: getWidth() * 0.02, bottom: getHeight() * 0.015),
+        padding: EdgeInsets.only(
+          right: getWidth() * 0.02,
+          bottom: getHeight() * 0.015,
+        ),
         child: Stack(
           children: [
             Container(
               height: getHeight() * 0.12,
               width: getWidth() * 0.26,
               decoration: BoxDecoration(
-                color: AppColors.whiteColor,
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                border: isMainImage ?? false
+                border: (isMainImage ?? false)
                     ? Border.all(width: 2, color: AppColors.blueColor)
                     : null,
-              ),
-              clipBehavior: Clip.hardEdge, // ensures the image respects borderRadius
-              child: Image.asset(
-                imageFile ?? Assets.galleryImage, // fallback asset path
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: AppColors.getPrimaryColorFromContext(context),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
                 ),
-              )
-              // Image.network(
-              //   imageFile??"",
-              //   fit: BoxFit.cover,
-              //   errorBuilder: (context, error, stackTrace) => Container(
-              //     color: AppColors.getPrimaryColorFromContext(context),
-              //   ),
-              //   loadingBuilder: (context, child, loadingProgress) {
-              //     if (loadingProgress == null) return child;
-              //     return const Center(
-              //       child: CircularProgressIndicator(),
-              //     );
-              //   },
-              // ),
+              ),
             ),
-            if(isMainImage??false)
+            if (isMainImage ?? false)
               Positioned(
                 left: 0,
                 top: 0,
                 child: Container(
                   decoration: const BoxDecoration(
                     color: AppColors.blueColor,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.02, vertical: getHeight() * 0.01),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: getWidth() * 0.02,
+                    vertical: getHeight() * 0.01,
+                  ),
                   child: CustomText(
-                    text: "Main Image",
+                    text: al.mainImage,
                     fontWeight: FontWeight.w600,
                     fontSize: sizes?.fontSize8,
                   ),
@@ -81,8 +97,8 @@ class GalleryCard extends StatelessWidget {
               right: getWidth() * 0.02,
               top: getHeight() * 0.008,
               child: GestureDetector(
-                onTap: ()=> onRemoveImage(),
-                child: const Icon(Icons.clear, color: AppColors.whiteColor,),
+                onTap: () => onRemoveImage(),
+                child: const Icon(Icons.clear, color: AppColors.whiteColor),
               ),
             ),
           ],
@@ -125,7 +141,7 @@ class AddImageCard extends StatelessWidget {
                 ),
                 // SizedBox(height: getHeight() * 0.005),
                 CustomText(
-                  text: "Add Images",
+                  text: al.addImages,
                   fontWeight: FontWeight.w500,
                   fontSize: sizes?.fontSize12,
                   color: AppColors.greyBordersColor,

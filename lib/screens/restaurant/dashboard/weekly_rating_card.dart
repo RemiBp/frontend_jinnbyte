@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 
@@ -57,7 +58,7 @@ class WeeklyRatingsChartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CustomText(
-                text: 'Weekly Ratings',
+                text: al.weeklyRatings,
                 fontSize: sizes?.fontSize14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primarySlateColor,

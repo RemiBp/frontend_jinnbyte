@@ -12,6 +12,7 @@ import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
 import '../models/error_model.dart';
+import '../models/get_producers_places_claim_response.dart';
 
 class Models {
   static const String errorModel = "ERROR_MODEL";
@@ -29,6 +30,8 @@ class Models {
 
   // static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
   // static const String customerAllPostsModel = "CUSTOMER_ALL_POSTS_MODEL";
+  static const String claimProducerPlacesModel =
+      "CLAIM_PRODUCER_PLACES_MODEL";
   static const String getProducerSlotsModel = "GET_PRODUCER_SLOTS_MODEL";
   static const String getAllServiceTypesModel = "GET_ALL_SERVICE_TYPES_MODEL";
   static const String getProducerProfileModel = "GET_PRODUCER_PROFILE_MODEL";
@@ -60,6 +63,8 @@ class Models {
         return GetProducerSlotsResponse.fromJson(json);
       case getAllServiceTypesModel:
         return GetAllServiceTypesResponse.fromJson(json);
+      case claimProducerPlacesModel:
+        return ClaimProducerPlacesResponse.fromJson(json);
       case getProducerProfileModel:
         return GetProducerProfileResponse.fromJson(json);
     }

@@ -142,7 +142,11 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: Routes.registrationRoute,
-      builder: (context, state) => const RegistrationScreen(),
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>?;
+        final claimProducerId = args?["claimProducerId"];
+        return RegistrationScreen(claimProducerId: claimProducerId as int?);
+      },
     ),
     GoRoute(
       path: Routes.galleryViewRoute,

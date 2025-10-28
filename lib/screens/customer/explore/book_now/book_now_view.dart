@@ -3,6 +3,7 @@ import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class BookNowScreen extends StatefulWidget {
@@ -22,14 +23,14 @@ class _BookNowScreenState extends State<BookNowScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Book Now"),
+      appBar: CommonAppBar(title: al.bookNow),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: "Number of Persons",
+              text: al.numberOfPersons2,
               fontSize: sizes?.fontSize14,
               color: AppColors.blackColor,
               fontWeight: FontWeight.w500,
@@ -89,7 +90,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
             Row(
               children: [
                 CustomText(
-                  text: "$persons Persons",
+                  text: "$persons ${al.person}",
                   fontSize: sizes?.fontSize12,
                   color: AppColors.primarySlateColor,
                   fontWeight: FontWeight.w500,
@@ -113,7 +114,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
                   fontWeight: FontWeight.w600,
                 ),
                 CustomText(
-                  text: "/per person",
+                  text: al.perPerson,
                   fontSize: sizes?.fontSize12,
                   color: AppColors.primarySlateColor,
                   fontWeight: FontWeight.w500,
@@ -122,7 +123,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
             ),
             SizedBox(height: getHeight() * 0.02),
             CustomButton(
-              buttonText: "Continue",
+              buttonText: al.continueText,
               onTap: () {
 
               },

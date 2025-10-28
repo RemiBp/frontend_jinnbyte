@@ -9,6 +9,7 @@ import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/icon_svg.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../profile_menu/profile_menu_widgets.dart';
 
@@ -251,13 +252,13 @@ class SettingHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "Create New Profile",
+                      text: al.createNewProfile,
                       fontSize: sizes?.fontSize14,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blackColor,
                     ),
                     CustomText(
-                      text: "Switch between profile with one login",
+                      text: al.switchBetweenProfiles,
                       fontSize: sizes?.fontSize12,
                       fontWeight: FontWeight.w400,
                       color: AppColors.inputHintColor,

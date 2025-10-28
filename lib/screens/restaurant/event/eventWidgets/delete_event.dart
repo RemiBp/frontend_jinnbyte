@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 
@@ -25,7 +26,7 @@ class DeleteEventDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: "Delete Event?",
+                  text: al.deleteEvent,
                   fontSize: sizes?.fontSize16,
                   fontFamily: Assets.onsetSemiBold,
                   color: AppColors.primarySlateColor,
@@ -40,7 +41,7 @@ class DeleteEventDialog extends StatelessWidget {
             SizedBox(height: 16),
 
             CustomText(
-              text: "This action will permanently remove the event.",
+              text: al.deleteEventConfirmation,
               fontSize: sizes?.fontSize16,
               color: HexColor.fromHex("#4F516D"),
               giveLinesAsText: true,
@@ -58,7 +59,7 @@ class DeleteEventDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 14),
                     ),
                     child: Text(
-                      'Cancel',
+                      al.cancel,
                       style: TextStyle(
                         fontSize: 16,
                         color: Color(0xFF2E2F53),
@@ -81,7 +82,7 @@ class DeleteEventDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 14),
                     ),
                     child: Text(
-                      'Delete',
+                      al.delete,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

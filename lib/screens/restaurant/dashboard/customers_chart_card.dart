@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/filter_drop_down.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 // class CustomersChartCard extends StatefulWidget {
@@ -210,35 +211,35 @@ class CustomersChartCard extends StatefulWidget {
 
 class _CustomersChartCardState extends State<CustomersChartCard> {
   final List<String> months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    al.january,
+    al.february,
+    al.march,
+    al.april,
+    al.may,
+    al.june,
+    al.july,
+    al.august,
+    al.september,
+    al.october,
+    al.november,
+    al.december,
   ];
 
   String selectedRange = DateFormat('MMMM').format(DateTime.now());
 
   final Map<String, List<FlSpot>> monthlyData = {
-    'January': [FlSpot(0, 50), FlSpot(1, 100), FlSpot(2, 80), FlSpot(3, 120)],
-    'February': [FlSpot(0, 30), FlSpot(1, 90), FlSpot(2, 60), FlSpot(3, 110)],
-    'March': [FlSpot(0, 40), FlSpot(1, 85), FlSpot(2, 95), FlSpot(3, 130)],
-    'April': [FlSpot(0, 100), FlSpot(1, 120), FlSpot(2, 160), FlSpot(3, 180)],
-    'May': [FlSpot(0, 110), FlSpot(1, 140), FlSpot(2, 120), FlSpot(3, 170)],
-    'June': [FlSpot(0, 80), FlSpot(1, 100), FlSpot(2, 90), FlSpot(3, 130)],
-    'July': [FlSpot(0, 60), FlSpot(1, 150), FlSpot(2, 130), FlSpot(3, 200)],
-    'August': [FlSpot(0, 90), FlSpot(1, 110), FlSpot(2, 115), FlSpot(3, 160)],
-    'September': [FlSpot(0, 70), FlSpot(1, 130), FlSpot(2, 125), FlSpot(3, 140)],
-    'October': [FlSpot(0, 100), FlSpot(1, 160), FlSpot(2, 140), FlSpot(3, 190)],
-    'November': [FlSpot(0, 85), FlSpot(1, 100), FlSpot(2, 120), FlSpot(3, 140)],
-    'December': [FlSpot(0, 60), FlSpot(1, 140), FlSpot(2, 150), FlSpot(3, 170)],
+    al.january: [FlSpot(0, 50), FlSpot(1, 100), FlSpot(2, 80), FlSpot(3, 120)],
+    al.february: [FlSpot(0, 30), FlSpot(1, 90), FlSpot(2, 60), FlSpot(3, 110)],
+    al.march: [FlSpot(0, 40), FlSpot(1, 85), FlSpot(2, 95), FlSpot(3, 130)],
+    al.april: [FlSpot(0, 100), FlSpot(1, 120), FlSpot(2, 160), FlSpot(3, 180)],
+    al.may: [FlSpot(0, 110), FlSpot(1, 140), FlSpot(2, 120), FlSpot(3, 170)],
+    al.june: [FlSpot(0, 80), FlSpot(1, 100), FlSpot(2, 90), FlSpot(3, 130)],
+    al.july: [FlSpot(0, 60), FlSpot(1, 150), FlSpot(2, 130), FlSpot(3, 200)],
+    al.august: [FlSpot(0, 90), FlSpot(1, 110), FlSpot(2, 115), FlSpot(3, 160)],
+    al.september: [FlSpot(0, 70), FlSpot(1, 130), FlSpot(2, 125), FlSpot(3, 140)],
+    al.october: [FlSpot(0, 100), FlSpot(1, 160), FlSpot(2, 140), FlSpot(3, 190)],
+    al.november: [FlSpot(0, 85), FlSpot(1, 100), FlSpot(2, 120), FlSpot(3, 140)],
+    al.december: [FlSpot(0, 60), FlSpot(1, 140), FlSpot(2, 150), FlSpot(3, 170)],
   };
 
   @override
@@ -269,7 +270,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                text: 'Monthly Evolution',
+                text: al.monthlyEvolution,
                 fontSize: sizes?.fontSize14,
                 fontWeight: FontWeight.w500,
                 color: AppColors.primarySlateColor,
@@ -279,7 +280,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                 height: getHeightRatio() * 36,
                 child: FilterDropDown(
                   items: months,
-                  hintText: 'Select Month',
+                  hintText: al.selectMonth,
                   selectedValue: selectedRange,
                   bfColor: AppColors.whiteColor,
                   onChanged: (value) {
@@ -288,7 +289,7 @@ class _CustomersChartCardState extends State<CustomersChartCard> {
                     });
                   },
                   validator: (value) =>
-                  value == null ? 'Please select a month' : null,
+                  value == null ? al.pleaseSelectMonth : null,
                 ),
               ),
             ],

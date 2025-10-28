@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../l18n.dart';
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
 import '../../../network/models.dart';
@@ -63,7 +64,7 @@ class OtpProvider extends ChangeNotifier {
       );
       if (registrationResponse.user != null) {
         debugPrint("register response : ${registrationResponse.toJson()}");
-        Toasts.getSuccessToast(text: "Otp Verified Successful");
+        Toasts.getSuccessToast(text: al.otpVerifiedSuccess);
         await PreferenceUtils.setAuthResponse(registrationResponse);
         _loader.hideLoader(context!);
         if (isResetPassFlow) {
@@ -73,10 +74,8 @@ class OtpProvider extends ChangeNotifier {
         //final roleProvider = context?.read<RoleProvider>();
         if (roleProvider?.role == UserRole.user) {
           context?.push(Routes.loginRoute); // go to login if role is user
-        } else if (roleProvider?.role == UserRole.leisure || roleProvider?.role == UserRole.wellness ) {
-          context?.push(Routes.uploadReclaimDocsRoute); // Leisure and wellness -> upload reclaim docs
         } else {
-          context?.push(Routes.uploadDocsRoute); // restaurant -> upload docs
+          context?.push(Routes.uploadReclaimDocsRoute); // restaurant -> upload docs
         }
         return;        return;
       }
@@ -108,7 +107,7 @@ class OtpProvider extends ChangeNotifier {
       );
       if (response?["message"] != null) {
         debugPrint("register response : ${response?["message"]}");
-        Toasts.getSuccessToast(text: "Otp Verified Successful");
+        Toasts.getSuccessToast(text: al.otpVerifiedSuccess);
         _loader.hideLoader(context!);
           context?.push(Routes.resetPasswordRoute, extra: {"email": email, "otp":otp});
           return;

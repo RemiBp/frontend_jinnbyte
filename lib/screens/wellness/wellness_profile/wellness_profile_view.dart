@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../../restaurant/profile_menu/profile_menu_widgets.dart';
 import '../../restaurant/profile_menu/restaurant_choice_view.dart';
@@ -114,13 +115,13 @@ class _WellnessProfileViewState extends State<WellnessProfileView> with SingleTi
                 ),
                 ProfileTabItem(
                   iconPath: Assets.postIcon,
-                  label: 'Posts',
+                  label: al.posts,
                   tabIndex: 1,
                   selectedTabIndex: _selectedTabIndex,
                 ),
                 ProfileTabItem(
                   iconPath: Assets.aboutIcon,
-                  label: 'About',
+                  label: al.about,
                   tabIndex: 2,
                   selectedTabIndex: _selectedTabIndex,
                 ),

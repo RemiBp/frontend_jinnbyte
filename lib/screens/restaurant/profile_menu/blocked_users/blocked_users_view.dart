@@ -9,6 +9,7 @@ import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 class BlockedUsersView extends StatefulWidget {
@@ -23,7 +24,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Blocked List"),
+      appBar: CommonAppBar(title: al.blockedList),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
@@ -43,7 +44,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
                           name: user['name']!,
                           username: user['username']!,
                           imageUrl: user['image']!,
-                          btnText: "Unblock",
+                          btnText: al.unblock,
                         ),
                       ),
                       GestureDetector(
@@ -69,7 +70,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
                           ),
                           alignment: Alignment.center,
                           child: CustomText(
-                            text: "Unblock",
+                            text: al.unblock,
                             color: AppColors.blackColor,
                             fontSize: sizes?.fontSize12,
                             fontFamily: Assets.onsetRegular,
@@ -131,7 +132,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: 'Unblock User',
+                  text: al.unblockUser,
                   fontWeight: FontWeight.w600,
                   fontSize: sizes?.fontSize16,
                   color: AppColors.blackColor,
@@ -150,7 +151,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
 
             /// Message
             CustomText(
-              text: 'Are you sure you want to unblock this user?',
+              text: al.unblockConfirmation,
               fontWeight: FontWeight.w400,
               fontSize: sizes?.fontSize16,
               color: AppColors.primarySlateColor,
@@ -164,7 +165,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -176,7 +177,7 @@ class _BlockedUsersViewState extends State<BlockedUsersView> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Unblock',
+                  buttonText: al.unblock,
                   onTap: () {
                     Navigator.pop(context);
                     onConfirm();

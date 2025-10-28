@@ -3,6 +3,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/common_app_bar.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
 
@@ -18,14 +19,14 @@ class _ParticipantsScreenState extends State<ParticipantsScreen> {
   build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Participants List"),
+      appBar: CommonAppBar(title: al.participantsList),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(
           children: [
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by name...",
+              hint: al.searchByName,
               label: "",
               prefixIconSvg: Assets.searchIcon,
               // obscure: true,

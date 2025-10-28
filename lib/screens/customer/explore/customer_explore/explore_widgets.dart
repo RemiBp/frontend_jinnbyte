@@ -152,7 +152,7 @@ class ExploreEventsCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: CustomText(
-                        text: "Event",
+                        text: al.event,
                         fontSize: sizes?.fontSize12,
                         fontWeight: FontWeight.w500,
                         color: AppColors.redColor,
@@ -241,7 +241,7 @@ class ExploreEventsCard extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: '/Person',
+                        text: '/${al.person}',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontFamily: Assets.onsetRegular,

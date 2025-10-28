@@ -60,7 +60,7 @@ class _CustomerHomeState extends State<CustomerHome> {
             SizedBox(height: getHeight() * .02),
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search by username or name...",
+              hint: al.searchUserPlaceholder,
               prefixIconSvg: Assets.searchIcon,
             ),
             SizedBox(height: getHeight() * .02),

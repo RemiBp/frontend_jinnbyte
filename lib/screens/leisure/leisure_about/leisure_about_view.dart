@@ -4,6 +4,7 @@ import 'package:readmore/readmore.dart';
 import '../../../appAssets/app_assets.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_text.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 
 class LeisureAboutView extends StatefulWidget {
@@ -24,7 +25,7 @@ class _LeisureAboutViewState extends State<LeisureAboutView> {
           children: [
             SizedBox(height: getHeight() * .02),
             CustomText(
-              text: "About",
+              text: al.about,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -35,8 +36,8 @@ class _LeisureAboutViewState extends State<LeisureAboutView> {
               trimMode: TrimMode.Line,
               trimLines: 2,
               colorClickableText: Colors.pink,
-              trimCollapsedText: 'Read More',
-              trimExpandedText: 'See Less',
+              trimCollapsedText: al.readMore,
+              trimExpandedText: al.seeLess,
               style: TextStyle(
                 fontSize: sizes?.fontSize16,
                 color: AppColors.blackColor,
@@ -49,7 +50,7 @@ class _LeisureAboutViewState extends State<LeisureAboutView> {
             ),
             Divider(color: AppColors.greyBordersColor,height: getHeight() * .03),
             CustomText(
-              text: "Location",
+              text: al.location,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,
@@ -63,7 +64,7 @@ class _LeisureAboutViewState extends State<LeisureAboutView> {
             SizedBox(height: getHeight() * .01),
             Divider(color: AppColors.greyColor),
             CustomText(
-              text: "Socia Links",
+              text: al.socialLinks,
               fontSize: sizes?.fontSize16,
               fontWeight: FontWeight.w600,
               color: AppColors.blackColor,

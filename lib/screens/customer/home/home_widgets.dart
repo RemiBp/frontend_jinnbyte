@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../appAssets/app_assets.dart';
+import '../../../l18n.dart';
 import '../../../routes/routes.dart';
 import '../profile/customer_profile/customer_profile_provider.dart';
 
@@ -44,7 +45,7 @@ class PostCard extends StatelessWidget {
             giveLinesAsText: true,
           ),
           subtitle: CustomText(
-            text: '3 days ago',
+            text: '3 ${al.daysAgo}',
             fontSize: sizes?.fontSize12,
             giveLinesAsText: true,
           ),
@@ -121,7 +122,7 @@ class PostCard extends StatelessWidget {
               _buildIconText(Icons.favorite_outlined, '2.2k'),
               _buildIconText(Icons.chat_bubble, '3.2k'),
               _buildIconText(Assets.shareIcon, '1.2k'),
-              _buildInterestedTag("Interested (0)",context),
+              _buildInterestedTag("${al.interested} (0)",context),
             ],
           ),
         ),
@@ -152,8 +153,8 @@ class PostCard extends StatelessWidget {
     }
 
     return Container(
-      height: getHeight() * 0.035, // ~28px
-      width: getWidth() * 0.14,    // ~55px
+      height: getHeight() * 0.035, // 28px
+      width: getWidth() * 0.14,    // 55px
       margin: EdgeInsets.only(right: getWidth() * 0.01),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.textGreyColor, width: 1),
@@ -182,9 +183,8 @@ class PostCard extends StatelessWidget {
   Widget _buildInterestedTag(String label, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // 👉 Navigate wherever you want
+        //  Navigate wherever you want
         context.push(Routes.suggestTimeSlotRoute);
-        // or
         // Navigator.pushNamed(context, Routes.suggestTimeSlotRoute);
       },
       child: Container(

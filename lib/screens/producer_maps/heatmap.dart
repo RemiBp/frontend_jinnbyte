@@ -4,6 +4,7 @@ import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
+import '../../l18n.dart';
 import 'offer_widgets.dart';
 
 class HeatmapScreen extends StatefulWidget {
@@ -14,26 +15,26 @@ class HeatmapScreen extends StatefulWidget {
 }
 
 class _HeatmapScreenState extends State<HeatmapScreen> {
-  String selectedTime = "All day";
-  String selectedFrequency = "Everyday";
+  String selectedTime = al.allDay;
+  String selectedFrequency = al.everyday;
 
   final List<String> timeFilters = [
-    "All day",
-    "Morning (6am–12pm)",
-    "Afternoon (12pm–6pm)",
-    "Evening (6pm–12am)",
-    "Night (12am–6am)",
+    al.allDay,
+    al.morning,
+    al.afternoon,
+    al.evening,
+    al.night,
   ];
 
   final List<String> frequencyFilters = [
-    "Everyday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    al.everyday,
+    al.monday,
+    al.tuesday,
+    al.wednesday,
+    al.thursday,
+    al.friday,
+    al.saturday,
+    al.sunday,
   ];
 
   @override
@@ -62,7 +63,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
                     ),
                     SizedBox(width: getWidth() * 0.03),
                     CustomText(
-                      text: "Heatmap",
+                      text: al.heatmap,
                       fontSize: getWidth() * 0.05,
                       fontWeight: FontWeight.w600,
                       color: AppColors.blackColor,
@@ -146,7 +147,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
         elevation: 4,
         icon: const Icon(Icons.add, color: Colors.white),
         label: CustomText(
-          text: "Create Offer",
+          text: al.createOffer,
           color: Colors.white,
           fontWeight: FontWeight.w600,
           fontSize: getWidth() * 0.035,
@@ -166,7 +167,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
     );
   }
 
-  /// Rectangular side buttons (+, -)
+  // Rectangular side buttons (+, -)
   Widget _buildSideButton(IconData icon, VoidCallback onTap) {
     return Material(
       color: Colors.white,
@@ -183,7 +184,7 @@ class _HeatmapScreenState extends State<HeatmapScreen> {
     );
   }
 
-  /// Custom dropdown (All day / Everyday)
+  // Custom dropdown (All day / Everyday)
   Widget _buildDropdown({
     required String value,
     required List<String> items,

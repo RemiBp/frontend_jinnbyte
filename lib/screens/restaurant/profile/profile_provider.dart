@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../../appColors/colors.dart';
+import '../../../l18n.dart';
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
 import '../../../res/loader.dart';
@@ -142,7 +143,7 @@ class ProfileProvider extends ChangeNotifier {
         !hasDescription) {
       debugPrint("All fields are empty - validation failed");
       Toasts.getErrorToast(
-        text: "Please fill at least one field to update your profile",
+        text: al.fillOneFieldToUpdateProfile,
       );
       return false;
     }
@@ -152,7 +153,7 @@ class ProfileProvider extends ChangeNotifier {
         "Business name validation failed: too short (${globalBusinessName.trim().length} chars)",
       );
       Toasts.getErrorToast(
-        text: "Please enter a valid business name",
+        text: al.validBusinessName,
       );
       return false;
     }
@@ -163,7 +164,7 @@ class ProfileProvider extends ChangeNotifier {
         "Address validation failed: too short (${address.trim().length} chars)",
       );
       Toasts.getErrorToast(
-        text: "Please enter a valid address (at least 5 characters)",
+        text: al.validAddress,
       );
       return false;
     }
@@ -182,7 +183,7 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint(
         "Phone validation failed: too short (${phoneNumber!.international.length} chars)",
       );
-      Toasts.getErrorToast(text: "Please enter a valid phone number");
+      Toasts.getErrorToast(text: al.validPhoneNumber);
       return false;
     }
 
@@ -192,7 +193,7 @@ class ProfileProvider extends ChangeNotifier {
         "Description validation failed: too short (${description.trim().length} chars)",
       );
       Toasts.getErrorToast(
-        text: "Please enter a meaningful description (at least 10 characters)",
+        text: al.validDescription,
       );
       return false;
     }
@@ -200,25 +201,25 @@ class ProfileProvider extends ChangeNotifier {
     // Validate URL formats if provided
     if (!hasWebsite && !_isValidUrl(website.trim())) {
       debugPrint("Website URL validation failed: ${website.trim()}");
-      Toasts.getErrorToast(text: "Please enter a valid website URL");
+      Toasts.getErrorToast(text: al.validWebsiteUrl);
       return false;
     }
 
     if (!hasInstagram && !_isValidUrl(instagram.trim())) {
       debugPrint("Instagram URL validation failed: ${instagram.trim()}");
-      Toasts.getErrorToast(text: "Please enter a valid Instagram URL");
+      Toasts.getErrorToast(text: al.validInstagramUrl);
       return false;
     }
 
     if (!hasTwitter && !_isValidUrl(twitter.trim())) {
       debugPrint("Twitter URL validation failed: ${twitter.trim()}");
-      Toasts.getErrorToast(text: "Please enter a valid Twitter URL");
+      Toasts.getErrorToast(text: al.validTwitterUrl);
       return false;
     }
 
     if (!hasFacebook && !_isValidUrl(facebook.trim())) {
       debugPrint("Facebook URL validation failed: ${facebook.trim()}");
-      Toasts.getErrorToast(text: "Please enter a valid Facebook URL");
+      Toasts.getErrorToast(text: al.validFacebookUrl);
       return false;
     }
 
@@ -317,14 +318,14 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint("Update profile response: $response");
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "Profile updated successfully");
+        Toasts.getSuccessToast(text: al.profileUpdatedSuccessfully);
         _loader.hideLoader(context!);
         return true;
       } else {
         // Toasts.getErrorToast(text: "Failed to update profile");
         // _loader.hideLoader(context!);
         // return false;
-        Toasts.getSuccessToast(text: "Profile updated successfully");
+        Toasts.getSuccessToast(text: al.profileUpdatedSuccessfully);
         _loader.hideLoader(context!);
         return true;
       }
@@ -333,7 +334,7 @@ class ProfileProvider extends ChangeNotifier {
       // _loader.hideLoader(context!);
       // Toasts.getErrorToast(text: "Failed to update profile");
       // return false;
-      Toasts.getSuccessToast(text: "Profile updated successfully");
+      Toasts.getSuccessToast(text: al.profileUpdatedSuccessfully);
       _loader.hideLoader(context!);
       return true;
     }
@@ -373,18 +374,18 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint("Set operational hours response: $response");
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "Operational hours saved successfully");
+        Toasts.getSuccessToast(text: al.operationalHoursSaved);
         _loader.hideLoader(context!);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to save operational hours");
+        Toasts.getErrorToast(text: al.failedToSaveOperationalHours);
         _loader.hideLoader(context!);
         return false;
       }
     } catch (err) {
       debugPrint("Error setting operational hours: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to save operational hours");
+      Toasts.getErrorToast(text: al.failedToSaveOperationalHours);
       return false;
     }
   }
@@ -412,12 +413,12 @@ class ProfileProvider extends ChangeNotifier {
         getCuisineTypesResponse = response;
         notifyListeners();
       } else {
-        Toasts.getErrorToast(text: "Failed to fetch cuisine types");
+        Toasts.getErrorToast(text: al.failedToFetchCuisineTypes);
       }
     } catch (err) {
       debugPrint("Error getting cuisine types: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to fetch cuisine types");
+      Toasts.getErrorToast(text: al.failedToFetchCuisineTypes);
     }
   }
 
@@ -437,21 +438,22 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "Cuisine type set successfully");
+        Toasts.getSuccessToast(text: al.cuisineTypeSetSuccessfully);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to set cuisine type");
+        Toasts.getErrorToast(text: al.failedToSetCuisineType);
         return false;
       }
     } catch (err) {
       debugPrint("Error setting cuisine type: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to set cuisine type");
+      Toasts.getErrorToast(text: al.failedToSetCuisineType);
       return false;
     }
   }
 
-  Future<bool> setGalleryImages({required List<String> imageUrls}) async {
+  Future<bool> setGalleryImages({required List<String> imageUrls, required BuildContext context})
+  async {
     try {
       _loader.showLoader(context: context);
 
@@ -481,16 +483,16 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "Gallery images saved successfully");
+        Toasts.getSuccessToast(text: al.galleryImagesSaved);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to save gallery images");
+        Toasts.getErrorToast(text: al.failedToSaveGalleryImages);
         return false;
       }
     } catch (err) {
       debugPrint("Error setting gallery images: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to save gallery images");
+      Toasts.getErrorToast(text: al.failedToSaveGalleryImages);
       return false;
     }
   }
@@ -543,13 +545,13 @@ class ProfileProvider extends ChangeNotifier {
         // Toasts.getSuccessToast(text: "Menu category added successfully");
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to add menu category");
+        Toasts.getErrorToast(text: al.failedToAddMenuCategory);
         return false;
       }
     } catch (err) {
       debugPrint("Error adding menu category: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to add menu category");
+      Toasts.getErrorToast(text: al.failedToAddMenuCategory);
       return false;
     }
   }
@@ -585,13 +587,13 @@ class ProfileProvider extends ChangeNotifier {
         // Toasts.getSuccessToast(text: "Menu dish added successfully");
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to add menu dish");
+        Toasts.getErrorToast(text: al.failedToAddMenuDish);
         return false;
       }
     } catch (err) {
       debugPrint("Error adding menu dish: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to add menu dish");
+      Toasts.getErrorToast(text: al.failedToAddMenuDish);
       return false;
     }
   }
@@ -612,13 +614,13 @@ class ProfileProvider extends ChangeNotifier {
       if (response != null) {
         return response;
       } else {
-        Toasts.getErrorToast(text: "Failed to fetch menu categories");
+        Toasts.getErrorToast(text: al.failedToFetchMenuCategories);
         return null;
       }
     } catch (err) {
       debugPrint("Error getting menu categories: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to fetch menu categories");
+      Toasts.getErrorToast(text: al.failedToFetchMenuCategories);
       return null;
     }
   }
@@ -643,16 +645,16 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "Slot duration set successfully");
+        Toasts.getSuccessToast(text: al.slotDurationSetSuccessfully);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to set slot duration");
+        Toasts.getErrorToast(text: al.failedToSetSlotDuration);
         return false;
       }
     } catch (err) {
       debugPrint("Error setting slot duration: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to set slot duration");
+      Toasts.getErrorToast(text: al.failedToSetSlotDuration);
       return false;
     }
   }
@@ -675,13 +677,13 @@ class ProfileProvider extends ChangeNotifier {
         notifyListeners();
         return response;
       } else {
-        Toasts.getErrorToast(text: "Failed to fetch producer slots");
+        Toasts.getErrorToast(text: al.failedToFetchProducerSlots);
         return null;
       }
     } catch (err) {
       debugPrint("Error getting producer slots: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to fetch producer slots");
+      Toasts.getErrorToast(text: al.failedToFetchProducerSlots);
       return null;
     }
   }
@@ -704,13 +706,13 @@ class ProfileProvider extends ChangeNotifier {
         notifyListeners();
         return response;
       } else {
-        Toasts.getErrorToast(text: "Failed to fetch all service types");
+        Toasts.getErrorToast(text: al.failedToFetchAllServiceTypes);
         return null;
       }
     } catch (err) {
       debugPrint("Error getting all service types: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to all service types");
+      Toasts.getErrorToast(text: al.failedToFetchAllServiceTypes);
       return null;
     }
   }
@@ -735,16 +737,16 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (response != null) {
-        Toasts.getSuccessToast(text: "service type set successfully");
+        Toasts.getSuccessToast(text: al.serviceTypeSetSuccessfully);
         return true;
       } else {
-        Toasts.getErrorToast(text: "Failed to set service type");
+        Toasts.getErrorToast(text: al.failedToSetServiceType);
         return false;
       }
     } catch (err) {
       debugPrint("Error setting service type: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to set service type");
+      Toasts.getErrorToast(text: al.failedToSetServiceType);
       return false;
     }
   }
@@ -767,13 +769,13 @@ class ProfileProvider extends ChangeNotifier {
         notifyListeners();
         return response;
       } else {
-        Toasts.getErrorToast(text: "Failed to fetch producer profile");
+        Toasts.getErrorToast(text: al.failedToFetchProducerProfile);
         return null;
       }
     } catch (err) {
       debugPrint("Error getting producer profile: $err");
       _loader.hideLoader(context!);
-      Toasts.getErrorToast(text: "Failed to producer profile");
+      Toasts.getErrorToast(text: al.failedToFetchProducerProfile);
       return null;
     }
   }

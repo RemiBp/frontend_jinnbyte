@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../customWidgets/custom_text.dart';
 import '../../../../customWidgets/custom_textfield.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../../routes/routes.dart';
 import '../choice_provider.dart';
@@ -46,7 +47,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Choice'),
+        title: Text(al.createChoice),
 
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -70,7 +71,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
             const SizedBox(height: 12),
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: "Search for a restaurant...",
+              hint: al.searchForRestaurant,
               prefixIconSvg: Assets.searchIcon,
             ),
             const SizedBox(height: 12),
@@ -117,7 +118,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
                       side: BorderSide(color: Colors.black),
                     ),
                     child: CustomText(
-                      text: "Back",
+                      text: al.back,
                       fontFamily: Assets.onsetSemiBold,
                       fontSize: sizes?.fontSize16,
                     ),
@@ -139,7 +140,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child:CustomText(
-                      text: "Next",
+                      text: al.next,
                       fontFamily: Assets.onsetSemiBold,
                       fontSize: sizes?.fontSize16,
                       color: Colors.white,
@@ -185,7 +186,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
                   onTap: () {
                   },
                   child: CustomText(
-                    text: "Change Type",
+                    text: al.changeType,
                     fontSize: sizes?.fontSize14,
                     fontFamily: Assets.onsetMedium,
                     color: AppColors.userPrimaryColor,
@@ -207,7 +208,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
       onChanged: (value) => setState(() => searchText = value),
       controller: TextEditingController(text: searchText),
       decoration: InputDecoration(
-        hintText: 'Search...',
+        hintText: al.search,
         prefixIcon: Icon(Icons.search),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         contentPadding: EdgeInsets.symmetric(horizontal: 16),

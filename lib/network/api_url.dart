@@ -37,6 +37,7 @@ const String userPostsApiUrl = "$baseUrl/api/producer/post/getMyPosts";
 const String getProducerPlacesApiUrl = "$baseUrl/api/producer/post/getProducerPlaces";
 const String saveResRatingApiUrl = "$baseUrl/api/producer/post/saveRatings";
 const String createProducerChoiceApiUrl = "$baseUrl/api/producer/post/createProducerPost";
+const String saveDocumentApiUrl = "$baseUrl/api/producer/auth/saveDocument";
 
 const String setSlotDurationApiUrl = "$baseUrl/api/producer/profile/setSlotDuration";
 const String getProducerSlotsApiUrl = "$baseUrl/api/producer/profile/getProducerSlots";

@@ -11,6 +11,7 @@ import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_drop_down.dart';
 import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/text_field_label.dart';
+import '../../../l18n.dart';
 import '../../../res/res.dart';
 import '../day_off/days_off_view.dart';
 
@@ -41,7 +42,15 @@ class _SlotManagementViewState extends State<SlotManagementView> {
 
   List<Map<String, dynamic>> _generateSlotsForDuration(int duration) {
     List<Map<String, dynamic>> generatedSlots = [];
-    List<String> days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    List<String> days = [
+      al.monday,
+      al.tuesday,
+      al.wednesday,
+      al.thursday,
+      al.friday,
+      al.saturday,
+      al.sunday
+    ];
     
     for (String day in days) {
       List<Slots> daySlots = [];
@@ -149,7 +158,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: "Slot Management",
+        title: al.slotManagement,
         showEditButton: isEdit,
         onEdit: (){
           setState(() {
@@ -169,8 +178,8 @@ class _SlotManagementViewState extends State<SlotManagementView> {
               if(!isEdit)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
-                  child: const TextFieldLabel(
-                    label: "Slot Duration",
+                  child: TextFieldLabel(
+                    label: al.slotDuration,
                   ),
                 ),
               if(!isEdit)
@@ -182,7 +191,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                       return DropdownMenuItem<int>(
                         value: hour,
                         child: CustomText(
-                          text: "$hour hour ",
+                          text: "$hour  " + al.hour,
                           fontWeight: FontWeight.w400,
                           fontSize: sizes?.fontSize16,
                           lines: 1,
@@ -192,7 +201,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                     }).toList(),
                     selectedValue: selectedHour,
                     // selectedValue: provider.getDurationResponse.slotDuration != null ? double.parse(provider.getDurationResponse.slotDuration!).toInt() : selectedHour,
-                    hintText: 'Select duration',
+                    hintText: al.selectDuration,
                     onChanged: (id) async {
                       setState(() {
                         selectedHour = id!;
@@ -210,7 +219,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                       // Update slots data with fresh API data
                       _initializeSlotsDataFromApi(provider);
                     },
-                    validator: (id) => id == null ? 'Please select duration' : null,
+                    validator: (id) => id == null ? al.pleaseSelectDuration : null,
                   ),
                 ),
               //   :const Center(
@@ -221,7 +230,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
                   child: CustomText(
-                    text: "Mark Your Unavailable Time Slots",
+                    text: al.markUnavailableSlots,
                     fontSize: sizes?.fontSize18,
                     color: AppColors.blackColor,
                     fontWeight: FontWeight.w600,
@@ -231,7 +240,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
                   child: CustomText(
-                    text: "Select the time slots when you're not available each day. You can choose individual slots or use Select All to mark the entire day as unavailable. Tap Save Changes to apply your preferences.",
+                    text: al.unavailableSlotsDescription,
                     fontSize: sizes?.fontSize14,
                     color: AppColors.whiteColor,
                     fontWeight: FontWeight.w400,
@@ -300,7 +309,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomButton(
-                      buttonText: 'Cancel',
+                      buttonText: al.cancel,
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -311,7 +320,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                       textFontWeight: FontWeight.w700,
                     ),
                     CustomButton(
-                      buttonText: 'Save Changes',
+                      buttonText: al.saveChanges,
                       onTap: () {
                         _saveSlotSelections();
                         context.go(Routes.restaurantBottomTabRoute);

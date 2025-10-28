@@ -6,6 +6,8 @@ import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l18n.dart';
+
 class SelectFriendsScreen extends StatefulWidget {
   const SelectFriendsScreen({super.key});
 
@@ -41,9 +43,9 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: getHeight() * 0.015), // 👈 extra space from top
+                SizedBox(height: getHeight() * 0.015), //  extra space from top
 
-                // 🔙 Back button + Title
+                //Back button + Title
                 Row(
                   children: [
                     GestureDetector(
@@ -56,7 +58,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
                     ),
                     SizedBox(width: getWidth() * 0.02),
                     CustomText(
-                      text: "Select Friends",
+                      text: al.selectFriends,
                       fontSize: sizes!.fontSize18,
                       fontWeight: FontWeight.w600,
                       color: AppColors.blackColor,
@@ -66,7 +68,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
 
                 SizedBox(height: getHeight() * 0.018),
 
-                // 🔤 “To:” label + Search field row
+                //  “To:” label + Search field row
                 Row(
                   children: [
                     CustomText(
@@ -94,7 +96,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
                             color: AppColors.blackColor,
                           ),
                           decoration: InputDecoration(
-                            hintText: "Type a username or name",
+                            hintText: al.searchUserPlaceholder,
                             hintStyle: TextStyle(
                               color: AppColors.inputHintColor,
                               fontSize: sizes!.fontSize14,
@@ -126,7 +128,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ✅ Main Content Scrollable
+          //  Main Content Scrollable
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
@@ -136,14 +138,14 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
                   if (selectedFriends.isNotEmpty) ...[
                     SizedBox(height: getHeight() * 0.012),
                     CustomText(
-                      text: "Members: ${selectedFriends.length} out of ${friends.length}",
+                      text: "${al.members}: ${selectedFriends.length} out of ${friends.length}",
                       fontSize: sizes!.fontSize14,
                       fontWeight: FontWeight.w500,
                       color: AppColors.blackColor,
                     ),
                     SizedBox(height: getHeight() * 0.012),
 
-                    // ✅ Horizontally scrollable avatars
+                    // Horizontally scrollable avatars
                     SizedBox(
                       height: getHeight() * 0.11,
                       child: ListView.builder(
@@ -181,10 +183,10 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
                     Divider(color: AppColors.greyBordersColor, thickness: 1, height: 1),
                   ],
 
-                  // ✅ Friends list: no extra padding at top
+                  //  Friends list: no extra padding at top
                   Expanded(
                     child: ListView.separated(
-                      padding: EdgeInsets.zero, // 🔥 Removes all top spacing
+                      padding: EdgeInsets.zero, //  Removes all top spacing
                       itemCount: friends.length,
                       separatorBuilder: (_, __) => Divider(
                         color: AppColors.greyBordersColor,
@@ -251,7 +253,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
       bottomNavigationBar: SafeArea(
         minimum: EdgeInsets.all(sizes!.pagePadding),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // 👈 so it wraps content tightly
+          mainAxisSize: MainAxisSize.min, // so it wraps content tightly
           children: [
             Divider(
               color: AppColors.greyBordersColor,
@@ -260,7 +262,7 @@ class _SelectFriendsScreenState extends State<SelectFriendsScreen> {
             ),
             SizedBox(height: getHeight() * 0.012), // small space after divider
             CustomButton(
-              buttonText: "Send Invite",
+              buttonText: al.sendInvite,
               onTap: () {
                 context.push(Routes.chatbotHomeRoute);
               },

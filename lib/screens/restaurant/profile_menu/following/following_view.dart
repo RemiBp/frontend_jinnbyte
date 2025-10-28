@@ -21,7 +21,7 @@ class _FollowingViewState extends State<FollowingView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: "Following"),
+      appBar: CommonAppBar(title: al.following),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
         child: Column(

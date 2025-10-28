@@ -221,7 +221,7 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle("Event Gallery"),
+                    _buildSectionTitle(al.eventGallery),
                     SizedBox(height: getHeight() * .02),
                     CustomText(
                       text: al.uploadEventImages,
@@ -427,29 +427,29 @@ class _CreateEventState extends State<CreateEvent> {
 
                         if (images.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please select at least one image.");
+                              text: al.errorSelectImage);
                         } else if (eventName.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please enter the event name.");
+                              text: al.enterEventName);
                         } else if (description.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please enter the event description.");
+                              text: al.enterEventDescription);
                         } else if (venue.isEmpty) {
-                          Toasts.getErrorToast(text: "Please enter the venue.");
+                          Toasts.getErrorToast(text: al.enterVenue);
                         } else if (address.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please enter the address.");
+                              text: al.errorEnterAddress);
                         } else if (capacity.isEmpty) {
                           Toasts.getErrorToast(
-                              text: "Please enter the capacity.");
+                              text: al.enterCapacity);
                         } else if (int.tryParse(capacity) == null) {
                           Toasts.getErrorToast(
-                              text: "Please enter a valid number for capacity.");
+                              text: al.enterValidCapacityNumber);
                         } else if (price.isEmpty) {
-                          Toasts.getErrorToast(text: "Please enter the price.");
+                          Toasts.getErrorToast(text: al.enterPrice);
                         } else if (double.tryParse(price) == null) {
                           Toasts.getErrorToast(
-                              text: "Please enter a valid price.");
+                              text: al.enterValidPrice);
                         } else {
                           for (var i in images) {
                             final bytes = await i.readAsBytes();

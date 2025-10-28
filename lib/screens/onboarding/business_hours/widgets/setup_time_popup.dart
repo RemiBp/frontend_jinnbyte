@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../customWidgets/custom_button.dart';
 import '../../../../customWidgets/custom_text.dart';
+import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 
 
@@ -51,7 +52,7 @@ class _SetupTimePopupState extends State<SetupTimePopup> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Start Time",
+                        text: al.startTime,
                         fontSize: sizes?.fontSize12,
                         color: AppColors.blackColor,
                       ),
@@ -82,7 +83,7 @@ class _SetupTimePopupState extends State<SetupTimePopup> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "End Time",
+                        text: al.endTime,
                         fontSize: sizes?.fontSize12,
                         color: AppColors.blackColor,
                       ),
@@ -114,7 +115,7 @@ class _SetupTimePopupState extends State<SetupTimePopup> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  buttonText: 'Cancel',
+                  buttonText: al.cancel,
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -125,7 +126,7 @@ class _SetupTimePopupState extends State<SetupTimePopup> {
                   textFontWeight: FontWeight.w700,
                 ),
                 CustomButton(
-                  buttonText: 'Set Up Time',
+                  buttonText: al.setUpTime,
                   onTap: () {
                     widget.onConfirm(startTime!, endTime!);
                     Navigator.pop(context);

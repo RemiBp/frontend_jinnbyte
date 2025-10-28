@@ -51,7 +51,7 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Choice'),
+        title: Text(al.createChoice),
         // leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -64,7 +64,7 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
             Align(
               alignment: Alignment.centerLeft,
               child: CustomText(
-                text: 'What would you like to share?',
+                text: al.whatWouldYouLikeToShare,
                 fontSize: sizes?.fontSize18,
                 fontFamily: Assets.onsetSemiBold,
               ),
@@ -86,7 +86,7 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                       ),
                     ),
                     child: CustomText(
-                      text: "Cancel",
+                      text: al.cancel,
                       fontFamily: Assets.onsetSemiBold,
                       fontSize: sizes?.fontSize16,
                     ),
@@ -124,7 +124,7 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
                       ),
                     ),
                     child: CustomText(
-                      text: "Next",
+                      text: al.next,
                       fontFamily: Assets.onsetSemiBold,
                       fontSize: sizes?.fontSize16,
                       color: Colors.white,

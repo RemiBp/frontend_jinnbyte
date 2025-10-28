@@ -138,7 +138,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     _buildRatingRow(al.place, placeRating, (r) => setState(() => placeRating = r)),
                     SizedBox(height: getHeight() * 0.01),
 
-                    const CustomSectionTitle(title: "Dish Name"),
+                     CustomSectionTitle(title: al.dishName),
                     CustomField(
                       borderColor: AppColors.greyBordersColor,
                       hint: al.searchUserPlaceholder,
@@ -147,7 +147,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     ),
                     SizedBox(height: getHeight() * 0.01),
 
-                    // ✅ dishes selection (multi-select same as cuisine)
+                    //  dishes selection (multi-select same as cuisine)
                     Column(
                       children: dishes.map((d) {
                         final selected = selectedDishes.contains(d);
@@ -172,7 +172,7 @@ class _FiltersBottomSheetState extends State<FiltersBottomSheet> {
                     Row(
                       children: [
                         CustomText(
-                          text: "Show more",
+                          text: al.showMore,
                           color: AppColors.inputHintColor,
                           fontSize: sizes?.fontSize14,
                           fontWeight: FontWeight.w500,
