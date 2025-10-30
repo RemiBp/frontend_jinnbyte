@@ -1,6 +1,10 @@
+import 'package:choice_app/res/toasts.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../appColors/colors.dart';
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../customWidgets/custom_button.dart';
@@ -12,7 +16,6 @@ import '../slot_management/slot_management_view.dart';
 import '../slot_management/slot_management_widgets.dart';
 import 'days_off_widgets.dart';
 
-
 class DaysOffView extends StatefulWidget {
   const DaysOffView({super.key});
 
@@ -21,31 +24,43 @@ class DaysOffView extends StatefulWidget {
 }
 
 class _DaysOffViewState extends State<DaysOffView> {
-  TextEditingController leaveDateController=TextEditingController(
-    text: DateFormat('MM/dd/yyyy').format(DateTime.now()),
+  TextEditingController leaveDateController = TextEditingController(
+    text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
   );
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      // DaysOffProvider technicianReviewsProvider = Provider.of<DaysOffProvider>(context, listen: false);
-      DateTime parsedDate = DateFormat('MM/dd/yyyy').parse(leaveDateController.text);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      DateTime parsedDate = DateFormat(
+        'yyyy-MM-dd',
+      ).parse(leaveDateController.text);
       String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-      // technicianReviewsProvider.getSlotsByDateEndPointAPI(date: formattedDate);
+      final profileProvider = Provider.of<ProfileProvider>(
+        context,
+        listen: false,
+      );
+      profileProvider.init(context);
+      await profileProvider.getProducerSlots();
+      // Set allSlots from provider data
+      final response = profileProvider.getProducerSlotsResponse;
+      if (response != null) {
+        allSlots = response.data
+            .expand((daySlot) => daySlot.slots.map((apiSlot) => Slots(
+                  id: apiSlot.id,
+                  startTime: apiSlot.startTime,
+                  endTime: apiSlot.endTime,
+                )))
+            .toList();
+      }
+      setState(() {});
     });
   }
-
 
   bool isChecked = false;
   bool isDataFetched = true;
 
-  List<Slots> allSlots = [
-    Slots(id: 1, startTime: "09:00", endTime: "10:00"),
-    Slots(id: 2, startTime: "10:00", endTime: "11:00"),
-    Slots(id: 3, startTime: "11:00", endTime: "12:00"),
-    Slots(id: 4, startTime: "12:00", endTime: "13:00"),
-  ];
+  List<Slots> allSlots = [];
 
   List<int> selectedSlotIds = [];
   bool isSelectAllChecked = false;
@@ -56,9 +71,9 @@ class _DaysOffViewState extends State<DaysOffView> {
     leaveDateController.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
+    Provider.of<ProfileProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: al.unavailability),
@@ -71,23 +86,36 @@ class _DaysOffViewState extends State<DaysOffView> {
               child: ListView(
                 children: [
                   SizedBox(height: getHeightRatio() * 16),
-                   TextFieldLabel(
-                    label: al.date,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      // _selectDate(
-                      //     context: context,
-                      //     daysOffProvider: daysOffProvider
-                      // );
-                    },
-                    child: AbsorbPointer(
-                      child: DatePickerTile(
-                        hintText:  al.selectDates,
-                        controller: leaveDateController,
-                        // validator: (value) => CustomValidator.validationEmptyText("Date", value)
+                  TextFieldLabel(label: al.date),
+                  // Replace GestureDetector + DatePickerTile with an inline date picker field
+                  TextFormField(
+                    controller: leaveDateController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: al.selectDates,
+                      suffixIcon: Icon(Icons.calendar_today),
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 14,
                       ),
                     ),
+                    onTap: () async {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          leaveDateController.text = DateFormat(
+                            'yyyy-MM-dd',
+                          ).format(picked);
+                        });
+                      }
+                    },
                   ),
                   SizedBox(height: getHeight() * 0.02),
                   EditDaysTile(
@@ -95,7 +123,8 @@ class _DaysOffViewState extends State<DaysOffView> {
                     isChecked: isSelectAllChecked,
                     isEdit: true,
                     onSelectAll: () {
-                      final allSlotIds = allSlots.map((slot) => slot.id!).toList();
+                      final allSlotIds =
+                          allSlots.map((slot) => slot.id!).toList();
 
                       if (selectedSlotIds.length == allSlotIds.length) {
                         selectedSlotIds.clear();
@@ -113,31 +142,39 @@ class _DaysOffViewState extends State<DaysOffView> {
                   SizedBox(height: getHeightRatio() * 6),
                   isDataFetched && allSlots.isNotEmpty
                       ? ChipGroupMultiSelect(
-                    options: allSlots,
-                    initialSelection: selectedSlotIds.map((id) {
-                      try {
-                        return allSlots.firstWhere((slot) => slot.id == id);
-                      } catch (e) {
-                        return null;
-                      }
-                    }).whereType<Slots>().toList(),
-                    onSelectionChanged: (selectedSlots) {
-                      selectedSlotIds = selectedSlots.map((slot) => slot.id ?? 0).toList();
-                      setState(() {});
-                    },
-                    chipPadding: const EdgeInsets.all(8),
-                  )
+                        options: allSlots,
+                        initialSelection:
+                            selectedSlotIds
+                                .map((id) {
+                                  try {
+                                    return allSlots.firstWhere(
+                                      (slot) => slot.id == id,
+                                    );
+                                  } catch (e) {
+                                    return null;
+                                  }
+                                })
+                                .whereType<Slots>()
+                                .toList(),
+                        onSelectionChanged: (selectedSlots) {
+                          selectedSlotIds =
+                              selectedSlots
+                                  .map((slot) => slot.id ?? 0)
+                                  .toList();
+                          setState(() {});
+                        },
+                        chipPadding: const EdgeInsets.all(8),
+                      )
                       : Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 18.0),
-                      child: CustomText(
-                        text: al.noTimeSlotsFound,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 18.0),
+                          child: CustomText(
+                            text: al.noTimeSlotsFound,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-
 
                   //     :const Center(child: Padding(
                   //   padding: EdgeInsets.only(top: 18.0),
@@ -164,10 +201,24 @@ class _DaysOffViewState extends State<DaysOffView> {
                 ),
                 CustomButton(
                   buttonText: al.saveChanges,
-                  onTap: () {
+                  onTap: () async {
+                    if (selectedSlotIds.isEmpty) {
+                      Toasts.getErrorToast(text: 'Please select at least one time slot.');
+                      return;
+                    }
+                    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                    final success = await profileProvider.addUnavailableSlots(
+                      date: leaveDateController.text,
+                      slotIds: selectedSlotIds,
+                    );
+                    if(success) {
+                      context.pop();
+                    }
                   },
                   buttonWidth: getWidth() * .42,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  backgroundColor: AppColors.getPrimaryColorFromContext(
+                    context,
+                  ),
                   borderColor: Colors.transparent,
                   textColor: Colors.white,
                   textFontWeight: FontWeight.w700,
@@ -258,5 +309,4 @@ class _DaysOffViewState extends State<DaysOffView> {
   //   }
   //   return picked;
   // }
-
 }

@@ -25,10 +25,7 @@ class _MenuViewState extends State<MenuView> {
 
   void addCategory(String title) {
     setState(() {
-      menuGroups.add(MenuGroup(
-        title: title,
-        dishes: [],
-      ));
+      menuGroups.add(MenuGroup(title: title, dishes: []));
     });
   }
 
@@ -64,7 +61,7 @@ class _MenuViewState extends State<MenuView> {
     }
 
     final provider = Provider.of<ProfileProvider>(context, listen: false);
-    
+
     try {
       // Step 1: Add all categories one by one
       debugPrint('Step 1: Adding categories...');
@@ -82,19 +79,25 @@ class _MenuViewState extends State<MenuView> {
       // Step 2: Get all categories with their IDs
       debugPrint('Step 2: Fetching categories with IDs...');
       final categoriesResponse = await provider.getMenuCategories();
-      if (categoriesResponse == null || categoriesResponse.menuCategories == null) {
+      if (categoriesResponse == null ||
+          categoriesResponse.menuCategories == null) {
         debugPrint('Failed to fetch categories');
         return;
       }
-      debugPrint('Categories fetched: ${categoriesResponse.menuCategories!.length}');
+      debugPrint(
+        'Categories fetched: ${categoriesResponse.menuCategories!.length}',
+      );
 
       // Step 3: Add all dishes for each category
       debugPrint('Step 3: Adding dishes...');
       for (int i = 0; i < menuGroups.length; i++) {
         final menuGroup = menuGroups[i];
-        
+
         // Find the corresponding category ID from the response
-        final categoryId = _findCategoryId(categoriesResponse.menuCategories!, menuGroup.title);
+        final categoryId = _findCategoryId(
+          categoriesResponse.menuCategories!,
+          menuGroup.title,
+        );
         if (categoryId == null) {
           debugPrint('Category ID not found for: ${menuGroup.title}');
           continue;
@@ -118,7 +121,10 @@ class _MenuViewState extends State<MenuView> {
       Toasts.getSuccessToast(text: al.allDishesAddedSuccessfully);
 
       if (mounted) {
-        context.push(Routes.slotManagementViewRoute, extra: false);
+        context.push(
+          Routes.slotManagementViewRoute,
+          extra: {'isHomeFlow': false, 'isEdit': false},
+        );
       }
     } catch (e) {
       debugPrint('Error saving menu data: $e');
@@ -139,7 +145,7 @@ class _MenuViewState extends State<MenuView> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(title: al.menu, showEditButton: true,),
+      appBar: CommonAppBar(title: al.menu, showEditButton: true),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: getHeight() * 0.015),
         child: Column(
@@ -156,62 +162,67 @@ class _MenuViewState extends State<MenuView> {
             // ),
             SizedBox(height: getHeight() * 0.02),
             Expanded(
-              child: menuGroups.isEmpty
-                  ? Center(
-                      child: CustomText(
-                        text: "${al.noCategoriesAddedYet}\n${al.tapAddCategoryTitle}",
-                        fontSize: sizes?.fontSize16,
-                        color: AppColors.primarySlateColor,
-                        textAlign: TextAlign.center,
+              child:
+                  menuGroups.isEmpty
+                      ? Center(
+                        child: CustomText(
+                          text:
+                              "${al.noCategoriesAddedYet}\n${al.tapAddCategoryTitle}",
+                          fontSize: sizes?.fontSize16,
+                          color: AppColors.primarySlateColor,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                      : ListView.builder(
+                        itemCount: menuGroups.length,
+                        itemBuilder: (context, index) {
+                          return MenuGroupWidget(
+                            menuGroup: menuGroups[index],
+                            showOption: true,
+                            onAddDish: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) {
+                                  return AddDishBottomSheet(
+                                    context: context,
+                                    onAddDish: (dish) {
+                                      addDishToCategory(index, dish);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            onEditDish: (dishIndex, dish) {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (context) {
+                                  return AddDishBottomSheet(
+                                    context: context,
+                                    dish: dish,
+                                    onAddDish: (updatedDish) {
+                                      editDish(index, dishIndex, updatedDish);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            onDeleteDish: (dishIndex) {
+                              deleteDish(index, dishIndex);
+                            },
+                            onDeleteCategory: () {
+                              deleteCategory(index);
+                            },
+                          );
+                        },
                       ),
-                    )
-                  : ListView.builder(
-                      itemCount: menuGroups.length,
-                      itemBuilder: (context, index) {
-                        return MenuGroupWidget(
-                          menuGroup: menuGroups[index],
-                          showOption: true,
-                          onAddDish: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return AddDishBottomSheet(
-                                  context: context,
-                                  onAddDish: (dish) {
-                                    addDishToCategory(index, dish);
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          onEditDish: (dishIndex, dish) {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return AddDishBottomSheet(
-                                  context: context,
-                                  dish: dish,
-                                  onAddDish: (updatedDish) {
-                                    editDish(index, dishIndex, updatedDish);
-                                  },
-                                );
-                              },
-                            );
-                          },
-                          onDeleteDish: (dishIndex) {
-                            deleteDish(index, dishIndex);
-                          },
-                          onDeleteCategory: () {
-                            deleteCategory(index);
-                          },
-                        );
-                      },
-                    ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05,vertical: getHeight() * 0.02),
+              padding: EdgeInsets.symmetric(
+                horizontal: getWidth() * 0.05,
+                vertical: getHeight() * 0.02,
+              ),
               child: CustomButton(
                 buttonText: "+ ${al.addCategoryTitle}",
                 onTap: () {
@@ -255,7 +266,9 @@ class _MenuViewState extends State<MenuView> {
                       await _saveMenuData();
                     },
                     buttonWidth: getWidth() * .42,
-                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                    backgroundColor: AppColors.getPrimaryColorFromContext(
+                      context,
+                    ),
                     borderColor: Colors.transparent,
                     textColor: Colors.white,
                     textFontWeight: FontWeight.w700,

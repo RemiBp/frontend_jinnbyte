@@ -811,6 +811,41 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> addUnavailableSlots({required String date, required List<int> slotIds}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "date": date,
+        "slotIds": slotIds,
+      };
+
+      debugPrint("add unavailable slots body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: addUnavailableSlotsApiUrl,
+        body: body,
+      );
+
+      debugPrint("add unavailable slots response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: 'Unavailable slots added successfully');
+        return true;
+      } else {
+        Toasts.getErrorToast(text: 'Failed to add unavailable slots');
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error adding unavailable slots: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: 'Failed to add unavailable slots');
+      return false;
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
