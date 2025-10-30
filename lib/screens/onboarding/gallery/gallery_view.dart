@@ -17,7 +17,9 @@ import 'gallery_widgets.dart';
 
 
 class GalleryView extends StatefulWidget {
-  const GalleryView({super.key});
+  const GalleryView({super.key, this.fromSettings = false});
+
+  final bool fromSettings;
 
   @override
   State<GalleryView> createState() => _GalleryViewState();

@@ -62,9 +62,11 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
     );
     profileProvider.init(context);
 
-    if (widget.fromSettings) {
-      profileProvider.getProducerOperationalHours();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.fromSettings) {
+        profileProvider.getProducerOperationalHours();
+      }
+    });
   }
 
   TimeOfDay _parseTime(String timeStr) {
@@ -548,9 +550,9 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
                           Expanded(
                             child: ListView.builder(
                               padding: EdgeInsets.zero,
-                              itemCount: profileProvider.getProducerOperationalHoursResponse!.operationalHours.length,
+                              itemCount: profileProvider.getProducerOperationalHoursResponse!.data.length,
                               itemBuilder: (context, index) {
-                                final operationalHour = profileProvider.getProducerOperationalHoursResponse!.operationalHours[index];
+                                final operationalHour = profileProvider.getProducerOperationalHoursResponse!.data[index];
                                 final day = operationalHour.day ?? '';
                                 final startTime = operationalHour.startTime;
                                 final endTime = operationalHour.endTime;

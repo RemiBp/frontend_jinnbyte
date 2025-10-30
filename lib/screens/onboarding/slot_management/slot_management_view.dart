@@ -18,8 +18,8 @@ import '../day_off/days_off_view.dart';
 
 class SlotManagementView extends StatefulWidget {
   final bool? isHomeFlow;
-  final bool? isEdit;
-  const SlotManagementView({super.key, this.isHomeFlow, this.isEdit});
+  final bool isEdit;
+  const SlotManagementView({super.key, this.isHomeFlow, this.isEdit = false});
 
   @override
   State<SlotManagementView> createState() => _SlotManagementViewState();
@@ -79,19 +79,16 @@ class _SlotManagementViewState extends State<SlotManagementView> {
     return generatedSlots;
   }
 
-
-
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   isEdit = widget.isEdit??false;
-  // }
-
   @override
   void initState() {
     super.initState();
-    isEdit = widget.isEdit ?? true;
+    isEdit = widget.isEdit;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(isEdit) {
+        _loadProducerSlots();
+      }
+    });
   }
 
   void _loadProducerSlots() async {
@@ -323,6 +320,9 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                       buttonText: al.saveChanges,
                       onTap: () {
                         _saveSlotSelections();
+                        if(isEdit) {
+                          context.pop();
+                        }
                         context.go(Routes.restaurantBottomTabRoute);
                       },
                       buttonWidth: getWidth() * .42,

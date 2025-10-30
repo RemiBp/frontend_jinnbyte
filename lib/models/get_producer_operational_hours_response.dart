@@ -1,73 +1,78 @@
 class GetProducerOperationalHoursResponse {
-  final List<OperationalHour> operationalHours;
-
   GetProducerOperationalHoursResponse({
-    required this.operationalHours,
+    required this.data,
   });
 
-  factory GetProducerOperationalHoursResponse.fromJson(List<dynamic> json) {
+  final List<ProducerOperationalHour> data;
+
+  factory GetProducerOperationalHoursResponse.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final List<dynamic> list = (json['data'] as List<dynamic>? ?? <dynamic>[]);
     return GetProducerOperationalHoursResponse(
-      operationalHours: json.map((item) => OperationalHour.fromJson(item)).toList(),
+      data: list
+          .map((dynamic e) => ProducerOperationalHour.fromJson(
+                e as Map<String, dynamic>,
+              ))
+          .toList(),
     );
   }
 
-  List<dynamic> toJson() {
-    return operationalHours.map((item) => item.toJson()).toList();
-  }
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'data': data.map((e) => e.toJson()).toList(),
+      };
 }
 
-class OperationalHour {
-  final int? id;
-  final String? day;
-  final String? startTime;
-  final String? endTime;
-  final int? userId;
-  final bool? isDeleted;
-  final bool? isActive;
-  final bool? isClosed;
-  final String? createdAt;
-  final String? updatedAt;
-
-  OperationalHour({
-    this.id,
-    this.day,
-    this.startTime,
-    this.endTime,
-    this.userId,
-    this.isDeleted,
-    this.isActive,
-    this.isClosed,
-    this.createdAt,
-    this.updatedAt,
+class ProducerOperationalHour {
+  ProducerOperationalHour({
+    required this.id,
+    required this.day,
+    required this.startTime,
+    required this.endTime,
+    required this.userId,
+    required this.isDeleted,
+    required this.isActive,
+    required this.isClosed,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  factory OperationalHour.fromJson(Map<String, dynamic> json) {
-    return OperationalHour(
-      id: json['id'] as int?,
-      day: json['day'] as String?,
+  final int id;
+  final String day;
+  final String? startTime; // e.g., "10:00:00" or null
+  final String? endTime; // e.g., "12:30:00" or null
+  final int userId;
+  final bool isDeleted;
+  final bool isActive;
+  final bool isClosed;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  factory ProducerOperationalHour.fromJson(Map<String, dynamic> json) {
+    return ProducerOperationalHour(
+      id: (json['id'] as num).toInt(),
+      day: json['day'] as String? ?? '',
       startTime: json['startTime'] as String?,
       endTime: json['endTime'] as String?,
-      userId: json['userId'] as int?,
-      isDeleted: json['isDeleted'] as bool?,
-      isActive: json['isActive'] as bool?,
-      isClosed: json['isClosed'] as bool?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
+      userId: (json['userId'] as num).toInt(),
+      isDeleted: json['isDeleted'] as bool? ?? false,
+      isActive: json['isActive'] as bool? ?? false,
+      isClosed: json['isClosed'] as bool? ?? false,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'day': day,
-      'startTime': startTime,
-      'endTime': endTime,
-      'userId': userId,
-      'isDeleted': isDeleted,
-      'isActive': isActive,
-      'isClosed': isClosed,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
-  }
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'day': day,
+        'startTime': startTime,
+        'endTime': endTime,
+        'userId': userId,
+        'isDeleted': isDeleted,
+        'isActive': isActive,
+        'isClosed': isClosed,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+      };
 }
