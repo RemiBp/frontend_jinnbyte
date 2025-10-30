@@ -8,11 +8,9 @@ import 'package:choice_app/models/get_producer_profile_response.dart';
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/network/models.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-import '../../../appColors/colors.dart';
 import '../../../l18n.dart';
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';

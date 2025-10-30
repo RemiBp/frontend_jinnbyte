@@ -5,9 +5,10 @@ class GetProducerOperationalHoursResponse {
     required this.operationalHours,
   });
 
-  factory GetProducerOperationalHoursResponse.fromJson(List<dynamic> json) {
+  factory GetProducerOperationalHoursResponse.fromJson(Map<String, dynamic> json) {
+    final list = json['data'] as List<dynamic>? ?? [];
     return GetProducerOperationalHoursResponse(
-      operationalHours: json.map((item) => OperationalHour.fromJson(item)).toList(),
+      operationalHours: list.map((item) => OperationalHour.fromJson(item)).toList(),
     );
   }
 
