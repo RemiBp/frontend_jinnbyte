@@ -19,6 +19,7 @@ import 'package:choice_app/screens/languageSelection/language_selection.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
+import 'package:choice_app/screens/onboarding/day_off/days_off_view.dart';
 import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/menu/menu_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
@@ -78,6 +79,7 @@ class Routes {
   static const String subscribeRoute = '/subscribe_screen';
   static const String heatmapRoute = '/heatmap';
   static const String registrationRoute = '/account_registration';
+  static const String daysOffRoute = '/days_off';
 
 
 
@@ -158,9 +160,15 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: Routes.slotManagementViewRoute,
       builder: (context, state) {
-        final isEditable = state.extra as bool? ?? false;
-        return SlotManagementView(isEdit: isEditable);
+        final args = state.extra as Map<String, dynamic>?;
+        final isEditable = args?['isEdit'] as bool? ?? false;
+        final isHomeFlow = args?['isHomeFlow'] as bool? ?? true;
+        return SlotManagementView(isEdit: isEditable, isHomeFlow: isHomeFlow);
       },
+    ),
+    GoRoute(
+      path: Routes.daysOffRoute,
+      builder: (context, state) => const DaysOffView(),
     ),
 
     // restaurant

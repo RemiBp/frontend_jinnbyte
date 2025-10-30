@@ -40,16 +40,17 @@ class _SettingViewState extends State<SettingView> {
     final role = context.read<RoleProvider>().role;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: CommonAppBar(
-        title: al.setting,
-      ),
+      appBar: CommonAppBar(title: al.setting),
       body: Column(
         children: [
           Expanded(
             child:
             // child: provider.isDetailsFetched && provider.isProfileFetched?
             ListView(
-              padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeightRatio() * 20),
+              padding: EdgeInsets.symmetric(
+                horizontal: sizes!.pagePadding,
+                vertical: getHeightRatio() * 20,
+              ),
               children: [
                 SettingHeader(),
                 SizedBox(height: getHeight() * 0.02),
@@ -57,11 +58,12 @@ class _SettingViewState extends State<SettingView> {
                   title: al.editProfile,
                   leadingAssetPath: Assets.editProfileIcon,
                   onTap: () {
-                    if(role == UserRole.user) {
+                    if (role == UserRole.user) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) =>
-                            CustomerEditProfile(),),
+                        MaterialPageRoute(
+                          builder: (context) => CustomerEditProfile(),
+                        ),
                       );
                     } else {
                       context.push(Routes.restaurantProfileRoute, extra: true);
@@ -89,7 +91,7 @@ class _SettingViewState extends State<SettingView> {
                 //       );
                 //     },
                 //   ),
-                if(role == UserRole.user)
+                if (role == UserRole.user)
                   ProfileOptionButton(
                     title: al.location,
                     leadingAssetPath: Assets.locationIcon,
@@ -100,143 +102,148 @@ class _SettingViewState extends State<SettingView> {
                       // );
                     },
                   ),
-                if(role == UserRole.user)
+                if (role == UserRole.user)
                   ProfileOptionButton(
                     title: al.bookmarked,
                     leadingAssetPath: Assets.bookmarkIcon,
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BookmarkedView()),
+                        MaterialPageRoute(
+                          builder: (context) => BookmarkedView(),
+                        ),
                       );
                     },
                   ),
-                if(role == UserRole.user)
+                if (role == UserRole.user)
                   ProfileOptionButton(
                     title: al.blockedList,
                     leadingAssetPath: Assets.blockUserIcon,
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BlockedUsersView()),
+                        MaterialPageRoute(
+                          builder: (context) => BlockedUsersView(),
+                        ),
                       );
                     },
                   ),
-                if(!(role == UserRole.user))
-                ProfileOptionButton(
-                  title: al.documents,
-                  leadingAssetPath: Assets.documentsIcon,
-                  onTap: () {},
-                ),
-                if(role == UserRole.restaurant || role == UserRole.wellness)
-                ProfileOptionButton(
-                  title: al.businessHours,
-                  leadingAssetPath: Assets.businessHourIcon,
-                  onTap: () {
-                    context.push(Routes.editOperationHoursRoute, extra: true);
-                  },
-                ),
-                if(role == UserRole.restaurant || role == UserRole.wellness)
-                ProfileOptionButton(
-                  title: al.manageSlots,
-                  leadingAssetPath: Assets.slotsIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SlotManagementView(
-                        isHomeFlow: false,
-                        isEdit: true,
-                      )),
-                    );
-                  },
-                ),
-                if(role == UserRole.restaurant)
-                ProfileOptionButton(
-                  title: al.menu,
-                  leadingAssetPath: Assets.menuIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MenuView()),
-                    );
-                  },
-                ),
-                if(role == UserRole.wellness)
-                ProfileOptionButton(
-                  title: al.services,
-                  leadingAssetPath: Assets.businessHourIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddServices()),
-                    );
-                  },
-                ),
-                if(role == UserRole.restaurant || role == UserRole.wellness)
-                ProfileOptionButton(
-                  title: al.gallery,
-                  leadingAssetPath: Assets.galleryIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GalleryView()),
-                    );
-                  },
-                ),
-                if(role == UserRole.restaurant || role == UserRole.wellness)
-                ProfileOptionButton(
-                  title: al.unavailability,
-                  leadingAssetPath: Assets.unavailabilityIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DaysOffView()),
-                    );
-                  },
-                ),
-                if(role == UserRole.restaurant)
-                ProfileOptionButton(
-                  title: al.cuisine,
-                  leadingAssetPath: Assets.businessHourIcon,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddCuisine()),
-                    );
-                  },
-                ),
+                if (!(role == UserRole.user))
+                  ProfileOptionButton(
+                    title: al.documents,
+                    leadingAssetPath: Assets.documentsIcon,
+                    onTap: () {},
+                  ),
+                if (role == UserRole.restaurant || role == UserRole.wellness)
+                  ProfileOptionButton(
+                    title: al.businessHours,
+                    leadingAssetPath: Assets.businessHourIcon,
+                    onTap: () {
+                      context.push(Routes.editOperationHoursRoute, extra: true);
+                    },
+                  ),
+                if (role == UserRole.restaurant || role == UserRole.wellness)
+                  ProfileOptionButton(
+                    title: al.manageSlots,
+                    leadingAssetPath: Assets.slotsIcon,
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => SlotManagementView(
+                      //     isHomeFlow: false,
+                      //     isEdit: true,
+                      //   )),
+                      // );
+                      context.push(
+                        Routes.slotManagementViewRoute,
+                        extra: {'isHomeFlow': false, 'isEdit': true},
+                      );
+                    },
+                  ),
+                if (role == UserRole.restaurant)
+                  ProfileOptionButton(
+                    title: al.menu,
+                    leadingAssetPath: Assets.menuIcon,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MenuView()),
+                      );
+                    },
+                  ),
+                if (role == UserRole.wellness)
+                  ProfileOptionButton(
+                    title: al.services,
+                    leadingAssetPath: Assets.businessHourIcon,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddServices()),
+                      );
+                    },
+                  ),
+                if (role == UserRole.restaurant || role == UserRole.wellness)
+                  ProfileOptionButton(
+                    title: al.gallery,
+                    leadingAssetPath: Assets.galleryIcon,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GalleryView()),
+                      );
+                    },
+                  ),
+                if (role == UserRole.restaurant || role == UserRole.wellness)
+                  ProfileOptionButton(
+                    title: al.unavailability,
+                    leadingAssetPath: Assets.unavailabilityIcon,
+                    onTap: () {
+                      context.push(Routes.daysOffRoute);
+                    },
+                  ),
+                if (role == UserRole.restaurant)
+                  ProfileOptionButton(
+                    title: al.cuisine,
+                    leadingAssetPath: Assets.businessHourIcon,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddCuisine()),
+                      );
+                    },
+                  ),
                 ProfileOptionButton(
                   title: al.language,
                   leadingAssetPath: Assets.languageIcon,
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LanguageSelection(isFromProfile: true,)),
+                      MaterialPageRoute(
+                        builder:
+                            (context) => LanguageSelection(isFromProfile: true),
+                      ),
                     );
                   },
                 ),
                 ProfileOptionButton(
                   title: al.logout,
                   leadingAssetPath: Assets.logoutIcon,
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
                 CustomButton(
                   buttonText: al.deleteAccount,
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   backgroundColor: Colors.transparent,
                   borderColor: AppColors.redColor,
                   textColor: AppColors.redColor,
                   textFontWeight: FontWeight.w700,
                 ),
               ],
-            )
-        // :
-        //     const Center(
-        //       child: CircularProgressIndicator(),
-        //     ),
+            ),
+            // :
+            //     const Center(
+            //       child: CircularProgressIndicator(),
+            //     ),
           ),
         ],
       ),
