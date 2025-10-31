@@ -10,6 +10,7 @@ import 'package:choice_app/screens/onboarding/gallery/gallery_view.dart';
 import 'package:choice_app/screens/onboarding/slot_management/slot_management_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/blocked_users/blocked_users_view.dart';
 import 'package:choice_app/screens/restaurant/profile_menu/bookmarked/bookmarked_view.dart';
+import 'package:choice_app/screens/restaurant/profile_menu/documents/view_documents.dart';
 import 'package:choice_app/screens/restaurant/setting/setting_widgets.dart';
 import 'package:choice_app/userRole/user_role.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,12 @@ class _SettingViewState extends State<SettingView> {
                   ProfileOptionButton(
                     title: al.documents,
                     leadingAssetPath: Assets.documentsIcon,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DocumentsScreen()),
+                      );
+                    },
                   ),
                 if (role == UserRole.restaurant || role == UserRole.wellness)
                   ProfileOptionButton(
