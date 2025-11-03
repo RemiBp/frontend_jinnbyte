@@ -199,6 +199,7 @@ class _ProfileState extends State<Profile> {
     final roleProvider = context.read<RoleProvider>(); // get current role
 
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -320,8 +321,8 @@ class _ProfileState extends State<Profile> {
                   focusedBorder: buildOutlineInputBorder(
                     AppColors.inputHintColor,
                   ),
-                  errorBorder: InputBorder.none,
-                  focusedErrorBorder: InputBorder.none,
+                  errorBorder: buildOutlineInputBorder(AppColors.redColor),
+                  focusedErrorBorder: buildOutlineInputBorder(AppColors.redColor),
                 ),
                 validator: PhoneValidator.valid(context), // Automatic validation per country
                 enabled: true,
@@ -387,8 +388,8 @@ class _ProfileState extends State<Profile> {
                   focusedBorder: buildOutlineInputBorder(
                     AppColors.inputHintColor,
                   ),
-                  errorBorder: InputBorder.none,
-                  focusedErrorBorder: InputBorder.none,
+                  errorBorder: buildOutlineInputBorder(AppColors.redColor),
+                  focusedErrorBorder: buildOutlineInputBorder(AppColors.redColor),
                 ),
                 validator: PhoneValidator.valid(context), // Automatic validation per country
                 enabled: true,

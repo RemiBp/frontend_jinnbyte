@@ -123,11 +123,16 @@ class _GalleryViewState extends State<GalleryView> {
                       // Already uploaded gallery images (from API)
                       ...galleryImages.asMap().entries.map((entry) {
                         final index = entry.key;
-                        final url = entry.value;
+                        final rawUrl = entry.value;
+
+                        // make full S3 URL if needed
+                        final fullUrl = rawUrl.startsWith('http')
+                            ? rawUrl
+                            : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/$rawUrl';
 
                         return GalleryCard(
                           isMainImage: index == 0,
-                          imageFile: url,
+                          imageFile: fullUrl,
                           onSetMainImage: () {}, // no-op in settings
                           onRemoveImage: () {
                             removeImage(index);

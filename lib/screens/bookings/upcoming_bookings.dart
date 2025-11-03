@@ -27,7 +27,7 @@ class _UpcomingBookingsState extends State<UpcomingBookings> {
               itemBuilder: (context, index) {
                 final role = context.read<RoleProvider>().role;
 
-                // 👇 Conditionally assign name
+                //  Conditionally assign name
                 final name = role == UserRole.user
                     ? "Wholesome Fork #${index + 1}"   // show restaurant name if user
                     : "John Doe #${index + 1}";         // show customer name otherwise

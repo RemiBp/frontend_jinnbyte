@@ -46,7 +46,9 @@ class _EventsState extends State<Events> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     Provider.of<EventProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
+        backgroundColor: AppColors.whiteColor,
         title: CustomText(
           text:al.events,
           fontSize: sizes?.fontSize18,

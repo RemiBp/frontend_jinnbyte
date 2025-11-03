@@ -45,16 +45,16 @@ class _RepeatCustomersCardState extends State<RepeatCustomersCard> {
       ),
       child: Column(
         children: [
-          // Align(
-          //   alignment: Alignment.centerLeft,
-          //   child: CustomText(
-          //     text: 'Menu Coverage',
-          //     fontSize: sizes?.fontSize14,
-          //     fontWeight: FontWeight.w500,
-          //     color: AppColors.primarySlateColor,
-          //   ),
-          // ),
-          // SizedBox(height: getHeightRatio() * 16),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: CustomText(
+              text: 'Menu Coverage',
+              fontSize: sizes?.fontSize14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primarySlateColor,
+            ),
+          ),
+          SizedBox(height: getHeightRatio() * 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

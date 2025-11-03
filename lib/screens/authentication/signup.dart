@@ -49,6 +49,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     AppTranslations.init(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,

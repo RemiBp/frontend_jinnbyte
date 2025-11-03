@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/res/toasts.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +75,8 @@ class _CreatePostState extends State<CreatePost> {
   Widget build(BuildContext context) {
     final choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(al.createPost,),
-        leading: BackButton(),
-        elevation: 0,
-        titleSpacing: 0,
-      ),
+      backgroundColor: AppColors.whiteColor,
+      appBar:CommonAppBar(title: al.createPost),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -214,76 +211,67 @@ class _CreatePostState extends State<CreatePost> {
               suffixIcon:Icons.location_on,
               obscure: true,
             ),
-            SizedBox(height: getHeight() * .02),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: getHeight() * .02,
-                horizontal: getWidth() * .05,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      buttonWidth: getWidth() * 0.43,
-                      height: getHeight() * 0.055,
-                      backgroundColor: Colors.transparent,
-                      buttonText: al.cancel,
-                      textColor: AppColors.blackColor,
-                      borderColor: AppColors.blackColor,
-                      onTap: () {},
-                    ),
+            SizedBox(height: getHeight() * .04),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    backgroundColor: Colors.transparent,
+                    buttonText: al.cancel,
+                    textColor: AppColors.blackColor,
+                    borderColor: AppColors.blackColor,
+                    onTap: () {},
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: CustomButton(
-                      buttonWidth: getWidth() * 0.43,
-                      height: getHeight() * 0.055,
-                      borderColor: AppColors.getPrimaryColorFromContext(context),
-                      buttonText: al.publish,
-                      onTap: () async{
-                        final title = titleController.text.trim();
-                        final description = descriptionController.text.trim();
-                        final tags = tagsController.text.trim();
-                        final location = locationController.text.trim();
-                        if (images.isEmpty) {
-                          Toasts.getErrorToast(
-                              text:al.errorSelectImage,);
-                        } else if (title.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorEnterTitle,);
-                        }else if (description.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorEnterDescription,);
-                        }else if (tags.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorEnterTags,);
-                        }else if (location.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorEnterAddress,);
-                        }else{
-                          // for (var i in images) {
-                          //   final bytes = await i.readAsBytes();
-                          //   final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
-                          //   debugPrint("file url is : $fileUrl");
-                          //   if (fileUrl != null) {
-                          //     imageUrls.add(fileUrl);
-                          //   }
-                          // }
-                          debugPrint("date : ${DateTime.now().toIso8601String()}");
-                          choiceProvider.createChoiceApi(title: title,
-                            description: description,
-                            tags: tags,
-                            location: location,
-                            images: [
-                              "https://media.baamboozle.com/uploads/images/239644/1611890196_384578"
-                            ],);
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: CustomButton(
+                    borderColor: AppColors.getPrimaryColorFromContext(context),
+                    backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                    buttonText: al.publish,
+                    onTap: () async{
+                      final title = titleController.text.trim();
+                      final description = descriptionController.text.trim();
+                      final tags = tagsController.text.trim();
+                      final location = locationController.text.trim();
+                      if (images.isEmpty) {
+                        Toasts.getErrorToast(
+                            text:al.errorSelectImage,);
+                      } else if (title.isEmpty) {
+                        Toasts.getErrorToast(
+                            text: al.errorEnterTitle,);
+                      }else if (description.isEmpty) {
+                        Toasts.getErrorToast(
+                            text: al.errorEnterDescription,);
+                      }else if (tags.isEmpty) {
+                        Toasts.getErrorToast(
+                            text: al.errorEnterTags,);
+                      }else if (location.isEmpty) {
+                        Toasts.getErrorToast(
+                            text: al.errorEnterAddress,);
+                      }else{
+                        // for (var i in images) {
+                        //   final bytes = await i.readAsBytes();
+                        //   final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                        //   debugPrint("file url is : $fileUrl");
+                        //   if (fileUrl != null) {
+                        //     imageUrls.add(fileUrl);
+                        //   }
+                        // }
+                        debugPrint("date : ${DateTime.now().toIso8601String()}");
+                        choiceProvider.createChoiceApi(title: title,
+                          description: description,
+                          tags: tags,
+                          location: location,
+                          images: [
+                            "https://media.baamboozle.com/uploads/images/239644/1611890196_384578"
+                          ],);
 
-                        }
-                      },
-                    ),
+                      }
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             )
           ],
         ),

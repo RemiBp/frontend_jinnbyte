@@ -43,7 +43,8 @@ class GalleryCard extends StatelessWidget {
       imageProvider = NetworkImage(imagePath);
     } else if (isLocalFile) {
       imageProvider = FileImage(File(imagePath));
-    } else {
+    }
+    else {
       imageProvider = AssetImage(Assets.galleryImage);
     }
 

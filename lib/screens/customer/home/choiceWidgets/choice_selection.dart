@@ -1,3 +1,5 @@
+import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/screens/customer/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -50,14 +52,10 @@ class _ChoiceSelectionState extends State<ChoiceSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(al.createChoice),
-        // leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
-      ),
+      backgroundColor: AppColors.whiteColor,
+      appBar: CommonAppBar(title: al.createChoice),
       body: Padding(
+
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [

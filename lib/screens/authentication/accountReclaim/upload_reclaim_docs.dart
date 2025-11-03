@@ -180,15 +180,15 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                       curve: Curves.easeInOut,
                       width: getWidth(),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: HexColor.fromHex("#FEF5E7"),
-                            child: SvgPicture.asset(Assets.pdfIcon),
-                          ),
-                          SizedBox(height: getHeight() * .01),
-
-                          if (provider.uploadProgress > 0 &&
-                              provider.uploadProgress < 1) ...[
+                          // ⏳ Show progress if uploading
+                          if (provider.isUploading && provider.uploadProgress < 1) ...[
+                            CircleAvatar(
+                              backgroundColor: HexColor.fromHex("#FEF5E7"),
+                              child: SvgPicture.asset(Assets.pdfIcon),
+                            ),
+                            SizedBox(height: getHeight() * .01),
                             LinearProgressIndicator(
                               value: provider.uploadProgress,
                               backgroundColor: AppColors.greyBordersColor,
@@ -202,18 +202,47 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                               fontSize: sizes!.fontSize12,
                               color: AppColors.primarySlateColor,
                             ),
-                          ] else ...[
+                          ]
+
+                          // ✅ Show file info only AFTER upload finishes
+                          else if (provider.selectedFile != null &&
+                              provider.uploadProgress >= 1) ...[
+                            CircleAvatar(
+                              backgroundColor: HexColor.fromHex("#FEF5E7"),
+                              child: SvgPicture.asset(Assets.pdfIcon),
+                            ),
+                            SizedBox(height: getHeight() * .01),
                             CustomText(
-                              text: al.chooseFile,
+                              text: provider.selectedFile!.name,
                               fontSize: sizes!.fontSize14,
                               fontFamily: Assets.onsetMedium,
                             ),
                             CustomText(
-                              text: al.maxFileSizeNote,
+                              text: "Uploaded successfully",
                               fontSize: sizes!.fontSize12,
                               color: AppColors.primarySlateColor,
                             ),
-                          ],
+                          ]
+
+                          // 🧾 Default: before file selection
+                          else ...[
+                              CircleAvatar(
+                                backgroundColor: HexColor.fromHex("#FEF5E7"),
+
+                                child: SvgPicture.asset(Assets.pdfIcon),
+                              ),
+                              SizedBox(height: getHeight() * .01),
+                              CustomText(
+                                text: al.chooseFile,
+                                fontSize: sizes!.fontSize14,
+                                fontFamily: Assets.onsetMedium,
+                              ),
+                              CustomText(
+                                text: al.maxFileSizeNote,
+                                fontSize: sizes!.fontSize12,
+                                color: AppColors.primarySlateColor,
+                              ),
+                            ],
                         ],
                       ),
                     ),

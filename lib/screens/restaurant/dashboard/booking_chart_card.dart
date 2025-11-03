@@ -218,7 +218,7 @@ class _BookingChartCardState extends State<BookingChartCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Header with dropdown
+          // Header with dropdown
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -230,34 +230,33 @@ class _BookingChartCardState extends State<BookingChartCard> {
                 color: AppColors.primarySlateColor,
               ),
               Container(
-                height: getHeight() * 0.0542, // ~44px
+                height: getHeight() * 0.042, // smaller height (~36–38px)
                 padding: EdgeInsets.symmetric(
-                  horizontal: getWidthRatio() * 9,
+                  horizontal: getWidthRatio() * 6, // slightly tighter padding
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.greyBordersColor, width: 1),
-                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.greyBordersColor, width: 0.8), // thinner border
+                  borderRadius: BorderRadius.circular(6), // slightly smaller radius
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // 👈 Dropdown without built-in icon
                     DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: selectedRange,
-                        icon: const SizedBox.shrink(), // remove default icon
-                        items: [al.category, al.lastMonth]
-                            .map((e) => DropdownMenuItem(
-                          value: e,
-                          child: CustomText(
-                            text: e,
-                            fontSize: sizes?.fontSize14,
-                            fontFamily: Assets.onsetMedium,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primarySlateColor,
-                          ),
-                        ))
-                            .toList(),
+                        icon: const SizedBox.shrink(), // hide default dropdown icon
+                        items: [al.category, al.lastMonth].map((e) {
+                          return DropdownMenuItem(
+                            value: e,
+                            child: CustomText(
+                              text: e,
+                              fontSize: sizes?.fontSize12,
+                              fontFamily: Assets.onsetMedium,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primarySlateColor,
+                            ),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           if (value != null) {
                             setState(() => selectedRange = value);
@@ -266,11 +265,10 @@ class _BookingChartCardState extends State<BookingChartCard> {
                         },
                       ),
                     ),
-
-                    // Custom aligned arrow
+                    SizedBox(width: getWidthRatio() * 4), // tighter spacing between text & icon
                     const Icon(
                       Icons.keyboard_arrow_down,
-                      size: 20,
+                      size: 16, // smaller icon
                       color: AppColors.primarySlateColor,
                     ),
                   ],

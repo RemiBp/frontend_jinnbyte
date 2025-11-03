@@ -36,6 +36,7 @@ class _ChangePassword extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: al.passwordManager),
 
       body: SingleChildScrollView(

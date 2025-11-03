@@ -27,9 +27,17 @@ class ReclaimAccountProvider extends ChangeNotifier {
 
   double uploadProgress = 0.0;
   bool isUploading = false;
+  PlatformFile? selectedFile; // to hold the picked file
+
 
   void setUploadProgress(double progress) {
     uploadProgress = progress;
+    notifyListeners();
+  }
+
+
+  void setSelectedFile(PlatformFile file) {
+    selectedFile = file;
     notifyListeners();
   }
 
@@ -253,9 +261,13 @@ class ReclaimAccountProvider extends ChangeNotifier {
       }
 
       final file = File(result.files.single.path!);
+      setSelectedFile(result.files.single);
+      isUploading = true; // 👈 start progress
+      setUploadProgress(0);
+      notifyListeners();
+
       final networkProvider = context?.read<NetworkProvider>();
 
-      // Step 1: Upload file to S3
       final uploadedKey = await networkProvider?.getUrlForDocumentUpload(
         file,
         context!,
@@ -265,18 +277,27 @@ class ReclaimAccountProvider extends ChangeNotifier {
       );
 
       if (uploadedKey == null) {
+        isUploading = false;
+        setUploadProgress(0);
+        notifyListeners();
         Toasts.getErrorToast(text: al.failedToUploadDocument);
         return;
       }
 
-      // Step 2: Submit document data
+      setUploadProgress(1);
+      isUploading = false; // 👈 upload done
+      notifyListeners();
+
       final documentData = {
         "document1": uploadedKey,
-        "document1Expiry": "2025-11-01", // for demo, you can make it dynamic later
+        "document1Expiry": "2025-11-01",
       };
 
       await submitProducerDocuments(documentsData: documentData);
     } catch (e) {
+      isUploading = false;
+      setUploadProgress(0);
+      notifyListeners();
       debugPrint("❌ uploadAndSubmitDocuments error: $e");
       Toasts.getErrorToast(text: al.failedToUploadDocument);
     }

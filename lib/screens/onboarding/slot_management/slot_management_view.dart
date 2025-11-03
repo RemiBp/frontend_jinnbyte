@@ -16,7 +16,6 @@ import '../../../res/res.dart';
 import '../../../res/toasts.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
-import '../day_off/days_off_view.dart';
 
 
 class SlotManagementView extends StatefulWidget {

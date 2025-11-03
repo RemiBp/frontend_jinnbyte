@@ -67,6 +67,7 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
   Widget build(BuildContext context) {
     final provider = Provider.of<CustomerProfileProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -190,8 +191,8 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                 focusedBorder: buildOutlineInputBorder(
                   AppColors.inputHintColor,
                 ),
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
+                errorBorder: buildOutlineInputBorder(AppColors.redColor),
+                focusedErrorBorder: buildOutlineInputBorder(AppColors.redColor),
               ),
               enabled: true,
               isCountrySelectionEnabled: true,

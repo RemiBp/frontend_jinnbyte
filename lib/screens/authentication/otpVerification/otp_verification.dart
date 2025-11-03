@@ -41,6 +41,7 @@ class _OtpVerificationState extends State<OtpVerification> {
     final isResetPassFlow = extra?["isResetPassFlow"] ?? true;
     final provider = context.read<OtpProvider>();
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,

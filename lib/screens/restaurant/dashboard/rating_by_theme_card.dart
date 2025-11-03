@@ -22,7 +22,7 @@ class RatingsByThemeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.blackColor.withOpacity(0.05),
+            color: AppColors.blackColor.withValues(alpha: 0.05),
             blurRadius: 24,
             offset: Offset(0, 4),
           ),
@@ -68,7 +68,7 @@ class RatingsByThemeCard extends StatelessWidget {
                           ),
                         ),
                         FractionallySizedBox(
-                          widthFactor: item[al.label] / 5.0,
+                          widthFactor: (item[al.value] ?? 0) / 5.0,
                           child: Container(
                             height: getHeight() * 0.02,
                             decoration: BoxDecoration(

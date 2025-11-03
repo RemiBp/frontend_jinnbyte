@@ -23,6 +23,9 @@ class ProfileOptionButton extends StatelessWidget {
   final bool showTrailingArrow;
   final IconData? trailingIcon;
 
+  final String? trailingText;
+  final Color? trailingTextColor;
+
   const ProfileOptionButton({
     super.key,
     required this.title,
@@ -33,6 +36,9 @@ class ProfileOptionButton extends StatelessWidget {
     this.showTrailingArrow = true,
     this.arrowColor,
     this.trailingIcon,
+
+    this.trailingText,
+    this.trailingTextColor,
   });
 
   @override
@@ -49,7 +55,7 @@ class ProfileOptionButton extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppColors.blackColor.withAlpha(20),
-              offset: Offset(0, 0),
+              offset: const Offset(0, 0),
               blurRadius: 24,
               spreadRadius: 0,
             ),
@@ -58,30 +64,47 @@ class ProfileOptionButton extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // --- Leading Icon ---
             SvgIcon(
               leadingAssetPath,
               width: getWidthRatio() * 20,
-              color: AppColors.getPrimaryColorFromContext(context),
+              color: iconColor ?? AppColors.getPrimaryColorFromContext(context),
             ),
-            SizedBox(
-              width: getHeightRatio() * 12,
-            ),
+
+            SizedBox(width: getHeightRatio() * 12),
+
+            // --- Title ---
             Expanded(
+              child: CustomText(
+                text: title,
+                lines: 1,
+                textOverflow: TextOverflow.ellipsis,
+                fontSize: sizes?.fontSize14,
+                color: textColor ?? AppColors.blackColor,
+                alignment: Alignment.centerLeft,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            // --- Optional trailing text (e.g. "Free Plan") ---
+            if (trailingText != null)
+              Padding(
+                padding: EdgeInsets.only(right: getWidth() * 0.02),
                 child: CustomText(
-                  text: title,
-                  lines: 1,
-                  textOverflow: TextOverflow.ellipsis,
-                  fontSize: sizes?.fontSize14,
-                  color: textColor ?? AppColors.blackColor,
-                  alignment: Alignment.centerLeft,
-                  fontWeight: FontWeight.w500,
-                )),
+                  text: trailingText!,
+                  fontSize: sizes?.fontSize12,
+                  color: trailingTextColor ?? AppColors.inputHintColor,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+            // --- Optional arrow icon ---
             if (showTrailingArrow)
               Icon(
                 trailingIcon ?? Icons.arrow_forward_ios,
                 size: getHeightRatio() * 15,
                 color: arrowColor ?? AppColors.inputHintColor,
-              )
+              ),
           ],
         ),
       ),

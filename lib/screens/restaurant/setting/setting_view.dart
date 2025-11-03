@@ -25,8 +25,6 @@ import '../../../res/res.dart';
 import '../../../userRole/role_provider.dart';
 import '../../onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
 import '../../onboarding/menu/menu_view.dart';
-import '../profile/profile.dart';
-import '../profile_menu/badges/badges_view.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -79,6 +77,14 @@ class _SettingViewState extends State<SettingView> {
                       context,
                       MaterialPageRoute(builder: (context) => ChangePassword()),
                     );
+                  },
+                ),
+                ProfileOptionButton(
+                  title: al.subscription,
+                  leadingAssetPath: Assets.subscriptionIcon, // your custom icon
+                  trailingText: 'Free Plan',
+                  onTap: () {
+                    context.push(Routes.subscribeRoute);
                   },
                 ),
                 // if(role == UserRole.user)
