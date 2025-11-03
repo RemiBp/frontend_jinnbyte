@@ -33,11 +33,24 @@ const String getMenuCategoriesApiUrl = "$baseUrl/api/producer/profile/getMenuCat
 const String userProfileApiUrl = "$baseUrl/api/app/profile/getProfile";
 const String userUpdateProfileApiUrl = "$baseUrl/api/app/profile/updateProfile";
 const String userPostsApiUrl = "$baseUrl/api/producer/post/getMyPosts";
+const String getMenuApiUrl = "$baseUrl/api/producer/profile/getMenu";
+const String getProducerGalleryApiUrl = "$baseUrl/api/producer/profile/getGalleryImages";
+const String getProducerDocumentApiUrl = "$baseUrl/api/producer/auth/getProducerDocuments";
+const String submitProducerDocumentApiUrl = "$baseUrl/api/producer/auth/submitDocuments";
+
+
+
+
+
+
 
 const String getProducerPlacesApiUrl = "$baseUrl/api/producer/post/getProducerPlaces";
 const String saveResRatingApiUrl = "$baseUrl/api/producer/post/saveRatings";
 const String createProducerChoiceApiUrl = "$baseUrl/api/producer/post/createProducerPost";
 const String saveDocumentApiUrl = "$baseUrl/api/producer/auth/saveDocument";
+const String updatePasswordApiUrl = "$baseUrl/api/producer/profile/updatePassword";
+const String deleteProducerDocumentApiUrl = "$baseUrl/api/producer/auth/deleteDocument";
+const String updateProducerDocumentApiUrl = "$baseUrl/api/producer/auth/updateDocuments";
 
 const String setSlotDurationApiUrl = "$baseUrl/api/producer/profile/setSlotDuration";
 const String getProducerSlotsApiUrl = "$baseUrl/api/producer/profile/getProducerSlots";

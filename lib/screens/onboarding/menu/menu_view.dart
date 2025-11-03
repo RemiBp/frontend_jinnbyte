@@ -22,6 +22,45 @@ class MenuView extends StatefulWidget {
 
 class _MenuViewState extends State<MenuView> {
   List<MenuGroup> menuGroups = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadMenuData();
+    });
+  }
+
+  Future<void> _loadMenuData() async {
+    setState(() => isLoading = true);
+
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+    final response = await provider.getMenu(context);
+
+    if (response != null && response.menu != null) {
+      final fetchedMenuGroups = response.menu!.map((menu) {
+        final dishes = menu.dishes?.map((dish) {
+          return Dish(
+            name: dish.name ?? '',
+            description: dish.description ?? '',
+            price: dish.price ?? 0,
+          );
+        }).toList() ?? [];
+
+        return MenuGroup(title: menu.name ?? '', dishes: dishes);
+      }).toList();
+
+      setState(() {
+        menuGroups = fetchedMenuGroups ?? [];
+      });
+    } else {
+      Toasts.getErrorToast(text: "Failed to load menu");
+    }
+
+    setState(() => isLoading = false);
+  }
+
 
   void addCategory(String title) {
     setState(() {
@@ -162,61 +201,61 @@ class _MenuViewState extends State<MenuView> {
             // ),
             SizedBox(height: getHeight() * 0.02),
             Expanded(
-              child:
-                  menuGroups.isEmpty
-                      ? Center(
-                        child: CustomText(
-                          text:
-                              "${al.noCategoriesAddedYet}\n${al.tapAddCategoryTitle}",
-                          fontSize: sizes?.fontSize16,
-                          color: AppColors.primarySlateColor,
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                      : ListView.builder(
-                        itemCount: menuGroups.length,
-                        itemBuilder: (context, index) {
-                          return MenuGroupWidget(
-                            menuGroup: menuGroups[index],
-                            showOption: true,
-                            onAddDish: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return AddDishBottomSheet(
-                                    context: context,
-                                    onAddDish: (dish) {
-                                      addDishToCategory(index, dish);
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            onEditDish: (dishIndex, dish) {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return AddDishBottomSheet(
-                                    context: context,
-                                    dish: dish,
-                                    onAddDish: (updatedDish) {
-                                      editDish(index, dishIndex, updatedDish);
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            onDeleteDish: (dishIndex) {
-                              deleteDish(index, dishIndex);
-                            },
-                            onDeleteCategory: () {
-                              deleteCategory(index);
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : menuGroups.isEmpty
+                  ? Center(
+                child: CustomText(
+                  text: "${al.noCategoriesAddedYet}\n${al.tapAddCategoryTitle}",
+                  fontSize: sizes?.fontSize16,
+                  color: AppColors.primarySlateColor,
+                  textAlign: TextAlign.center,
+                ),
+              )
+                  : ListView.builder(
+                itemCount: menuGroups.length,
+                itemBuilder: (context, index) {
+                  return MenuGroupWidget(
+                    menuGroup: menuGroups[index],
+                    showOption: true,
+                    onAddDish: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return AddDishBottomSheet(
+                            context: context,
+                            onAddDish: (dish) {
+                              addDishToCategory(index, dish);
                             },
                           );
                         },
-                      ),
+                      );
+                    },
+                    onEditDish: (dishIndex, dish) {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return AddDishBottomSheet(
+                            context: context,
+                            dish: dish,
+                            onAddDish: (updatedDish) {
+                              editDish(index, dishIndex, updatedDish);
+                            },
+                          );
+                        },
+                      );
+                    },
+                    onDeleteDish: (dishIndex) {
+                      deleteDish(index, dishIndex);
+                    },
+                    onDeleteCategory: () {
+                      deleteCategory(index);
+                    },
+                  );
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(

@@ -163,59 +163,72 @@ class  NetworkProvider extends ChangeNotifier{
   Future<String?> getUrlForDocumentUpload(
       File file,
       BuildContext context, {
-        Function(int sent, int total)? onSendProgress, // ✅ new param
+        Function(int sent, int total)? onSendProgress,
       }) async {
     try {
       _loader.showLoader(context: context);
 
-      final Uint8List fileBytes = await file.readAsBytes();
       final String fileName = basename(file.path);
-
-      Map<String, dynamic> header = {"Content-Type": "application/json"};
-      Map<String, dynamic> body = {
+      final body = {
         "fileName": fileName,
         "contentType": "application/pdf",
-        "folderName": "BusinessDocuments"
+        "folderName": "BusinessDocuments",
       };
 
       debugPrint("📄 PreSigned Document Upload Body: $body");
 
       final response = await MyApi.callPostApi(
         url: preSignedFileUploadApiUrl,
-        myHeaders: header,
+        myHeaders: {"Content-Type": "application/json"},
         body: body,
       );
 
-      if (response?["url"] != null) {
-        debugPrint("✅ PreSigned Document URL: ${response?["url"]}");
+      final preSignedUrl = response?["url"];
+      final keyName = response?["keyName"];
 
-        final success = await uploadImageByUrl(
-          response?["url"],
-          fileBytes,
-          onSendProgress: onSendProgress, // ✅ pass it here
-        );
-
+      if (preSignedUrl == null || keyName == null) {
         _loader.hideLoader(context);
-
-        if (success) {
-          debugPrint("📦 Document uploaded successfully to S3");
-          return response?["keyName"];
-        } else {
-          Toasts.getErrorToast(text: al.failedToUploadDocument);
-          return null;
-        }
-      } else {
-        _loader.hideLoader(context);
-        Toasts.getErrorToast(text: al.failedToGetUploadUrl);
+        Toasts.getErrorToast(text: "Failed to get PreSigned URL");
         return null;
       }
-    } catch (err) {
-      debugPrint("❌ Error in getUrlForDocumentUpload: $err");
+
+      debugPrint("✅ Got PreSigned URL: $preSignedUrl");
+      debugPrint("🗝️ KeyName: $keyName");
+
+      final dio = Dio();
+
+      // IMPORTANT: S3 only expects content-type header, nothing else.
+      final headers = {"Content-Type": "application/pdf",};
+
+      final uploadResponse = await dio.put(
+        preSignedUrl,
+        data: await file.readAsBytes(),
+        options: Options(headers: headers),
+        onSendProgress: (sent, total) {
+          if (onSendProgress != null) onSendProgress(sent, total);
+          final progress = total > 0 ? (sent / total * 100).toStringAsFixed(1) : "0";
+          debugPrint("📤 Uploading... $progress%");
+        },
+      );
+
       _loader.hideLoader(context);
-      Toasts.getErrorToast(text: al.failedToUploadDocument);
+
+      if (uploadResponse.statusCode == 200) {
+        debugPrint("✅ Document uploaded successfully to S3");
+        return keyName; // return to be used in PUT API
+      } else {
+        debugPrint("❌ Upload failed. Status: ${uploadResponse.statusCode}");
+        Toasts.getErrorToast(text: "Failed to upload document");
+        return null;
+      }
+    } catch (e) {
+      debugPrint("❌ Error in getUrlForDocumentUpload: $e");
+      _loader.hideLoader(context);
+      Toasts.getErrorToast(text: "Error uploading document");
       return null;
     }
   }
+
 
 
 }

@@ -136,9 +136,112 @@ class ReclaimAccountProvider extends ChangeNotifier {
   }
 
 
-  Future<void> uploadBusinessDocument() async {
+  // Future<void> uploadBusinessDocument() async {
+  //   try {
+  //     // 1 Pick PDF file
+  //     final result = await FilePicker.platform.pickFiles(
+  //       type: FileType.custom,
+  //       allowedExtensions: ['pdf'],
+  //     );
+  //
+  //     if (result == null) {
+  //       Toasts.getErrorToast(text: al.noFileSelected);
+  //       return;
+  //     }
+  //
+  //     final file = File(result.files.single.path!);
+  //     selectedDoc = result.files.single;
+  //     notifyListeners();
+  //
+  //     // Reset and start upload progress
+  //     isUploading = true;
+  //     setUploadProgress(0);
+  //
+  //     final networkProvider = context?.read<NetworkProvider>();
+  //
+  //     // If your `getUrlForDocumentUpload` supports Dio upload with progress, do this:
+  //     final uploadedKey = await networkProvider?.getUrlForDocumentUpload(
+  //       file,
+  //       context!,
+  //       onSendProgress: (sent, total) {
+  //         if (total > 0) setUploadProgress(sent / total);
+  //       },
+  //     );
+  //
+  //     //  If it doesn't support progress, simulate a progress bar:
+  //     if (uploadedKey == null) {
+  //       for (int i = 1; i <= 10; i++) {
+  //         await Future.delayed(const Duration(milliseconds: 150));
+  //         setUploadProgress(i / 10);
+  //       }
+  //     }
+  //
+  //     if (uploadedKey == null) {
+  //       Toasts.getErrorToast(text: al.failedToUploadDocument);
+  //       isUploading = false;
+  //       setUploadProgress(0);
+  //       return;
+  //     }
+  //
+  //     uploadedDocUrl = uploadedKey;
+  //     setUploadProgress(1.0);
+  //     isUploading = false;
+  //     notifyListeners();
+  //
+  //     // 3 Save document details in backend
+  //     final saveResponse = await MyApi.callPostApi(
+  //       url: saveDocumentApiUrl,
+  //       body: {
+  //         "type": "business_registration",
+  //         "fileUrl": uploadedKey,
+  //       },
+  //     );
+  //
+  //     if (saveResponse?["status"] == 200 || saveResponse?["status"] == 201) {
+  //       Toasts.getSuccessToast(
+  //         text: saveResponse?["message"] ?? al.documentSavedSuccessfully,
+  //       );
+  //     } else {
+  //       Toasts.getErrorToast(
+  //         text: saveResponse?["message"] ?? al.failedToSaveDocument,
+  //       );
+  //     }
+  //   } catch (err) {
+  //     debugPrint("❌ uploadBusinessDocument error: $err");
+  //     Toasts.getErrorToast(text: al.unexpectedErrorWhileUploading);
+  //   } finally {
+  //     isUploading = false;
+  //     notifyListeners();
+  //   }
+  // }
+
+  Future<void> submitProducerDocuments({
+    required Map<String, dynamic> documentsData,
+  }) async {
     try {
-      // 1️⃣ Pick PDF file
+      _loader.showLoader(context: context);
+
+
+      final response = await MyApi.callPostApi(
+        url: submitProducerDocumentApiUrl,
+        body: documentsData,
+      );
+
+      _loader.hideLoader(context!);
+
+      if (response?["message"] == "Documents submitted successfully") {
+        Toasts.getSuccessToast(text: response?["message"]);
+      } else {
+        Toasts.getErrorToast(text: response?["message"] ?? "Failed to submit documents");
+      }
+    } catch (err) {
+      _loader.hideLoader(context!);
+      debugPrint("❌ Error submitting documents: $err");
+      Toasts.getErrorToast(text: "Error submitting documents");
+    }
+  }
+  Future<void> uploadAndSubmitDocuments() async {
+    try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
@@ -150,16 +253,9 @@ class ReclaimAccountProvider extends ChangeNotifier {
       }
 
       final file = File(result.files.single.path!);
-      selectedDoc = result.files.single;
-      notifyListeners();
-
-      // Reset and start upload progress
-      isUploading = true;
-      setUploadProgress(0);
-
       final networkProvider = context?.read<NetworkProvider>();
 
-      // ⚡ If your `getUrlForDocumentUpload` supports Dio upload with progress, do this:
+      // Step 1: Upload file to S3
       final uploadedKey = await networkProvider?.getUrlForDocumentUpload(
         file,
         context!,
@@ -168,50 +264,21 @@ class ReclaimAccountProvider extends ChangeNotifier {
         },
       );
 
-      // 🧩 If it doesn't support progress, simulate a progress bar:
-      if (uploadedKey == null) {
-        for (int i = 1; i <= 10; i++) {
-          await Future.delayed(const Duration(milliseconds: 150));
-          setUploadProgress(i / 10);
-        }
-      }
-
       if (uploadedKey == null) {
         Toasts.getErrorToast(text: al.failedToUploadDocument);
-        isUploading = false;
-        setUploadProgress(0);
         return;
       }
 
-      uploadedDocUrl = uploadedKey;
-      setUploadProgress(1.0);
-      isUploading = false;
-      notifyListeners();
+      // Step 2: Submit document data
+      final documentData = {
+        "document1": uploadedKey,
+        "document1Expiry": "2025-11-01", // for demo, you can make it dynamic later
+      };
 
-      // 3️⃣ Save document details in backend
-      final saveResponse = await MyApi.callPostApi(
-        url: saveDocumentApiUrl,
-        body: {
-          "type": "business_registration",
-          "fileUrl": uploadedKey,
-        },
-      );
-
-      if (saveResponse?["status"] == 200 || saveResponse?["status"] == 201) {
-        Toasts.getSuccessToast(
-          text: saveResponse?["message"] ?? al.documentSavedSuccessfully,
-        );
-      } else {
-        Toasts.getErrorToast(
-          text: saveResponse?["message"] ?? al.failedToSaveDocument,
-        );
-      }
-    } catch (err) {
-      debugPrint("❌ uploadBusinessDocument error: $err");
-      Toasts.getErrorToast(text: al.unexpectedErrorWhileUploading);
-    } finally {
-      isUploading = false;
-      notifyListeners();
+      await submitProducerDocuments(documentsData: documentData);
+    } catch (e) {
+      debugPrint("❌ uploadAndSubmitDocuments error: $e");
+      Toasts.getErrorToast(text: al.failedToUploadDocument);
     }
   }
 

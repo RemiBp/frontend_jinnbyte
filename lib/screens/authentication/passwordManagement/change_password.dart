@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 
 import '../../../customWidgets/common_app_bar.dart';
 import '../../../l18n.dart';
+import '../../../res/toasts.dart';
 import '../../authentication/passwordManagement/password_provider.dart';
+import '../../restaurant/profile/profile_provider.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -118,11 +120,33 @@ class _ChangePassword extends State<ChangePassword> {
             Expanded(
               child: CustomButton(
                 buttonText: al.saveChanges,
+
                 onTap: () {
-                  // Only handle UI, no API call here
+                    final currentPassword = currentPasswordController.text.trim();
+                    final newPassword = newPasswordController.text.trim();
+                    final confirmPassword = confirmPasswordController.text.trim();
+
+                    final provider = context.read<ProfileProvider>();
+                    provider.init(context); // This line is REQUIRED before using context-dependent code
+
+                    if (currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
+                      Toasts.getErrorToast(text: "All fields are required");
+                      return;
+                    }
+
+                    if (newPassword != confirmPassword) {
+                      Toasts.getErrorToast(text: "Passwords do not match");
+                      return;
+                    }
+
+                    context.read<ProfileProvider>().updatePassword(
+                      currentPassword: currentPassword,
+                      newPassword: newPassword,
+                      confirmPassword: confirmPassword,
+                    );
                 },
                 backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                textColor: Colors.white,
+                textColor: AppColors.whiteColor,
                 borderColor: AppColors.getPrimaryColorFromContext(context),
               ),
             ),
@@ -132,4 +156,5 @@ class _ChangePassword extends State<ChangePassword> {
     );
   }
 }
+
 
