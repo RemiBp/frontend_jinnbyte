@@ -1052,6 +1052,42 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> updateRestaurantSlots({required List<int> slotIds}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "slots": slotIds.map((id) => {
+          "id": id,
+          "isActive": false,
+        }).toList(),
+      };
+
+      debugPrint("update slots body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: updateRestaurantSlotsApiUrl,
+        body: body,
+      );
+
+      debugPrint("update slots response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: 'slots update successfully');
+        return true;
+      } else {
+        Toasts.getErrorToast(text: 'Failed to update slots');
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error updating slots: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: 'Failed to update slots');
+      return false;
+    }
+  }
 
   @override
   void dispose() {

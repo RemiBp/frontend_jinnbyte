@@ -13,6 +13,9 @@ import '../../../customWidgets/custom_text.dart';
 import '../../../customWidgets/text_field_label.dart';
 import '../../../l18n.dart';
 import '../../../res/res.dart';
+import '../../../res/toasts.dart';
+import '../../../userRole/role_provider.dart';
+import '../../../userRole/user_role.dart';
 import '../day_off/days_off_view.dart';
 
 
@@ -318,12 +321,41 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                     ),
                     CustomButton(
                       buttonText: al.saveChanges,
-                      onTap: () {
-                        _saveSlotSelections();
-                        if(isEdit) {
-                          context.pop();
+                      onTap: () async {
+                        final roleProvider = Provider.of<RoleProvider>(context, listen: false);
+                        final isRestaurant = roleProvider.role == UserRole.restaurant;
+                        
+                        // Collect all selected slot IDs from all days
+                        List<int> allSelectedSlotIds = [];
+                        for (String day in selectedDayWiseSlots.keys) {
+                          List<int> daySlots = selectedDayWiseSlots[day] ?? [];
+                          allSelectedSlotIds.addAll(daySlots);
                         }
-                        context.go(Routes.restaurantBottomTabRoute);
+                        
+                        if (isRestaurant) {
+                          if (allSelectedSlotIds.isEmpty) {
+                            Toasts.getErrorToast(text: 'Please select at least one slot');
+                            return;
+                          }
+                          
+                          final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+                          profileProvider.init(context);
+                          final success = await profileProvider.updateRestaurantSlots(slotIds: allSelectedSlotIds);
+                          
+                          if (success) {
+                            _saveSlotSelections();
+                            if(isEdit) {
+                              context.pop();
+                            }
+                            context.go(Routes.restaurantBottomTabRoute);
+                          }
+                        } else {
+                          _saveSlotSelections();
+                          if(isEdit) {
+                            context.pop();
+                          }
+                          context.go(Routes.restaurantBottomTabRoute);
+                        }
                       },
                       buttonWidth: getWidth() * .42,
                       backgroundColor: AppColors.getPrimaryColorFromContext(context),
