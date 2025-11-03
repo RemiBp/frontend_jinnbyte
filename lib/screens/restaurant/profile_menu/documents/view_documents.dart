@@ -54,7 +54,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
 
   Future<void> updateAndUploadDocument(String documentField) async {
     try {
-      // Step 1️⃣ Pick a file (PDF only)
+      // Step 1 Pick a file (PDF only)
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
@@ -69,10 +69,10 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
       final networkProvider = context.read<NetworkProvider>();
       final profileProvider = context.read<ProfileProvider>();
 
-      // Step 2️⃣ Show uploading loader
+      // Step 2 Show uploading loader
       setState(() => isLoading = true);
 
-      // Step 3️⃣ Get pre-signed URL and upload to S3
+      // Step 3 Get pre-signed URL and upload to S3
       final uploadedKey = await networkProvider.getUrlForDocumentUpload(
         file,
         context,
@@ -89,7 +89,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         return;
       }
 
-      // Step 4️⃣ Call updateDocument API with uploaded S3 key
+      // Step 4 Call updateDocument API with uploaded S3 key
       final response = await profileProvider.updateDocument(
         documentField: documentField,
         documentValue: uploadedKey,
@@ -98,7 +98,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
 
       setState(() => isLoading = false);
 
-      // Step 5️⃣ Handle response
+      // Step 5 Handle response
       if (response != null && response.status == 200) {
         Toasts.getSuccessToast(
           text: response.message ?? "Document updated successfully",
@@ -113,8 +113,6 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
       Toasts.getErrorToast(text: "Something went wrong");
     }
   }
-
-
 
 
   Future<void> _deleteDocument(String documentKey) async {

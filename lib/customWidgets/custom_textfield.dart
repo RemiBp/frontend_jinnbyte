@@ -1,4 +1,3 @@
-import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

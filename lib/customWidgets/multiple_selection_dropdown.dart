@@ -1,6 +1,5 @@
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:flutter/material.dart';
-import '../appAssets/app_assets.dart';
 import '../appColors/colors.dart';
 import '../res/res.dart';
 import '../screens/onboarding/add_cuisine/add_cuisine.dart';
