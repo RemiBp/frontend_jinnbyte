@@ -91,7 +91,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
             SizedBox(
               height: 56,
               child: DropdownButtonFormField<String>(
-                initialValue: selectedDocTitle,
+                // initialValue: selectedDocTitle,
                 hint: CustomText(
                   text: al.selectDocument,
                   fontSize: 14,

@@ -13,7 +13,7 @@ class CustomerAllPostsResponse {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add( Data.fromJson(v));
       });
     }
   }
@@ -98,7 +98,7 @@ class Data {
       });
     }
     producer = json['producer'] != null
-        ? new Producer.fromJson(json['producer'])
+        ?  Producer.fromJson(json['producer'])
         : null;
     user = json['user'] != null ?  User.fromJson(json['user']) : null;
   }
@@ -192,7 +192,7 @@ class Producer {
   String? placeId;
   String? latitude;
   String? longitude;
-  String? locationPoint;
+  var locationPoint;
   int? rating;
   String? phoneNumber;
   String? website;
