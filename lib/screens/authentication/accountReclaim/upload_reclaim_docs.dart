@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account_provider.dart';
@@ -91,7 +92,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
             SizedBox(
               height: 56,
               child: DropdownButtonFormField<String>(
-                // initialValue: selectedDocTitle,
+                value: selectedDocTitle,
                 hint: CustomText(
                   text: al.selectDocument,
                   fontSize: 14,
@@ -137,10 +138,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                     ),
                   );
                 }).toList(),
-                onChanged: (value) async {
-                  _loader.showLoader(context: context);
-                  await Future.delayed(const Duration(seconds: 1));
-                  _loader.hideLoader(context);
+                onChanged: (value) {
                   setState(() {
                     selectedDocTitle = value;
                   });
@@ -167,7 +165,7 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
 
               InkWell(
                 onTap: () async {
-                  await provider.uploadBusinessDocument();
+                  await provider.uploadAndSubmitDocuments();
                 },
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -189,7 +187,8 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                           ),
                           SizedBox(height: getHeight() * .01),
 
-                          if (provider.isUploading) ...[
+                          if (provider.uploadProgress > 0 &&
+                              provider.uploadProgress < 1) ...[
                             LinearProgressIndicator(
                               value: provider.uploadProgress,
                               backgroundColor: AppColors.greyBordersColor,
@@ -202,21 +201,6 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
                               "${(provider.uploadProgress * 100).toStringAsFixed(0)}% uploaded",
                               fontSize: sizes!.fontSize12,
                               color: AppColors.primarySlateColor,
-                            ),
-                          ] else if (provider.selectedDoc != null) ...[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
-                                const SizedBox(width: 6),
-                                Flexible(
-                                  child: CustomText(
-                                    text: provider.selectedDoc?.name ?? "",
-                                    fontSize: sizes!.fontSize12,
-                                    color: AppColors.primarySlateColor,
-                                  ),
-                                ),
-                              ],
                             ),
                           ] else ...[
                             CustomText(
@@ -240,25 +224,9 @@ class _UploadReclaimDocsState extends State<UploadReclaimDocs> {
 
             const Spacer(),
 
-            // Continue button
             CustomButton(
               buttonText: al.continueText,
-              onTap: () async {
-                if (selectedDocTitle == null) {
-                  Toasts.getErrorToast(text: al.pleaseSelectDocumentFirst);
-                  return;
-                }
-
-                if (provider.selectedDoc == null) {
-                  Toasts.getErrorToast(text: al.pleaseUploadDocumentFirst);
-                  return;
-                }
-
-                _loader.showLoader(context: context);
-                await Future.delayed(const Duration(seconds: 1));
-                _loader.hideLoader(context);
-
-                Toasts.getSuccessToast(text: al.documentUploadedSuccessfully);
+              onTap: () {
                 context.push(Routes.restaurantProfileRoute);
               },
             ),

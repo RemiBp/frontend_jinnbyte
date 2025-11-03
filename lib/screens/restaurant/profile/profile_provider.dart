@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:choice_app/models/get_all_service_types_response.dart';
@@ -6,16 +7,21 @@ import 'package:choice_app/models/get_menu_categories_response.dart';
 import 'package:choice_app/models/get_producer_operational_hours_response.dart';
 import 'package:choice_app/models/get_producer_profile_response.dart';
 import 'package:choice_app/models/get_producer_slots_response.dart';
+import 'package:choice_app/models/producer_update_document_response.dart';
 import 'package:choice_app/network/models.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:provider/provider.dart';
 
-import '../../../appColors/colors.dart';
 import '../../../l18n.dart';
+import '../../../models/get_document_response.dart';
+import '../../../models/get_gallery_image_response.dart';
+import '../../../models/get_menu_response.dart';
 import '../../../network/API.dart';
 import '../../../network/api_url.dart';
+import '../../../network/network_provider.dart';
 import '../../../res/loader.dart';
 import '../../../res/toasts.dart';
 
@@ -627,6 +633,167 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<GetMenuResponse?> getMenu(BuildContext context) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getMenuApiUrl,
+        modelName: Models.restaurantGetMenuModel,
+      );
+
+      debugPrint("🍽 Get Menu Response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch menus");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("❌ Error getting menus: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to fetch menus");
+      return null;
+    }
+  }
+  Future<GetGalleryImagesResponse?> getGalleryImages(BuildContext context) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getProducerGalleryApiUrl,
+        modelName: Models.producerGetGalleryImagesModel,
+      );
+
+      debugPrint("Get gallery images response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed To Fetch Gallery Images");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting gallery images: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed To Fetch Gallery Images");
+      return null;
+    }
+  }
+
+  Future<GetDocumentsResponse?> getDocuments(BuildContext context) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callGetApi(
+        url: getProducerDocumentApiUrl,
+        modelName: Models.getProducerDocumentModel,
+      );
+
+      debugPrint("Get documents response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        return response;
+      } else {
+        Toasts.getErrorToast(text: "Failed to fetch Documents");
+        return null;
+      }
+    } catch (err) {
+      debugPrint("Error getting documents: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Failed to fetch Documents");
+      return null;
+    }
+  }
+
+  Future<ProducerUpdateDocumentResponse?> updateDocument({
+    required String documentField,
+    required String documentValue,
+    required DateTime expiryDate,
+  }) async {
+    try {
+      final body = {
+        documentField: documentValue,
+        "${documentField}Expiry": expiryDate.toIso8601String(),
+      };
+
+      debugPrint("📝 Update Document Body: $body");
+
+      final response = await MyApi.callPutApi(
+        url: updateProducerDocumentApiUrl,
+        body: body,
+        modelName: Models.producerUpdateDocumentModel,
+      );
+
+      if (response != null &&
+          response.status == 200 &&
+          response.message != null) {
+        debugPrint("✅ Document updated successfully");
+        Toasts.getSuccessToast(text: response.message ?? "Updated");
+        return response; // <-- Return full model
+      } else {
+        debugPrint("❌ Failed to update document: $response");
+        Toasts.getErrorToast(text: "Failed to update document");
+        return null;
+      }
+    } catch (e) {
+      debugPrint("❌ Error in updateDocument: $e");
+      Toasts.getErrorToast(text: "Something went wrong");
+      return null;
+    }
+  }
+
+
+
+
+
+
+
+  Future<bool> deleteDocument({required String documentField}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final response = await MyApi.callDeleteApi(
+        url: deleteProducerDocumentApiUrl, // Make sure this URL is defined in ApiUrl
+        body: {
+          "documentField": documentField,
+        },
+        modelName: Models.producerDeleteDocumentModel,
+      );
+
+      _loader.hideLoader(context!);
+
+      if (response != null &&
+          response.status == 200 &&
+          response.message != null) {
+        Toasts.getSuccessToast(text: response.message ?? "Document Deleted Successfully");
+        // Optionally refresh documents after delete
+        await getDocuments(context!);
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to delete document");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("Error deleting document: $e");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Something went wrong while deleting document");
+      return false;
+    }
+  }
+
+
+
+
+
+
   Future<bool> setSlotDuration({required int slotDuration}) async {
     try {
       _loader.showLoader(context: context);
@@ -842,6 +1009,82 @@ class ProfileProvider extends ChangeNotifier {
       debugPrint("Error adding unavailable slots: $err");
       _loader.hideLoader(context!);
       Toasts.getErrorToast(text: 'Failed to add unavailable slots');
+      return false;
+    }
+  }
+
+  Future<void> updatePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      _loader.showLoader(context: context);
+
+      final Map<String, dynamic> body = {
+        "currentPassword": currentPassword,
+        "newPassword": newPassword,
+        "confirmPassword": confirmPassword,
+      };
+
+      debugPrint("PATCH update password body → $body");
+
+      final response = await MyApi.callPatchApi(
+        url: updatePasswordApiUrl,
+        body: body,
+        modelName: null, // No model, since the response is just a message
+      );
+
+      debugPrint("PATCH response → $response");
+
+      if (response != null && response["message"] != null) {
+        Toasts.getSuccessToast(text: response["message"]);
+        Navigator.pop(context!); // close screen after success
+      } else {
+        Toasts.getErrorToast(text: "Failed to update password");
+      }
+
+      _loader.hideLoader(context!);
+    } catch (err) {
+      debugPrint("❌ Error in updatePassword: $err");
+      Toasts.getErrorToast(text: "Something went wrong");
+      _loader.hideLoader(context!);
+    }
+  }
+
+  Future<bool> updateRestaurantSlots({required List<int> slotIds}) async {
+    try {
+      _loader.showLoader(context: context);
+
+      Map<String, dynamic> body = {
+        "slots": slotIds.map((id) => {
+          "id": id,
+          "isActive": false,
+        }).toList(),
+      };
+
+      debugPrint("update slots body: $body");
+
+      final response = await MyApi.callPostApi(
+        url: updateRestaurantSlotsApiUrl,
+        body: body,
+      );
+
+      debugPrint("update slots response: $response");
+
+      _loader.hideLoader(context!);
+
+      if (response != null) {
+        Toasts.getSuccessToast(text: 'slots update successfully');
+        return true;
+      } else {
+        Toasts.getErrorToast(text: 'Failed to update slots');
+        return false;
+      }
+    } catch (err) {
+      debugPrint("Error updating slots: $err");
+      _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: 'Failed to update slots');
       return false;
     }
   }

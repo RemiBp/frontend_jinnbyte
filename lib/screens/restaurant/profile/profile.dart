@@ -9,7 +9,6 @@ import 'package:choice_app/res/toasts.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_widgets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';

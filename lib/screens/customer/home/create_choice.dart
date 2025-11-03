@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:choice_app/appColors/colors.dart';
+import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/screens/customer/home/choice_provider.dart';
 import 'package:flutter/material.dart';
@@ -111,11 +112,7 @@ class _CreateChoiceState extends State<CreateChoice> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title:  Text(al.createChoice),
-        leading: const BackButton(),
-        elevation: 0,
-      ),
+      appBar: CommonAppBar(title: al.createChoice),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: getWidth() * .05, vertical: getHeight() * .02),
         child: Column(

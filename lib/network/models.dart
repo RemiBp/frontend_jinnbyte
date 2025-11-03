@@ -4,12 +4,17 @@ import 'package:choice_app/models/customer_profile_response.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
+import 'package:choice_app/models/get_document_response.dart';
+import 'package:choice_app/models/get_gallery_image_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
+import 'package:choice_app/models/get_menu_response.dart';
 import 'package:choice_app/models/get_producer_operational_hours_response.dart';
 import 'package:choice_app/models/get_producer_places.dart';
 import 'package:choice_app/models/get_producer_profile_response.dart';
 
 import 'package:choice_app/models/get_producer_slots_response.dart';
+import 'package:choice_app/models/producer_delete_document_response.dart';
+import 'package:choice_app/models/producer_update_document_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
 import '../models/error_model.dart';
@@ -37,6 +42,16 @@ class Models {
   static const String getProducerProfileModel = "GET_PRODUCER_PROFILE_MODEL";
   static const String getProducerOperationalHoursModel =
       "GET_PRODUCER_OPERATIONAL_HOURS_MODEL";
+  static const String restaurantGetMenuModel = "RESTAURANT_GET_MENU_MODEL";
+  static const String producerGetGalleryImagesModel =
+      "PRODUCER_GET_GALLERY_IMAGES_MODEL";
+  static const String getProducerDocumentModel =
+      "GET_DOCUMENT_MODEL";
+  static const String producerUpdateDocumentModel =
+      "PRODUCER_UPDATE_DOCUMENT_MODEL";
+  static const String producerDeleteDocumentModel =
+      "PRODUCER_DELETE_DOCUMENT_MODEL";
+
 
   static Future<dynamic> getModelObject(
     String modelName,
@@ -71,6 +86,16 @@ class Models {
         return GetProducerProfileResponse.fromJson(json);
       case getProducerOperationalHoursModel:
         return GetProducerOperationalHoursResponse.fromJson(json);
+      case restaurantGetMenuModel:
+        return GetMenuResponse.fromJson(json);
+      case producerGetGalleryImagesModel:
+        return GetGalleryImagesResponse.fromJson(json);
+      case getProducerDocumentModel:
+        return GetDocumentsResponse.fromJson(json);
+      case producerUpdateDocumentModel:
+        return ProducerUpdateDocumentResponse.fromJson(json);
+      case producerDeleteDocumentModel:
+        return ProducerDeleteDocumentResponse.fromJson(json);
     }
   }
 }

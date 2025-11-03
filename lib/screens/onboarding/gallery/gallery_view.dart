@@ -29,17 +29,45 @@ class _GalleryViewState extends State<GalleryView> {
   final ImagePicker imgPicker = ImagePicker();
   List<XFile> selectedImages = [];
 
+  List<String> galleryImages = []; // existing images from API
+  bool isLoading = false;
+
   ScrollController scrollController = ScrollController();
-  NetworkProvider networkProvider = NetworkProvider();
+  late NetworkProvider networkProvider;
 
   @override
   void initState() {
     super.initState();
-
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadGalleryImages();
+    });
   }
 
+  // Fetch gallery images from API
+  Future<void> _loadGalleryImages() async {
+    setState(() => isLoading = true);
+
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final response = await profileProvider.getGalleryImages(context);
+
+    if (response != null && response.images != null) {
+      setState(() {
+        galleryImages = response.images!
+            .map((img) => img.url ?? '')
+            .where((url) => url.isNotEmpty)
+            .toList();
+      });
+    } else {
+      Toasts.getErrorToast(text: "Failed to load gallery images");
+    }
+
+    setState(() => isLoading = false);
+  }
+
+  // Pick multiple images
   Future<void> pickImages() async {
     try {
       final List<XFile> images = await imgPicker.pickMultiImage();
@@ -76,72 +104,66 @@ class _GalleryViewState extends State<GalleryView> {
       appBar: CommonAppBar(title: al.gallery),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-        child:Column(
+        child: Column(
           children: [
             SizedBox(height: getHeightRatio() * 16),
             Expanded(
-                child:
-                // provider.isDataFetched?
-                ListView(
-                  controller: scrollController,
-                  padding: EdgeInsets.symmetric(
-                    vertical: getHeight() * 0.02,
-                  ),
-                  children: [
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        ...selectedImages.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final imageFile = entry.value;
-                          return GalleryCard(
-                            isMainImage: index == 0,
-                            imageFile: imageFile.path,
-                            onSetMainImage: () {
-                              setMainImage(index);
-                            },
-                            onRemoveImage: () {
-                              removeImage(index);
-                            },
-                          );
-                        }),
-                        AddImageCard(
-                          onAddImages: () {
-                            pickImages();
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView(
+                controller: scrollController,
+                padding: EdgeInsets.symmetric(
+                  vertical: getHeight() * 0.02,
+                ),
+                children: [
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      // Already uploaded gallery images (from API)
+                      ...galleryImages.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final url = entry.value;
+
+                        return GalleryCard(
+                          isMainImage: index == 0,
+                          imageFile: url,
+                          onSetMainImage: () {}, // no-op in settings
+                          onRemoveImage: () {
+                            removeImage(index);
                           },
-                        ),
-                      ],
-                    )
-                    // Wrap(
-                    //   spacing: 8,
-                    //   runSpacing: 8,
-                    //   children: [
-                    //     if(provider.restaurantImagesResponse.images!.isNotEmpty)
-                    //     ...provider.restaurantImagesResponse.images!.asMap().entries.map((entry) {
-                    //       final index = entry.key;
-                    //       String url = entry.value.imageUrl??"";
-                    //
-                    //       return GalleryCard(
-                    //         isMainImage: index == 0,
-                    //         imageFile: url,
-                    //         onSetMainImage: (){
-                    //         },
-                    //         onRemoveImage: () {
-                    //         },
-                    //       );
-                    //     }),
-                    //     AddImageCard(
-                    //         onAddImages: (){},
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                )
-              //     :const Center(
-              //   child: CircularProgressIndicator(),
-              // ),
+                        );
+                      }),
+
+                      //  Newly picked (local) images
+                      ...selectedImages.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final imageFile = entry.value;
+                        return GalleryCard(
+                          isMainImage: false,
+                          imageFile: imageFile.path,
+                          onSetMainImage: () {
+                            setMainImage(index);
+                          },
+                          onRemoveImage: () {
+                            removeImage(index);
+                          },
+                        );
+                      }),
+
+                      //  Add new image button
+                      AddImageCard(
+                        onAddImages: () {
+                          pickImages();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
+
+            //  Action buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -159,27 +181,30 @@ class _GalleryViewState extends State<GalleryView> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
-                    if(selectedImages.isEmpty) {
+                    if (selectedImages.isEmpty) {
                       Toasts.getErrorToast(text: al.pleasePickImage);
                       return;
                     }
+
                     List<String> urls = [];
-                    for(final image in selectedImages) {
+                    for (final image in selectedImages) {
                       final bytes = await image.readAsBytes();
-                      final fileUrl = await networkProvider.getUrlForFileUpload(
-                        bytes,
-                      );
-                      debugPrint('Uploaded file URL: $fileUrl');
-                      if(fileUrl != null) {
+                      final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                      if (fileUrl != null) {
                         urls.add(fileUrl);
                       }
                     }
 
-                    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-                    final success = await profileProvider.setGalleryImages(imageUrls: urls,context: context);
-                    if(success) {
+                    final profileProvider =
+                    Provider.of<ProfileProvider>(context, listen: false);
+                    final success = await profileProvider.setGalleryImages(
+                      imageUrls: urls,
+                      context: context,
+                    );
+
+                    if (success) {
                       final role = context.read<RoleProvider>().role;
-                      if(role == UserRole.restaurant) {
+                      if (role == UserRole.restaurant) {
                         context.push(Routes.restaurantMenuViewRoute);
                       } else {
                         context.push(Routes.slotManagementViewRoute);
@@ -197,11 +222,6 @@ class _GalleryViewState extends State<GalleryView> {
             SizedBox(height: getHeightRatio() * 16),
           ],
         ),
-        // Consumer<GalleryProvider>(
-        //   builder: (_, provider, __) {
-        //     return
-        //   },
-        // ),
       ),
     );
   }
