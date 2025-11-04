@@ -184,6 +184,7 @@ class Producer {
   int? id;
   int? userId;
   String? name;
+  String? description;
   String? address;
   String? city;
   String? country;
@@ -214,6 +215,7 @@ class Producer {
       {this.id,
         this.userId,
         this.name,
+        this.description,
         this.address,
         this.city,
         this.country,
@@ -244,6 +246,7 @@ class Producer {
     id = json['id'];
     userId = json['userId'];
     name = json['name'];
+    description = json['description'];
     address = json['address'];
     city = json['city'];
     country = json['country'];
@@ -276,6 +279,7 @@ class Producer {
     data['id'] = id;
     data['userId'] = userId;
     data['name'] = name;
+    data['description'] = description;
     data['address'] = address;
     data['city'] = city;
     data['country'] = country;

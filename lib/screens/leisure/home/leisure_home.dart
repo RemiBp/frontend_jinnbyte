@@ -16,14 +16,14 @@ import '../../../userRole/user_role.dart';
 import '../../restaurant/home/choice_provider.dart';
 
 
-class WellnessHome extends StatefulWidget {
-  const WellnessHome({super.key});
+class LeisureHome extends StatefulWidget {
+  const LeisureHome({super.key});
 
   @override
-  State<WellnessHome> createState() => _WellnessHomeState();
+  State<LeisureHome> createState() => _LeisureHomeState();
 }
 
-class _WellnessHomeState extends State<WellnessHome> {
+class _LeisureHomeState extends State<LeisureHome> {
 
   ChoiceProvider _choiceProvider = ChoiceProvider();
 

@@ -4,6 +4,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:choice_app/screens/bookings/bookings_view.dart';
 import 'package:choice_app/screens/customer/home/customer_home.dart';
 import 'package:choice_app/screens/customer/maps/customer_maps/customer_maps_view.dart';
+import 'package:choice_app/screens/leisure/home/leisure_home.dart';
 import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
@@ -82,7 +83,9 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     ];
 
     widgets = [
-      role == UserRole.wellness ? WellnessHome() : role == UserRole.user
+      role == UserRole.wellness ? LeisureHome() : role == UserRole.wellness
+          ? WellnessHome()
+          : role == UserRole.user
           ? CustomerHome()
           : RestaurantHome(),
       role == UserRole.user?CustomerMapsView(): HomeView(),
