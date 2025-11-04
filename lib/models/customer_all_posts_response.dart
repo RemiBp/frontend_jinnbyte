@@ -13,7 +13,7 @@ class CustomerAllPostsResponse {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add( Data.fromJson(v));
       });
     }
   }
@@ -98,7 +98,7 @@ class Data {
       });
     }
     producer = json['producer'] != null
-        ? new Producer.fromJson(json['producer'])
+        ?  Producer.fromJson(json['producer'])
         : null;
     user = json['user'] != null ?  User.fromJson(json['user']) : null;
   }
@@ -184,6 +184,7 @@ class Producer {
   int? id;
   int? userId;
   String? name;
+  String? description;
   String? address;
   String? city;
   String? country;
@@ -192,7 +193,7 @@ class Producer {
   String? placeId;
   String? latitude;
   String? longitude;
-  String? locationPoint;
+  var locationPoint;
   int? rating;
   String? phoneNumber;
   String? website;
@@ -214,6 +215,7 @@ class Producer {
       {this.id,
         this.userId,
         this.name,
+        this.description,
         this.address,
         this.city,
         this.country,
@@ -244,6 +246,7 @@ class Producer {
     id = json['id'];
     userId = json['userId'];
     name = json['name'];
+    description = json['description'];
     address = json['address'];
     city = json['city'];
     country = json['country'];
@@ -276,6 +279,7 @@ class Producer {
     data['id'] = id;
     data['userId'] = userId;
     data['name'] = name;
+    data['description'] = description;
     data['address'] = address;
     data['city'] = city;
     data['country'] = country;

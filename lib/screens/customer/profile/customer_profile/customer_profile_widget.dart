@@ -31,11 +31,7 @@ class CustomerChoice extends StatelessWidget {
 }
 
 class CustomerPostCard extends StatelessWidget {
-  final List<String> images = const [
-    'https://www.imagelato.com/images/article-image-ample-service-area-34a39db5.jpg',
-    'https://i.pinimg.com/736x/90/0c/fc/900cfc673204b6debbacd5c63e074565.jpg',
-    'https://content.fortune.com/wp-content/uploads/2019/05/tak-room-rendering-web.jpg',
-  ];
+
 
   const CustomerPostCard({super.key, this.index = 0});
 

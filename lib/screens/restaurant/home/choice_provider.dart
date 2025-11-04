@@ -1,4 +1,5 @@
 import 'package:choice_app/common/utils.dart';
+import 'package:choice_app/models/producer_posts_response.dart';
 import 'package:choice_app/network/API.dart';
 import 'package:choice_app/network/api_url.dart';
 import 'package:choice_app/res/loader.dart';
@@ -7,23 +8,24 @@ import 'package:choice_app/res/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../network/models.dart';
+
 class  ChoiceProvider  extends ChangeNotifier{
 
   final Loader _loader = Loader();
-
-
-
+  ProducerPostsResponse postsResponse = ProducerPostsResponse();
   BuildContext? context;
-
   init(context){
     this.context = context;
   }
+
 
 Future<void> createChoiceApi({
     required String title,
     required String description,
     required String tags,
     required String location,
+    required String type,
     required List<String> images,
 }
     )async{
@@ -32,7 +34,7 @@ Future<void> createChoiceApi({
       final body = {
         "placeId": 21,
         "title":title,
-        "type": "wellness",
+        "type": type,
         "status": "public",
         "description": description,
         "link": "https://yourrestaurant.com/sunday-brunch",
@@ -47,18 +49,41 @@ Future<void> createChoiceApi({
       };
       debugPrint("body for create posst is : $body");
       final response  = await MyApi.callPostApi(
-        url:createUserPostApiUrl,
+        url:createProducerPostApiUrl,
         body: body,
       );
+      await getProducerPosts();
       _loader.hideLoader(context!);
       debugPrint("response is : $response");
       if(response?["message"]!=null){
         Toasts.getSuccessToast(text: response?["message"]);
         // context!.pop();
       }
+      notifyListeners();
     }catch(err){
       _loader.hideLoader(context!);
       debugPrint("error while creating user post is : $err");
     }
 }
+
+
+  Future<void> getProducerPosts()async{
+    try{
+      _loader.showLoader(context: context);
+      postsResponse =await MyApi.callGetApi(
+          url: getProducerPostsApiUrl,
+          modelName: Models.producerPostsModel
+      );
+      debugPrint("rest posts response is : ${postsResponse.status
+      }");
+      _loader.hideLoader(context!);
+      notifyListeners();
+    }catch(err){
+      debugPrint("error while getting rest posts is : $err");
+      _loader.hideLoader(context!);
+    }
+    notifyListeners();
+  }
+
+
  }

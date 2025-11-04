@@ -37,6 +37,7 @@ const String getMenuApiUrl = "$baseUrl/api/producer/profile/getMenu";
 const String getProducerGalleryApiUrl = "$baseUrl/api/producer/profile/getGalleryImages";
 const String getProducerDocumentApiUrl = "$baseUrl/api/producer/auth/getProducerDocuments";
 const String submitProducerDocumentApiUrl = "$baseUrl/api/producer/auth/submitDocuments";
+const String getProducerPostsApiUrl = "$baseUrl/api/producer/post/getPostsByProducer";
 
 
 
@@ -46,7 +47,7 @@ const String submitProducerDocumentApiUrl = "$baseUrl/api/producer/auth/submitDo
 
 const String getProducerPlacesApiUrl = "$baseUrl/api/producer/post/getProducerPlaces";
 const String saveResRatingApiUrl = "$baseUrl/api/producer/post/saveRatings";
-const String createProducerChoiceApiUrl = "$baseUrl/api/producer/post/createProducerPost";
+const String createProducerPostApiUrl = "$baseUrl/api/producer/post/createProducerPost";
 const String saveDocumentApiUrl = "$baseUrl/api/producer/auth/saveDocument";
 const String updatePasswordApiUrl = "$baseUrl/api/producer/profile/updatePassword";
 const String deleteProducerDocumentApiUrl = "$baseUrl/api/producer/auth/deleteDocument";

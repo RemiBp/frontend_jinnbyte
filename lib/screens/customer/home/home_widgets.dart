@@ -2,30 +2,26 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
+import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../appAssets/app_assets.dart';
 import '../../../l18n.dart';
 import '../../../routes/routes.dart';
-import '../profile/customer_profile/customer_profile_provider.dart';
 
 class PostCard extends StatelessWidget {
-  final List<String> images = const [
-    'https://www.imagelato.com/images/article-image-ample-service-area-34a39db5.jpg',
-    // Replace with real image URLs
-    'https://i.pinimg.com/736x/90/0c/fc/900cfc673204b6debbacd5c63e074565.jpg',
-    'https://content.fortune.com/wp-content/uploads/2019/05/tak-room-rendering-web.jpg',
-  ];
+
 
    const PostCard({super.key,  this.index = 0});
    final int index;
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CustomerProfileProvider>(context);
+    final provider = Provider.of<ChoiceProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,7 +31,7 @@ class PostCard extends StatelessWidget {
           leading: CircleAvatar(
             radius: getHeight() * .03,
             backgroundImage: NetworkImage(
-              provider.userPosts?[index].coverImage??"",
+              provider.postsResponse.data![index].coverImage??"",
             ),
           ),
           title: CustomText(
@@ -45,7 +41,11 @@ class PostCard extends StatelessWidget {
             giveLinesAsText: true,
           ),
           subtitle: CustomText(
-            text: '3 ${al.daysAgo}',
+            text: provider.postsResponse.data![index].createdAt != null
+                ? timeago.format(
+              DateTime.parse(provider.postsResponse.data![index].createdAt!),
+            )
+                : 'nil',
             fontSize: sizes?.fontSize12,
             giveLinesAsText: true,
           ),
@@ -53,8 +53,7 @@ class PostCard extends StatelessWidget {
         ),
         // Post description
         CustomText(
-          text:
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum',
+          text: provider.postsResponse.data?[index].description ?? "",
           fontSize: sizes?.fontSize14,
           giveLinesAsText: true,
         ),
@@ -81,13 +80,18 @@ class PostCard extends StatelessWidget {
           children: [
             CarouselSlider(
               items:
-                  images.map((url) {
+              provider.postsResponse.data?[index].images!.map((imageData) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        url,
+                        imageData.url!,
                         fit: BoxFit.cover,
                         width: double.infinity,
+                        errorBuilder: (context, obj, error) {
+                          return Icon(
+                            Icons.broken_image, size: getHeight() * .2,
+                            color: Colors.grey,);
+                        },
                       ),
                     );
                   }).toList(),
