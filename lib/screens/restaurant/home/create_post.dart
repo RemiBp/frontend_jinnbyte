@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/res/toasts.dart';
+import 'package:choice_app/userRole/role_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -261,22 +262,26 @@ class _CreatePostState extends State<CreatePost> {
                           Toasts.getErrorToast(
                               text: al.errorEnterAddress,);
                         }else{
-                          // for (var i in images) {
-                          //   final bytes = await i.readAsBytes();
-                          //   final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
-                          //   debugPrint("file url is : $fileUrl");
-                          //   if (fileUrl != null) {
-                          //     imageUrls.add(fileUrl);
-                          //   }
-                          // }
+                          for (var i in images) {
+                            final bytes = await i.readAsBytes();
+                            final fileUrl = await networkProvider
+                                .getUrlForFileUpload(bytes);
+                            debugPrint("file url is : $fileUrl");
+                            if (fileUrl != null) {
+                              imageUrls.add(fileUrl);
+                            }
+                          }
                           debugPrint("date : ${DateTime.now().toIso8601String()}");
+                          final role = context
+                              .read<RoleProvider>()
+                              .role;
+
                           choiceProvider.createChoiceApi(title: title,
+                            type: role.name,
                             description: description,
                             tags: tags,
                             location: location,
-                            images: [
-                              "https://media.baamboozle.com/uploads/images/239644/1611890196_384578"
-                            ],);
+                            images: imageUrls,);
 
                         }
                       },

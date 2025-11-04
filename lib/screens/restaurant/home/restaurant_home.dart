@@ -5,6 +5,7 @@ import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
+import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -14,61 +15,83 @@ import '../../../customWidgets/custom_textfield.dart';
 import '../../../userRole/role_provider.dart';
 import '../../../userRole/user_role.dart';
 
-class RestaurantHome extends StatelessWidget {
+class RestaurantHome extends StatefulWidget {
   const RestaurantHome({super.key});
 
   @override
+  State<RestaurantHome> createState() => _RestaurantHomeState();
+}
+
+class _RestaurantHomeState extends State<RestaurantHome> {
+
+  ChoiceProvider _choiceProvider = ChoiceProvider();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _choiceProvider = Provider.of<ChoiceProvider>(context, listen: false);
+      _choiceProvider.init(context);
+      _choiceProvider.getProducerPosts();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
       body: Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: getWidth() * .05,
-        vertical: getHeight() * .07,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              CustomText(
-                text: "Choice",
-                fontSize: sizes?.fontSize28,
-                fontFamily: Assets.onsetSemiBold,
-              ),
-              Spacer(),
-              CustomIconButton(
+        padding: EdgeInsets.symmetric(
+          horizontal: getWidth() * .05,
+          vertical: getHeight() * .07,
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                CustomText(
+                  text: "Choice",
+                  fontSize: sizes?.fontSize28,
+                  fontFamily: Assets.onsetSemiBold,
+                ),
+                Spacer(),
+                CustomIconButton(
                   svgString: Assets.mapIcon,
-                onPress: (){
-                  context.push(Routes.heatmapRoute);
-                },
-              ),
-              SizedBox(width: getWidth() * .02),
-              CustomIconButton(svgString: Assets.chatIcon),
-              SizedBox(width: getWidth() * .02),
-              CustomIconButton(svgString: Assets.notificationIcon),
-            ],
-          ),
-          SizedBox(height: getHeight() * .02),
-          CustomField(
-            borderColor: AppColors.greyBordersColor,
-            hint: al.searchUserPlaceholder,
-            prefixIconSvg: Assets.searchIcon,
-          ),
-          SizedBox(height: getHeight() * .02),
+                  onPress: (){
+                    context.push(Routes.heatmapRoute);
+                  },
+                ),
+                SizedBox(width: getWidth() * .02),
+                CustomIconButton(svgString: Assets.chatIcon),
+                SizedBox(width: getWidth() * .02),
+                CustomIconButton(svgString: Assets.notificationIcon),
+              ],
+            ),
+            SizedBox(height: getHeight() * .02),
+            CustomField(
+              borderColor: AppColors.greyBordersColor,
+              hint: al.searchUserPlaceholder,
+              prefixIconSvg: Assets.searchIcon,
+            ),
+            SizedBox(height: getHeight() * .02),
 
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.only(
-                  top: getHeight()*.01
-              ),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return PostCard();
-              },
+            Expanded(
+              child:_choiceProvider.postsResponse.data?.isNotEmpty == true? ListView.builder(
+                padding: EdgeInsets.only(
+                    top: getHeight()*.01
+                ),
+                itemCount: _choiceProvider.postsResponse.data?.length??0,
+                itemBuilder: (context, index) {
+                  return PostCard(
+                    index: index,
+                  );
+                },
+              ):Center(child: const Text("No Data Available"),),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-            ),
       floatingActionButton: FloatingActionButton.extended(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100)
@@ -80,7 +103,7 @@ class RestaurantHome extends StatelessWidget {
 
             if (role == UserRole.user) {
               debugPrint("Navigating to Choice Selection");
-                //  navigate to choiceSelection
+              //  navigate to choiceSelection
               context.push(Routes.choiceSelectionRoute);
             } else  {
               debugPrint("Navigating to Restaurant Create Post");
@@ -101,3 +124,4 @@ class RestaurantHome extends StatelessWidget {
     );
   }
 }
+

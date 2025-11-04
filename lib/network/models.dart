@@ -14,6 +14,7 @@ import 'package:choice_app/models/get_producer_profile_response.dart';
 
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/models/producer_delete_document_response.dart';
+import 'package:choice_app/models/producer_posts_response.dart';
 import 'package:choice_app/models/producer_update_document_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
 
@@ -32,6 +33,7 @@ class Models {
       "RESTAURANT_GET_MENU_CATEGORIES_MODEL";
   static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
   static const String customerAllPostsModel = "CUSTOMER_ALL_POSTS_MODEL";
+  static const String producerPostsModel = "PRODUCER_ALL_POSTS_MODEL";
   static const String producerPlacesModel = "PRODUCER_PLACES_MODEL";
 
   // static const String customerProfileModel = "CUSTOMER_PROFILE_MODEL";
@@ -96,6 +98,8 @@ class Models {
         return ProducerUpdateDocumentResponse.fromJson(json);
       case producerDeleteDocumentModel:
         return ProducerDeleteDocumentResponse.fromJson(json);
+      case producerPostsModel:
+        return ProducerPostsResponse.fromJson(json);
     }
   }
 }
