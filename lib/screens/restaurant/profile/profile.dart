@@ -88,13 +88,16 @@ class _ProfileState extends State<Profile> {
     final producer = response.producer;
     final businessProfile = response.businessProfile;
     final provider = Provider.of<ProfileProvider>(context, listen: false);
-    
+
     if (producer != null) {
-      // Populate producer fields
+      // Address
       addressController.text = producer.address ?? '';
-      
-      // Set phone number if available
-      if (producer.phoneNumber != null) {
+
+      //  Website (from producer)
+      websiteController.text = producer.website ?? '';
+
+      //  Phone number
+      if (producer.phoneNumber != null && producer.phoneNumber!.isNotEmpty) {
         try {
           provider.setPhoneNumber(PhoneNumber.parse(producer.phoneNumber!));
         } catch (e) {
@@ -102,15 +105,17 @@ class _ProfileState extends State<Profile> {
         }
       }
     }
-    
+
     if (businessProfile != null) {
       // Populate business profile fields
-      websiteController.text = businessProfile.website ?? '';
+      if (websiteController.text.isEmpty) {
+        websiteController.text = businessProfile.website ?? '';
+      }
       instagramController.text = businessProfile.instagram ?? '';
       twitterController.text = businessProfile.twitter ?? '';
       facebookController.text = businessProfile.facebook ?? '';
       descriptionController.text = businessProfile.description ?? '';
-      
+
       // Set profile image if available
       if (businessProfile.profileImageUrl != null && businessProfile.profileImageUrl!.isNotEmpty) {
         provider.setProfileImageUrl(businessProfile.profileImageUrl);
@@ -309,8 +314,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: getHeight() * .01),
               PhoneFormField(
-                initialValue:
-                provider.phoneNumber ?? PhoneNumber.parse('+33'),
+                initialValue: provider.phoneNumber ?? PhoneNumber.parse('+33'),
                 countrySelectorNavigator:
                 const CountrySelectorNavigator.page(),
                 onChanged: (phoneNumber) =>
@@ -474,28 +478,42 @@ class _ProfileState extends State<Profile> {
 
                     //  Only check links for restaurant / leisure / wellness
                     if (role != UserRole.user) {
-                      final website = websiteController.text.trim();
-                      final instagram = instagramController.text.trim();
-                      final twitter = twitterController.text.trim();
-                      final facebook = facebookController.text.trim();
+                      String website = websiteController.text.trim();
+                      String instagram = instagramController.text.trim();
+                      String twitter = twitterController.text.trim();
+                      String facebook = facebookController.text.trim();
 
-                      // if (website.isNotEmpty && !isValidWebsite(website)) {
-                      //   Toasts.getErrorToast(text: al.validWebsiteLink + " (e.g., www.example.com)");
-                      //   return;
-                      // }
-                      // if (instagram.isNotEmpty && !isValidInstagram(instagram)) {
-                      //   Toasts.getErrorToast(text: al.validInstagramLink + " (e.g., www.instagram.com/username)");
-                      //   return;
-                      // }
-                      // if (twitter.isNotEmpty && !isValidTwitter(twitter)) {
-                      //   Toasts.getErrorToast(text: al.validTwitterLink + "(e.g., www.twitter.com/username)");
-                      //   return;
-                      // }
-                      // if (facebook.isNotEmpty && !isValidFacebook(facebook)) {
-                      //   Toasts.getErrorToast(text: al.validFacebookLink + " (e.g., www.facebook.com/username)");
-                      //   return;
-                      // }
+                      // ✅ Automatically prepend "https://" if missing
+                      website = normalizeUrl(website);
+                      instagram = normalizeUrl(instagram);
+                      twitter = normalizeUrl(twitter);
+                      facebook = normalizeUrl(facebook);
+
+                      // ✅ Validate links properly
+                      if (website.isNotEmpty && !isValidWebsite(website)) {
+                        Toasts.getErrorToast(text: "${al.validWebsiteLink} (e.g., https://www.example.com)");
+                        return;
+                      }
+                      if (instagram.isNotEmpty && !isValidInstagram(instagram)) {
+                        Toasts.getErrorToast(text: "${al.validInstagramLink} (e.g., https://instagram.com/username)");
+                        return;
+                      }
+                      if (twitter.isNotEmpty && !isValidTwitter(twitter)) {
+                        Toasts.getErrorToast(text: "${al.validTwitterLink} (e.g., https://x.com/username)");
+                        return;
+                      }
+                      if (facebook.isNotEmpty && !isValidFacebook(facebook)) {
+                        Toasts.getErrorToast(text: "${al.validFacebookLink} (e.g., https://facebook.com/username)");
+                        return;
+                      }
+
+                      // ✅ Update the controllers back to normalized URLs before upload
+                      websiteController.text = website;
+                      instagramController.text = instagram;
+                      twitterController.text = twitter;
+                      facebookController.text = facebook;
                     }
+
 
                     String? profileImageUrl;
                     
@@ -591,5 +609,13 @@ class _ProfileState extends State<Profile> {
     final pattern = RegExp(r'^(https?:\/\/)?(www\.)?facebook\.com\/[A-Za-z0-9._%-]+\/?$');
     return pattern.hasMatch(url);
   }
+  String normalizeUrl(String url) {
+    if (url.isEmpty) return url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return 'https://$url';
+    }
+    return url;
+  }
+
 
 }

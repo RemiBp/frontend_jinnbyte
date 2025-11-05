@@ -213,17 +213,17 @@ class _SettingViewState extends State<SettingView> {
                       context.push(Routes.daysOffRoute);
                     },
                   ),
-                if (role == UserRole.restaurant)
-                  ProfileOptionButton(
-                    title: al.cuisine,
-                    leadingAssetPath: Assets.businessHourIcon,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddCuisine()),
-                      );
-                    },
-                  ),
+                // if (role == UserRole.restaurant)
+                //   ProfileOptionButton(
+                //     title: al.cuisine,
+                //     leadingAssetPath: Assets.businessHourIcon,
+                //     onTap: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => AddCuisine()),
+                //       );
+                //     },
+                //   ),
                 ProfileOptionButton(
                   title: al.language,
                   leadingAssetPath: Assets.languageIcon,
@@ -234,7 +234,7 @@ class _SettingViewState extends State<SettingView> {
                         builder:
                             (context) => LanguageSelection(isFromProfile: true),
                       ),
-                    );
+                    ).then((e){setState(() {});});
                   },
                 ),
                 ProfileOptionButton(

@@ -247,6 +247,10 @@ class MyApi {
         
         switch (response.statusCode) {
           case 200:
+
+            if (modelName == null) {
+              return response.data; // <--- return raw response
+            }
             dynamic modelObj =
                 await Models.getModelObject(modelName, response.data);
             // if (modelObj.code == 1) {

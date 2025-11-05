@@ -5,6 +5,7 @@ import 'package:choice_app/customWidgets/custom_textfield.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
+import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/utilities/extensions.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
 import '../../res/toasts.dart';
 import '../../userRole/role_provider.dart';
+import '../../utilities/input_formatters.dart';
 import '../restaurant/profile/profile_provider.dart';
 import 'auth_provider.dart';
 
@@ -56,7 +58,7 @@ class _UserSignupState extends State<UserSignup> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProfileProvider>(context);
+    final provider = Provider.of<CustomerProfileProvider>(context);
     AppTranslations.init(context);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -105,6 +107,7 @@ class _UserSignupState extends State<UserSignup> {
               borderColor: AppColors.greyBordersColor,
               hint: al.fullName,
               label: al.fullNamePlaceholder,
+              inputFormatters: [AllowOnlyAlphanumericUnderscore()],
             ),
             SizedBox(height: getHeight() * .015),
 
@@ -114,6 +117,7 @@ class _UserSignupState extends State<UserSignup> {
               borderColor: AppColors.greyBordersColor,
               hint: al.userName,
               label: al.userNamePlaceholder,
+              inputFormatters: [AllowOnlyAlphanumericUnderscore()],
             ),
             SizedBox(height: getHeight() * .015),
 
@@ -123,6 +127,7 @@ class _UserSignupState extends State<UserSignup> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
+              inputFormatters: [AllowOnlyAlphabetUnderscore()],
             ),
             SizedBox(height: getHeight() * .015),
 
@@ -174,7 +179,7 @@ class _UserSignupState extends State<UserSignup> {
 
             SizedBox(height: getHeight() * .015),
 
-            // ---- PASSWORD ----
+            // PASSWORD
             Consumer<AuthProvider>(
               builder: (context, state, child) {
                 return CustomField(
@@ -185,6 +190,7 @@ class _UserSignupState extends State<UserSignup> {
                   obscure: true,
                   hidePassword: state.signupPassVisibility,
                   maxLines: 1,
+                  inputFormatters: [AllowOnlyAsciiCharacters()],
                   clickIcon: () {
                     state.toggleSignupPassVisibility();
                   },
@@ -247,7 +253,7 @@ class _UserSignupState extends State<UserSignup> {
 
             SizedBox(height: getHeight() * .025),
 
-            // ---- SIGNUP BUTTON ----
+            //  SIGNUP BUTTON
             CustomButton(
               buttonText: al.signupTitle,
               onTap: onSignupTap,
@@ -255,7 +261,7 @@ class _UserSignupState extends State<UserSignup> {
 
             SizedBox(height: getHeight() * .02),
 
-            // ---- DIVIDER ----
+            //  DIVIDER
             Row(
               children: [
                 Expanded(child: Divider(color: AppColors.greyBordersColor)),
@@ -266,7 +272,7 @@ class _UserSignupState extends State<UserSignup> {
 
             SizedBox(height: getHeight() * .02),
 
-            // ---- SOCIAL BUTTONS ----
+            //  SOCIAL BUTTONS
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -285,7 +291,7 @@ class _UserSignupState extends State<UserSignup> {
 
             SizedBox(height: getHeight() * .02),
 
-            // ---- ALREADY HAVE ACCOUNT ----
+            //  ALREADY HAVE ACCOUNT
             Center(
               child: Text.rich(
                 TextSpan(

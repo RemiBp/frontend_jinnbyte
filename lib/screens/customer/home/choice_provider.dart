@@ -71,39 +71,54 @@ class CustomerChoiceProvider extends ChangeNotifier {
         "location": "abc, xyz",
       };
       debugPrint("body is : ---------->$body");
+
       final response = await MyApi.callPostApi(
         url: createUserPostApiUrl,
         myHeaders: headers,
         body: body,
       );
+
       debugPrint("choice response : $response");
-      _loader.hideLoader(context!);
+
       if (response != null) {
         Toasts.getSuccessToast(text: response?["message"]);
-        await saveRating(choiceId: response["data"]["id"],
+
+        // 🚫 Do NOT show loader again in saveRating
+        await saveRating(
+          choiceId: response["data"]["id"],
           userRating: rating,
-          producerType: producerType,);
+          producerType: producerType,
+          showLoader: false, // add this flag
+        );
       }
+
+      _loader.hideLoader(context!);
     } catch (err) {
-      debugPrint("error during saving  rating : $err");
+      debugPrint("error during saving rating : $err");
       _loader.hideLoader(context!);
     }
   }
+
 
   Future<void> saveRating({
     required int choiceId,
     required String producerType,
     required Map<String, dynamic> userRating,
+    bool showLoader = true, // new param
   }) async {
     try {
-      _loader.showLoader(context: context);
+      if (showLoader) _loader.showLoader(context: context);
+
       final generalRating = userRating["general"];
-      final rating = producerType == "restaurant" ? {
+      final rating = producerType == "restaurant"
+          ? {
         "service": generalRating["Service"],
         "place": generalRating["Place"],
         "portions": generalRating["Portions"],
         "ambiance": generalRating["Ambiance"],
-      } : producerType == "leisure" ? {
+      }
+          : producerType == "leisure"
+          ? {
         "stageDirection": generalRating["Stage Direction"],
         "actorPerformance": generalRating["Actor Performance"],
         "textQuality": generalRating["Text Quality"],
@@ -117,28 +132,36 @@ class CustomerChoiceProvider extends ChangeNotifier {
         "atmosphere": generalRating["Atmosphere"],
         "staffExperience": generalRating["Staff Experience"]
       };
+
       Map<String, dynamic> headers = {"Content-Type": "application/json"};
       Map<String, dynamic> body = {
         "producerType": producerType,
         "ratings": rating,
         "comment": "test sample comment",
       };
+
       debugPrint("body is : ---------->$body");
+
       final response = await MyApi.callPostApi(
         url: "$saveResRatingApiUrl/$choiceId",
         myHeaders: headers,
         body: body,
       );
+
       debugPrint("save rating response : $response");
-      _loader.hideLoader(context!);
+
       if (response != null) {
         Toasts.getSuccessToast(text: response?["message"]);
+        await Future.delayed(const Duration(milliseconds: 200)); // 👈 small pause
+
         context?.pop();
       }
 
+      if (showLoader) _loader.hideLoader(context!);
     } catch (err) {
-      debugPrint("error during saving  rating : $err");
-      _loader.hideLoader(context!);
+      debugPrint("error during saving rating : $err");
+      if (showLoader) _loader.hideLoader(context!);
     }
   }
+
 }

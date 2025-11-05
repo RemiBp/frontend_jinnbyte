@@ -50,6 +50,7 @@ class Data {
   List<Images>? images;
   Producer? producer;
   User? user;
+  List<String>? tags; // To get Tags
 
   Data(
       {this.id,
@@ -70,6 +71,7 @@ class Data {
         this.deletedAt,
         this.isDeleted,
         this.images,
+        this.tags,
         this.producer,
         this.user});
 
@@ -95,6 +97,14 @@ class Data {
       images = <Images>[];
       json['images'].forEach((v) {
         images!.add(new Images.fromJson(v));
+      });
+    }
+    if (json['postTags'] != null) {
+      tags = [];
+      json['postTags'].forEach((v) {
+        if (v['tag'] != null && v['tag']['name'] != null) {
+          tags!.add(v['tag']['name']);
+        }
       });
     }
     producer = json['producer'] != null
@@ -124,6 +134,9 @@ class Data {
     data['isDeleted'] = isDeleted;
     if (images != null) {
       data['images'] = images!.map((v) => v.toJson()).toList();
+    }
+    if (tags != null) {
+      data['tags'] = tags;
     }
     if (producer != null) {
       data['producer'] = producer!.toJson();

@@ -578,6 +578,12 @@ abstract class AppLocalizations {
   /// **'Cancelled'**
   String get cancelled;
 
+  /// No description provided for @menuCoverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu Coverage'**
+  String get menuCoverage;
+
   /// No description provided for @noUpcomingBooking.
   ///
   /// In en, this message translates to:
@@ -3517,6 +3523,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search for a restaurant...'**
   String get searchForRestaurant;
+
+  /// No description provided for @searchForWellness.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a Wellness...'**
+  String get searchForWellness;
+
+  /// No description provided for @searchForLeisure.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for a Leisure...'**
+  String get searchForLeisure;
 
   /// No description provided for @back.
   ///

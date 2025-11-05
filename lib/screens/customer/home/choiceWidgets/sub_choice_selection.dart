@@ -67,7 +67,7 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
             const SizedBox(height: 12),
             CustomField(
               borderColor: AppColors.greyBordersColor,
-              hint: al.searchForRestaurant,
+              hint: _getSearchHint(data?["title"]),
               prefixIconSvg: Assets.searchIcon,
             ),
             const SizedBox(height: 12),
@@ -211,4 +211,19 @@ class _SubChoiceSelectionState extends State<SubChoiceSelection> {
       ),
     );
   }
+
+  String _getSearchHint(String? title) {
+
+    switch (title?.toLowerCase()) {
+      case 'restaurant':
+        return al.searchForRestaurant;
+      case 'leisure':
+        return al.searchForLeisure;
+      case 'wellness':
+        return al.searchForWellness;
+      default:
+        return al.search; // generic fallback
+    }
+  }
+
 }

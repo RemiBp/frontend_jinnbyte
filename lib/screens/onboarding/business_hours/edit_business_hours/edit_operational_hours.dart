@@ -45,28 +45,48 @@ class _EditOperationalHoursState extends State<EditOperationalHours> {
       endTimes[day] = const TimeOfDay(hour: 0, minute: 0);
     }
 
-    for (var item in widget.operationalHoursList ?? []) {
-      final String day = item.day;
-      final bool isClosed = item.isClosed ?? true;
-      final start = item.startTime ?? "00:00";
-      final end = item.endTime ?? "00:00";
-
-      isActive[day] = !isClosed;
-      startTimes[day] = _parseTime(start);
-      endTimes[day] = _parseTime(end);
-    }
-
     final profileProvider = Provider.of<ProfileProvider>(
       context,
       listen: false,
     );
     profileProvider.init(context);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.fromSettings) {
-        profileProvider.getProducerOperationalHours();
+    // Fill from widget.operationalHoursList if available
+    if (widget.operationalHoursList != null &&
+        widget.operationalHoursList!.isNotEmpty) {
+      for (var item in widget.operationalHoursList!) {
+        final String day = item.day;
+        final bool isClosed = item.isClosed ?? true;
+        final start = item.startTime ?? "00:00";
+        final end = item.endTime ?? "00:00";
+
+        isActive[day] = !isClosed;
+        startTimes[day] = _parseTime(start);
+        endTimes[day] = _parseTime(end);
       }
-    });
+    }
+    // Otherwise, fetch from API if fromSettings = true
+    else if (widget.fromSettings) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await profileProvider.getProducerOperationalHours();
+        final response = profileProvider.getProducerOperationalHoursResponse;
+        if (response != null) {
+          for (var item in response.data) {
+            final day = item.day ?? '';
+            final isClosed = item.isClosed ?? true;
+            final start = item.startTime ?? "00:00";
+            final end = item.endTime ?? "00:00";
+
+            if (days.contains(day)) {
+              isActive[day] = !isClosed;
+              startTimes[day] = _parseTime(start);
+              endTimes[day] = _parseTime(end);
+            }
+          }
+          setState(() {}); // Refresh UI with fetched data
+        }
+      });
+      }
   }
 
   TimeOfDay _parseTime(String timeStr) {

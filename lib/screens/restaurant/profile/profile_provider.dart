@@ -491,6 +491,7 @@ class ProfileProvider extends ChangeNotifier {
       _loader.hideLoader(context!);
 
       if (response != null) {
+        await Future.delayed(const Duration(milliseconds: 200)); // small wait
         Toasts.getSuccessToast(text: al.galleryImagesSaved);
         return true;
       } else {

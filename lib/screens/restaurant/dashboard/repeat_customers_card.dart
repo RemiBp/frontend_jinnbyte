@@ -48,7 +48,7 @@ class _RepeatCustomersCardState extends State<RepeatCustomersCard> {
           Align(
             alignment: Alignment.centerLeft,
             child: CustomText(
-              text: 'Menu Coverage',
+              text: al.menuCoverage,
               fontSize: sizes?.fontSize14,
               fontWeight: FontWeight.w500,
               color: AppColors.primarySlateColor,

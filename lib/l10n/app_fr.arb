@@ -170,6 +170,7 @@
   "emailLabel1": "Email :",
   "phoneLabel": "Téléphone :",
   "bookingDetails": "Détails de la réservation",
+  "menuCoverage": "Couverture du menu",
 
 
   "errorSelectImage": "Veuillez sélectionner au moins une image",
@@ -581,6 +582,8 @@
   "select": "Sélectionner",
   "failedToFetchPlaces": "Échec de la récupération des lieux",
   "searchForRestaurant": "Recherchez un restaurant...",
+  "searchForLeisure": "Rechercher un loisir",
+  "searchForWellness": "Rechercher un bien-être",
   "back": "Retour",
   "changeType": "Changer le type",
   "search": "Rechercher...",

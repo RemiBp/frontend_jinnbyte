@@ -42,6 +42,7 @@ class _WellnessHomeState extends State<WellnessHome> {
   Widget build(BuildContext context) {
     _choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
+        backgroundColor: AppColors.whiteColor,
         body: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: getWidth() * .05,

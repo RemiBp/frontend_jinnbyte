@@ -8,11 +8,9 @@ import '../../../../customWidgets/custom_text.dart';
 import '../../../../res/res.dart';
 import '../../customWidgets/custom_textfield.dart';
 import '../../l18n.dart';
+import '../../utilities/extensions.dart';
 import '../customer/interested/interestedWidgets/time_slot_widgets.dart';
 import 'offer_provider.dart';
-
-import 'package:provider/provider.dart';
-
 
 class OfferTemplateBottomSheet extends StatefulWidget {
   const OfferTemplateBottomSheet({super.key});
@@ -285,7 +283,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: AppColors.blackColor.withValues(alpha: 0.08),
                   blurRadius: 6,
                   offset: const Offset(0, 3),
                 ),
@@ -295,7 +293,7 @@ class _OfferTemplateBottomSheetState extends State<OfferTemplateBottomSheet> {
               children: [
                 // Icon
                 SvgPicture.asset(
-                  Assets.folderIcon,
+                  Assets.offerIcon,
                   colorFilter: ColorFilter.mode(
                     AppColors.getPrimaryColorFromContext(context),
                     BlendMode.srcIn,
@@ -406,103 +404,153 @@ class TargetedNotificationBottomSheet extends StatelessWidget {
       );
     }
 
-    return DraggableScrollableSheet(
-      initialChildSize: 1.0, //  full height
-      maxChildSize: 1.0,
-      expand: false,
-      builder: (context, scroll) => Material(
-        color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
-          child: ListView(
-            controller: scroll,
-            children: [
-              const SizedBox(height: 8),
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-              SizedBox(height: getHeight() * 0.02),
-
-              /// Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+      // this gives your bottom sheet space to move up when the keyboard opens
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: FractionallySizedBox(
+        heightFactor: 0.95, // almost full screen (like your draggable sheet)
+        child: Material(
+          color: Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.05),
+              child: ListView(
+                shrinkWrap: true,
                 children: [
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: getHeight() * 0.02),
+
+                  /// Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: al.targetedNotification,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: Assets.onsetSemiBold,
+                        fontSize: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(Icons.close, size: 20),
+                      ),
+                    ],
+                  ),
                   CustomText(
-                    text: al.targetedNotification,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: Assets.onsetSemiBold,
-                    fontSize: 16,
+                    text: al.step1WriteOffer,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
                   ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.close, size: 20),
-                  ),
-                ],
-              ),
-              CustomText(
-                text: al.step1WriteOffer,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-              SizedBox(height: getHeight() * 0.025),
+                  SizedBox(height: getHeight() * 0.025),
 
-              // Fields
-              field(al.title, title, "e.g: Flash Offer"),
-              field(al.message, msg, al.exampleOffer, isMsg: true),
-              field(al.reductionPercent, reduction, "e.g: 15"),
-              field(al.validateMinutes, validate, "e.g: 45"),
-              field(al.numberOfUsers, users, "e.g: 20"),
-              field(al.distance, distance, "e.g: 300m"),
-
-              SizedBox(height: getHeight() * 0.03),
-
-              // Buttons
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      buttonText: al.cancel,
-                      onTap: () => Navigator.pop(context),
-                      backgroundColor: Colors.transparent,
-                      borderColor: AppColors.blackColor,
-                      textColor: AppColors.blackColor,
+                  // Fields
+                  field(al.title, title, "e.g: Flash Offer"),
+                  field(al.message, msg, al.exampleOffer, isMsg: true),
+                  field(al.reductionPercent, reduction, "e.g: 15"),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: getHeight() * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        label(al.validateMinutes),
+                        const SizedBox(height: 6),
+                        IncrementSelector(
+                          controller: validate,
+                          step: 30,
+                          unit: ' min',
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(width: getWidth() * 0.04),
-                  Expanded(
-                    child: CustomButton(
-                        buttonText: al.next,
-                        onTap: () {
-                          Navigator.pop(context); // close step 1
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (_) => TargetedNotificationPreviewSheet(
-                              data: TargetedNotificationData(
-                                title: title.text,
-                                message: msg.text,
-                                reduction: reduction.text,
+                  Padding(
+                    padding: EdgeInsets.only(bottom: getHeight() * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        label(al.numberOfUsers),
+                        const SizedBox(height: 6),
+                        IncrementSelector(
+                          controller: users,
+                          step: 10,
+                          unit: ' persons'
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: getHeight() * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        label(al.distance),
+                        const SizedBox(height: 6),
+                        IncrementSelector(
+                          controller: distance,
+                          step: 100,
+                          unit: 'm',
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  SizedBox(height: getHeight() * 0.03),
+
+                  // Buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          buttonText: al.cancel,
+                          onTap: () => Navigator.pop(context),
+                          backgroundColor: Colors.transparent,
+                          borderColor: AppColors.blackColor,
+                          textColor: AppColors.blackColor,
+                        ),
+                      ),
+                      SizedBox(width: getWidth() * 0.04),
+                      Expanded(
+                        child: CustomButton(
+                          buttonText: al.next,
+                          onTap: () {
+                            Navigator.pop(context);
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (_) => TargetedNotificationPreviewSheet(
+                                data: TargetedNotificationData(
+                                  title: title.text,
+                                  message: msg.text,
+                                  reduction: reduction.text,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        backgroundColor: AppColors.getPrimaryColorFromContext(context),
-                        borderColor: AppColors.getPrimaryColorFromContext(context),
-                    ),
+                            );
+                          },
+                          backgroundColor:
+                          AppColors.getPrimaryColorFromContext(context),
+                          borderColor:
+                          AppColors.getPrimaryColorFromContext(context),
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: getHeight() * 0.03),
                 ],
               ),
-              SizedBox(height: getHeight() * 0.03),
-            ],
+            ),
           ),
         ),
       ),
@@ -538,249 +586,269 @@ class _TargetedNotificationPreviewSheetState
 
   @override
   Widget build(BuildContext context) {
+    final maxHeight = MediaQuery.of(context).size.height * 0.8;
 
     return Center(
-      child: Container(
-        width: 342,
-        height: 477,
-        padding: EdgeInsets.symmetric(
-          horizontal: getWidth() * 0.05,
-          vertical: 12,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 342,
+          maxHeight: maxHeight, // prevent overflow on small screens
         ),
-        decoration: BoxDecoration(
-          color: AppColors.whiteColor,
+        child: Material(
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+          color: AppColors.whiteColor,
+          elevation: 4,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: getWidth() * 0.05,
+              vertical: 12,
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  text: al.targetedNotification,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: Assets.onsetSemiBold,
-                  fontSize: 16,
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(Icons.close, size: 20),
-                ),
-              ],
-            ),
-            SizedBox(height: getHeight() * 0.006),
-            CustomText(
-              text: al.step2ChooseTarget,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              fontFamily: Assets.onsetRegular,
-            ),
-            SizedBox(height: getHeight() * 0.025),
-
-            // Card 1
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(getWidth() * 0.04),
-              decoration: BoxDecoration(
-                color: AppColors.getPrimaryColorFromContext(context)
-                    .withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    Assets.groupIcon,
-                    width: getWidth() * 0.064,
-                    height: getHeight() * 0.0295,
-                    colorFilter: ColorFilter.mode(AppColors.getPrimaryColorFromContext(context),BlendMode.srcIn),
-                  ),
-                  SizedBox(width: getWidth() * 0.03),
-                  Expanded(
+                // Flexible area for scrollable content
+                Flexible(
+                  child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(
-                          text: al.allNearbyUsers,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          fontFamily: Assets.onsetMedium,
+                        // === HEADER ===
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              text: al.targetedNotification,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: Assets.onsetSemiBold,
+                              fontSize: 16,
+                            ),
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: const Icon(Icons.close, size: 20),
+                            ),
+                          ],
                         ),
+                        SizedBox(height: getHeight() * 0.006),
                         CustomText(
-                          text: al.allActiveUsers,
+                          text: al.step2ChooseTarget,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontFamily: Assets.onsetRegular,
                         ),
+                        SizedBox(height: getHeight() * 0.025),
+
+                        // CARD 1
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(getWidth() * 0.04),
+                          decoration: BoxDecoration(
+                            color: AppColors.getPrimaryColorFromContext(context)
+                                .withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                Assets.groupIcon,
+                                width: getWidth() * 0.064,
+                                height: getHeight() * 0.0295,
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.getPrimaryColorFromContext(context),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(width: getWidth() * 0.03),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: al.allNearbyUsers,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      fontFamily: Assets.onsetMedium,
+                                    ),
+                                    CustomText(
+                                      text: al.allActiveUsers,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: Assets.onsetRegular,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: getHeight() * 0.025),
+
+                        // ESTIMATED USERS
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset(
+                                  Assets.groupIcon,
+                                  width: getWidth() * 0.045,
+                                  colorFilter: ColorFilter.mode(
+                                    AppColors.inputHintColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                  height: getHeight() * 0.02,
+                                ),
+                                SizedBox(width: getWidth() * 0.015),
+                                CustomText(
+                                  text: al.estimated,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: Assets.onsetRegular,
+                                  fontSize: 12,
+                                ),
+                              ],
+                            ),
+                            CustomText(
+                              text: "0 ${al.onlineUsers}",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: Assets.onsetRegular,
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: getHeight() * 0.025),
+
+                        CustomText(
+                          text: al.notificationAppearance,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: Assets.onsetMedium,
+                        ),
+                        SizedBox(height: getHeight() * 0.012),
+
+                        // CARD 2
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(getWidth() * 0.04),
+                          decoration: BoxDecoration(
+                            color: AppColors.getPrimaryColorFromContext(context)
+                                .withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color:
+                              AppColors.getPrimaryColorFromContext(context),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                Assets.offerIcon,
+                                width: getWidth() * 0.085,
+                                height: getHeight() * 0.039,
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.getPrimaryColorFromContext(context),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(width: getWidth() * 0.03),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      text: "${widget.data.reduction}%",
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: Assets.onsetSemiBold,
+                                      fontSize: 24,
+                                    ),
+                                    CustomText(
+                                      text: widget.data.title,
+                                      fontFamily: Assets.onsetMedium,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                    ),
+                                    CustomText(
+                                      text: widget.data.message,
+                                      fontFamily: Assets.onsetRegular,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: getHeight() * 0.02),
+
+                        // === CHECKBOX ===
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: saveTemplate,
+                              onChanged: (val) =>
+                                  setState(() => saveTemplate = val ?? false),
+                              activeColor:
+                              AppColors.getPrimaryColorFromContext(context),
+                            ),
+                            CustomText(
+                              text: al.saveAsTemplate,
+                              fontSize: 14,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
+                ),
 
-            SizedBox(height: getHeight() * 0.025),
+                SizedBox(height: getHeight() * 0.015),
 
-            // Estimated Users
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                //  BUTTONS (Fixed at bottom)
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(
-                      Assets.groupIcon, //  use the right icon
-                      width: getWidth() * 0.045,
-                      colorFilter: ColorFilter.mode(AppColors.inputHintColor, BlendMode.srcIn),
-                      height: getHeight() * 0.02,
+                    Expanded(
+                      child: CustomButton(
+                        buttonText: al.backButton,
+                        onTap: () => Navigator.pop(context),
+                        backgroundColor: Colors.transparent,
+                        borderColor: AppColors.blackColor,
+                        textColor: AppColors.blackColor,
+                      ),
                     ),
-                    SizedBox(width: getWidth() * 0.015),
-                    CustomText(
-                      text: al.estimated,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: Assets.onsetRegular,
-                      fontSize: 12,
+                    SizedBox(width: getWidth() * 0.04),
+                    Expanded(
+                      child: CustomButton(
+                        buttonText: al.sendNow,
+                        onTap: () {
+                          if (saveTemplate) {
+                            final template = Template(
+                              title: widget.data.title,
+                              message: widget.data.message,
+                              reduction: widget.data.reduction,
+                            );
+                            context
+                                .read<TemplateProvider>()
+                                .addTemplate(template);
+                          }
+                          Navigator.pop(context);
+                        },
+                        backgroundColor:
+                        AppColors.getPrimaryColorFromContext(context),
+                        borderColor:
+                        AppColors.getPrimaryColorFromContext(context),
+                      ),
                     ),
                   ],
                 ),
-                CustomText(
-                  text: "0" + al.onlineUsers,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: Assets.onsetRegular,
-                ),
               ],
             ),
-            SizedBox(height: getHeight() * 0.025),
-
-            CustomText(
-              text: al.notificationAppearance,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              fontFamily: Assets.onsetMedium,
-            ),
-            SizedBox(height: getHeight() * 0.012),
-
-            // Card 2
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(getWidth() * 0.04),
-              decoration: BoxDecoration(
-                color: AppColors.getPrimaryColorFromContext(context)
-                    .withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: AppColors.getPrimaryColorFromContext(context)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    Assets.offerIcon,
-                    width: getWidth() * 0.085,
-                    height: getHeight() * 0.039,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.getPrimaryColorFromContext(context),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  SizedBox(width: getWidth() * 0.03),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: "${widget.data.reduction}%",
-                          fontWeight: FontWeight.w600,
-                          fontFamily: Assets.onsetSemiBold,
-                          fontSize: 24,
-                        ),
-                        CustomText(
-                          text: widget.data.title,
-                          fontFamily: Assets.onsetMedium,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                        CustomText(
-                          text: widget.data.message,
-                          fontFamily: Assets.onsetRegular,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: getHeight() * 0.02),
-
-            // Checkbox
-            Row(
-              children: [
-                Checkbox(
-                  value: saveTemplate,
-                  onChanged: (val) =>
-                      setState(() => saveTemplate = val ?? false),
-                  activeColor: AppColors.getPrimaryColorFromContext(context),
-                ),
-                CustomText(
-                  text: al.saveAsTemplate,
-                  fontSize: 14,
-                ),
-              ],
-            ),
-            SizedBox(height: getHeight() * 0.025),
-
-            // Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    buttonText: al.backButton,
-                    onTap: () => Navigator.pop(context),
-                    backgroundColor: Colors.transparent,
-                    borderColor: AppColors.blackColor,
-                    textColor: AppColors.blackColor,
-                  ),
-                ),
-                SizedBox(width: getWidth() * 0.04),
-                Expanded(
-                  child: CustomButton(
-                    buttonText: al.sendNow,
-                    onTap: () {
-
-                      if (saveTemplate) {
-                        final template = Template(
-                          title: widget.data.title,
-                          message: widget.data.message,
-                          reduction: widget.data.reduction,
-                        );
-                        context.read<TemplateProvider>().addTemplate(template);
-                      }
-
-                      Navigator.pop(context);
-                    },
-                    backgroundColor:
-                    AppColors.getPrimaryColorFromContext(context),
-                    borderColor:
-                    AppColors.getPrimaryColorFromContext(context),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -788,3 +856,101 @@ class _TargetedNotificationPreviewSheetState
 }
 
 
+class IncrementSelector extends StatefulWidget {
+  final TextEditingController controller;
+  final int step;
+  final int min;
+  final int max;
+  final String unit;
+
+  const IncrementSelector({
+    super.key,
+    required this.controller,
+    required this.step,
+    this.min = 0,
+    this.max = 9999,
+    this.unit = '',
+  });
+
+  @override
+  State<IncrementSelector> createState() => _IncrementSelectorState();
+}
+
+class _IncrementSelectorState extends State<IncrementSelector> {
+  int get _currentValue {
+    final text = widget.controller.text.replaceAll(widget.unit, '').trim();
+    return int.tryParse(text) ?? 0;
+  }
+
+  void _updateValue(int newValue) {
+    final clamped = newValue.clamp(widget.min, widget.max);
+    widget.controller.text =
+    widget.unit.isEmpty ? '$clamped' : '$clamped${widget.unit}';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fieldHeight = getHeight() * 0.07; // same as CustomField2
+    final borderRadius = 15.0; // same as CustomField2
+
+    return Container(
+      height: fieldHeight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(color: AppColors.greyBordersColor),
+        color: Colors.white,
+      ),
+      child: Row(
+        children: [
+          // --- Decrement Button ---
+          InkWell(
+            onTap: () => _updateValue(_currentValue - widget.step),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(borderRadius),
+              bottomLeft: Radius.circular(borderRadius),
+            ),
+            child: Container(
+              width: fieldHeight, // square button
+              height: fieldHeight,
+              alignment: Alignment.center,
+              child: const Icon(Icons.remove, size: 20),
+            ),
+          ),
+
+          // --- Value Display ---
+          Expanded(
+            child: Center(
+              child: Text(
+                widget.controller.text.isEmpty
+                    ? '0${widget.unit}'
+                    : widget.controller.text,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: sizes!.fontSize15,
+                  color: HexColor.fromHex("#1E1E2D"),
+                  fontFamily: Assets.onsetMedium,
+                ),
+              ),
+            ),
+          ),
+
+          // --- Increment Button ---
+          InkWell(
+            onTap: () => _updateValue(_currentValue + widget.step),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(borderRadius),
+              bottomRight: Radius.circular(borderRadius),
+            ),
+            child: Container(
+              width: fieldHeight, // square button
+              height: fieldHeight,
+              alignment: Alignment.center,
+              child: const Icon(Icons.add, size: 20),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

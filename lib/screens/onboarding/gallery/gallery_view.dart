@@ -48,7 +48,6 @@ class _GalleryViewState extends State<GalleryView> {
 
   // Fetch gallery images from API
   Future<void> _loadGalleryImages() async {
-    setState(() => isLoading = true);
 
     final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     final response = await profileProvider.getGalleryImages(context);
@@ -63,8 +62,6 @@ class _GalleryViewState extends State<GalleryView> {
     } else {
       Toasts.getErrorToast(text: "Failed to load gallery images");
     }
-
-    setState(() => isLoading = false);
   }
 
   // Pick multiple images
@@ -108,9 +105,7 @@ class _GalleryViewState extends State<GalleryView> {
           children: [
             SizedBox(height: getHeightRatio() * 16),
             Expanded(
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView(
+              child: ListView(
                 controller: scrollController,
                 padding: EdgeInsets.symmetric(
                   vertical: getHeight() * 0.02,
@@ -191,13 +186,15 @@ class _GalleryViewState extends State<GalleryView> {
                       return;
                     }
 
+                    setState(() {
+                      isLoading = true; // show loader
+                    });
+
                     List<String> urls = [];
                     for (final image in selectedImages) {
                       final bytes = await image.readAsBytes();
                       final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
-                      if (fileUrl != null) {
-                        urls.add(fileUrl);
-                      }
+                      if (fileUrl != null) urls.add(fileUrl);
                     }
 
                     final profileProvider =
@@ -208,6 +205,15 @@ class _GalleryViewState extends State<GalleryView> {
                     );
 
                     if (success) {
+                      // Append new images to galleryImages instead of clearing the whole Wrap
+                      setState(() {
+                        galleryImages.addAll(urls.map((url) => url.startsWith('http')
+                            ? url
+                            : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/$url'));
+                        selectedImages.clear(); // clear only local images
+                        isLoading = false;
+                      });
+
                       final role = context.read<RoleProvider>().role;
                       if (role == UserRole.restaurant) {
                         context.push(Routes.restaurantMenuViewRoute);

@@ -260,6 +260,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelled => 'Cancelled';
 
   @override
+  String get menuCoverage => 'Menu Coverage';
+
+  @override
   String get noUpcomingBooking => 'No upcoming booking';
 
   @override
@@ -1760,6 +1763,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchForRestaurant => 'Search for a restaurant...';
+
+  @override
+  String get searchForWellness => 'Search for a Wellness...';
+
+  @override
+  String get searchForLeisure => 'Search for a Leisure...';
 
   @override
   String get back => 'Back';
