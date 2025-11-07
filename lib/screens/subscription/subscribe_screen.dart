@@ -144,7 +144,7 @@ class _SubscribeScreenState extends State<SubscribeScreen>
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       width: getWidth() > 390 ? 390 : getWidth(),
-                      height: 306, // exact px
+                      height: 306,
                       decoration: BoxDecoration(
                         color: AppColors.whiteColor,
                         boxShadow: [

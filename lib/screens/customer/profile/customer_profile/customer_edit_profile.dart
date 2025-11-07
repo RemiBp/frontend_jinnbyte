@@ -258,6 +258,11 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                       return;
                     }
 
+                    if(bio.isEmpty){
+                      Toasts.getErrorToast(text: "Please Enter Bio");
+                      return;
+                    }
+
                     if (provider.profileImage != null) {
                       final bytes = await provider.profileImage!.readAsBytes();
                       provider.profileImageUrl = await networkProvider

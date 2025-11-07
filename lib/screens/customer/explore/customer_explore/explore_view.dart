@@ -1,5 +1,6 @@
 import 'package:choice_app/screens/customer/explore/restaurant_explore_details/restaurant_explore_details.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../appAssets/app_assets.dart';
 import '../../../../appColors/colors.dart';
 import '../../../../customWidgets/custom_button.dart';
@@ -9,6 +10,7 @@ import '../../../../l18n.dart';
 import '../../../../res/res.dart';
 import '../../../restaurant/profile_menu/profile_menu_widgets.dart';
 import '../../maps/customer_maps/customer_maps_view.dart';
+import 'customer_explore_view_provider.dart';
 import 'explore_widgets.dart';
 
 class ExploreView extends StatefulWidget {
@@ -19,8 +21,17 @@ class ExploreView extends StatefulWidget {
 }
 
 class _ExploreViewState extends State<ExploreView> {
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      Provider.of<ExploreViewProvider>(context, listen: false).getEventsNearMe();
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ExploreViewProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: Padding(
@@ -109,6 +120,7 @@ class _ExploreViewState extends State<ExploreView> {
                     ),
                   ),
                   SizedBox(height: getHeight() * 0.02),
+                  //EVENTS NEAR YOU section
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
                     child: SeeMoreWidget(header: al.eventsNearYou),
@@ -118,16 +130,32 @@ class _ExploreViewState extends State<ExploreView> {
 
                   SizedBox(
                     height: getHeight() * 0.48,
-                    child: ListView.builder(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+                    child: provider.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : provider.events.isEmpty
+                        ? const Center(child: Text("No events nearby"))
+                        : ListView.builder(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: sizes!.pagePadding),
                       scrollDirection: Axis.horizontal,
-                      itemCount: dummyEvents.length,
+                      itemCount: provider.events.length,
                       itemBuilder: (context, index) {
+                        final event = provider.events[index];
+
                         return SizedBox(
                           width: getWidth() * 0.75,
                           child: ExploreEventsCard(
-                            event: dummyEvents[index],
+                            event: Event(
+                              title: event.title ?? "Untitled",
+                              tag: event.serviceType ?? "Restaurant",
+                              location: event.location ?? "Unknown",
+                              dateTime:
+                              "${event.date ?? ''} ${event.startTime ?? ''} - ${event.endTime ?? ''}",
+                              price: "\$${event.pricePerGuest ?? '0'}",
+                              imageUrl: event.eventImages?.isNotEmpty == true
+                                  ? "https://elasticbeanstalk-us-west-1-841019700848.s3.us-west-1.amazonaws.com/${event.eventImages!.first}"
+                                  : "https://via.placeholder.com/300",
+                            ),
                             margin: EdgeInsets.only(
                               top: getHeight() * 0.01,
                               bottom: getHeight() * 0.01,
@@ -139,7 +167,7 @@ class _ExploreViewState extends State<ExploreView> {
                                 MaterialPageRoute(
                                   builder: (context) =>
                                       RestaurantExploreDetails(
-                                        tag: dummyEvents[index].tag,
+                                        tag: event.serviceType ?? "Restaurant",
                                       ),
                                 ),
                               );
@@ -149,7 +177,6 @@ class _ExploreViewState extends State<ExploreView> {
                       },
                     ),
                   ),
-
                   SizedBox(height: getHeight() * 0.02),
 
                   //  Surprise Me

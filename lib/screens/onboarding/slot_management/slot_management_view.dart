@@ -146,8 +146,16 @@ class _SlotManagementViewState extends State<SlotManagementView> {
     selectedDayWiseSlots.clear();
     for (var item in slotsData) {
       final day = item['day'] as String;
-      selectedDayWiseSlots[day] = []; // initialize empty selections
+      final allSlots = item['slots'] as List<Slots>;
+
+      // Automatically select ALL slots
+      selectedDayWiseSlots[day] = allSlots.map((slot) => slot.id).toList();
     }
+
+    debugPrint('✅ Auto-selected all slots for each day:');
+    selectedDayWiseSlots.forEach((day, ids) {
+      debugPrint('$day => ${ids.length} slots');
+    });
   }
 
 
@@ -266,6 +274,7 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                           child: EditDaysTile(
                             label: currentDay,
                             isChecked: isChecked,
+                            showSelectAll: false,
                             isEdit: isEdit,
                             onSelectAll: () {
                               setState(() {
@@ -332,10 +341,10 @@ class _SlotManagementViewState extends State<SlotManagementView> {
                         }
                         
                         if (isRestaurant) {
-                          if (allSelectedSlotIds.isEmpty) {
-                            Toasts.getErrorToast(text: 'Please select at least one slot');
-                            return;
-                          }
+                          // if (allSelectedSlotIds.isEmpty) {
+                          //   Toasts.getErrorToast(text: 'Please select at least one slot');
+                          //   return;
+                          // }
                           
                           final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
                           profileProvider.init(context);

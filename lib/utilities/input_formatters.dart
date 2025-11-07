@@ -5,14 +5,14 @@ class AllowOnlyAlphanumericUnderscore extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final regex = RegExp(r'^[a-zA-Z0-9_]*$');
+    // Allow letters, numbers, underscore, and space
+    final regex = RegExp(r'^[a-zA-Z0-9_ ]*$');
     if (regex.hasMatch(newValue.text)) {
       return newValue;
     }
     return oldValue;
   }
 }
-
 //  2. Allows only alphabets and underscore (for simple email name part)
 class AllowOnlyAlphabetUnderscore extends TextInputFormatter {
   @override

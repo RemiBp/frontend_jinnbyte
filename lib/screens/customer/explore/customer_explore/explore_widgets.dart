@@ -25,7 +25,7 @@ class BrowseCategoryWidget extends StatelessWidget {
         SeeMoreWidget(header: al.browseByCategory),
         SizedBox(height: getHeight() * 0.015),
         SizedBox(
-          height: getHeight() * 0.17, // container height = image + text
+          height: getHeight() * 0.19, // container height = image + text
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: imagePaths.length,
@@ -54,6 +54,7 @@ class BrowseCategoryWidget extends StatelessWidget {
               );
             },
           ),
+
         ),
       ],
     );

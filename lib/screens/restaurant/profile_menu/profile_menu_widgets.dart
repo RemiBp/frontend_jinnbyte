@@ -84,35 +84,85 @@ class RestaurantProfileHeader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
       child: Row(
         children: [
+          // Profile Picture
           const CircleAvatar(
             radius: 30,
             backgroundImage: NetworkImage(
-              'https://i.imgur.com/QCNbOAo.png', // Replace with your image
+              "https://i.imgur.com/QCNbOAo.png", // Replace with restaurant image URL
             ),
           ),
           SizedBox(width: getWidth() * 0.02),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: "The Wholesome Fork",
-                textOverflow: TextOverflow.ellipsis,
-                fontSize: sizes?.fontSize16,
-                color:AppColors.blackColor,
-                fontWeight: FontWeight.w600,
-              ),
-              CustomText(
-                text: "example@thewholesomefork.com",
-                textOverflow: TextOverflow.ellipsis,
-                fontSize: sizes?.fontSize14,
-                color:AppColors.primarySlateColor,
-                fontWeight: FontWeight.w400,
-              ),
 
-            ],
-          )
+          // Name + Stats Section
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Restaurant Name
+                CustomText(
+                  text: "The Wholesome Fork",
+                  textOverflow: TextOverflow.ellipsis,
+                  fontSize: sizes?.fontSize16,
+                  color: AppColors.blackColor,
+                  fontWeight: FontWeight.w600,
+                ),
+
+                SizedBox(height: 8),
+
+                // Stats Row (Choices | Followers | Following)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildStatItem("0", "Choices"),
+                    Image.asset(
+                        Assets.verticalLine, height: getHeight() * 0.03),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FollowerView()),
+                        );
+                      },
+                      child: _buildStatItem("0", al.follower),
+                    ),
+                    Image.asset(
+                        Assets.verticalLine, height: getHeight() * 0.03),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FollowingView()),
+                        );
+                      },
+                      child: _buildStatItem("0",al.following),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
+    );
+  }
+  Widget _buildStatItem(String value, String label) {
+    return Column(
+      children: [
+        CustomText(
+          text: value,
+          textOverflow: TextOverflow.ellipsis,
+          fontSize: sizes?.fontSize16,
+          color: AppColors.blackColor,
+          fontWeight: FontWeight.w600,
+        ),
+        CustomText(
+          text: label,
+          textOverflow: TextOverflow.ellipsis,
+          fontSize: sizes?.fontSize12,
+          color: AppColors.blackColor,
+          fontWeight: FontWeight.w400,
+        ),
+      ],
     );
   }
 }

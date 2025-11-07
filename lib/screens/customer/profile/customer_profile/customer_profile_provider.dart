@@ -10,6 +10,7 @@ import 'package:choice_app/res/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
+import '../../../../common/utils.dart';
 import '../../../restaurant/profile/profile_widgets.dart';
 
 class CustomerProfileProvider extends ChangeNotifier{
@@ -58,6 +59,15 @@ class CustomerProfileProvider extends ChangeNotifier{
       );
       debugPrint("profile response is : ${customerProfileResponse.toJson()
       }");
+      if (customerProfileResponse.user != null) {
+        final user = customerProfileResponse.user!;
+        debugPrint("✅ profile response: ${customerProfileResponse.toJson()}");
+
+        // ✅ Store lat/lng for Explore screen use
+        await PreferenceUtils.setString("latitude", user.latitude?.toString() ?? "");
+        await PreferenceUtils.setString("longitude", user.longitude?.toString() ?? "");
+      }
+
       _loader.hideLoader(context!);
 
     }catch(err){

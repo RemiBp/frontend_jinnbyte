@@ -13,12 +13,14 @@ class EditDaysTile extends StatelessWidget {
   final bool? isChecked;
   final bool? isEdit;
   final Function onSelectAll;
+  final bool showSelectAll;
 
   const EditDaysTile({
     super.key,
     this.label,
     this.isChecked,
     this.isEdit,
+    this.showSelectAll = true,
     required this.onSelectAll
   });
 
@@ -36,6 +38,7 @@ class EditDaysTile extends StatelessWidget {
           color:AppColors.blackColor,
         ),
         // if(isEdit??false)
+        if(showSelectAll)
           RememberMeCheckBox(
             isChecked: isChecked??false,
             text: al.selectAll,

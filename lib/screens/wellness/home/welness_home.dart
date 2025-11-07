@@ -4,6 +4,7 @@ import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
+import 'package:choice_app/screens/wellness/wellness_profile/wellness_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -69,9 +70,24 @@ class _WellnessHomeState extends State<WellnessHome> {
                     ],
                   ),
                   Spacer(),
-                  CustomIconButton(svgString: Assets.chatIcon),
+                  CustomIconButton(
+                    svgString: Assets.chatIcon,
+                    onPress: (){
+                    },
+                  ),
                   SizedBox(width: getWidth() * .02),
-                  CustomIconButton(svgString: Assets.notificationIcon),
+                  CustomIconButton(
+                    svgString: Assets.notificationIcon,
+                    onPress: (){
+                    },
+                  ),
+                  SizedBox(width: getWidth() * .02),
+                  CustomIconButton(
+                    svgString: Assets.profileIcon,
+                    onPress: (){
+                      context.push(Routes.wellnessProfileHomeRoute);
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: getHeight() * .02),

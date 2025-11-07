@@ -15,10 +15,8 @@ import '../../../l18n.dart';
 import '../../../res/res.dart';
 import 'gallery_widgets.dart';
 
-
 class GalleryView extends StatefulWidget {
   const GalleryView({super.key, this.fromSettings = false});
-
   final bool fromSettings;
 
   @override
@@ -29,10 +27,12 @@ class _GalleryViewState extends State<GalleryView> {
   final ImagePicker imgPicker = ImagePicker();
   List<XFile> selectedImages = [];
 
-  List<String> galleryImages = []; // existing images from API
+  /// Stores existing gallery images from API as a list of maps { "id": int?, "url": String }
+  List<Map<String, dynamic>> galleryImages = [];
+
   bool isLoading = false;
 
-  ScrollController scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
   late NetworkProvider networkProvider;
 
   @override
@@ -41,22 +41,29 @@ class _GalleryViewState extends State<GalleryView> {
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
 
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    profileProvider.init(context);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadGalleryImages();
     });
   }
 
-  // Fetch gallery images from API
+  /// Fetch gallery images from API
   Future<void> _loadGalleryImages() async {
-
     final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
     final response = await profileProvider.getGalleryImages(context);
 
     if (response != null && response.images != null) {
       setState(() {
         galleryImages = response.images!
-            .map((img) => img.url ?? '')
-            .where((url) => url.isNotEmpty)
+            .where((img) => img.url != null && img.id != null)
+            .map((img) => {
+          "id": img.id,
+          "url": img.url!.startsWith('http')
+              ? img.url
+              : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/${img.url!}',
+        })
             .toList();
       });
     } else {
@@ -64,7 +71,7 @@ class _GalleryViewState extends State<GalleryView> {
     }
   }
 
-  // Pick multiple images
+  /// Pick multiple images
   Future<void> pickImages() async {
     try {
       final List<XFile> images = await imgPicker.pickMultiImage();
@@ -94,6 +101,18 @@ class _GalleryViewState extends State<GalleryView> {
     }
   }
 
+  /// Delete a gallery image using its ID (API + local state)
+  Future<void> _deleteGalleryImage(int index, int photoId) async {
+    final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final success = await profileProvider.deleteGalleryImage(photoIds: [photoId]);
+
+    if (success) {
+      setState(() {
+        galleryImages.removeAt(index);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,71 +126,57 @@ class _GalleryViewState extends State<GalleryView> {
             Expanded(
               child: ListView(
                 controller: scrollController,
-                padding: EdgeInsets.symmetric(
-                  vertical: getHeight() * 0.02,
-                ),
+                padding: EdgeInsets.symmetric(vertical: getHeight() * 0.02),
                 children: [
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      // Already uploaded gallery images (from API)
+                      // --- Existing gallery images ---
                       ...galleryImages.asMap().entries.map((entry) {
                         final index = entry.key;
-                        final rawUrl = entry.value;
-
-                        // make full S3 URL if needed
-                        final fullUrl = rawUrl.startsWith('http')
-                            ? rawUrl
-                            : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/$rawUrl';
+                        final imageData = entry.value;
+                        final String imageUrl = imageData["url"];
+                        final int? photoId = imageData["id"];
 
                         return GalleryCard(
                           isMainImage: index == 0,
-                          imageFile: fullUrl,
-                          onSetMainImage: () {}, // no-op in settings
-                          onRemoveImage: () {
-                            removeImage(index);
-                          },
+                          imageFile: imageUrl,
+                          onSetMainImage: () {},
+                          onRemoveImage: photoId == null
+                              ? null
+                              : () => _deleteGalleryImage(index, photoId),
                         );
                       }),
 
-                      //  Newly picked (local) images
+                      // --- Newly picked (local) images ---
                       ...selectedImages.asMap().entries.map((entry) {
                         final index = entry.key;
                         final imageFile = entry.value;
+
                         return GalleryCard(
                           isMainImage: false,
                           imageFile: imageFile.path,
-                          onSetMainImage: () {
-                            setMainImage(index);
-                          },
-                          onRemoveImage: () {
-                            removeImage(index);
-                          },
+                          onSetMainImage: () => setMainImage(index),
+                          onRemoveImage: () async => removeImage(index),
                         );
                       }),
 
-                      //  Add new image button
-                      AddImageCard(
-                        onAddImages: () {
-                          pickImages();
-                        },
-                      ),
+                      // --- Add image button ---
+                      AddImageCard(onAddImages: pickImages),
                     ],
                   ),
                 ],
               ),
             ),
 
-            //  Action buttons
+            // --- Action buttons ---
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
                   buttonText: al.cancel,
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   buttonWidth: getWidth() * .42,
                   backgroundColor: Colors.transparent,
                   borderColor: AppColors.blackColor,
@@ -186,14 +191,13 @@ class _GalleryViewState extends State<GalleryView> {
                       return;
                     }
 
-                    setState(() {
-                      isLoading = true; // show loader
-                    });
+                    setState(() => isLoading = true);
 
                     List<String> urls = [];
                     for (final image in selectedImages) {
                       final bytes = await image.readAsBytes();
-                      final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                      final fileUrl =
+                      await networkProvider.getUrlForFileUpload(bytes);
                       if (fileUrl != null) urls.add(fileUrl);
                     }
 
@@ -205,12 +209,14 @@ class _GalleryViewState extends State<GalleryView> {
                     );
 
                     if (success) {
-                      // Append new images to galleryImages instead of clearing the whole Wrap
                       setState(() {
-                        galleryImages.addAll(urls.map((url) => url.startsWith('http')
-                            ? url
-                            : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/$url'));
-                        selectedImages.clear(); // clear only local images
+                        galleryImages.addAll(urls.map((url) => {
+                          "id": null,
+                          "url": url.startsWith('http')
+                              ? url
+                              : 'https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/$url',
+                        }));
+                        selectedImages.clear();
                         isLoading = false;
                       });
 
@@ -220,10 +226,13 @@ class _GalleryViewState extends State<GalleryView> {
                       } else {
                         context.push(Routes.slotManagementViewRoute);
                       }
+                    } else {
+                      setState(() => isLoading = false);
                     }
                   },
                   buttonWidth: getWidth() * .42,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  backgroundColor:
+                  AppColors.getPrimaryColorFromContext(context),
                   borderColor: Colors.transparent,
                   textColor: Colors.white,
                   textFontWeight: FontWeight.w700,
@@ -237,6 +246,3 @@ class _GalleryViewState extends State<GalleryView> {
     );
   }
 }
-
-
-

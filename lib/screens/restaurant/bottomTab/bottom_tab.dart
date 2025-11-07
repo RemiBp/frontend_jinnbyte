@@ -6,6 +6,7 @@ import 'package:choice_app/screens/customer/home/customer_home.dart';
 import 'package:choice_app/screens/customer/maps/customer_maps/customer_maps_view.dart';
 import 'package:choice_app/screens/leisure/home/leisure_home.dart';
 import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
+import 'package:choice_app/screens/producer_maps/heatmap.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
 import 'package:choice_app/screens/restaurant/event/events.dart';
 import 'package:choice_app/screens/restaurant/home/restaurant_home.dart';
@@ -59,43 +60,63 @@ class _RestaurantBottomTabState extends State<RestaurantBottomTab>
     super.initState();
     final roleProvider = Provider.of<RoleProvider>(context, listen: false);
     role = roleProvider.role;
-    labels = [
-      al.home,
-      role == UserRole.user ?al.map:al.dashboard,
-      role == UserRole.user ? al.explore : al.events,
-      al.bookings,
-      al.profile
-    ];
-    iconList = [
-      Assets.homeIcon,
-      role == UserRole.user ?Assets.mapIcon: Assets.dashboardIcon,
-      role == UserRole.user ? Assets.exploreIcon : Assets.eventsIcon,
-      Assets.bookingIcon,
-      Assets.profileIcon,
-    ];
-
-    activeIconList = [
-      Assets.homeActiveIcon,
-      role == UserRole.user ?Assets.mapIcon:  Assets.dashboardActiveIcon,
-      role == UserRole.user ? Assets.exploreActiveIcon : Assets.eventActiveIcon,
-      Assets.bookingActiveIcon,
-      Assets.profileActiveIcon,
-    ];
-
-    widgets = [
-      role == UserRole.wellness ? LeisureHome() : role == UserRole.wellness
-          ? WellnessHome()
-          : role == UserRole.user
-          ? CustomerHome()
-          : RestaurantHome(),
-      role == UserRole.user?CustomerMapsView(): HomeView(),
-      role == UserRole.user?ExploreView():Events(),
-      BookingsView(),
-      if (role == UserRole.user) CustomerProfileView(),
-      if (role == UserRole.wellness) WellnessProfileView(),
-      if (role == UserRole.leisure) LeisureProfileView(),
-      if (role == UserRole.restaurant) LeisureProfileView(),
-    ];
+    if (role == UserRole.user) {
+      // ---- USER ----
+      labels = [al.home, al.map, al.explore, al.bookings, al.profile];
+      iconList = [
+        Assets.homeIcon,
+        Assets.mapIcon,
+        Assets.exploreIcon,
+        Assets.bookingIcon,
+        Assets.profileIcon
+      ];
+      activeIconList = [
+        Assets.homeActiveIcon,
+        Assets.mapIcon,
+        Assets.exploreActiveIcon,
+        Assets.bookingActiveIcon,
+        Assets.profileActiveIcon
+      ];
+      widgets = [
+        CustomerHome(),
+        CustomerMapsView(),
+        ExploreView(),
+        BookingsView(),
+        CustomerProfileView()
+      ];
+    } else {
+      // ---- PRODUCER (restaurant / leisure / wellness) ----
+      labels = [
+        al.home,
+        al.dashboard,
+        al.map,
+        al.events,
+        al.bookings
+      ];
+      iconList = [
+        Assets.homeIcon,
+        Assets.dashboardIcon,
+        Assets.mapIcon, // heatmap icon
+        Assets.eventsIcon,
+        Assets.bookingIcon
+      ];
+      activeIconList = [
+        Assets.homeActiveIcon,
+        Assets.dashboardActiveIcon,
+        Assets.mapIcon, // heatmap active
+        Assets.eventActiveIcon,
+        Assets.bookingActiveIcon
+      ];
+      widgets = [
+        if (role == UserRole.restaurant) RestaurantHome(),
+        if (role == UserRole.leisure) LeisureHome(),
+        if (role == UserRole.wellness) WellnessHome(),
+        HomeView(), // dashboard
+        HeatmapScreen(), // your custom heatmap screen
+        Events(),
+        BookingsView(),
+      ];
+    }
     _fabAnimationController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,

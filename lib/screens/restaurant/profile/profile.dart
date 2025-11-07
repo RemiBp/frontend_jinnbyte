@@ -270,7 +270,7 @@ class _ProfileState extends State<Profile> {
 
             SizedBox(height: getHeight() * .03),
 
-            // --- Fields for USER role ---
+            // Fields for USER role
             if (roleProvider.role == UserRole.user) ...[
               CustomField(
                 textEditingController: fullNameController,
@@ -352,7 +352,7 @@ class _ProfileState extends State<Profile> {
               ),
             ]
 
-            // --- Fields for RESTAURANT/OTHERS ---
+            // Fields for RESTAURANT/OTHERS
             else ...[
               CustomField(
                 textEditingController: addressController,
@@ -455,7 +455,7 @@ class _ProfileState extends State<Profile> {
 
             SizedBox(height: getHeight() * .02),
 
-            // --- Buttons ---
+            // Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -483,13 +483,13 @@ class _ProfileState extends State<Profile> {
                       String twitter = twitterController.text.trim();
                       String facebook = facebookController.text.trim();
 
-                      // ✅ Automatically prepend "https://" if missing
+                      //  Automatically prepend "https://" if missing
                       website = normalizeUrl(website);
                       instagram = normalizeUrl(instagram);
                       twitter = normalizeUrl(twitter);
                       facebook = normalizeUrl(facebook);
 
-                      // ✅ Validate links properly
+                      //  Validate links properly
                       if (website.isNotEmpty && !isValidWebsite(website)) {
                         Toasts.getErrorToast(text: "${al.validWebsiteLink} (e.g., https://www.example.com)");
                         return;
@@ -507,7 +507,7 @@ class _ProfileState extends State<Profile> {
                         return;
                       }
 
-                      // ✅ Update the controllers back to normalized URLs before upload
+                      //  Update the controllers back to normalized URLs before upload
                       websiteController.text = website;
                       instagramController.text = instagram;
                       twitterController.text = twitter;

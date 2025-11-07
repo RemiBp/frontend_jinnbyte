@@ -1,6 +1,7 @@
 import 'package:choice_app/models/auth_ressponse.dart';
 import 'package:choice_app/models/customer_all_posts_response.dart';
 import 'package:choice_app/models/customer_profile_response.dart';
+import 'package:choice_app/models/get_all_events_near_me_response.dart';
 import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
@@ -14,6 +15,7 @@ import 'package:choice_app/models/get_producer_profile_response.dart';
 
 import 'package:choice_app/models/get_producer_slots_response.dart';
 import 'package:choice_app/models/producer_delete_document_response.dart';
+import 'package:choice_app/models/producer_delete_gallery_images_response.dart';
 import 'package:choice_app/models/producer_posts_response.dart';
 import 'package:choice_app/models/producer_update_document_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
@@ -53,6 +55,8 @@ class Models {
       "PRODUCER_UPDATE_DOCUMENT_MODEL";
   static const String producerDeleteDocumentModel =
       "PRODUCER_DELETE_DOCUMENT_MODEL";
+  static const String producerDeleteGalleryImageModel = "PRODUCER_DELETE_GALLERY_IMAGE_MODEL";
+  static const String getEventsNearMeModel = "GET_ALL_EVENTS_NEAR_ME_MODEL";
 
 
   static Future<dynamic> getModelObject(
@@ -100,6 +104,10 @@ class Models {
         return ProducerDeleteDocumentResponse.fromJson(json);
       case producerPostsModel:
         return ProducerPostsResponse.fromJson(json);
+      case producerDeleteGalleryImageModel:
+        return DeleteGalleryImageResponse.fromJson(json);
+      case getEventsNearMeModel:
+        return GetEventsNearMeResponse.fromJson(json);
     }
   }
 }

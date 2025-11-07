@@ -3,12 +3,14 @@ import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
+import 'package:choice_app/screens/customer/explore/customer_explore/customer_explore_view_provider.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
 import 'package:choice_app/screens/producer_maps/offer_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_provider.dart';
 import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/customer/home/choice_provider.dart';
@@ -64,6 +66,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<CustomerChoiceProvider>(
     create: (_) => CustomerChoiceProvider(),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<ExploreViewProvider>(
+    create: (context) => ExploreViewProvider(context: context),
     lazy: true,
   ),
 ];
