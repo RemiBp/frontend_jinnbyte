@@ -80,17 +80,19 @@ class CustomerPostCard extends StatelessWidget {
         // Hashtags
         Wrap(
           spacing: 8,
-          children:
-              [
-                    '#cozy',
-                    '#outdoor_seating',
-                    '#live_music',
-                    '#family_friendly',
-                    '#budget_friendly',
-                  ]
-                  .map((tag) => Text(tag, style: TextStyle(color: Colors.blue)))
-                  .toList(),
+          runSpacing: 4,
+          children: (provider.userPosts?[index].tags ?? [])
+              .map((tag) => Text(
+            '#$tag',
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: sizes?.fontSize12,
+              fontWeight: FontWeight.w500,
+            ),
+          ))
+              .toList(),
         ),
+
         SizedBox(height: getHeight() * 0.01),
         // Image carousel with indicator
         Stack(

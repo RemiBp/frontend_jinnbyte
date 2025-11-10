@@ -4,6 +4,7 @@ import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
+import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,7 @@ class _LeisureHomeState extends State<LeisureHome> {
   Widget build(BuildContext context) {
     _choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
+        backgroundColor: AppColors.whiteColor,
         body: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: getWidth() * .05,
@@ -68,9 +70,24 @@ class _LeisureHomeState extends State<LeisureHome> {
                     ],
                   ),
                   Spacer(),
-                  CustomIconButton(svgString: Assets.chatIcon),
+                  CustomIconButton(
+                    svgString: Assets.chatIcon,
+                    onPress: (){
+                    },
+                  ),
                   SizedBox(width: getWidth() * .02),
-                  CustomIconButton(svgString: Assets.notificationIcon),
+                  CustomIconButton(
+                    svgString: Assets.notificationIcon,
+                    onPress: (){
+                    },
+                  ),
+                  SizedBox(width: getWidth() * .02),
+                  CustomIconButton(
+                    svgString: Assets.profileIcon,
+                    onPress: (){
+                     context.push(Routes.leisureProfileHomeRoute);
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: getHeight() * .02),

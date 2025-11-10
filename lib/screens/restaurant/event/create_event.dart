@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_provider.dart';
@@ -148,23 +149,7 @@ class _CreateEventState extends State<CreateEvent> {
     final role = context.read<RoleProvider>().role;
     return Scaffold(
       backgroundColor: Color(0xFFF9F9F9),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: BackButton(color: Colors.black),
-        title: Text(al.createEvent, style: TextStyle(color: Colors.black)),
-        centerTitle: false,
-        titleSpacing: 0,
-
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Divider(
-            height: 1,
-            thickness: 1,
-            color: AppColors.greyBordersColor, // use your app's border color
-          ),
-        ),
-      ),
+      appBar: CommonAppBar(title: al.createEvent),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(

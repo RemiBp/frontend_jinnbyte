@@ -460,35 +460,25 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> setGalleryImages({required List<String> imageUrls, required BuildContext context})
-  async {
+  Future<bool> setGalleryImages({
+    required List<String> imageUrls,
+    required BuildContext context,
+  }) async {
     try {
-      _loader.showLoader(context: context);
-
-      // Build the images array
+      // 🚫 Remove loader here
       List<Map<String, dynamic>> images = [];
       for (String url in imageUrls) {
-        // Extract S3 key from full URL
         String s3Key = _extractS3Key(url);
-        images.add({
-          "url": s3Key,
-        });
+        images.add({"url": s3Key});
       }
 
-      Map<String, dynamic> body = {
-        "images": images,
-      };
-
+      Map<String, dynamic> body = {"images": images};
       debugPrint("Set gallery images body: $body");
 
       final response = await MyApi.callPostApi(
         url: setGalleryImagesApiUrl,
         body: body,
       );
-
-      debugPrint("Set gallery images response: $response");
-
-      _loader.hideLoader(context!);
 
       if (response != null) {
         Toasts.getSuccessToast(text: al.galleryImagesSaved);
@@ -499,7 +489,6 @@ class ProfileProvider extends ChangeNotifier {
       }
     } catch (err) {
       debugPrint("Error setting gallery images: $err");
-      _loader.hideLoader(context!);
       Toasts.getErrorToast(text: al.failedToSaveGalleryImages);
       return false;
     }
@@ -1088,6 +1077,42 @@ class ProfileProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> deleteGalleryImage({required List<int> photoIds}) async {
+    try {
+      if (context == null) return false;
+      _loader.showLoader(context: context!);
+
+      final response = await MyApi.callDeleteApi(
+        url: deleteGalleryImagesApiUrl,
+        body: {"photoIds": photoIds},
+        modelName: Models.producerDeleteGalleryImageModel,
+      );
+
+      _loader.hideLoader(context!);
+
+      if (response != null &&
+          response.status == 200 &&
+          response.message != null) {
+        Toasts.getSuccessToast(
+          text: response.message ?? "Gallery images deleted successfully",
+        );
+        // ✅ Remove the refresh call to prevent flicker
+        // await getGalleryImages(context!);
+        return true;
+      } else {
+        Toasts.getErrorToast(text: "Failed to delete gallery images");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("Error deleting gallery image: $e");
+      if (context != null) _loader.hideLoader(context!);
+      Toasts.getErrorToast(text: "Something went wrong while deleting image");
+      return false;
+    }
+  }
+
+
 
   @override
   void dispose() {

@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../appAssets/app_assets.dart';
 import '../../l18n.dart';
 import '../../res/toasts.dart';
+import '../../utilities/input_formatters.dart';
 import 'auth_provider.dart';
 
 class Signup extends StatefulWidget {
@@ -49,6 +50,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     AppTranslations.init(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -83,6 +85,7 @@ class _SignupState extends State<Signup> {
               borderColor: AppColors.greyBordersColor,
               hint: al.businessName,
               label: al.businessName,
+              inputFormatters: [AllowOnlyAlphanumericUnderscore()],
             ),
             SizedBox(height: getHeight() * .01),
             CustomField(
@@ -90,6 +93,7 @@ class _SignupState extends State<Signup> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
+              inputFormatters: [AllowOnlyAlphabetUnderscore()],
             ),
             SizedBox(height: getHeight() * .01),
             Consumer<AuthProvider>(
@@ -105,6 +109,7 @@ class _SignupState extends State<Signup> {
                   clickIcon: () {
                     state.toggleSignupPassVisibility();
                   },
+                  inputFormatters: [AllowOnlyAsciiCharacters()],
                 );
               },
             ),

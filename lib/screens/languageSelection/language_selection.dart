@@ -99,8 +99,12 @@ class _LanguageSelectionState extends State<LanguageSelection> {
                 ),
                 CustomButton(
                   buttonText: al.saveChanges,
-                  onTap: () {
-
+                  onTap: () async {
+                    final locale = selectedLanguage == al.english ? "en" : "fr";
+                    provider.changeLocale(locale);
+                    context.pop();
+                    context.pop();
+                    setState(() {});
                   },
                   buttonWidth: getWidth() * .42,
                   backgroundColor: AppColors.getPrimaryColorFromContext(context),

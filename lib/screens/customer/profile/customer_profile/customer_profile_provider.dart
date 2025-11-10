@@ -8,7 +8,9 @@ import 'package:choice_app/network/models.dart';
 import 'package:choice_app/res/loader.dart';
 import 'package:choice_app/res/toasts.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
+import '../../../../common/utils.dart';
 import '../../../restaurant/profile/profile_widgets.dart';
 
 class CustomerProfileProvider extends ChangeNotifier{
@@ -18,9 +20,15 @@ class CustomerProfileProvider extends ChangeNotifier{
   final Loader _loader = Loader();
   File? profileImage;
   String? profileImageUrl;
+  PhoneNumber? phoneNumber;
 
   init(context){
     this.context = context;
+  }
+
+  void setPhoneNumber(PhoneNumber? number) {
+    phoneNumber = number;
+    notifyListeners();
   }
 
   reset() {
@@ -51,6 +59,15 @@ class CustomerProfileProvider extends ChangeNotifier{
       );
       debugPrint("profile response is : ${customerProfileResponse.toJson()
       }");
+      if (customerProfileResponse.user != null) {
+        final user = customerProfileResponse.user!;
+        debugPrint("✅ profile response: ${customerProfileResponse.toJson()}");
+
+        // ✅ Store lat/lng for Explore screen use
+        await PreferenceUtils.setString("latitude", user.latitude?.toString() ?? "");
+        await PreferenceUtils.setString("longitude", user.longitude?.toString() ?? "");
+      }
+
       _loader.hideLoader(context!);
 
     }catch(err){
@@ -89,6 +106,7 @@ class CustomerProfileProvider extends ChangeNotifier{
         "fullName": name,
         "userName": username,
         "bio": bio,
+        "phoneNumber": phoneNumber!.international, // added phone
         "profileImageUrl": profileImageUrl,
         "latitude": 24.8607,
         "longitude": 67.0011

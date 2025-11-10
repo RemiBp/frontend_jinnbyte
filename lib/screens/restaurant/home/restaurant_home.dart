@@ -5,6 +5,7 @@ import 'package:choice_app/l18n.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/customer/home/home_widgets.dart';
+import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:choice_app/screens/restaurant/home/choice_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,7 @@ class _RestaurantHomeState extends State<RestaurantHome> {
   Widget build(BuildContext context) {
     _choiceProvider = Provider.of<ChoiceProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -57,15 +59,23 @@ class _RestaurantHomeState extends State<RestaurantHome> {
                 ),
                 Spacer(),
                 CustomIconButton(
-                  svgString: Assets.mapIcon,
+                  svgString: Assets.chatIcon,
                   onPress: (){
-                    context.push(Routes.heatmapRoute);
                   },
                 ),
                 SizedBox(width: getWidth() * .02),
-                CustomIconButton(svgString: Assets.chatIcon),
+                CustomIconButton(
+                    svgString: Assets.notificationIcon,
+                  onPress: (){
+                  },
+                ),
                 SizedBox(width: getWidth() * .02),
-                CustomIconButton(svgString: Assets.notificationIcon),
+                CustomIconButton(
+                    svgString: Assets.profileIcon,
+                  onPress: (){
+                   context.push(Routes.restaurantProfileHomeRoute);
+                  },
+                ),
               ],
             ),
             SizedBox(height: getHeight() * .02),

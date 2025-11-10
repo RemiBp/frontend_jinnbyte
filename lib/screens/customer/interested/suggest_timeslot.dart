@@ -168,7 +168,7 @@ class _SuggestTimeSlotScreenState extends State<SuggestTimeSlotScreen> {
 
             // Time Chips
             Wrap(
-              spacing: 10,
+              spacing: 17,
               runSpacing: 12,
               children: List.generate(timeSlots.length, (index) {
                 final isSelected = selectedTimeIndex == index;

@@ -67,6 +67,7 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
   Widget build(BuildContext context) {
     final provider = Provider.of<CustomerProfileProvider>(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -158,6 +159,8 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailLabel,
               label: al.emailLabel,
+              enabled: false,
+              bgColor: AppColors.greyColor.withValues(alpha: 0.9),
             ),
             SizedBox(height: getHeight() * .02),
             Row(
@@ -177,22 +180,18 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
             ),
             SizedBox(height: getHeight() * .01),
             PhoneFormField(
-              initialValue:
-                  PhoneNumber(
-                    isoCode: IsoCode.AC,
-                    nsn: phoneController.text.trim(),
-                  ) ??
-                  PhoneNumber.parse('+33'),
-              countrySelectorNavigator: const CountrySelectorNavigator.page(),
-              onChanged: (phoneNumber) => () {},
+              initialValue: provider.phoneNumber ?? PhoneNumber.parse('+33'),
+              countrySelectorNavigator:
+              const CountrySelectorNavigator.page(),
+              onChanged: (phoneNumber) => provider.setPhoneNumber(phoneNumber),
               decoration: InputDecoration(
                 border: buildOutlineInputBorder(AppColors.greyBordersColor),
-                focusedBorder: buildOutlineInputBorder(
-                  AppColors.inputHintColor,
-                ),
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
+                focusedBorder:
+                buildOutlineInputBorder(AppColors.inputHintColor),
+                errorBorder: buildOutlineInputBorder(AppColors.redColor),
+                focusedErrorBorder: buildOutlineInputBorder(AppColors.redColor),
               ),
+              validator: PhoneValidator.valid(context), // Automatic validation per country
               enabled: true,
               isCountrySelectionEnabled: true,
               isCountryButtonPersistent: true,
@@ -231,8 +230,38 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                 CustomButton(
                   buttonText: al.saveChanges,
                   onTap: () async {
-                    // context.push(Routes.restaurantAddCuisineRoute);
-                    // return;
+
+
+                    final name = nameController.text.trim();
+                    final username = userNameController.text.trim();
+                    final bio = bioController.text.trim();
+                    final phone = provider.phoneNumber;
+
+                    if (name.isEmpty) {
+                      Toasts.getErrorToast(text: al.nameMissing); // or “Full name is required”
+                      return;
+                    }
+
+                    if (username.isEmpty) {
+                      Toasts.getErrorToast(text: al.usernameMissing);
+                      return;
+                    }
+
+                    if (phone == null) {
+                      Toasts.getErrorToast(text: al.validPhoneNumber);
+                      return;
+                    }
+
+                    final isPhoneValid = await phone.isValid();
+                    if (!isPhoneValid) {
+                      Toasts.getErrorToast(text: al.validPhoneNumber);
+                      return;
+                    }
+
+                    if(bio.isEmpty){
+                      Toasts.getErrorToast(text: "Please Enter Bio");
+                      return;
+                    }
 
                     if (provider.profileImage != null) {
                       final bytes = await provider.profileImage!.readAsBytes();
@@ -244,9 +273,9 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                       }
                     }
                     await provider.updateCustomerProfile(
-                      name: nameController.text.trim(),
-                      username: userNameController.text.trim(),
-                      bio: bioController.text.trim(),
+                      name: name,
+                      username: username,
+                      bio: bio,
                     );
                   },
                   buttonWidth: getWidth() * .42,

@@ -120,6 +120,8 @@ class Assets {
   static const String postIcon = "assets/icons/post_icon.png";
   static const String eventPngIcon = "assets/icons/event_png_icon.png";
   static const String copilotIcon = "assets/icons/copilot.png";
+  static const String subscriptionIcon = "assets/icons/subscription.svg";
+
 
 
   static const String galleryImage = "assets/images/gallery_image.png";

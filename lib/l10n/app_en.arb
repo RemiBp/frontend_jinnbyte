@@ -82,6 +82,7 @@
   "inProgress": "In-Progress",
   "completed": "Completed",
   "cancelled": "Cancelled",
+  "menuCoverage": "Menu Coverage",
 
   "noUpcomingBooking": "No upcoming booking",
   "noUpcomingBookingMessage": "You have no upcoming booking",
@@ -608,6 +609,8 @@
   "select": "Select",
   "failedToFetchPlaces": "Failed to fetch places",
   "searchForRestaurant": "Search for a restaurant...",
+  "searchForWellness": "Search for a Wellness...",
+  "searchForLeisure": "Search for a Leisure...",
   "back": "Back",
   "changeType": "Change Type",
   "search": "Search...",

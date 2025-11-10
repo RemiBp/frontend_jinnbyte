@@ -7,6 +7,7 @@ import 'package:choice_app/routes/routes.dart';
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
 import 'package:choice_app/utilities/extensions.dart';
+import 'package:choice_app/utilities/input_formatters.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +45,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -78,6 +80,7 @@ class _LoginState extends State<Login> {
               borderColor: AppColors.greyBordersColor,
               hint: al.emailPlaceholder,
               label: al.emailLabel,
+              inputFormatters: [AllowOnlyAlphabetUnderscore()],
               validate: (value) =>
                   Validators.validateEmail(value, al.emailMissing, al.invalidEmail),
             ),
@@ -90,6 +93,7 @@ class _LoginState extends State<Login> {
                   hint: al.passwordLabel,
                   label: al.passwordLabel,
                   obscure: true,
+                  inputFormatters: [AllowOnlyAsciiCharacters()],
                   hidePassword: state.loginPassVisibility,
                   maxLines: 1,
                   clickIcon: () {
@@ -199,7 +203,7 @@ class _LoginState extends State<Login> {
                                 context.pushReplacement(Routes.userSignupRoute);
                               } else {
                                 // Navigate to normal signup
-                                context.pushReplacement(Routes.signupRoute);
+                                context.pushReplacement(Routes.reClaimAccountRoute);
                               }
 
 
@@ -217,7 +221,7 @@ class _LoginState extends State<Login> {
 
   onLoginTap() {
     // context.push(Routes.restaurantProfileRoute);
-     //context.push(Routes.restaurantBottomTabRoute);
+   // context.push(Routes.restaurantBottomTabRoute);
     //return;
     var email = emailController.text.toString().trim();
     var password = passwordController.text.toString().trim();

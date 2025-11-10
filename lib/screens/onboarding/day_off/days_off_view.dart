@@ -1,5 +1,6 @@
 import 'package:choice_app/res/toasts.dart';
 import 'package:choice_app/screens/restaurant/dashboard/home_view.dart';
+import 'package:collection/collection.dart';
 import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +29,45 @@ class _DaysOffViewState extends State<DaysOffView> {
     text: DateFormat('yyyy-MM-dd').format(DateTime.now()),
   );
 
+  void _filterSlotsBySelectedDate() {
+    if (Provider.of<ProfileProvider>(context, listen: false).getProducerSlotsResponse == null) return;
+
+    final response = Provider.of<ProfileProvider>(context, listen: false).getProducerSlotsResponse!;
+
+    final selectedDate = DateTime.tryParse(leaveDateController.text);
+    if (selectedDate == null) return;
+
+    final selectedWeekday = DateFormat('EEEE').format(selectedDate); // "Saturday"
+
+    final dayData = response.data.firstWhereOrNull(
+          (daySlot) => daySlot.day == selectedWeekday,
+    );
+
+    if (dayData != null) {
+      final seen = <String>{};
+      allSlots = dayData.slots
+          .map((apiSlot) => Slots(
+        id: apiSlot.id,
+        startTime: apiSlot.startTime,
+        endTime: apiSlot.endTime,
+      ))
+          .where((slot) {
+        // avoid duplicates
+        final key = "${slot.startTime}-${slot.endTime}";
+        if (seen.contains(key)) return false;
+        seen.add(key);
+        return true;
+      })
+          .toList();
+
+      allSlots.sort((a, b) => a.startTime!.compareTo(b.startTime!));
+    } else {
+      allSlots = [];
+    }
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,18 +82,7 @@ class _DaysOffViewState extends State<DaysOffView> {
       );
       profileProvider.init(context);
       await profileProvider.getProducerSlots();
-      // Set allSlots from provider data
-      final response = profileProvider.getProducerSlotsResponse;
-      if (response != null) {
-        allSlots = response.data
-            .expand((daySlot) => daySlot.slots.map((apiSlot) => Slots(
-                  id: apiSlot.id,
-                  startTime: apiSlot.startTime,
-                  endTime: apiSlot.endTime,
-                )))
-            .toList();
-      }
-      setState(() {});
+      _filterSlotsBySelectedDate();
     });
   }
 
@@ -113,6 +142,7 @@ class _DaysOffViewState extends State<DaysOffView> {
                           leaveDateController.text = DateFormat(
                             'yyyy-MM-dd',
                           ).format(picked);
+                          _filterSlotsBySelectedDate(); // filter slots for the newly selected date
                         });
                       }
                     },
@@ -309,4 +339,6 @@ class _DaysOffViewState extends State<DaysOffView> {
   //   }
   //   return picked;
   // }
+
+
 }

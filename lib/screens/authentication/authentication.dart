@@ -1,3 +1,4 @@
+import 'package:choice_app/appColors/colors.dart';
 import 'package:choice_app/res/res.dart';
 import 'package:choice_app/screens/authentication/auth_widgets.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class Authentication extends StatelessWidget {
     final roleProvider = context.read<RoleProvider>();
     AppTranslations.init(context);
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * .05,
@@ -47,7 +49,7 @@ class Authentication extends StatelessWidget {
               onTap: () {
                 roleProvider.setRole(UserRole.user);
                 //context.push(Routes.signupRoute);
-                context.push(Routes.userSignupRoute);
+                context.push(Routes.loginRoute);
                 },
             ),
 
@@ -62,7 +64,7 @@ class Authentication extends StatelessWidget {
               onTap: () {
                 roleProvider.setRole(UserRole.restaurant);
                 // context.push(Routes.signupRoute);
-                context.push(Routes.reClaimAccountRoute);
+                context.push(Routes.loginRoute);
               },
             ),
             AuthSelectionCard(
@@ -75,7 +77,7 @@ class Authentication extends StatelessWidget {
               onTap: () {
                 roleProvider.setRole(UserRole.leisure);
                 // context.push(Routes.signupRoute);
-                context.push(Routes.reClaimAccountRoute);
+                context.push(Routes.loginRoute);
               },
             ),
             AuthSelectionCard(
@@ -88,7 +90,7 @@ class Authentication extends StatelessWidget {
               onTap: () {
                 roleProvider.setRole(UserRole.wellness);
                 // context.push(Routes.restaurantBottomTabRoute);
-                context.push(Routes.reClaimAccountRoute);
+                context.push(Routes.loginRoute);
               },
             ),
           ],

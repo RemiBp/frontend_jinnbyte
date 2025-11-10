@@ -112,6 +112,7 @@ class _CreateChoiceState extends State<CreateChoice> {
     }
 
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: al.createChoice),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: getWidth() * .05, vertical: getHeight() * .02),
@@ -376,16 +377,36 @@ class _CreateChoiceState extends State<CreateChoice> {
                     fontFamily: Assets.onsetMedium,
                     fontSize: sizes?.fontSize16,
                   ),
-                  SizedBox(height: 12),
-                  TextField(
-                    controller: shareExpController,
-                    maxLines: 4,
-                    decoration: InputDecoration.collapsed(
-                      hintText: '${al.shareYourExperience}...',
-                      hintStyle: TextStyle(color: Color(0xFF6B6C90)),
+                  SizedBox(height: 15),
+                  Container(
+                    width: getWidth() * 0.80, // ~302px on a 375px width screen
+                    height: getHeight() * 0.15, // ~120px on a 812px height screen
+                    padding: EdgeInsets.symmetric(
+                      horizontal: getWidth() * 0.03,
+                      vertical: getHeight() * 0.01,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.whiteColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.inputHintColor,
+                        width: 1,
+                      ),
+                    ),
+                    child: TextField(
+                      controller: shareExpController,
+                      maxLines: null, // allows expansion if user types more
+                      decoration: InputDecoration.collapsed(
+                        hintText: '${al.shareYourExperience}...',
+                        hintStyle: const TextStyle(
+                          color: AppColors.inputHintColor,
+                        ),
+                      ),
+
                     ),
                   ),
-                  SizedBox(height: 24),
+
+                  SizedBox(height: 19),
                   buildRadio(al.public, al.anyoneCanSeeFeed, al.publicLower),
                   buildRadio(al.friendsOnly, al.yourFriendsOnChoice, al.friendsOnlyLower),
                   buildRadio(al.private, al.onlyMe, al.privateLower),

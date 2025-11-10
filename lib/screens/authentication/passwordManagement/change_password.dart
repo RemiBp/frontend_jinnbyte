@@ -36,6 +36,7 @@ class _ChangePassword extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: al.passwordManager),
 
       body: SingleChildScrollView(
@@ -129,13 +130,21 @@ class _ChangePassword extends State<ChangePassword> {
                     final provider = context.read<ProfileProvider>();
                     provider.init(context); // This line is REQUIRED before using context-dependent code
 
-                    if (currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
-                      Toasts.getErrorToast(text: "All fields are required");
+                    if (currentPassword.isEmpty ) {
+                      Toasts.getErrorToast(text: "Current Password is empty");
+                      return;
+                    }
+                    if (newPassword.isEmpty) {
+                      Toasts.getErrorToast(text: "New Password is empty");
+                      return;
+                    }
+                    if (confirmPassword.isEmpty) {
+                      Toasts.getErrorToast(text: "Confirm Password is empty");
                       return;
                     }
 
                     if (newPassword != confirmPassword) {
-                      Toasts.getErrorToast(text: "Passwords do not match");
+                      Toasts.getErrorToast(text: "New Password and Confirm Password do not match");
                       return;
                     }
 

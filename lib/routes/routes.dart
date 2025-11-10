@@ -16,6 +16,7 @@ import 'package:choice_app/screens/customer/interested/select_friends.dart';
 import 'package:choice_app/screens/customer/interested/suggest_event.dart';
 import 'package:choice_app/screens/customer/interested/suggest_timeslot.dart';
 import 'package:choice_app/screens/languageSelection/language_selection.dart';
+import 'package:choice_app/screens/leisure/leisure_profile/leisure_profile_view.dart';
 import 'package:choice_app/screens/onboarding/add_cuisine/add_cuisine.dart';
 import 'package:choice_app/screens/onboarding/add_services/add_services.dart';
 import 'package:choice_app/screens/onboarding/business_hours/edit_business_hours/edit_operational_hours.dart';
@@ -28,6 +29,7 @@ import 'package:choice_app/screens/restaurant/event/create_event.dart';
 import 'package:choice_app/screens/restaurant/event/event_details.dart';
 import 'package:choice_app/screens/restaurant/home/create_post.dart';
 import 'package:choice_app/screens/subscription/subscribe_screen.dart';
+import 'package:choice_app/screens/wellness/wellness_profile/wellness_profile_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/authentication/accountReclaim/upload_reclaim_docs.dart';
@@ -80,6 +82,12 @@ class Routes {
   static const String heatmapRoute = '/heatmap';
   static const String registrationRoute = '/account_registration';
   static const String daysOffRoute = '/days_off';
+  static const String restaurantProfileHomeRoute = '/leisure_profile_view';
+  static const String wellnessProfileHomeRoute = '/wellness_profile_view';
+  static const String leisureProfileHomeRoute = '/leisure_profile_view';
+
+
+
 
 
 
@@ -156,6 +164,18 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: Routes.galleryViewRoute,
       builder: (context, state) => const GalleryView(),
+    ),
+    GoRoute(
+      path: Routes.restaurantProfileHomeRoute,
+      builder: (context, state) => const LeisureProfileView(),
+    ),
+    GoRoute(
+      path: Routes.leisureProfileHomeRoute,
+      builder: (context, state) => const LeisureProfileView(),
+    ),
+    GoRoute(
+      path: Routes.wellnessProfileHomeRoute,
+      builder: (context, state) => const WellnessProfileView(),
     ),
     GoRoute(
       path: Routes.slotManagementViewRoute,

@@ -263,6 +263,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancelled => 'Annulé';
 
   @override
+  String get menuCoverage => 'Couverture du menu';
+
+  @override
   String get noUpcomingBooking => 'Aucune réservation à venir';
 
   @override
@@ -1798,6 +1801,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get searchForRestaurant => 'Recherchez un restaurant...';
+
+  @override
+  String get searchForWellness => 'Rechercher un bien-être';
+
+  @override
+  String get searchForLeisure => 'Rechercher un loisir';
 
   @override
   String get back => 'Retour';

@@ -94,7 +94,7 @@ class _AddServicesState extends State<AddServices> {
 
         return Scaffold(
           backgroundColor: AppColors.whiteColor,
-          appBar: CommonAppBar(title: al.services),
+          appBar: CommonAppBar(title: al.services, showEditButton: true,),
           body: Container(
             padding: EdgeInsets.symmetric(
               horizontal: sizes!.pagePadding,

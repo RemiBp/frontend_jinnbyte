@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/res/res.dart';
@@ -44,17 +44,15 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
     if (response != null && response.data != null) {
       setState(() {
         documentsData = response.data!.toJson();
-        isLoading = false;
       });
     } else {
       Toasts.getErrorToast(text: "Failed To Fetch Documents");
-      setState(() => isLoading = false);
     }
   }
 
   Future<void> updateAndUploadDocument(String documentField) async {
     try {
-      // Step 1️⃣ Pick a file (PDF only)
+      // Step 1 Pick a file (PDF only)
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
@@ -69,10 +67,10 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
       final networkProvider = context.read<NetworkProvider>();
       final profileProvider = context.read<ProfileProvider>();
 
-      // Step 2️⃣ Show uploading loader
+      // Step 2 Show uploading loader
       setState(() => isLoading = true);
 
-      // Step 3️⃣ Get pre-signed URL and upload to S3
+      // Step 3 Get pre-signed URL and upload to S3
       final uploadedKey = await networkProvider.getUrlForDocumentUpload(
         file,
         context,
@@ -89,7 +87,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         return;
       }
 
-      // Step 4️⃣ Call updateDocument API with uploaded S3 key
+      // Step 4 Call updateDocument API with uploaded S3 key
       final response = await profileProvider.updateDocument(
         documentField: documentField,
         documentValue: uploadedKey,
@@ -98,7 +96,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
 
       setState(() => isLoading = false);
 
-      // Step 5️⃣ Handle response
+      // Step 5 Handle response
       if (response != null && response.status == 200) {
         Toasts.getSuccessToast(
           text: response.message ?? "Document updated successfully",
@@ -115,8 +113,6 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   }
 
 
-
-
   Future<void> _deleteDocument(String documentKey) async {
     final provider = context.read<ProfileProvider>();
     final success = await provider.deleteDocument(documentField: documentKey);
@@ -127,6 +123,18 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         documentsData?[documentKey] = null;
         documentsData?["${documentKey}Expiry"] = null;
       });
+    }
+  }
+
+  Future<void> _openDocument(String fileUrl) async {
+    final Uri url = Uri.parse(fileUrl);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication, // opens in default PDF viewer
+      );
+    } else {
+      Toasts.getErrorToast(text: "Could not open document");
     }
   }
 
@@ -158,10 +166,8 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(title: al.documents),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : uploadedDocuments.isEmpty
-          ? const SizedBox.shrink() // ✅ show nothing if no documents
+      body: uploadedDocuments.isEmpty
+          ? const SizedBox.shrink() // show nothing if no documents
           : SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: getWidth() * 0.05,
@@ -207,13 +213,13 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
           fileName: filePath.split('/').last,
           expiryDate: expiryDate,
           onEdit: () => updateAndUploadDocument(documentKey),
-          onDelete: () => _deleteDocument(documentKey),
+          onTap: () => _openDocument(filePath), // open document on tap new
         ),
       ],
     );
   }
 
-  /// Optional helper to show human-friendly titles
+  // Optional helper to show human-friendly titles
   String _getTitleFromKey(String key) {
     switch (key) {
       case "document1":
@@ -230,94 +236,93 @@ class DocumentCard extends StatelessWidget {
   final String fileName;
   final String expiryDate;
   final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final VoidCallback onTap; // handle opening document
 
   const DocumentCard({
     super.key,
     required this.fileName,
     required this.expiryDate,
     required this.onEdit,
-    required this.onDelete,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(getWidth() * 0.04),
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              height: getHeight() * 0.08,
-              width: getWidth() * 0.16,
-              color: AppColors.getPrimaryColorFromContext(context)
-                  .withValues(alpha: 0.1),
-              child: Center(
-                child: SvgPicture.asset(
-                  Assets.pdfIcon,
-                  height: getWidth() * 0.08,
-                  colorFilter: ColorFilter.mode(
-                    AppColors.getPrimaryColorFromContext(context),
-                    BlendMode.srcIn,
+    return GestureDetector(
+      onTap: onTap, // open document on tap
+      child: Container(
+        padding: EdgeInsets.all(getWidth() * 0.04),
+        decoration: BoxDecoration(
+          color: AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                height: getHeight() * 0.08,
+                width: getWidth() * 0.16,
+                color: AppColors.getPrimaryColorFromContext(context)
+                    .withValues(alpha: 0.1),
+                child: Center(
+                  child: SvgPicture.asset(
+                    Assets.pdfIcon,
+                    height: getWidth() * 0.08,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.getPrimaryColorFromContext(context),
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(width: getWidth() * 0.04),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  text: fileName,
-                  fontFamily: Assets.onsetMedium,
-                  fontSize: sizes?.fontSize14,
-                ),
-                SizedBox(height: getHeight() * 0.005),
-                CustomText(
-                  text: "120 KB",
-                  fontSize: sizes?.fontSize12,
-                  color: AppColors.inputHintColor,
-                ),
-                SizedBox(height: getHeight() * 0.005),
-                CustomText(
-                  text: "Expiry Date: $expiryDate",
-                  fontSize: sizes?.fontSize12,
-                  color: AppColors.inputHintColor,
-                ),
-              ],
+            SizedBox(width: getWidth() * 0.04),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: fileName,
+                    fontFamily: Assets.onsetMedium,
+                    fontSize: sizes?.fontSize14,
+                  ),
+                  SizedBox(height: getHeight() * 0.005),
+                  CustomText(
+                    text: "120 KB",
+                    fontSize: sizes?.fontSize12,
+                    color: AppColors.inputHintColor,
+                  ),
+                  SizedBox(height: getHeight() * 0.005),
+                  CustomText(
+                    text: "Expiry Date: $expiryDate",
+                    fontSize: sizes?.fontSize12,
+                    color: AppColors.inputHintColor,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: onEdit,
-                icon: Icon(Icons.edit,
-                    color: Colors.green, size: getWidth() * 0.055),
+            // ✅ Only edit button remains
+            IconButton(
+              onPressed: onEdit,
+              icon: Icon(
+                Icons.edit,
+                color: Colors.green,
+                size: getWidth() * 0.055,
               ),
-              IconButton(
-                onPressed: onDelete,
-                icon: Icon(Icons.delete,
-                    color: AppColors.redColor, size: getWidth() * 0.055),
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
