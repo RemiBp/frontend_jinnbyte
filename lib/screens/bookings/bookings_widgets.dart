@@ -26,6 +26,9 @@ class BookingCard extends StatelessWidget {
   final Function? onCancel;
   final String bookingType; // "Restaurant" | "Wellness"
   final String? address;
+  final String? totalPrice;
+  final String? bookingId;
+  final bool? isEvent;
 
   const BookingCard({
     super.key,
@@ -40,6 +43,9 @@ class BookingCard extends StatelessWidget {
     this.onCancel,
     this.bookingType = "Restaurant",
     this.address,
+    this.totalPrice,
+    this.bookingId,
+    this.isEvent,
   });
 
   @override
@@ -50,9 +56,13 @@ class BookingCard extends StatelessWidget {
       onTap: () => onDetails(),
       child: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: getWidthRatio() * 12, vertical: getHeightRatio() * 12),
+          horizontal: getWidthRatio() * 12,
+          vertical: getHeightRatio() * 12,
+        ),
         margin: EdgeInsets.symmetric(
-            horizontal: sizes!.pagePadding, vertical: getHeight() * 0.01),
+          horizontal: sizes!.pagePadding,
+          vertical: getHeight() * 0.01,
+        ),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
           borderRadius: BorderRadius.circular(16),
@@ -70,7 +80,7 @@ class BookingCard extends StatelessWidget {
             Row(
               children: [
                 CustomText(
-                  text: "${al.bookingId}: 3956839",
+                  text: "${al.bookingId}: $bookingId",
                   fontSize: sizes?.fontSize12,
                   fontWeight: FontWeight.w500,
                   color: AppColors.blackColor,
@@ -78,16 +88,15 @@ class BookingCard extends StatelessWidget {
                 const Spacer(),
 
                 //  Event Chip
-                _buildChip(al.event, AppColors.redColor),
+                if (isEvent ?? false) _buildChip(al.event, AppColors.redColor),
 
-                SizedBox(width: 4),
-
-                //  Restaurant / Wellness Chip
-                _buildChip(
-                  bookingType,
-                  AppColors.restaurantPrimaryColor,
-                ),
-
+                // SizedBox(width: 4),
+                //
+                // //  Restaurant / Wellness Chip
+                // _buildChip(
+                //   bookingType,
+                //   AppColors.restaurantPrimaryColor,
+                // ),
                 if (onCheckIn == null && onCancel == null)
                   Padding(
                     padding: EdgeInsets.only(left: getWidth() * 0.011),
@@ -124,7 +133,11 @@ class BookingCard extends StatelessWidget {
                       SizedBox(height: getHeightRatio() * 8),
 
                       // Guests
-                      _infoRow(Assets.guestsIcon, "$guests ${al.guests}", context),
+                      _infoRow(
+                        Assets.guestsIcon,
+                        "$guests ${al.guests}",
+                        context,
+                      ),
 
                       SizedBox(height: getHeightRatio() * 8),
 
@@ -132,7 +145,10 @@ class BookingCard extends StatelessWidget {
                       _infoRow(
                         Assets.calenderIcon,
                         formatDateTime(
-                            date: date, startTime: startTime, endTime: endTime),
+                          date: date,
+                          startTime: startTime,
+                          endTime: endTime,
+                        ),
                         context,
                       ),
 
@@ -141,15 +157,15 @@ class BookingCard extends StatelessWidget {
                       //  Price or Address
                       role == UserRole.user
                           ? _locationRow(
-                        Assets.locationIcon, //  svg asset
-                        address ?? "123 Main St, Paris",
-                        context,
-                      )
-                          : _infoRow(
-                        Assets.priceIcon,
-                        "\$90",
-                        context,
-                      ),
+                            Assets.locationIcon, //  svg asset
+                            address ?? "Unknown",
+                            context,
+                          )
+                          : totalPrice != null ? _infoRow(
+                            Assets.priceIcon,
+                            totalPrice ?? 'Unknown',
+                            context,
+                          ) : SizedBox(),
                     ],
                   ),
                 ),
@@ -177,8 +193,9 @@ class BookingCard extends StatelessWidget {
                     onTap: () => onCheckIn!(),
                     buttonWidth: getWidth() * .38,
                     height: getHeight() * 0.06,
-                    backgroundColor:
-                    AppColors.getPrimaryColorFromContext(context),
+                    backgroundColor: AppColors.getPrimaryColorFromContext(
+                      context,
+                    ),
                     borderColor: Colors.transparent,
                     textColor: Colors.white,
                     textFontWeight: FontWeight.w700,
@@ -197,7 +214,8 @@ class BookingCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: getWidth() * 0.025, //  reduced padding
-        vertical: getHeight() * 0.006,),
+        vertical: getHeight() * 0.006,
+      ),
       decoration: BoxDecoration(
         color: color.withAlpha(40),
         borderRadius: BorderRadius.circular(40),
@@ -235,6 +253,23 @@ class BookingCard extends StatelessWidget {
           width: getWidthRatio() * 64,
           height: getHeightRatio() * 64,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: getWidthRatio() * 64,
+              height: getHeightRatio() * 64,
+              decoration: BoxDecoration(
+                color: AppColors.getPrimaryColorFromContext(
+                  context,
+                ).withAlpha(40),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.person,
+                size: 48,
+                color: AppColors.getPrimaryColorFromContext(context),
+              ),
+            );
+          },
         ),
       );
     }
@@ -292,12 +327,18 @@ class BookingCard extends StatelessWidget {
   String formatDateTime({String? date, String? startTime, String? endTime}) {
     if (date == null || startTime == null || endTime == null) return '';
     try {
-      final formattedDate =
-      Formatter.formatDateFromString(date, newPattern: 'MMM d');
-      final formattedStart =
-      Formatter.formatDateFromString(startTime, newPattern: 'h:mm a');
-      final formattedEnd =
-      Formatter.formatDateFromString(endTime, newPattern: 'h:mm a');
+      final formattedDate = Formatter.formatDateFromString(
+        date,
+        newPattern: 'MMM d',
+      );
+      final formattedStart = Formatter.formatDateFromString(
+        startTime,
+        newPattern: 'h:mm a',
+      );
+      final formattedEnd = Formatter.formatDateFromString(
+        endTime,
+        newPattern: 'h:mm a',
+      );
       return '$formattedDate, $formattedStart - $formattedEnd';
     } catch (e) {
       return '';
@@ -309,11 +350,7 @@ class BookingInfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const BookingInfoRow({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const BookingInfoRow({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -337,21 +374,22 @@ class BookingInfoRow extends StatelessWidget {
   }
 }
 
-
 class CancelConfirmationAlert extends StatelessWidget {
   final VoidCallback onConfirm;
   final TextEditingController controller;
 
-  const CancelConfirmationAlert({super.key, required this.onConfirm, required this.controller});
+  const CancelConfirmationAlert({
+    super.key,
+    required this.onConfirm,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: AppColors.whiteColor,
       insetPadding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -372,12 +410,10 @@ class CancelConfirmationAlert extends StatelessWidget {
                     Icons.close_outlined,
                     color: AppColors.primarySlateColor,
                   ),
-                )
+                ),
               ],
             ),
-            SizedBox(
-              height: getHeightRatio() * 16,
-            ),
+            SizedBox(height: getHeightRatio() * 16),
             CustomText(
               text: al.cancelBookingConfirmation,
               fontWeight: FontWeight.w400,
@@ -385,16 +421,14 @@ class CancelConfirmationAlert extends StatelessWidget {
               color: AppColors.primarySlateColor,
               giveLinesAsText: true,
             ),
-            SizedBox(height: getHeightRatio() * 16,),
+            SizedBox(height: getHeightRatio() * 16),
             CustomField(
               height: getHeight() * .1,
               borderColor: AppColors.greyBordersColor,
               hint: al.shareReason,
               label: al.reason,
             ),
-            SizedBox(
-              height: getHeightRatio() * 24,
-            ),
+            SizedBox(height: getHeightRatio() * 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -412,12 +446,12 @@ class CancelConfirmationAlert extends StatelessWidget {
                 ),
                 CustomButton(
                   buttonText: al.yes,
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   buttonWidth: getWidth() * .38,
                   height: getHeight() * 0.06,
-                  backgroundColor: AppColors.getPrimaryColorFromContext(context),
+                  backgroundColor: AppColors.getPrimaryColorFromContext(
+                    context,
+                  ),
                   borderColor: Colors.transparent,
                   textColor: Colors.white,
                   textFontWeight: FontWeight.w700,

@@ -1,3 +1,4 @@
+import 'package:choice_app/screens/bookings/upcoming_bookings.dart';
 import 'package:flutter/material.dart';
 import '../../appColors/colors.dart';
 import '../../customWidgets/common_app_bar.dart';
@@ -8,7 +9,15 @@ import 'bookings_widgets.dart';
 
 class BookingDetails extends StatefulWidget {
   final bool? isCancelled;
-  const BookingDetails({super.key, this.isCancelled});
+  final String? cancellationReason;
+  final BookingCardData? bookingData;
+
+  const BookingDetails({
+    super.key,
+    this.isCancelled,
+    this.cancellationReason,
+    this.bookingData,
+  });
 
   @override
   State<BookingDetails> createState() => _BookingDetailsState();
@@ -17,88 +26,132 @@ class BookingDetails extends StatefulWidget {
 class _BookingDetailsState extends State<BookingDetails> {
   @override
   Widget build(BuildContext context) {
+    final booking = widget.bookingData;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       appBar: CommonAppBar(
-        title: al.bookingDetails,
+        title:
+            widget.isCancelled ?? false
+                ? 'Booking Cancelled'
+                : al.bookingDetails,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.02),
+        padding: EdgeInsets.symmetric(
+          horizontal: sizes!.pagePadding,
+          vertical: getHeight() * 0.02,
+        ),
         child: Column(
           children: [
-            widget.isCancelled??false?
-            Expanded(
-              child: ListView(
-                children: [
-                  CustomText(
-                    text: al.reason,
-                    fontSize: sizes?.fontSize16,
-                    color: AppColors.blackColor,
-                    fontWeight: FontWeight.w600,
+            widget.isCancelled ?? false
+                ? Expanded(
+                  child: ListView(
+                    children: [
+                      CustomText(
+                        text: al.reason,
+                        fontSize: sizes?.fontSize16,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: getHeight() * 0.02),
+                      CustomText(
+                        text: widget.cancellationReason ?? 'Unknown',
+                        fontSize: sizes?.fontSize14,
+                        color: AppColors.primarySlateColor,
+                        fontWeight: FontWeight.w500,
+                        giveLinesAsText: true,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: getHeight() * 0.02),
-                  CustomText(
-                    text: al.reservationCanceledMessage,
-                    fontSize: sizes?.fontSize14,
-                    color: AppColors.primarySlateColor,
-                    fontWeight: FontWeight.w500,
-                    giveLinesAsText: true,
+                )
+                : Expanded(
+                  child: ListView(
+                    children: [
+                      CustomText(
+                        text: al.bookingInformation,
+                        fontSize: sizes?.fontSize16,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: getHeight() * 0.02),
+                      BookingInfoRow(
+                        label: al.bookingId,
+                        value: booking?.bookingId ?? 'Unknown',
+                      ),
+                      SizedBox(height: getHeight() * 0.01),
+                      BookingInfoRow(
+                        label: al.numberOfPersons,
+                        value: "${booking?.guests} ${al.person}(s)",
+                      ),
+                      SizedBox(height: getHeight() * 0.01),
+                      BookingInfoRow(
+                        label: al.date,
+                        value: booking?.date ?? 'Unknown',
+                      ),
+                      SizedBox(height: getHeight() * 0.01),
+                      BookingInfoRow(
+                        label: al.time,
+                        value: "${booking?.startTime} - ${booking?.endTime}",
+                      ),
+                      if (booking?.totalPrice != null) ...[
+                        SizedBox(height: getHeight() * 0.01),
+                        BookingInfoRow(
+                          label: al.amount,
+                          value: "\$${booking?.totalPrice}",
+                        ),
+                      ],
+                      Divider(
+                        color: AppColors.greyBordersColor,
+                        height: getHeight() * 0.03,
+                      ),
+
+                      CustomText(
+                        text: al.customerInformation,
+                        fontSize: sizes?.fontSize16,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: getHeight() * 0.02),
+                      if (booking?.customerName != null) ...[
+                        BookingInfoRow(
+                          label: al.customerName,
+                          value: booking?.customerName ?? 'Unknown',
+                        ),
+                        SizedBox(height: getHeight() * 0.01),
+                      ],
+                      BookingInfoRow(
+                        label: al.emailLabel1,
+                        value: booking?.customerEmail ?? 'Unknown',
+                      ),
+                      SizedBox(height: getHeight() * 0.01),
+                      BookingInfoRow(
+                        label: al.phoneLabel,
+                        value: booking?.customerPhone ?? 'Unknown',
+                      ),
+                      Divider(
+                        color: AppColors.greyBordersColor,
+                        height: getHeight() * 0.03,
+                      ),
+
+                      CustomText(
+                        text: al.internalNotes,
+                        fontSize: sizes?.fontSize16,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(height: getHeight() * 0.02),
+                      CustomText(
+                        text:
+                            booking?.internalNotes != null
+                                ? "\"${booking?.internalNotes}\""
+                                : 'No internal notes',
+                        fontSize: sizes?.fontSize14,
+                        color: AppColors.primarySlateColor,
+                        fontWeight: FontWeight.w500,
+                        giveLinesAsText: true,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ):
-            Expanded(
-              child: ListView(
-                children: [
-                  CustomText(
-                    text: al.bookingInformation,
-                    fontSize: sizes?.fontSize16,
-                    color: AppColors.blackColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  SizedBox(height: getHeight() * 0.02),
-                  BookingInfoRow(label: al.bookingId, value: "A123456"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.numberOfPersons, value: "2 ${al.person}(s)"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.date, value: "Aug 28, 2025"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.time, value: "10:00 AM - 11:00 AM"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.amount, value: "\$90"),
-                  Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
-              
-                  CustomText(
-                    text: al.customerInformation,
-                    fontSize: sizes?.fontSize16,
-                    color: AppColors.blackColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  SizedBox(height: getHeight() * 0.02),
-                  BookingInfoRow(label: al.customerName, value: "Mark Jones"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.emailLabel1, value: "example@email.com"),
-                  SizedBox(height: getHeight() * 0.01),
-                  BookingInfoRow(label: al.phoneLabel, value: "+33 (555) 000-0000"),
-                  Divider(color: AppColors.greyBordersColor, height: getHeight() * 0.03),
-              
-                  CustomText(
-                    text: al.internalNotes,
-                    fontSize: sizes?.fontSize16,
-                    color: AppColors.blackColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  SizedBox(height: getHeight() * 0.02),
-                  CustomText(
-                    text: "\"${al.allergyNote}\"",
-                    fontSize: sizes?.fontSize14,
-                    color: AppColors.primarySlateColor,
-                    fontWeight: FontWeight.w500,
-                    giveLinesAsText: true,
-                  ),
-                ],
-              ),
-            ),
+                ),
           ],
         ),
       ),
