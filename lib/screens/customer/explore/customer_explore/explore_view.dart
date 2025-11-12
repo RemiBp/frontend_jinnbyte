@@ -25,8 +25,10 @@ class _ExploreViewState extends State<ExploreView> {
   @override
   void initState() {
     super.initState();
+    final provider = Provider.of<ExploreViewProvider>(context, listen: false);
     Future.microtask(() {
-      Provider.of<ExploreViewProvider>(context, listen: false).getEventsNearMe();
+      provider.getEventsNearMe();
+      provider.getNearbyProducers(); // fetch producers for Surprise Me
     });
   }
   @override
@@ -189,28 +191,73 @@ class _ExploreViewState extends State<ExploreView> {
 
                   SizedBox(
                     height: getHeight() * 0.28,
-                    child: ListView.builder(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width: getWidth() * 0.75,
-                          child: FavouriteRestaurantCard(
-                            imageUrl:
-                            "https://images.unsplash.com/photo-1528605248644-14dd04022da1",
-                            restaurantName: "Restaurant ${index + 1}",
-                            address: "123 Main Street, City",
-                            isFavourite: index % 2 == 0,
-                            margin: EdgeInsets.only(
-                              top: getHeight() * 0.01,
-                              bottom: getHeight() * 0.01,
-                              right: getWidth() * 0.03,
+                    child: Consumer<ExploreViewProvider>(
+                      builder: (context, provider, _) {
+                        if (provider.isProducersLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+
+                        final producers = provider.nearbyProducers;
+
+                        if (producers.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              "No nearby producers found",
+                              style: TextStyle(color: Colors.grey),
                             ),
-                            onFavouriteTap: () {},
-                            onRestaurantTap: () {},
-                          ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: producers.length,
+                          itemBuilder: (context, index) {
+                            final producer = producers[index];
+                            final type = producer.type?.toLowerCase() ?? "";
+
+                            return SizedBox(
+                              width: getWidth() * 0.75,
+                              child: FavouriteRestaurantCard(
+                                imageUrl: producer.profileImage != null
+                                    ? "https://elasticbeanstalk-us-west-1-841019700848.s3.us-west-1.amazonaws.com/${producer.profileImage}"
+                                    : "https://via.placeholder.com/300",
+                                restaurantName: producer.name,
+                                address: producer.address.isNotEmpty
+                                    ? producer.address
+                                    : "No address available",
+                                isFavourite: false,
+                                chipText: type.isNotEmpty
+                                    ? (type == "restaurant"
+                                    ? "Restaurant"
+                                    : type == "wellness"
+                                    ? "Wellness"
+                                    : null)
+                                    : null,
+                                chipColor: type == "restaurant"
+                                    ? AppColors.restaurantPrimaryColor.withValues(alpha: 90)
+                                    : type == "wellness"
+                                    ? AppColors.wellnessPrimaryColor.withValues(alpha: 90)
+                                    : Colors.grey,
+                                margin: EdgeInsets.only(
+                                  top: getHeight() * 0.01,
+                                  bottom: getHeight() * 0.01,
+                                  right: getWidth() * 0.03,
+                                ),
+                                onFavouriteTap: () {},
+                                onRestaurantTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RestaurantExploreDetails(
+                                        tag: producer.type,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     ),

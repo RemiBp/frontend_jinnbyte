@@ -6,6 +6,7 @@ import 'package:choice_app/models/get_all_events_response.dart';
 import 'package:choice_app/models/get_all_service_types_response.dart';
 import 'package:choice_app/models/get_cuisine_types_response.dart';
 import 'package:choice_app/models/get_document_response.dart';
+import 'package:choice_app/models/get_event_types_response.dart';
 import 'package:choice_app/models/get_gallery_image_response.dart';
 import 'package:choice_app/models/get_menu_categories_response.dart';
 import 'package:choice_app/models/get_menu_response.dart';
@@ -19,9 +20,11 @@ import 'package:choice_app/models/producer_delete_gallery_images_response.dart';
 import 'package:choice_app/models/producer_posts_response.dart';
 import 'package:choice_app/models/producer_update_document_response.dart';
 import 'package:choice_app/models/restaurant_update_profile_response.dart';
+import 'package:choice_app/network/api_url.dart';
 
 import '../models/error_model.dart';
 import '../models/get_producers_places_claim_response.dart';
+import '../models/near_by_producers_response.dart';
 
 class Models {
   static const String errorModel = "ERROR_MODEL";
@@ -57,6 +60,11 @@ class Models {
       "PRODUCER_DELETE_DOCUMENT_MODEL";
   static const String producerDeleteGalleryImageModel = "PRODUCER_DELETE_GALLERY_IMAGE_MODEL";
   static const String getEventsNearMeModel = "GET_ALL_EVENTS_NEAR_ME_MODEL";
+  static const String getEventsTypeModel = "GET_EVENTS_TYPE_MODEL";
+  static const String getNearByProducersModel = "NEAR_BY_PRODUCERS_MODEL";
+
+
+
 
 
   static Future<dynamic> getModelObject(
@@ -108,6 +116,10 @@ class Models {
         return DeleteGalleryImageResponse.fromJson(json);
       case getEventsNearMeModel:
         return GetEventsNearMeResponse.fromJson(json);
+      case getEventsTypeModel:
+        return GetEventTypesResponse.fromJson(json);
+      case getNearByProducersModel:
+        return NearbyProducersResponse.fromJson(json);
     }
   }
 }

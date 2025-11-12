@@ -465,7 +465,7 @@ class ProfileProvider extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      // 🚫 Remove loader here
+      //  Remove loader here
       List<Map<String, dynamic>> images = [];
       for (String url in imageUrls) {
         String s3Key = _extractS3Key(url);

@@ -4,6 +4,7 @@ import 'package:choice_app/customWidgets/common_app_bar.dart';
 import 'package:choice_app/customWidgets/custom_text.dart';
 import 'package:choice_app/network/network_provider.dart';
 import 'package:choice_app/screens/restaurant/event/event_provider.dart';
+import 'package:choice_app/screens/restaurant/profile/profile_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +17,7 @@ import '../../../appColors/colors.dart';
 import '../../../customWidgets/custom_button.dart';
 import '../../../customWidgets/custom_textfield.dart';
 import '../../../l18n.dart';
+import '../../../models/event_type_model.dart';
 import '../../../res/res.dart';
 import '../../../res/toasts.dart';
 import '../../../userRole/role_provider.dart';
@@ -132,6 +134,12 @@ class _CreateEventState extends State<CreateEvent> {
     super.initState();
     networkProvider = Provider.of<NetworkProvider>(context, listen: false);
     networkProvider.context = context;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.read<RoleProvider>().role == UserRole.leisure) {
+        context.read<EventProvider>().getEventTypes();
+      }
+    });
   }
 
   @override
@@ -173,22 +181,27 @@ class _CreateEventState extends State<CreateEvent> {
 
                     // Event Type (Dropdown Field) – only for leisure role
                     if (role == UserRole.leisure) ...[
-                      CustomDropdownField(
-                        label: al.eventTypeLabel,
-                        hint: al.eventTypePlaceholder,
-                        items: ["Conference", "Wedding", "Birthday", "Workshop"],
-                        value: _selectedEventType,
-                        borderColor: AppColors.inputHintColor,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedEventType = value;
-                          });
+                      Consumer<EventProvider>(
+                        builder: (context, provider, _) {
+                          final eventTypes = provider.eventTypesList;
+                          final items = eventTypes.map((e) => e.name ?? "").toList();
+
+                          return CustomDropdownField(
+                            label: al.eventTypeLabel,
+                            hint: al.eventTypePlaceholder,
+                            items: items,
+                            value: _selectedEventType,
+                            borderColor: AppColors.inputHintColor,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedEventType = value;
+                              });
+                            },
+                          );
                         },
                       ),
                       SizedBox(height: getHeight() * .02),
                     ],
-
-
 
                     CustomField(
                       textEditingController: _descriptionController,
@@ -410,54 +423,111 @@ class _CreateEventState extends State<CreateEvent> {
                         final capacity = _capacityController.text.trim();
                         final price = _priceController.text.trim();
 
-                        if (images.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorSelectImage);
-                        } else if (eventName.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.enterEventName);
-                        } else if (description.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.enterEventDescription);
-                        } else if (venue.isEmpty) {
-                          Toasts.getErrorToast(text: al.enterVenue);
-                        } else if (address.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.errorEnterAddress);
-                        } else if (capacity.isEmpty) {
-                          Toasts.getErrorToast(
-                              text: al.enterCapacity);
-                        } else if (int.tryParse(capacity) == null) {
-                          Toasts.getErrorToast(
-                              text: al.enterValidCapacityNumber);
-                        } else if (price.isEmpty) {
-                          Toasts.getErrorToast(text: al.enterPrice);
-                        } else if (double.tryParse(price) == null) {
-                          Toasts.getErrorToast(
-                              text: al.enterValidPrice);
-                        } else {
-                          for (var i in images) {
-                            final bytes = await i.readAsBytes();
-                            final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
-                            debugPrint("file url is : $fileUrl");
-                            if (fileUrl != null) {
-                              imageUrls.add(fileUrl);
-                            }
-                          }
-                          context.read<EventProvider>().createEventApi(
-                            eventName: eventName,
-                            description: description,
-                            venue: "Restaurant",
-                            address: address,
-                            capacity: capacity,
-                            price: price,
-                            images: [],
-                            date: "${_selectedDate?.day}-${_selectedDate?.month}-${_selectedDate?.year}",
-                            startTime: "${_startTime?.hour}:${_startTime?.minute}",
-                            endTime: "${_endTime?.hour}:${_endTime?.minute}",
 
-                          );
+                        final roleProvider = context.read<RoleProvider>();
+
+
+                        final isLeisure = roleProvider.role == UserRole.leisure;
+                        final isRestaurant = roleProvider.role == UserRole.restaurant;
+
+                        if (images.isEmpty) {
+                          Toasts.getErrorToast(text: al.errorSelectImage);
+                          return;
                         }
+                        if (_eventNameController.text.trim().isEmpty) {
+                          Toasts.getErrorToast(text: al.enterEventName);
+                          return;
+                        }
+                        if (_descriptionController.text.trim().isEmpty) {
+                          Toasts.getErrorToast(text: al.enterEventDescription);
+                          return;
+                        }
+                        if (isRestaurant && _venueController.text.trim().isEmpty) {
+                          Toasts.getErrorToast(text: al.enterVenue);
+                          return;
+                        }
+                        if (_addressController.text.trim().isEmpty) {
+                          Toasts.getErrorToast(text: al.errorEnterAddress);
+                          return;
+                        }
+                        if (_capacityController.text.trim().isEmpty || int.tryParse(_capacityController.text.trim()) == null) {
+                          Toasts.getErrorToast(text: al.enterValidCapacityNumber);
+                          return;
+                        }
+                        if (_priceController.text.trim().isEmpty || double.tryParse(_priceController.text.trim()) == null) {
+                          Toasts.getErrorToast(text: al.enterValidPrice);
+                          return;
+                        }
+                        if (isLeisure && (_selectedEventType == null || _selectedEventType!.isEmpty)) {
+                          Toasts.getErrorToast(text: "Please select event type");
+                          return;
+                        }
+                        if (_selectedDate == null) {
+                          Toasts.getErrorToast(text: "Please select event date");
+                          return;
+                        }
+                        if (_startTime == null || _endTime == null) {
+                          Toasts.getErrorToast(text: "Please select start and end time");
+                          return;
+                        }
+                        imageUrls.clear();
+                        for (var img in images) {
+                          final bytes = await img.readAsBytes();
+                          final fileUrl = await networkProvider.getUrlForFileUpload(bytes);
+                          if (fileUrl != null) {
+                            imageUrls.add(NetworkProvider.extractS3Key(fileUrl));
+                          }
+                        }
+
+                        if (imageUrls.isEmpty) {
+                          Toasts.getErrorToast(text: "Failed to upload images");
+                          return;
+                        }
+
+                        // Get selected event type id
+                        final provider = context.read<EventProvider>();
+                        final selectedType = isLeisure
+                            ? provider.eventTypesList.firstWhere(
+                              (e) => e.name == _selectedEventType,
+                          orElse: () => EventTypeModel(
+                            id: -1,
+                            name: '',
+                            createdAt: DateTime.now(),
+                            updatedAt: DateTime.now(),
+                          ),
+                        ) : null;
+
+                        if (isLeisure && (selectedType == null || selectedType.id <= 0)) {
+                          Toasts.getErrorToast(text: "Invalid event type selected");
+                          return;
+                        }
+
+                        final dateStr = "${_selectedDate!.year}-${_selectedDate!.month.toString().padLeft(2,'0')}-${_selectedDate!.day.toString().padLeft(2,'0')}";
+                        final startTimeStr = "${_startTime!.hour.toString().padLeft(2,'0')}:${_startTime!.minute.toString().padLeft(2,'0')}";
+                        final endTimeStr = "${_endTime!.hour.toString().padLeft(2,'0')}:${_endTime!.minute.toString().padLeft(2,'0')}";
+                        final producerProfile = context.read<ProfileProvider>().getProducerProfileResponse?.producer;
+
+                        final latitude = double.tryParse(producerProfile?.latitude ?? "0.0") ?? 0.0;
+                        final longitude = double.tryParse(producerProfile?.longitude ?? "0.0") ?? 0.0;
+
+                        final timeZone = "Asia/Karachi";
+
+                        await context.read<EventProvider>().createEventApi(
+                          eventName: _eventNameController.text.trim(),
+                          description: _descriptionController.text.trim(),
+                          venue: isRestaurant ? _venueController.text.trim() : "",
+                          address: _addressController.text.trim(),
+                          capacity: _capacityController.text.trim(),
+                          price: _priceController.text.trim(),
+                          images: imageUrls,
+                          date: dateStr,
+                          startTime: startTimeStr,
+                          endTime: endTimeStr,
+                          eventTypeId: isLeisure ? selectedType!.id : null,
+                          latitude: latitude,
+                          longitude: longitude,
+                          timeZone: timeZone,
+                        );
                       },),
                     ),
                   ],

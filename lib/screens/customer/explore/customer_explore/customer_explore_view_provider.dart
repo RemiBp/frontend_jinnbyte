@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../common/utils.dart';
 import '../../../../models/get_all_events_near_me_response.dart';
+import '../../../../models/near_by_producers_response.dart';
 import '../../../../network/API.dart';
 import '../../../../network/models.dart';
 
@@ -13,11 +14,13 @@ class ExploreViewProvider extends ChangeNotifier {
   ExploreViewProvider({required this.context});
 
   bool isLoading = false;
+  bool isEventsLoading = false;
+  bool isProducersLoading = false;
   List<EventData> events = [];
 
   Future<void> getEventsNearMe() async {
     try {
-      isLoading = true;
+      isEventsLoading = true;
       notifyListeners();
 
       //  Read lat/lng saved from profile
@@ -44,13 +47,73 @@ class ExploreViewProvider extends ChangeNotifier {
             .toList();
       }
 
-      isLoading = false;
+      isEventsLoading = false;
       notifyListeners();
     } catch (e) {
       debugPrint("❌ Error fetching events near me: $e");
-      isLoading = false;
+      isEventsLoading = false;
       notifyListeners();
     }
   }
+
+  Future<NearbyProducersResponse?> findNearbyProducers({
+    required double latitude,
+    required double longitude,
+    String? keyword,
+    int? radius,
+    int? page,
+    int? limit,
+    String? producerType,
+  }) async {
+    final body = {
+      "latitude": latitude,
+      "longitude": longitude,
+      "keyword": keyword ?? "",
+      "radius": radius ?? 10000,
+      "page": page ?? 1,
+      "limit": limit ?? 10,
+    };
+
+    if (producerType != null && producerType.isNotEmpty) {
+      body["producerType"] = producerType;
+    }
+
+    final response = await MyApi.callPostApi(
+      url: nearByProducersApiUrl,
+      body: body,
+    );
+
+    if (response != null) {
+      return NearbyProducersResponse.fromJson(response);
+    }
+    return null;
+  }
+
+  List<ProducerItem> nearbyProducers = [];
+
+  Future<void> getNearbyProducers() async {
+    try {
+      isProducersLoading = true;
+      notifyListeners();
+
+      // Hardcoded lat, long and radius for now
+      final response = await findNearbyProducers(
+        latitude: 31.470404754490897,
+        longitude: 74.38929248891314,
+        radius: 12000,
+        keyword: "", // empty for now
+        producerType: "", // can change later dynamically
+      );
+
+      nearbyProducers = response?.data?.producers ?? [];
+    } catch (e) {
+      debugPrint("Error fetching nearby producers: $e");
+      nearbyProducers = [];
+    } finally {
+      isProducersLoading = false;
+      notifyListeners();
+    }
+  }
+
 
 }

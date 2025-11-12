@@ -1188,6 +1188,8 @@ class FavouriteRestaurantCard extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final VoidCallback? onFavouriteTap;
   final VoidCallback? onRestaurantTap;
+  final String? chipText;
+  final Color? chipColor;
 
   const FavouriteRestaurantCard({
     super.key,
@@ -1197,7 +1199,9 @@ class FavouriteRestaurantCard extends StatelessWidget {
     this.isFavourite = true,
     this.onFavouriteTap,
     this.onRestaurantTap,
-    this.margin
+    this.margin,
+    this.chipText,
+    this.chipColor,
   });
 
   @override
@@ -1206,8 +1210,10 @@ class FavouriteRestaurantCard extends StatelessWidget {
       onTap: onRestaurantTap,
       child: Container(
         height: getHeightRatio() * 210,
-        margin: margin?? EdgeInsets.symmetric(horizontal: sizes!.pagePadding, vertical: getHeight() * 0.015),
-        padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.015),
+        margin: margin ?? EdgeInsets.symmetric(
+            horizontal: sizes!.pagePadding, vertical: getHeight() * 0.015),
+        padding: EdgeInsets.symmetric(
+            horizontal: getWidth() * 0.025, vertical: getHeight() * 0.015),
         decoration: BoxDecoration(
           color: AppColors.whiteColor,
           borderRadius: BorderRadius.circular(8),
@@ -1229,8 +1235,8 @@ class FavouriteRestaurantCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      Assets.galleryImage,
+                    child: Image.network(
+                      imageUrl,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -1254,24 +1260,28 @@ class FavouriteRestaurantCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: getHeight() * 0.015,
-                    left: getWidth() * 0.04,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: getWidth() * 0.025, vertical: getHeight() * 0.01),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColors.getPrimaryColorFromContext(context).withAlpha(90),
-                        // shape: BoxShape.circle,
-                      ),
-                      child: CustomText(
-                        text: al.categoryWellness,
-                        color: AppColors.whiteColor,
-                        fontSize: sizes?.fontSize12,
-                        fontWeight: FontWeight.w500
+                  if (chipText != null)
+                    Positioned(
+                      top: getHeight() * 0.015,
+                      left: getWidth() * 0.015,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: getWidth() * 0.035,
+                          vertical: getHeight() * 0.01,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getChipColor(chipText!).withAlpha(40), // semi-transparent
+                          borderRadius: BorderRadius.circular(40), // pill shape
+                        ),
+                        child: CustomText(
+                          text: chipText!,
+                          fontSize: sizes?.fontSize12,
+                          fontWeight: FontWeight.w500,
+                          color: _getChipColor(chipText!), // text color same as type color
+                        ),
                       ),
                     ),
-                  ),
+
                 ],
               ),
             ),
@@ -1301,14 +1311,22 @@ class FavouriteRestaurantCard extends StatelessWidget {
                     color: AppColors.primarySlateColor,
                   ),
                 ),
-                const SizedBox(width: 8),
-                // You can add a distance chip or icon here if needed
               ],
             ),
           ],
         ),
       ),
     );
+  }
+  Color _getChipColor(String type) {
+    switch (type.toLowerCase()) {
+      case "restaurant":
+        return AppColors.restaurantPrimaryColor; // redish
+      case "wellness":
+        return AppColors.wellnessPrimaryColor; // greenish
+      default:
+        return AppColors.userPrimaryColor; // default fallback
+    }
   }
 }
 

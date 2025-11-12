@@ -40,6 +40,9 @@ const String submitProducerDocumentApiUrl = "$baseUrl/api/producer/auth/submitDo
 const String getProducerPostsApiUrl = "$baseUrl/api/producer/post/getPostsByProducer";
 const String deleteGalleryImagesApiUrl = "$baseUrl/api/producer/profile/deleteGalleryImages";
 const String getEventsNearMeApiUrl = "$baseUrl/api/producer/event/getAllEvents";
+const String getEventsTypeApiUrl = "$baseUrl/api/producer/event/getEventTypes";
+const String nearByProducersApiUrl = "$baseUrl/api/producer/event/findNearbyProducer";
+
 
 
 

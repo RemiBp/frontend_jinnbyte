@@ -63,7 +63,7 @@ class CustomerProfileProvider extends ChangeNotifier{
         final user = customerProfileResponse.user!;
         debugPrint("✅ profile response: ${customerProfileResponse.toJson()}");
 
-        // ✅ Store lat/lng for Explore screen use
+        //  Store lat/lng for Explore screen use
         await PreferenceUtils.setString("latitude", user.latitude?.toString() ?? "");
         await PreferenceUtils.setString("longitude", user.longitude?.toString() ?? "");
       }
