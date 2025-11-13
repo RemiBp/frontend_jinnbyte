@@ -91,21 +91,40 @@ class ExploreViewProvider extends ChangeNotifier {
 
   List<ProducerItem> nearbyProducers = [];
 
-  Future<void> getNearbyProducers() async {
+  Future<void> getNearbyProducers({
+    List<String>? allowedTypes,  // for Surprise Me
+    String? producerType,       // for category-specific fetch
+  }) async {
     try {
       isProducersLoading = true;
       notifyListeners();
+
+      String? typeForApi;
+      if (producerType != null) {
+        typeForApi = producerType.toLowerCase();
+      }
 
       // Hardcoded lat, long and radius for now
       final response = await findNearbyProducers(
         latitude: 31.470404754490897,
         longitude: 74.38929248891314,
         radius: 12000,
-        keyword: "", // empty for now
-        producerType: "", // can change later dynamically
+        keyword: "",
+        producerType: typeForApi, // pass single category if provided
       );
+      var producers = response?.data?.producers ?? [];
 
-      nearbyProducers = response?.data?.producers ?? [];
+      // If allowedTypes is provided (Surprise Me), filter locally
+      if (allowedTypes != null && allowedTypes.isNotEmpty) {
+        producers = producers
+            .where((p) =>
+        p.type != null &&
+            allowedTypes.contains(p.type!.toLowerCase()))
+            .toList();
+      }
+
+      nearbyProducers = producers;
+
     } catch (e) {
       debugPrint("Error fetching nearby producers: $e");
       nearbyProducers = [];

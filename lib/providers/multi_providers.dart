@@ -77,4 +77,5 @@ final multiProviders = [
     create: (context) => BookingsProvider(),
     lazy: true,
   ),
+
 ];

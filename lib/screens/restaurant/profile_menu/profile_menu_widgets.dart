@@ -1324,6 +1324,8 @@ class FavouriteRestaurantCard extends StatelessWidget {
         return AppColors.restaurantPrimaryColor; // redish
       case "wellness":
         return AppColors.wellnessPrimaryColor; // greenish
+      case "leisure":
+        return AppColors.leisurePrimaryColor; // greenish
       default:
         return AppColors.userPrimaryColor; // default fallback
     }

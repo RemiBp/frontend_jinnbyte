@@ -337,7 +337,9 @@ class _UserSignupState extends State<UserSignup> {
     var password = passwordController.text.toString().trim();
     var fullName = fullNameController.text.toString().trim();
     var userName = userNameController.text.toString().trim();
-    var phoneNumber = context.read<ProfileProvider>().phoneNumber;
+    var phoneNumber = context.read<CustomerProfileProvider>().phoneNumber;
+
+
 
     // debugPrint("phone is : ${phone?.nsn}");
     if (fullName.isEmpty) {
@@ -359,10 +361,11 @@ class _UserSignupState extends State<UserSignup> {
     } else if (password.isEmpty) {
       Toasts.getErrorToast(text: al.passwordMissing);
     } else {
+      final cleanedPhone = phoneNumber?.international.replaceAll(RegExp(r'\D'), '');
       context.read<AuthProvider>().registerUser(
         fullName: fullName,
         userName: userName,
-        phone:phoneNumber?.international ?? "nil" ,
+        phone:cleanedPhone ?? "nil" ,
         email: email, role: context
           .read<RoleProvider>()
           .role.name, password: password,);

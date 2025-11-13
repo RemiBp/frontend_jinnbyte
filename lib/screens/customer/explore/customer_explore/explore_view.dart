@@ -1,3 +1,5 @@
+import 'package:choice_app/screens/customer/explore/browse_producers/browse_producers_view.dart';
+import 'package:choice_app/screens/customer/explore/browse_producers/search_producer_view.dart';
 import 'package:choice_app/screens/customer/explore/restaurant_explore_details/restaurant_explore_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +30,9 @@ class _ExploreViewState extends State<ExploreView> {
     final provider = Provider.of<ExploreViewProvider>(context, listen: false);
     Future.microtask(() {
       provider.getEventsNearMe();
-      provider.getNearbyProducers(); // fetch producers for Surprise Me
+      provider.getNearbyProducers(
+        allowedTypes: ["wellness", "restaurant"],
+      ); // fetch producers for Surprise Me
     });
   }
   @override
@@ -92,10 +96,22 @@ class _ExploreViewState extends State<ExploreView> {
             //  SEARCH stays fixed
             Padding(
               padding: EdgeInsets.symmetric(horizontal: sizes!.pagePadding),
-              child: CustomField(
-                borderColor: AppColors.greyBordersColor,
-                hint: al.searchPlaceholder,
-                prefixIconSvg: Assets.searchIcon,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchProducersScreen(),
+                    ),
+                  );
+                },
+                child: AbsorbPointer(
+                  child: CustomField(
+                    borderColor: AppColors.greyBordersColor,
+                    hint: al.searchPlaceholder,
+                    prefixIconSvg: Assets.searchIcon,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: getHeight() * .02),
@@ -119,6 +135,17 @@ class _ExploreViewState extends State<ExploreView> {
                         al.categoryWellness,
                         al.categoryLeisure,
                       ],
+                      onCategoryTap: (category) {
+                        // Navigate based on the tapped category
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BrowseProducersScreen(
+                              categoryType: category, // optional parameter you can define
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   SizedBox(height: getHeight() * 0.02),
@@ -155,8 +182,8 @@ class _ExploreViewState extends State<ExploreView> {
                               "${event.date ?? ''} ${event.startTime ?? ''} - ${event.endTime ?? ''}",
                               price: "\$${event.pricePerGuest ?? '0'}",
                               imageUrl: event.eventImages?.isNotEmpty == true
-                                  ? "https://elasticbeanstalk-us-west-1-841019700848.s3.us-west-1.amazonaws.com/${event.eventImages!.first}"
-                                  : "https://via.placeholder.com/300",
+                              ? "https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/${event.eventImages!.first}"
+                                : "https://via.placeholder.com/300",
                             ),
                             margin: EdgeInsets.only(
                               top: getHeight() * 0.01,
@@ -220,7 +247,7 @@ class _ExploreViewState extends State<ExploreView> {
                               width: getWidth() * 0.75,
                               child: FavouriteRestaurantCard(
                                 imageUrl: producer.profileImage != null
-                                    ? "https://elasticbeanstalk-us-west-1-841019700848.s3.us-west-1.amazonaws.com/${producer.profileImage}"
+                                    ? "https://elasticbeanstalk-eu-west-3-838155148197.s3.eu-west-3.amazonaws.com/${producer.profileImage}"
                                     : "https://via.placeholder.com/300",
                                 restaurantName: producer.name,
                                 address: producer.address.isNotEmpty

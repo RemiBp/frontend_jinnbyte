@@ -42,6 +42,11 @@ const String deleteGalleryImagesApiUrl = "$baseUrl/api/producer/profile/deleteGa
 const String getEventsNearMeApiUrl = "$baseUrl/api/producer/event/getAllEvents";
 const String getEventsTypeApiUrl = "$baseUrl/api/producer/event/getEventTypes";
 const String nearByProducersApiUrl = "$baseUrl/api/producer/event/findNearbyProducer";
+const String getEventsByIdApiUrl = "$baseUrl/api/producer/event/getEventById";
+const String deleteUserAccountApiUrl = "$baseUrl/api/app/profile/deleteProfile";
+const String deleteProducerAccountApiUrl = "$baseUrl/api/producer/profile/deleteProfile";
+
+
 
 
 
