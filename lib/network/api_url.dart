@@ -68,3 +68,7 @@ const String getProducerOperationalHoursApiUrl = "$baseUrl/api/producer/profile/
 const String addUnavailableSlotsApiUrl = "$baseUrl/api/producer/profile/addUnavailableSlot";
 const String updateRestaurantSlotsApiUrl = "$baseUrl/api/producer/profile/updateRestaurantSlots";
 
+const String getUserBookingsApiUrl = "$baseUrl/api/producer/booking/getUserBookings";
+const String cancelBookingApiUrl = "$baseUrl/api/producer/booking/cancelBooking";
+const String checkInBookingApiUrl = "$baseUrl/api/producer/booking/checkIn";
+

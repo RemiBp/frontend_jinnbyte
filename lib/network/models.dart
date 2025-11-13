@@ -15,6 +15,7 @@ import 'package:choice_app/models/get_producer_places.dart';
 import 'package:choice_app/models/get_producer_profile_response.dart';
 
 import 'package:choice_app/models/get_producer_slots_response.dart';
+import 'package:choice_app/models/get_user_bookings_response.dart';
 import 'package:choice_app/models/producer_delete_document_response.dart';
 import 'package:choice_app/models/producer_delete_gallery_images_response.dart';
 import 'package:choice_app/models/producer_posts_response.dart';
@@ -52,13 +53,13 @@ class Models {
   static const String restaurantGetMenuModel = "RESTAURANT_GET_MENU_MODEL";
   static const String producerGetGalleryImagesModel =
       "PRODUCER_GET_GALLERY_IMAGES_MODEL";
-  static const String getProducerDocumentModel =
-      "GET_DOCUMENT_MODEL";
+  static const String getProducerDocumentModel = "GET_DOCUMENT_MODEL";
   static const String producerUpdateDocumentModel =
       "PRODUCER_UPDATE_DOCUMENT_MODEL";
   static const String producerDeleteDocumentModel =
       "PRODUCER_DELETE_DOCUMENT_MODEL";
-  static const String producerDeleteGalleryImageModel = "PRODUCER_DELETE_GALLERY_IMAGE_MODEL";
+  static const String producerDeleteGalleryImageModel =
+      "PRODUCER_DELETE_GALLERY_IMAGE_MODEL";
   static const String getEventsNearMeModel = "GET_ALL_EVENTS_NEAR_ME_MODEL";
   static const String getEventsTypeModel = "GET_EVENTS_TYPE_MODEL";
   static const String getNearByProducersModel = "NEAR_BY_PRODUCERS_MODEL";
@@ -66,6 +67,7 @@ class Models {
 
 
 
+  static const String getBookingsModel = "GET_BOOKINGS_MODEL";
 
   static Future<dynamic> getModelObject(
     String modelName,
@@ -116,6 +118,8 @@ class Models {
         return DeleteGalleryImageResponse.fromJson(json);
       case getEventsNearMeModel:
         return GetEventsNearMeResponse.fromJson(json);
+      case getBookingsModel:
+        return GetUserBookingsResponse.fromJson(json);
       case getEventsTypeModel:
         return GetEventTypesResponse.fromJson(json);
       case getNearByProducersModel:

@@ -3,6 +3,7 @@ import 'package:choice_app/screens/authentication/accountReclaim/reclaim_account
 import 'package:choice_app/screens/authentication/auth_provider.dart';
 import 'package:choice_app/screens/authentication/otpVerification/otp_provider.dart';
 import 'package:choice_app/screens/authentication/passwordManagement/password_provider.dart';
+import 'package:choice_app/screens/bookings/bookings_provider.dart';
 import 'package:choice_app/screens/customer/explore/customer_explore/customer_explore_view_provider.dart';
 import 'package:choice_app/screens/customer/profile/customer_profile/customer_profile_provider.dart';
 import 'package:choice_app/screens/languageSelection/language_selection_provider.dart';
@@ -70,6 +71,10 @@ final multiProviders = [
   ),
   ChangeNotifierProvider<ExploreViewProvider>(
     create: (context) => ExploreViewProvider(context: context),
+    lazy: true,
+  ),
+  ChangeNotifierProvider<BookingsProvider>(
+    create: (context) => BookingsProvider(),
     lazy: true,
   ),
 ];
